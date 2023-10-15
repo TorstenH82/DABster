@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="HorizontalDividerMargin" parent="">
+        <item name="android:background">?android:attr/listDivider</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">3dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:minHeight">1px</item>
+    </style>
+    <style name="StationName" parent="@android:style/TextAppearance.DeviceDefault.Large">
+        <item name="android:textSize">25sp</item>
+    </style>
+    <style name="StationListTitle" parent="@android:style/TextAppearance.DeviceDefault.Large">
+    </style>
+    <style name="StationListAdditionalInfo" parent="@android:style/TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">#ff787878</item>
+    </style>
+</resources>

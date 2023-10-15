@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black_overlay">#66000000</color>
+    <color name="gray">#ff808080</color>
+    <color name="app_background">#030303</color>
+    <color name="signal_1">#d50000</color>
+    <color name="signal_2">#ff8f00</color>
+    <color name="signal_3">#ffea00</color>
+    <color name="signal_4">#76ff03</color>
+    <color name="signal_5">#00ff24</color>
+    
+   <color name="colorPrimary">#F66F00</color>
+    <color name="colorPrimaryDark">#F66F00</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorLightGray">#D3D3D3</color>
+
+    <color name="status_bar_light">#FFea80fc</color>
+    <color name="status_bar_dark">#FF263238</color>
+</resources>

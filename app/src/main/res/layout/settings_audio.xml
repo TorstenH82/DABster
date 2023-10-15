@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:background="#030303" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:orientation="vertical" android:background="@color/app_background" android:visibility="visible" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="16dp">
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:textAppearance="@style/SettingsHeadline" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/settings_AudioLevel"/>
+            <Space android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+            <Button android:textSize="24sp" android:id="@+id/btnDecrAudioLevel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/minus"/>
+            <TextView android:textAppearance="@style/SettingsHeadline" android:id="@+id/textAudioLevelPercent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"/>
+            <Button android:textSize="24sp" android:id="@+id/btnIncrAudioLevel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/plus"/>
+        </LinearLayout>
+        <View style="@style/HorizontalDividerMargin"/>
+        <Switch android:textAppearance="@style/SettingsHeadline" android:id="@+id/switchRecordButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_RecordButton"/>
+        <View style="@style/HorizontalDividerMargin"/>
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <Switch android:textAppearance="@style/SettingsHeadline" android:id="@+id/switchDeclip" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_declip"/>
+            <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:textAppearance="@style/SettingsText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/settings_text_declip"/>
+                <Switch android:textAppearance="@style/SettingsText" android:id="@+id/switchDeclipNotification" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="16dp" android:text="@string/settings_text_declip_notification"/>
+            </LinearLayout>
+        </LinearLayout>
+        <View style="@style/HorizontalDividerMargin"/>
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+            <Switch android:textAppearance="@style/SettingsHeadline" android:id="@+id/switchAudiolossSupport" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_audioloss_support"/>
+            <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+                <TextView android:textAppearance="@style/SettingsText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/settings_text_audioloss_support"/>
+                <SeekBar android:id="@+id/seekBarAudioLevelWhenDucked" android:paddingLeft="24dp" android:paddingTop="16dp" android:paddingRight="24dp" android:paddingBottom="16dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="16dp" android:layout_marginRight="16dp" android:max="10"/>
+            </LinearLayout>
+        </LinearLayout>
+        <View style="@style/HorizontalDividerMargin"/>
+    </LinearLayout>
+</ScrollView>

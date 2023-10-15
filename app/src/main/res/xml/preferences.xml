@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.preference.PreferenceCategory android:title="Update">
+        <androidx.preference.Preference
+            android:persistent="false"
+            android:title="Update MainUI"
+            android:selectable="true"
+            android:key="intentMainUi"
+            android:summary="Replace MainUI.apk">
+            <intent
+                android:targetPackage="com.thf.mainuiupd"
+                android:targetClass="com.thf.mainuiupd.UpdateActivity">
+                <extra
+                    android:name="job"
+                    android:value="MainUI" />
+            </intent>
+        </androidx.preference.Preference>
+        <androidx.preference.Preference
+            android:persistent="false"
+            android:title="Logcat Reader"
+            android:selectable="true"
+            android:key="intentLogcatReader"
+            android:summary="Grant permission">
+            <intent
+                android:targetPackage="com.thf.mainuiupd"
+                android:targetClass="com.thf.mainuiupd.UpdateActivity">
+                <extra
+                    android:name="job"
+                    android:value="LogcatReader" />
+            </intent>
+        </androidx.preference.Preference>
+    </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory android:title="Settings">
+        <androidx.preference.SwitchPreference
+            android:defaultValue="@string/pref_serviceFollowing"
+            android:key="serviceFollowing"
+            android:title="@string/ServiceFollowing" />
+        <androidx.preference.SwitchPreference
+            android:defaultValue="@string/pref_suppressNoise"
+            android:key="suppressNoise"
+            android:title="@string/SuppressNoise" />
+    </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory android:title="Donate">
+        <androidx.preference.Preference
+            android:key="prefDonate"
+            android:persistent="false"
+            android:selectable="true"
+            android:summary="Do you like this app? Then support me with a donation via\nko-fi.com/appswitcher"
+            android:icon="@drawable/kofi"
+            android:title="Donate">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://ko-fi.com/appswitcher" />
+        </androidx.preference.Preference>
+    </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory android:title="About">
+        <androidx.preference.Preference
+            android:persistent="false"
+            android:title="Dabster"
+            android:selectable="false"
+            android:key="prefAbout"
+            android:summary="version vx" />
+    </androidx.preference.PreferenceCategory>
+</androidx.preference.PreferenceScreen>

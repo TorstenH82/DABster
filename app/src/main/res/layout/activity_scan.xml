@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="bottom" android:layout_width="match_parent" android:layout_height="300dp">
+    <TextView android:textSize="25sp" android:id="@+id/title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Scan Service" android:layout_centerHorizontal="true"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="60dp">
+        <TextView android:textSize="20sp" android:id="@+id/location" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="70dp" android:layout_marginTop="1dp" android:text="Location:" android:layout_below="@+id/title"/>
+        <Spinner android:id="@+id/spinner" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15sp" android:layout_toRightOf="@+id/location" android:layout_below="@+id/title"/>
+    </LinearLayout>
+    <TextView android:textSize="20dp" android:id="@+id/total_service" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="20dp" android:text="Total Service: 0" android:layout_above="@+id/progress_bar" android:layout_centerHorizontal="true"/>
+    <ProgressBar android:id="@+id/progress_bar" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:layout_marginBottom="20dp" android:max="100" android:progress="20" android:layout_above="@+id/bt_scan"/>
+    <Button android:textSize="20sp" android:textColor="#ffeeeeee" android:id="@+id/bt_scan" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Scan" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"/>
+</RelativeLayout>

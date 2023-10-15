@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="pty_array">
+        <item>No programme type</item>
+        <item>News</item>
+        <item>Current Affairs</item>
+        <item>Information</item>
+        <item>Sport</item>
+        <item>Education</item>
+        <item>Drama</item>
+        <item>Culture</item>
+        <item>Science</item>
+        <item>Varied</item>
+        <item>Pop Music</item>
+        <item>Rock Music</item>
+        <item>Easy Listening Music</item>
+        <item>Light Classical</item>
+        <item>Serious Classical</item>
+        <item>Other Music</item>
+        <item>Weather</item>
+        <item>Finance</item>
+        <item>Children\'s</item>
+        <item>Social Affairs</item>
+        <item>Religion</item>
+        <item>Phone In</item>
+        <item>Travel</item>
+        <item>Leisure</item>
+        <item>Jazz Music</item>
+        <item>Country Music</item>
+        <item>National Music</item>
+        <item>Oldies Music</item>
+        <item>Folk Music</item>
+        <item>Documentary</item>
+        <item>Alarm Test</item>
+        <item>Alarm</item>
+        <item>ALL</item>
+    </array>
+    <array name="scaleFactorStrings">
+        <item>1.0 x</item>
+        <item>1.3 x</item>
+        <item>1.5 x</item>
+        <item>1.7 x</item>
+        <item>2.0 x</item>
+        <item>2.5 x</item>
+        <item>3.0 x</item>
+        <item>max</item>
+    </array>
+    <array name="maximizeTimeoutStrings">
+        <item>5 s</item>
+        <item>10 s</item>
+        <item>15 s</item>
+        <item>20 s</item>
+        <item>30 s</item>
+    </array>
+    <array name="scaleFactorValues">
+        <item>1000</item>
+        <item>1300</item>
+        <item>1500</item>
+        <item>1700</item>
+        <item>2000</item>
+        <item>2500</item>
+        <item>3000</item>
+        <item>2147483647</item>
+    </array>
+    <array name="maximizeTimeoutValues">
+        <item>5000</item>
+        <item>10000</item>
+        <item>15000</item>
+        <item>20000</item>
+        <item>30000</item>
+    </array>
+    <array name="servicefollow_array">
+        <item>.version 14</item>
+        <item># Czech Republic: RTI cz</item>
+        <item>5D,10A/2003</item>
+        <item># Czech Republic: Teleko</item>
+        <item>5D,10A,11A/2001</item>
+        <item># Czech Republic: CRo</item>
+        <item>12C,12D/2005</item>
+        <item># Germany: NDR</item>
+        <item>6A,6D,9B,10A,11B,12A/10F1</item>
+        <item># Germany: MDR</item>
+        <item>6B/1135,8B/10E5,9A/10D1</item>
+        <item># Germany: SWR</item>
+        <item>8A,8D/10EB,9D/10EA,11A/10D9</item>
+        <item># Germany: Obb/Schw, Franken, Nby/Opf</item>
+        <item>10A/1162,10A/1134,8C/1147,10B/1131,12D/1161</item>
+        <item># Italy: RAI</item>
+        <item>12A,12B,12C,12D/5001,12B/5004,10B/510B</item>
+        <item># Netherlands: MTVNL</item>
+        <item>5A,5B,5D,8C,11A,11B,12B/8181</item>
+        <item># Norway: NRK</item>
+        <item>12C/F701,13A/F901,13F/F801,12B/F401,13E/F501,12C/F301,12B/F601</item>
+        <item># Poland: Polskie Radio</item>
+        <item>5B/3103,5B/31A3,5C/3123,5C/3193,6B/3163,10D/31C3,11A/3113,11A/3183,11A/31B3,11A/31F3,11B/3133,11B/3153,11B/31D3,11B/3203,11C/3143,11C/3173,12A/31E3</item>
+        <item># Spain: MF1</item>
+        <item>9A,9D,10A,10C/EFFE</item>
+        <item># Sweden: SR RIKS</item>
+        <item>12B,12C/E001</item>
+        <item># Switzerland: DIG D04</item>
+        <item>5D/4402,5D/4403,5D/4406,6A/4407,8B/440A,9D/4401,10A/4405,10A/4409</item>
+        <item># Switzerland: SMC D03</item>
+        <item>7A/4201,8B/4203,9B/4202,11C/4204</item>
+        <item># UK: Local</item>
+        <item>11C/C183,12A/C195,11B/C19E,12D/C18A,11C/C182,10D/C198,11B/C1A6,12D/C18F,10C/C18D,12C/C184,12D/C193,11C/C187,11B/C190,11C/C188</item>
+    </array>
+</resources>

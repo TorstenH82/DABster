@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:orientation="vertical" android:background="@color/app_background" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="16dp">
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <Switch android:textAppearance="@style/SettingsHeadline" android:id="@+id/switchAdditionalInfos" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_additional_infos" android:layout_alignParentStart="true"/>
+            <TextView android:textAppearance="@style/SettingsText" android:id="@+id/textAdditionalInfos" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_text_additional_infos" android:layout_below="@+id/switchAdditionalInfos" android:layout_alignParentStart="true"/>
+        </RelativeLayout>
+        <View style="@style/HorizontalDividerMargin"/>
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <Switch android:textAppearance="@style/SettingsHeadline" android:id="@+id/switchStationLogoInList" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_ShowStationLogoInList"/>
+            <TextView android:textAppearance="@style/SettingsText" android:id="@id/textAdditionalInfos" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_text_additional_infos" android:layout_below="@+id/switchStationLogoInList" android:layout_alignParentStart="true"/>
+        </RelativeLayout>
+        <View style="@style/HorizontalDividerMargin"/>
+        <Switch android:textAppearance="@style/SettingsHeadline" android:id="@+id/switchLogoAsMot" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_LogoAsMot"/>
+        <View style="@style/HorizontalDividerMargin"/>
+        <Switch android:textAppearance="@style/SettingsHeadline" android:id="@+id/switchMotSlideshowEnabled" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_MotSlideshow"/>
+        <View style="@style/HorizontalDividerMargin"/>
+        <Switch android:textAppearance="@style/SettingsHeadline" android:id="@+id/switchBackgroundBoxes" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_BackgroundBoxes"/>
+        <View style="@style/HorizontalDividerMargin"/>
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <Switch android:textAppearance="@style/SettingsHeadline" android:id="@+id/switchAutoMaximize" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_automaximize"/>
+            <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <TextView android:textAppearance="@style/SettingsText" android:id="@+id/textAutoMaximize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/settings_text_automaximize"/>
+                <Spinner android:id="@+id/spinner_automaximize_timeout" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+        <View style="@style/HorizontalDividerMargin"/>
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:textAppearance="@style/SettingsHeadline" android:id="@+id/textMaxScaleFactor" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/settings_max_scale_factor"/>
+            <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:textAppearance="@style/SettingsText" android:id="@+id/textTextMaxScaleFactor" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/settings_text_max_scale_factor"/>
+                <Spinner android:id="@+id/spinner_max_scale_factor" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+        <View style="@style/HorizontalDividerMargin"/>
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:textAppearance="@style/SettingsHeadline" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/settings_dim"/>
+            <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:textAppearance="@style/SettingsText" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_dim_text"/>
+                <Button android:id="@+id/brightnessValueTextBtn" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+        <View style="@style/HorizontalDividerMargin"/>
+        <TableLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:shrinkColumns="0">
+            <TableRow android:gravity="center_vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:textAppearance="@style/StationName" android:gravity="center" android:layout_gravity="center" android:id="@+id/textSettingsStationName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/StationName"/>
+                <LinearLayout android:gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/OrientationMainlyHorizontal">
+                    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <Button android:textSize="24sp" android:id="@+id/btnDecrStationNameSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/minus"/>
+                        <TextView android:textAppearance="@style/SettingsText" android:id="@+id/textStationNameSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"/>
+                        <Button android:textSize="24sp" android:id="@+id/btnIncrStationNameSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/plus"/>
+                    </LinearLayout>
+                    <LinearLayout android:gravity="center" android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <ImageButton android:id="@+id/btnColorPickerStationName" android:background="#ff00ff24" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/btn_fill_color" android:minWidth="@android:dimen/app_icon_size" android:minHeight="@android:dimen/app_icon_size" android:contentDescription="@null"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </TableRow>
+            <View style="@style/HorizontalDividerMargin"/>
+            <TableRow android:gravity="center_vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:textAppearance="@style/DLS" android:ellipsize="marquee" android:gravity="center_horizontal" android:id="@+id/textSettingsDLS" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/dls_example_string" android:singleLine="true" android:marqueeRepeatLimit="marquee_forever"/>
+                <LinearLayout android:gravity="center" android:orientation="horizontal">
+                    <Button android:textSize="24sp" android:id="@+id/btnDecrDlsSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/minus"/>
+                    <TextView android:textAppearance="@style/SettingsText" android:id="@+id/textDlsSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"/>
+                    <Button android:textSize="24sp" android:id="@+id/btnIncrDlsSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/plus"/>
+                </LinearLayout>
+            </TableRow>
+            <View style="@style/HorizontalDividerMargin"/>
+            <TableRow android:gravity="center_vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <LinearLayout android:gravity="center_horizontal">
+                    <ImageView android:id="@+id/imgSettingSignal_0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16dp" android:layout_marginRight="8dp" android:src="@drawable/signal_0" android:contentDescription="@null"/>
+                    <ImageView android:id="@+id/imgSettingSignal_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="8dp" android:src="@drawable/signal_1" android:contentDescription="@null"/>
+                    <ImageView android:id="@+id/imgSettingSignal_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="8dp" android:src="@drawable/signal_2" android:contentDescription="@null"/>
+                    <ImageView android:id="@+id/imgSettingSignal_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="8dp" android:src="@drawable/signal_3" android:contentDescription="@null"/>
+                    <ImageView android:id="@+id/imgSettingSignal_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8dp" android:layout_marginRight="8dp" android:src="@drawable/signal_4" android:contentDescription="@null"/>
+                    <ImageView android:id="@+id/imgSettingSignal_5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="16dp" android:src="@drawable/signal_5" android:contentDescription="@null"/>
+                </LinearLayout>
+                <RadioGroup style="@style/OrientationMainlyHorizontal">
+                    <RadioButton android:textAppearance="@style/SettingsText" android:id="@+id/radioBtnSignalBarSameColorStationName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="8dp" android:text="@string/color_like"/>
+                    <RadioButton android:textAppearance="@style/SettingsText" android:id="@+id/radioBtnSignalBarFancy" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="8dp" android:text="@string/colored"/>
+                </RadioGroup>
+            </TableRow>
+        </TableLayout>
+        <View style="@style/HorizontalDividerMargin"/>
+    </LinearLayout>
+</ScrollView>

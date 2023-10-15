@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="center_vertical" android:id="@+id/service_list_item" android:paddingLeft="5dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <TextView android:textAppearance="@style/StationListAdditionalInfo" android:gravity="center_vertical" android:id="@+id/index" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginEnd="3dp"/>
+    <ImageView android:id="@+id/logo" android:layout_width="@dimen/StationListLogo" android:layout_height="@dimen/StationListLogo" android:src="@drawable/radio" android:contentDescription="@null" android:layout_marginEnd="2dp"/>
+    <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="match_parent">
+        <TextView android:textAppearance="@style/StationListTitle" android:textSize="18sp" android:gravity="center_vertical" android:id="@+id/title" android:layout_width="wrap_content" android:layout_height="0dp" android:layout_weight="1"/>
+        <TextView android:textAppearance="@style/StationListAdditionalInfo" android:gravity="center_vertical" android:id="@+id/infos" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <ImageView android:layout_gravity="center_vertical" android:id="@+id/favor" android:layout_width="32dp" android:layout_height="32dp" android:contentDescription="@null" android:layout_marginStart="2dp" android:layout_marginEnd="6dp"/>
+    <Space android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+    <ImageView android:layout_gravity="center_vertical" android:id="@+id/bt_delete" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/btn_delete" android:contentDescription="@null" android:layout_marginEnd="32dp"/>
+</LinearLayout>

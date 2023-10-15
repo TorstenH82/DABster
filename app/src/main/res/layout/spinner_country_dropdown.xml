@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+    <ImageView android:id="@+id/country_logo" android:layout_width="@dimen/StationListLogo" android:layout_height="@dimen/StationListLogo" android:layout_marginLeft="16dp" android:layout_marginRight="16dp" android:contentDescription="@null"/>
+    <TextView android:textAppearance="@style/SettingsText" android:gravity="center_vertical" android:id="@+id/country_label" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+</LinearLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="HorizontalDividerMargin" parent="">
+        <item name="android:background">?android:attr/listDivider</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">3dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:minHeight">1px</item>
+    </style>
+    <style name="StationName" parent="@android:style/TextAppearance.DeviceDefault.Small">
+    </style>
+    <style name="DLS" parent="@android:style/TextAppearance.DeviceDefault.Small">
+    </style>
+    <style name="StationListTitle" parent="@android:style/TextAppearance.DeviceDefault.Small">
+    </style>
+    <style name="StationListAdditionalInfo" parent="@android:style/TextAppearance.DeviceDefault.Small">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">#ff787878</item>
+    </style>
+    <style name="SettingsHeadline" parent="@android:style/TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">@color/primary_text</item>
+    </style>
+    <style name="SettingsText" parent="@android:style/TextAppearance.DeviceDefault.Small">
+    </style>
+    <style name="ChannelDetails" parent="@android:style/TextAppearance.DeviceDefault.Small">
+        <item name="android:textSize">10sp</item>
+    </style>
+    <style name="OrientationMainlyHorizontal" parent="">
+        <item name="android:orientation">vertical</item>
+    </style>
+</resources>

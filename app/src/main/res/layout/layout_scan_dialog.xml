@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="bottom" android:layout_width="match_parent" android:layout_height="300dp">
+    <LinearLayout android:orientation="horizontal" android:background="@drawable/dlg_top" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView android:textColor="#ffff7300" android:layout_gravity="center" android:id="@+id/title" android:background="@android:color/transparent" android:paddingTop="8dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Scan Service"/>
+    </LinearLayout>
+    <RelativeLayout android:orientation="horizontal" android:background="@drawable/dlg_middle" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="1">
+        <TextView android:id="@+id/text_message" android:background="@android:color/transparent" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="5678"/>
+    </RelativeLayout>
+    <LinearLayout android:orientation="horizontal" android:id="@+id/buttons" android:background="@drawable/dlg_btn" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="72dp"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="60dp">
+        <TextView android:textSize="20sp" android:id="@+id/location" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="70dp" android:layout_marginTop="1dp" android:text="Location:" android:layout_below="@+id/title"/>
+        <Spinner android:id="@+id/spinner" android:background="#ff202020" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15sp" android:layout_toRightOf="@+id/location" android:layout_below="@+id/title"/>
+    </LinearLayout>
+    <TextView android:textSize="20dp" android:id="@+id/total_service" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="20dp" android:text="Total Service: 0" android:layout_above="@+id/progress_bar" android:layout_centerHorizontal="true"/>
+    <ProgressBar android:id="@+id/progress_bar" android:background="#ff202020" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:layout_marginBottom="20dp" android:max="100" android:progress="20" android:layout_above="@+id/bt_scan"/>
+    <Button android:textSize="20sp" android:textColor="#ffeeeeee" android:id="@+id/bt_scan" android:background="#ff202020" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Scan" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"/>
+</RelativeLayout>

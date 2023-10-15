@@ -1,0 +1,1869 @@
+Manifest-Version: 1.0
+Created-By: 1.8.0_152-release (JetBrains s.r.o)
+
+Name: assets/logos/de/MDR_SCHLAGERW_SN.png
+SHA1-Digest: 2D7JbHSjgkqrO8cJPXw138zlfTA=
+
+Name: assets/logos/no/2_RADIO_HAUGALND.png
+SHA1-Digest: JkqLRkHA/wiLl6pOmUTOsOsx9z4=
+
+Name: res/drawable-xhdpi-v4/signal_3.png
+SHA1-Digest: YZbVdzRetcaQgzOXM3lrzHZNZ04=
+
+Name: assets/logos/de/sunshine_live.png
+SHA1-Digest: v0ABIUAVRDqMavGOak98SXJ5Oh0=
+
+Name: assets/logos/dk/Radio_Alfa_Midtj.png
+SHA1-Digest: m4VKhczhs4kdRMdxIutJxthWSUk=
+
+Name: res/layout/colorpicker_dlg.xml
+SHA1-Digest: MGYtzQsIUWbiYQ6RBELUdQvADDw=
+
+Name: assets/logos/no/NRJ_NORGE.png
+SHA1-Digest: tzDzikQIH5pwevuJzxtuGxiK5fc=
+
+Name: assets/logos/de/SWR1_BW.png
+SHA1-Digest: CCynEjZF+QdpFXoZB4AfufX/T1M=
+
+Name: assets/logos/no/NRK_mP3.png
+SHA1-Digest: fE4s2Ye8L8gfWY9lnSfs2I/5/bM=
+
+Name: res/drawable-hdpi-v4/btn_rec_d.png
+SHA1-Digest: ZiTYdkK+iUa+EWfbrUo+phCyPnI=
+
+Name: assets/logos/no/Radio_Kos_Plus.png
+SHA1-Digest: er8hysGOrWQoJ1n3F2LUIAwUP+E=
+
+Name: assets/logos/de/KLASSIK_RADIO.png
+SHA1-Digest: 70hSuTOTH9RNygbOA4akAtOunsg=
+
+Name: assets/logos/no/NRK_P1_S##rlandet.png
+SHA1-Digest: caNirwcHwnekV9wH+AuGC6rLIz8=
+
+Name: res/drawable-mdpi-v4/radio_white.png
+SHA1-Digest: 6SuOW3tNQoCAdVcMJWBkVZBlpYU=
+
+Name: assets/logos/no/NORSK_POP.png
+SHA1-Digest: LFJAomgxYyldEgV2i6gU9Km/fWg=
+
+Name: assets/logos/de/NDR1_NDS.png
+SHA1-Digest: iZIrEwfnmkZceMZec9A1PxI9300=
+
+Name: assets/logos/uk/Capital_UK.png
+SHA1-Digest: QpGq+OMfmXLA4ktzyGDZ4Yhky8k=
+
+Name: assets/logos/no/NRK_P1+Vestfold.png
+SHA1-Digest: nOFxwagdQCa9AdqJ3e6ZJka5mQE=
+
+Name: assets/logos/no/3_GULL.png
+SHA1-Digest: 1vvV8VREi5auLvLknLX1E/LzUsI=
+
+Name: assets/logos/de/bigFM.png
+SHA1-Digest: YSsoDGX6HqYOcphoKtX5NevzuSc=
+
+Name: lib/arm64-v8a/libdab.so
+SHA1-Digest: zo35Y9IpHqc/3TQQknlJMSEWZ2Y=
+
+Name: assets/logos/no/Ordentlig_Radio.png
+SHA1-Digest: LFZXfYBNdplJyu+qRal2UsAqHxE=
+
+Name: assets/logos/dk/Radio_Alfa_Fyn.png
+SHA1-Digest: 5u5k5LMMqVPdbUR2r19dtR4tX/8=
+
+Name: assets/logos/dk/_Radio_Soft.png
+SHA1-Digest: fxIwFrAl9vYPIbxzuwaELRHrPTs=
+
+Name: assets/logos/it/Radio_Italia_SMI.png
+SHA1-Digest: FOfel1rco16ym7pCppKX6e5MPE8=
+
+Name: res/drawable-hdpi-v4/stop_focus.png
+SHA1-Digest: 7wuinjJFAWPRs+h91VFLG6OkZfQ=
+
+Name: res/drawable/previous_selector.xml
+SHA1-Digest: F79EAz49dwFfzor16XQ6k1OAe/U=
+
+Name: assets/logos/no/P7_Klem_Jul.png
+SHA1-Digest: rOvJ2mCicdoDyf6IPIyEudZ9YgY=
+
+Name: res/layout/spinner_drop_down.xml
+SHA1-Digest: 1WC5M/bAU5BVl43D/2vvIOASjF4=
+
+Name: assets/logos/no/NRK_KLASSISK.png
+SHA1-Digest: 53mGAKbqNFZAv4f+oqE9zNyNH9U=
+
+Name: assets/logos/uk/Magic.png
+SHA1-Digest: CC9wkBiG0ZQwY9p+DSuOiGEiDEY=
+
+Name: assets/logos/de/SWR2.png
+SHA1-Digest: ltGK4wSkE8nbSWmTmYO2oF/ns2Q=
+
+Name: assets/logos/nl/NPO_Radio_1.png
+SHA1-Digest: astzxz2uKAZWFaleE1QC5Tz7XL4=
+
+Name: res/drawable-xhdpi-v4/radio_white.png
+SHA1-Digest: 6SuOW3tNQoCAdVcMJWBkVZBlpYU=
+
+Name: res/drawable-xxxhdpi-v4/icon.png
+SHA1-Digest: KCTaN2EqXck05uJp6fOc1iRJq0A=
+
+Name: res/drawable/arrow.xml
+SHA1-Digest: INf7JzGGCUSwyzjUlGnG8043LVs=
+
+Name: res/drawable/settings2_selector.xml
+SHA1-Digest: m0kkRmXVR0G3hzqulVLpFHVJhfY=
+
+Name: resources.arsc
+SHA1-Digest: TzwIcKhxh+yXFnKUIbLCPf6cIX0=
+
+Name: res/drawable-hdpi-v4/next_focus.png
+SHA1-Digest: GtipOhgdMX1Ez/tkVSMbGJ89H1Q=
+
+Name: res/drawable-hdpi-v4/signal_1.png
+SHA1-Digest: dueiOwn0ZNQ6Ie3UhwWOE+i3w4Q=
+
+Name: assets/logos/it/RTL_Best.png
+SHA1-Digest: 25XwXKovvtRDfJynzwlgmB6l238=
+
+Name: assets/logos/de/Bayern_1_Obb.png
+SHA1-Digest: I8f51lCTGDykNGp/LVs9E8zVj8c=
+
+Name: assets/logos/no/NRK_P1_Troms.png
+SHA1-Digest: 4QDAG4puXdi+erpfZKNs9F648eY=
+
+Name: res/drawable-mdpi-v4/ic_notification.png
+SHA1-Digest: RtGgw8rz/dh7l6Sxx/25OFhf4sg=
+
+Name: assets/logos/no/NRK_P1+Sogn_&_Fj.png
+SHA1-Digest: /iVhnAP3yg5C22k0EW5sEaUpNO8=
+
+Name: res/color/primary_text.xml
+SHA1-Digest: gucqr4pdX/XfmEnJ6gfzZCFSOvw=
+
+Name: assets/logos/no/RADIO1.png
+SHA1-Digest: rDUnCoRLqxfx9CZVTOPXLOgkgT0=
+
+Name: assets/logos/de/MDR_KULTUR.png
+SHA1-Digest: Np7A5zYss5GyFiZQTX/yqyJvcOw=
+
+Name: res/drawable-hdpi-v4/splash_gradient.png
+SHA1-Digest: eQ9kocgz4zms60RA4G9mM7ZN1ac=
+
+Name: assets/logos/dk/DR_P4_##stjylland.png
+SHA1-Digest: aF10ss6EHMol4xHC/TdtVuLnFpk=
+
+Name: assets/logos/de/Bayern+.png
+SHA1-Digest: Ddlz9MHyjAfOYsLMfPAJqYoWRU0=
+
+Name: assets/logos/de/NDR_Info_Spezial.png
+SHA1-Digest: YOQx6CZ3LavJYIE9RAjLkoJvEXo=
+
+Name: assets/logos/no/Radio_Skjeberg.jpg
+SHA1-Digest: 9lYlT47PUKeUS75qrOCbza2NU8g=
+
+Name: res/drawable-hdpi-v4/splash_line.png
+SHA1-Digest: 9MqhBMS3YpyZN8v3wQSWJQD5pNc=
+
+Name: assets/logos/no/Panjab_Radio.png
+SHA1-Digest: McPMWnvsKXa9jCxPXRqhSyvHmHs=
+
+Name: res/layout/settings_about.xml
+SHA1-Digest: eelOXhYidXrF9riN9QNYmxbxalM=
+
+Name: assets/logos/uk/BBC_Radio_2.png
+SHA1-Digest: Al4fZaGFFHiMtxYbrhbn6DdEFpM=
+
+Name: res/drawable-mdpi-v4/signal_4.png
+SHA1-Digest: jjzImPI0gIQzbBovj5IPPVsDxXI=
+
+Name: res/layout/spinner_item.xml
+SHA1-Digest: f0TcuYtfsq7q/CkTBcgDfZOP690=
+
+Name: assets/logos/dk/_myROCK.png
+SHA1-Digest: j8hIAsohzqxj/PvCtTiWsu99DNE=
+
+Name: res/drawable-mdpi-v4/btn_pty.png
+SHA1-Digest: ht+n0CtEtpnYbEZ2FyZUgR66tOY=
+
+Name: res/layout/activity_main.xml
+SHA1-Digest: CW/dopnZzcDQSNOw+BxpaKYRri0=
+
+Name: res/layout/pty_dialog.xml
+SHA1-Digest: UiUsfHoUP74YuPjZv+VmImtcglc=
+
+Name: assets/logos/uk/Sunrise_National.png
+SHA1-Digest: Cf1ksIhIxodqNSvSTlyiEMj/iGw=
+
+Name: res/drawable-hdpi-v4/btn_favor_p.png
+SHA1-Digest: 7tA9CD3h4xAAuKwFsNW9Lgs5vHk=
+
+Name: res/drawable-mdpi-v4/btn_list_p.png
+SHA1-Digest: rx5gyC0wArw6gwBYHWum6oF+yIA=
+
+Name: assets/logos/uk/Union_JACK.png
+SHA1-Digest: jwA6fGDWJDaScG0XfTGIp1A8bNw=
+
+Name: res/layout/settings_stationlogo.xml
+SHA1-Digest: a/d65aUeNj/ngO1ev3MKixHHoPQ=
+
+Name: assets/logos/uk/KISSTORY.png
+SHA1-Digest: Alg3uVjSE8jXF+AO1s6OU2Kv6wY=
+
+Name: assets/logos/no/NRK_P3.png
+SHA1-Digest: jjdBboysCFBW3XekINQZmY/oqrc=
+
+Name: assets/logos/de/ERF_Plus.png
+SHA1-Digest: AyXilakBcdt2WBYj/jvq/i+5mzw=
+
+Name: assets/logos/no/NRK_P1+Hordaland.png
+SHA1-Digest: B3bUCM/5WnfIfIsK60dYnlRCpi0=
+
+Name: assets/logos/no/NRK_SUPER.png
+SHA1-Digest: kpvBUFLIwPeBoz8PXJvOtew47HI=
+
+Name: assets/logos/uk/BBC_Radio_1Xtra.png
+SHA1-Digest: YJqY4wdA6WHmEq+46Rf2G9BiELE=
+
+Name: res/drawable-hdpi-v4/list_focus.png
+SHA1-Digest: hLMxQooqLT0lNshO9p7baG/3kYI=
+
+Name: assets/logos/no/NRK_NYHETER.png
+SHA1-Digest: DvF1+IGwfhsw8rxpvEffZpekbCY=
+
+Name: lib/x86/libdab.so
+SHA1-Digest: yOZ0xCBt0315oSlEZpsPQhbqNOw=
+
+Name: assets/logos/de/95.5_CHARIVARI.png
+SHA1-Digest: QZbDspNzmswUemkEplZT7CZx8W8=
+
+Name: assets/logos/no/Sol##rRadioen+.png
+SHA1-Digest: Ci79l6DHxsF+kIhIG0PSSkzRikU=
+
+Name: res/drawable/next_selector.xml
+SHA1-Digest: HLPXB5Ao6x5K4yjYNCyJ8Zup7ow=
+
+Name: assets/logos/de/Bayern_1_Schw.png
+SHA1-Digest: aMVkVSPrmzdwuPurfWbnAHplXkw=
+
+Name: assets/logos/de/lulu.fm.png
+SHA1-Digest: lbF3xU6Nc/JT3xUKWYgmAkTyqhc=
+
+Name: assets/logos/uk/Premier_Praise.png
+SHA1-Digest: 7+wSRTv3eb4p4PtpM2UXMBEbUCw=
+
+Name: assets/logos/de/RADIO_SALUE.png
+SHA1-Digest: zUD+83L+9qhCHC9LBRcz2Yhl6bA=
+
+Name: assets/logos/nl/NPO_FunX_Dance.png
+SHA1-Digest: dDcbk1tWHBMaZMcvIY9rrnLzgXs=
+
+Name: assets/logos/no/METRO_Mj##sbyene.png
+SHA1-Digest: zY+vVKU8mOncQ9Fjku8Ve1MHzTA=
+
+Name: assets/logos/no/JULERADIOEN.png
+SHA1-Digest: YnJZtG22YcUXioAGJcw0ywGpA4E=
+
+Name: assets/logos/no/NRK_P1_Sogn_&_Fj.png
+SHA1-Digest: Jf18+zPGMYaqHUGaVEgPPI8zjIw=
+
+Name: assets/logos/uk/Absolute_Rad_80s.png
+SHA1-Digest: QsTvTH7yNKnc+eqImXU4QI/o7f0=
+
+Name: assets/logos/dk/NOVA.png
+SHA1-Digest: FaBg37IH1vxQwHCEDe8FqyowLxc=
+
+Name: assets/logos/no/NRK_P1+Hed_&_Opp.png
+SHA1-Digest: 5m2M0q5PDm/YNX2fCL3xPZuiLwM=
+
+Name: assets/logos/it/Rai_R_Techete'.png
+SHA1-Digest: Q0Za4JTMSKuTQ5CWNY26mj9pX3E=
+
+Name: assets/logos/no/NRK_P1_Vestfold.png
+SHA1-Digest: p4l6FgACVL6jKmRmRO7tFMDswG4=
+
+Name: res/drawable-xhdpi-v4/signal_4.png
+SHA1-Digest: jjzImPI0gIQzbBovj5IPPVsDxXI=
+
+Name: assets/logos/no/NRK_P1+S##rlandet.png
+SHA1-Digest: Adxvl6+IHTcHxz/RB3wmK72ZV5M=
+
+Name: assets/logos/no/NRK_P1+##stfold.png
+SHA1-Digest: bKiqoawo9IKMtJdoEQyHnCcbkHY=
+
+Name: assets/logos/de/MEGA_Radio_SNA.png
+SHA1-Digest: O7IwPc0DKORrAuCLsC12geCZLww=
+
+Name: assets/logos/dk/DR_P8_JAZZ.png
+SHA1-Digest: D7uhX/Yv4HQYBVmaVKxEAgPs/OA=
+
+Name: assets/logos/uk/talkSPORT_2.png
+SHA1-Digest: DjP3zZKJF8xJWeNilCrKpc5rjso=
+
+Name: res/drawable/favor_selector.xml
+SHA1-Digest: WPR63u6m849BZAU4mgcDMFN/ZdY=
+
+Name: res/drawable-mdpi-v4/btn_next_press.png
+SHA1-Digest: oVewm/2SqSpdlK7xZ0SJsIVw8ec=
+
+Name: assets/logos/no/SCANSAT_COUNTRY.png
+SHA1-Digest: KuVO/79wr1S8UY7laL4nOPWtqMQ=
+
+Name: assets/logos/no/NRK_JAZZ.png
+SHA1-Digest: ncx1HcpeG361+hWHWTHXonvv/zw=
+
+Name: assets/logos/de/SWR3.png
+SHA1-Digest: +Y8vHBetpx/ZSiHtLS/E67y1jmE=
+
+Name: assets/logos/dk/Radio_goFM.png
+SHA1-Digest: ivvO36g913TVuFX3cUhFSRbrM2Y=
+
+Name: assets/logos/no/NRK_S##pmi.png
+SHA1-Digest: VywMZtfGnJ/EVHoPjucrYtngBBo=
+
+Name: assets/logos/uk/KISS.png
+SHA1-Digest: EAYwiU9EWJNUnRiKjaqLqZR60WI=
+
+Name: res/layout/spinner_list_item.xml
+SHA1-Digest: s/modLFeoiYwtquo9xV8XpjxHpM=
+
+Name: res/drawable-hdpi-v4/signal_0.png
+SHA1-Digest: 0jACTtTSwZsbIhxN7z/kDyUa+WI=
+
+Name: assets/logos/de/KiRaKa.png
+SHA1-Digest: VodaVMq17Cv5OExJI7a2oodp404=
+
+Name: assets/logos/no/P8_Pop.png
+SHA1-Digest: uvG/929ywZhvF6ikxfrFP8HjMPY=
+
+Name: assets/logos/de/WDR_2.png
+SHA1-Digest: 4HdGm1AK6pZxuo8uptSACwRRpm8=
+
+Name: assets/logos/de/MEGARADIO_BAYERN.png
+SHA1-Digest: WBms9T+Ev8UHE8LyQeJH6/iDQUY=
+
+Name: res/drawable-hdpi-v4/btn_list_p.png
+SHA1-Digest: rx5gyC0wArw6gwBYHWum6oF+yIA=
+
+Name: lib/x86_64/libcredits.so
+SHA1-Digest: dafSZvk6cJsZP1cyY2TdxNfg0kc=
+
+Name: assets/logos/no/NRK_P1+Finnmark.png
+SHA1-Digest: 1bHudQKq2/0vM+7PQpNBzaAUw5s=
+
+Name: assets/logos/no/P5_Hits.png
+SHA1-Digest: lcfzpb7aJ2vhrnoQTXXdhBTG+gY=
+
+Name: assets/logos/de/ARABELLA.png
+SHA1-Digest: wjbP6880HfzHtm0/OF7oJIPaSBI=
+
+Name: assets/logos/uk/Jazz_FM_Stereo.png
+SHA1-Digest: lUzYhhXVKt+G3LZIdwIdXZFt85w=
+
+Name: assets/logos/no/METRO_##stfold.png
+SHA1-Digest: tdHqI84DRN1xdERMHGuBzgRMpJ4=
+
+Name: assets/logos/de/Schwarzwaldradio.png
+SHA1-Digest: GoleagRS666lzaDAELZmWnk13qc=
+
+Name: res/layout/player_leftarea.xml
+SHA1-Digest: pyLIqvpXhrpZQ8cn8FphHVigU4s=
+
+Name: res/drawable-xhdpi-v4/btn_favor_list_p.png
+SHA1-Digest: OSAzbhzc0dRNZSXHdHyr1qJYAac=
+
+Name: res/layout/activity_scan.xml
+SHA1-Digest: u84alR/t+pvzxQg6gHxPWv6JHoo=
+
+Name: assets/logos/dk/Radio_VLR.png
+SHA1-Digest: c6er3n7mGP/D2id2EPOp7yAsrOk=
+
+Name: res/drawable-xxhdpi-v4/icon.png
+SHA1-Digest: RznWoxboVSwtpHtmHogKAGKStCE=
+
+Name: res/drawable/spinner_drawable.xml
+SHA1-Digest: EcDFlcsVKfRfSax6Ydygf0FvqVI=
+
+Name: assets/logos/de/DONAU3FM.png
+SHA1-Digest: J/csdQxIItmkC+j7dlCbe61sOMc=
+
+Name: assets/logos/no/RadioFiladelfia.png
+SHA1-Digest: KvDu2QhERkG0Z5aPXARJ+e3K4qo=
+
+Name: assets/logos/de/MDR_SPUTNIK.png
+SHA1-Digest: /BaOZOwVe2TxsXZORk+dEIcjwVg=
+
+Name: assets/logos/de/Radio_Horeb.png
+SHA1-Digest: g36d0yVOUkB1coNJ897gPAheRO8=
+
+Name: assets/logos/no/VINYL.png
+SHA1-Digest: 2ndHkOAROCD4IjMrTIsg26qRLnU=
+
+Name: assets/logos/no/NRK_P1_Hordaland.png
+SHA1-Digest: 7pWxsjY2GVarRsnndLIbfu792Jw=
+
+Name: assets/logos/dk/DR_P4_K##benhavn.png
+SHA1-Digest: 6wdSsv0wMFoRPViGDCVbpTdUMcA=
+
+Name: assets/logos/de/planet_radio.png
+SHA1-Digest: 3+hdFb2oa13CO0qeoNieAbbZ6JE=
+
+Name: assets/logos/dk/Radio_Solo.png
+SHA1-Digest: rfzrE/6IVmhfZHuevWDVizQmr/I=
+
+Name: lib/armeabi-v7a/libdab.so
+SHA1-Digest: kovfx3WWJBRPtPacPHKaSMkAljw=
+
+Name: assets/logos/de/GALAXY_OBERFR..png
+SHA1-Digest: IpgPS1L364MHUzTv5hInjnwr/5s=
+
+Name: assets/logos/no/NRK_P1+Nordland.png
+SHA1-Digest: k0lzsXwe63NwWwr06gXf8ZoiQ4g=
+
+Name: assets/logos/dk/DR_P4_Nordjylland.png
+SHA1-Digest: EQ0OsocapyxIuFfj99yG8suflZE=
+
+Name: assets/logos/it/Rai_Radio_Kids.png
+SHA1-Digest: Lijd++x+jQWJ0mn4ApY2DW8zaHg=
+
+Name: assets/logos/no/NRK_P1_Rogaland.png
+SHA1-Digest: wnFSi5ipCT61MKsqo/x5wigaYOg=
+
+Name: assets/logos/uk/PremierChristian.png
+SHA1-Digest: GsI0c21SfehrNhxwYfkIwIALLjM=
+
+Name: res/drawable-hdpi-v4/pause.png
+SHA1-Digest: JH0tCGxe6APRze/MsVeP5UKgSFM=
+
+Name: assets/logos/uk/Classic_FM.png
+SHA1-Digest: JVUMTzxeBp5qdnu8U2bZqcccb2Y=
+
+Name: assets/logos/no/Radio_3,16.png
+SHA1-Digest: rwf2ULWq7FPfVZNRbmURVUmHBQM=
+
+Name: assets/logos/it/RaiTuttaItaliana.png
+SHA1-Digest: 5SDBEjmuto6IAQAsrbngw9Jmihs=
+
+Name: assets/logos/de/hr-iNFO.png
+SHA1-Digest: ZzvgrmTx3AGI7NW76pc0petrnTQ=
+
+Name: assets/logos/de/BAMBERG.png
+SHA1-Digest: HcmjJGE0XepSnWKteE2iFxrDDHg=
+
+Name: assets/logos/de/Radio_TEDDY.png
+SHA1-Digest: d+d0YfGaQodWnltSgvWcC+qnrcA=
+
+Name: res/drawable-xhdpi-v4/btn_pty.png
+SHA1-Digest: ht+n0CtEtpnYbEZ2FyZUgR66tOY=
+
+Name: assets/logos/de/MAINWELLE.png
+SHA1-Digest: yXNdoT7pTccPoDoSUbb54qRQfQM=
+
+Name: res/drawable-hdpi-v4/dlg_middle.png
+SHA1-Digest: QGXekPDp7gYO7t+HKYwYMgH7AkE=
+
+Name: assets/logos/no/NRK_P1_Buskerud.png
+SHA1-Digest: Bm+ox+1f1huskadjZrc+OoVWELE=
+
+Name: assets/logos/de/DRadio_DokDeb.png
+SHA1-Digest: biGCfG9eHP/jq5PcOPBjMHL++z4=
+
+Name: assets/logos/no/NRK_P1+##stlands.png
+SHA1-Digest: UrwZAXCw2g8Knqb+Y0QPdlDhgco=
+
+Name: assets/logos/de/Radio_Paradiso.png
+SHA1-Digest: gObDneKxu4OkX1jeng+4Ndycwgs=
+
+Name: assets/logos/dk/DR_P4_Trekanten.png
+SHA1-Digest: h0Exh4sEaePFjW88U7WxuVCWS8s=
+
+Name: res/drawable-hdpi-v4/btn_common.9.png
+SHA1-Digest: h9N9Xj0rnNMEKQFhZ9GuScImdog=
+
+Name: assets/logos/dk/DR_P1.png
+SHA1-Digest: KkR4E3CihKwbyS1gWfJd0qbOLrw=
+
+Name: assets/logos/de/interviewRadio.png
+SHA1-Digest: i6pF7+MnNyu3knV0jJUwyoxGcYw=
+
+Name: assets/logos/dk/PopFM.png
+SHA1-Digest: QjkouOXWXJ0j+Mf5k7oxt1y3a/0=
+
+Name: res/drawable-hdpi-v4/previous_focus.png
+SHA1-Digest: cpVNg+Goe5II7iQZcBeyG/RJUaY=
+
+Name: res/drawable-mdpi-v4/signal_5.png
+SHA1-Digest: iJYct8VIcyBdrYD463/i4gWNaME=
+
+Name: assets/logos/no/NRK_Trafikk5_HO.png
+SHA1-Digest: Oncp3EOiTkppdp4PZAb99N5onXk=
+
+Name: assets/logos/dk/Radio_K##ge.jpg
+SHA1-Digest: Ess2ibQSNwkMaEov/kv6Oj82Amo=
+
+Name: res/drawable-hdpi-v4/bg_bar.9.png
+SHA1-Digest: QJHz+EdkjUWxpS/nh09dD5ijxKE=
+
+Name: res/layout/settings_audio.xml
+SHA1-Digest: CRJy3sgZ2C5S3utU6LnU4z/nz58=
+
+Name: res/drawable-hdpi-v4/list.png
+SHA1-Digest: X25JO6lJzL6z3HpmDlIoDDj4wP4=
+
+Name: assets/logos/uk/Magic_Chilled.png
+SHA1-Digest: IWS5LiflAH+3ill5Zbbjku3FdDg=
+
+Name: assets/logos/no/NRK_P1.png
+SHA1-Digest: 6xaqToqj8yJlCus6ds+Ygb0eVKk=
+
+Name: assets/logos/no/METRO_Romerike.png
+SHA1-Digest: eLCVoW/IT16G9dWgqRkTvV3UAHM=
+
+Name: assets/logos/no/Sol##rRadioen.png
+SHA1-Digest: CYsCRKuAf/dWCBxfCQd0vcZxX1U=
+
+Name: assets/logos/de/ENERGY.png
+SHA1-Digest: m0KuqQL0qUfIKa0Ixf2o7cPaOW8=
+
+Name: assets/logos/de/egoFM.png
+SHA1-Digest: 5jZrdrsjYfh3Sj/Wj86ZMGFBpGc=
+
+Name: assets/logos/dk/Radio_Max.jpg
+SHA1-Digest: lVQ+wrfzSJ0K5NU+LnR7v0pkwTs=
+
+Name: assets/logos/de/ROCK_ANTENNE.png
+SHA1-Digest: zxju5XPI1nuZeXf1xgXWoZZIe0I=
+
+Name: res/drawable-hdpi-v4/btn_next.png
+SHA1-Digest: fY3ZKkZSNfM1mDkYfN/NAKr200Q=
+
+Name: assets/logos/de/RADIO_MUENCHEN.png
+SHA1-Digest: THmlcs+P+N+mP3QR+p2/lEwKVbE=
+
+Name: assets/logos/se/SR_P3_Star.png
+SHA1-Digest: QkjFYJ7KtcGip+8JEOiStyGUyOc=
+
+Name: assets/logos/de/WDR_Event.png
+SHA1-Digest: iubVQySXn/sOHe6cx5cBEKTij4k=
+
+Name: assets/logos/it/Rai_GrParlamento.png
+SHA1-Digest: xAfjkkeNwpTNX7gSEdBaZhJ0NAw=
+
+Name: assets/logos/no/Radio_Nordsj##.png
+SHA1-Digest: 9hpNH3CvTK79Gf3JCVo3JqUXs9k=
+
+Name: assets/logos/de/B5_aktuell.png
+SHA1-Digest: N3YQWloztNoN+K/H5PXhXtPMsp0=
+
+Name: res/drawable-hdpi-v4/tab_t.png
+SHA1-Digest: AlG89/AnmQyb1XGGlJUmYwgPDqk=
+
+Name: assets/logos/de/RPR1_DasOriginal.png
+SHA1-Digest: vI++WliCHUAjId+fGF6+4sKXWMg=
+
+Name: assets/logos/de/WDR_3.png
+SHA1-Digest: bEdWhJnueL0neYmMKr/0pDM3XI8=
+
+Name: res/drawable/btn_fill_color.png
+SHA1-Digest: yMXIKzfX7RRLPkg0RaFycfkUBuY=
+
+Name: assets/logos/de/CHARIVARI_WUE.png
+SHA1-Digest: ncvv9Rx5PyHFjCyMW/CXLadHwkI=
+
+Name: res/drawable-hdpi-v4/btn_pause_p.png
+SHA1-Digest: Dd67ASkCVdhHAw6Xj642/yLF3jI=
+
+Name: res/layout/settings_general.xml
+SHA1-Digest: FhL/QpImdhYYXRP+YuJNnmoWtpo=
+
+Name: assets/logos/dk/DR_P4_Sj##lland.png
+SHA1-Digest: QEv7UHCl363xUGqsGURks7H35uY=
+
+Name: res/drawable-hdpi-v4/btn_scan_press.png
+SHA1-Digest: OevdJy0fylSi28b56R7JqKTsovc=
+
+Name: res/drawable-xhdpi-v4/signal_5.png
+SHA1-Digest: iJYct8VIcyBdrYD463/i4gWNaME=
+
+Name: assets/logos/dk/_Radio_100.png
+SHA1-Digest: SAXsBImstgY360Jg9f1IPAQygAw=
+
+Name: assets/logos/de/NDR_90,3.png
+SHA1-Digest: iuL/qz4l14z0EtUntAGXxKgIYCw=
+
+Name: assets/logos/it/Rai_Radio3.png
+SHA1-Digest: Xxa/1iv7dcd56ijGet9rmIBqcwg=
+
+Name: assets/logos/it/Rai_Radio_Live.png
+SHA1-Digest: IBU3D58PahmCgTkWrBntXk48n1M=
+
+Name: res/drawable-hdpi-v4/btn_stop.png
+SHA1-Digest: T25Ym4X6vyQJ/S6t+LIVTaQjAME=
+
+Name: res/drawable/list_selector_background.xml
+SHA1-Digest: zaDhTtrHp6ruQEqXtu3/02zQzgE=
+
+Name: assets/logos/de/KULTRADIO.png
+SHA1-Digest: QOqbE/ONwmwrG/1pIcvB7Uaew1k=
+
+Name: assets/logos/de/harmony.fm.png
+SHA1-Digest: Cz9tMnnw6KG8tWzh7uIN/hQqMQM=
+
+Name: assets/logos/dk/Radio_Silkeborg.png
+SHA1-Digest: fHk1SQLnNqleeeZdvf/oDqabF3Q=
+
+Name: res/drawable/play_selector.xml
+SHA1-Digest: jZqizhCgUsxb12mud+HD6FGwiNU=
+
+Name: assets/logos/nl/NPO_FunX_Sl.Jamz.png
+SHA1-Digest: m8uFYs8U1kHpzXt40rVRQIEeCuU=
+
+Name: assets/logos/nl/NPO_Soul_&_Jazz.png
+SHA1-Digest: 1BmR0+qugLbJDghWk9CaVPrXiAI=
+
+Name: assets/logos/uk/Absolute_Radio.png
+SHA1-Digest: h8ZbUc1Ma7IxmQ0+X6Y6YtY1fU8=
+
+Name: assets/logos/no/NRK_Trafikk3_SR.png
+SHA1-Digest: 8/FpmaODSFpbyevXfmGJaVSwk94=
+
+Name: res/drawable-hdpi-v4/btn_prev.png
+SHA1-Digest: dMvwMh6oEgiO4K/yj9K9Q9MfLFk=
+
+Name: res/drawable-hdpi-v4/progress_bg.9.png
+SHA1-Digest: gKHWw9rEfJ335ewtqVYgZKGchWc=
+
+Name: assets/logos/no/NRK_V##r_Vest.png
+SHA1-Digest: 40I+BWn9AN/mS3rpKxBV7/KEhCc=
+
+Name: res/drawable/list_selector.xml
+SHA1-Digest: Ej4NKchGDTZnaET94ZI0mSOJ0Jc=
+
+Name: res/drawable-hdpi-v4/scan_focus.png
+SHA1-Digest: vaoJJUbJDb9BaWiRBcw6lQWQytA=
+
+Name: assets/logos/de/EINS.png
+SHA1-Digest: ljRfRRvZYYoimx+sR/F2yE8j6yE=
+
+Name: res/anim/progress_dialog_anim.xml
+SHA1-Digest: LM9KPDB5szeX7Ch9Z4YLOCzxQgo=
+
+Name: assets/logos/no/NRK_Trafikk1_OA##.png
+SHA1-Digest: X6sYEwngLZpfflObvw+X05UMgL8=
+
+Name: assets/logos/no/Radio_Kos.png
+SHA1-Digest: 8MgxaqmlFupLRRdqZO005iimjcc=
+
+Name: assets/logos/de/1LIVE_diggi.png
+SHA1-Digest: SxlFIT4L85RPreZf56kBTgQQuWU=
+
+Name: res/drawable-hdpi-v4/signal_2.png
+SHA1-Digest: 0KmFNQx2rqJCQ0fqhwpLdZITeh8=
+
+Name: res/drawable-mdpi-v4/btn_settings2.png
+SHA1-Digest: fX0wvjjfTzZbkLxihYwmEitUICU=
+
+Name: assets/logos/de/NDR_1_MV.png
+SHA1-Digest: IXcjJER9AopnjFNbs9qZj8aMQxc=
+
+Name: assets/logos/no/BEAT_Oslo.png
+SHA1-Digest: blGHP0nCOtnDDUetYhGePs34aHU=
+
+Name: res/drawable-hdpi-v4/btn_play_p.png
+SHA1-Digest: MHpCEJAB4tbYdzvx8J5RcBXY7dY=
+
+Name: res/drawable-hdpi-v4/btn_favor.png
+SHA1-Digest: M1PZOJEMrHByUnm2PgsdUniB1Tc=
+
+Name: assets/logos/uk/ForcesRadio_BFBS.png
+SHA1-Digest: uk9SEV046r6T3WALyFE1nYAb1Cs=
+
+Name: assets/logos/de/GONG_WUERSBURG.png
+SHA1-Digest: aRPyE14yUBXUqEBi7n/b54QSZAk=
+
+Name: res/layout/list_pty.xml
+SHA1-Digest: 5fCpj/epqes1rF1+bXECKVuOhNI=
+
+Name: assets/logos/no/Activa_Hitsradio.png
+SHA1-Digest: gax9+tiKuXIFWbywxFK9e2Jlcuc=
+
+Name: assets/logos/no/NRK_P1_##stfold.png
+SHA1-Digest: TBJQ+MaS1JNrPzNlBbAcrWulAPg=
+
+Name: assets/logos/no/Tamil_Murasam.jpg
+SHA1-Digest: GYVr66Bam6sQi+aqsEAaHQ9TehE=
+
+Name: assets/logos/no/1_RADIO_HAUGALND.png
+SHA1-Digest: fPA6kfQc/negDy3LTw+pemLZY9g=
+
+Name: assets/logos/dk/Radio_VLR_Fyn.png
+SHA1-Digest: c6er3n7mGP/D2id2EPOp7yAsrOk=
+
+Name: assets/logos/no/NRK_P1_Telemark.png
+SHA1-Digest: DRtILjHQCh+4WrpRRCoNVP+Jte4=
+
+Name: assets/logos/de/RADIO_2DAY.png
+SHA1-Digest: 1dBTVQ01CBO+6y3mW3J8fz63EHI=
+
+Name: assets/logos/no/NRK_P1_Finnmark.png
+SHA1-Digest: jwINBllsrFDuh0JzditwJRgvPmo=
+
+Name: assets/logos/no/NRK_P13.png
+SHA1-Digest: E5WKWjs8VT2TWvEyEpV1OSGw7VY=
+
+Name: assets/logos/no/K-RADIO.png
+SHA1-Digest: ZLOX0G2n3zxkmz1tm/HYzzM6BEg=
+
+Name: res/drawable-mdpi-v4/btn_scan.png
+SHA1-Digest: g+sZPceVnjhuFTkWBVGpz0kpFMc=
+
+Name: assets/logos/de/afk_M94.5.png
+SHA1-Digest: lFCUQ4wkbhAzhUvWe+90KYs0nuU=
+
+Name: assets/logos/de/pure_fm_Bayern.png
+SHA1-Digest: l/hBvYZyhexEU7mlUGHcRc4N4Wk=
+
+Name: assets/logos/nl/NPO_FunX.png
+SHA1-Digest: WWhw72YXdioQtOVkyhYS5Q032CM=
+
+Name: assets/logos/de/NDR_Blue.png
+SHA1-Digest: 8QZI/Lqbe8XJdJ/PLe5UQDnat6g=
+
+Name: lib/x86_64/libdab.so
+SHA1-Digest: BRoJb2ncwvi2zPxDUlzDzaRcSY4=
+
+Name: assets/logos/de/GALAXY_MITTELFRA.png
+SHA1-Digest: ILOB4FTf/xyf4XSCw0eVSQR0lkk=
+
+Name: res/drawable-hdpi-v4/btn_rec.png
+SHA1-Digest: ByWyMbLguQk6aKL383c7DLvdkAw=
+
+Name: res/drawable-hdpi-v4/progress_bg2.9.png
+SHA1-Digest: DS7df60iaWk1IB/X3QDgfPBioWs=
+
+Name: assets/logos/no/P6_Rock.png
+SHA1-Digest: LZZ0e15+HzFfXsFV6sxzzjjxrv0=
+
+Name: res/drawable-hdpi-v4/drop_down_shadow.9.png
+SHA1-Digest: dKw1VrLuMMQENOQSc5Y9BgoRhCU=
+
+Name: res/drawable-hdpi-v4/btn_check_on_holo_dark.png
+SHA1-Digest: gjSu8Zo3YNj1wNJqnuU0j9n+fW0=
+
+Name: res/drawable-mdpi-v4/radio.png
+SHA1-Digest: 5PozlQDxjZ0lQcXm/23FgCvL5Dw=
+
+Name: assets/logos/uk/UCB_2.png
+SHA1-Digest: foymUXAUqykKBlMH3/6yVP7jXx0=
+
+Name: assets/logos/de/RADIO_8.png
+SHA1-Digest: nOCjDBzdyTyyfaXawLKjCZHn2Oo=
+
+Name: assets/logos/dk/_The_Voice.png
+SHA1-Digest: AP5qrhVme3Ij27rqMWPj3mrYhto=
+
+Name: res/drawable/pty_selector.xml
+SHA1-Digest: YgGSmVVrsxPapEJ+podzOy6+9XQ=
+
+Name: assets/logos/no/NRK_P1_Tr##ndelag.png
+SHA1-Digest: D4ykH8rqo3EJDRn/x4WbMWAT/is=
+
+Name: assets/logos/de/Radio_Darmstadt.png
+SHA1-Digest: 7FF6f1hhkJC/WTvnZ5BZrlhY0cE=
+
+Name: assets/logos/no/NRK_P2.png
+SHA1-Digest: 1ZiMG4lV2fA2b7hD+NSD0HaRQmk=
+
+Name: res/drawable-hdpi-v4/btn_pty.png
+SHA1-Digest: ht+n0CtEtpnYbEZ2FyZUgR66tOY=
+
+Name: assets/logos/dk/Din_Radio_Oestj.png
+SHA1-Digest: jSg8dxZfyf3DI2qQ7HofrP69qko=
+
+Name: assets/logos/uk/UCB_1.png
+SHA1-Digest: lVaVYpy272LEHJei9d45mSMYo6s=
+
+Name: assets/logos/de/ANTENNE-SYLT.png
+SHA1-Digest: /laV7EPYIWeo61rjYlIjGlzraOE=
+
+Name: res/drawable-xhdpi-v4/btn_pty_press.png
+SHA1-Digest: cWSUIOuoJ1YChp2qCYVoyjMoTzc=
+
+Name: assets/logos/uk/BBC_AsianNetwork.png
+SHA1-Digest: EOFRgyivFX3snXyeV7ZeD7a0MNA=
+
+Name: assets/logos/nl/Efteling_Kids.png
+SHA1-Digest: CRELYYXogbAx5D3C5ESTUiMCs9U=
+
+Name: assets/logos/nl/NPO_Radio_2.png
+SHA1-Digest: cT6Kho/xEbKRvPqIAUkqgf/hJm4=
+
+Name: assets/logos/de/MDRSACHSEN_EXTRA.png
+SHA1-Digest: vTljSG47qIrJ5vMpsFjUHs65BVw=
+
+Name: assets/logos/no/NRK_P1_##stlands.png
+SHA1-Digest: GOU0J4X3l/9eGr0hgRywpa425Ls=
+
+Name: res/drawable-hdpi-v4/btn_play.png
+SHA1-Digest: dsf2Dkx9FF6SUTj9y8/n0UE0i5E=
+
+Name: res/drawable-hdpi-v4/btn_pause.png
+SHA1-Digest: ZxTws3Zlb5aaHoTycxyrn45poqI=
+
+Name: assets/logos/de/MKR-Kirchenradio.png
+SHA1-Digest: xLCWFxtKAV51kIElwDr7HvXSBk4=
+
+Name: res/drawable-hdpi-v4/btn_rec_p.png
+SHA1-Digest: SJucUDHFkT7ZkdIQ7Ikvp5Lb0OA=
+
+Name: res/drawable-mdpi-v4/backgroud_text_area.png
+SHA1-Digest: XSTqsR+QtlOTMn0LROX15m6sBm8=
+
+Name: assets/logos/no/TOPP40.png
+SHA1-Digest: +mMBm9J6wNs8G//W/QI8xZDYbWM=
+
+Name: res/layout/player.xml
+SHA1-Digest: UYSdmoksvFxhamjDN7m2mM68EmI=
+
+Name: assets/logos/de/Dlf.png
+SHA1-Digest: ud82I0kaXn5/Qj52Z2JoS9txHZk=
+
+Name: assets/logos/se/SR_P2_V##rlden.png
+SHA1-Digest: glicLtISqO30LixELfY3ApP1cFM=
+
+Name: res/drawable-hdpi-v4/btn_delete_p.png
+SHA1-Digest: eIRKT7+g/uaDzLEeUBivbeBFflo=
+
+Name: res/layout/player_rightarea.xml
+SHA1-Digest: BxXR8pFUlJskHL4TfhW9rqvMRPE=
+
+Name: assets/logos/de/ERF_Pop.png
+SHA1-Digest: AWtH1ynn4hZlJZVYFdksv2/KrH0=
+
+Name: res/drawable-hdpi-v4/scan.png
+SHA1-Digest: UuOoptXdGIg1Hc3moe8/7T6c39g=
+
+Name: assets/logos/de/Unser_Ding.png
+SHA1-Digest: YTUH11jS9wgJSQkWOg+flaVYUwU=
+
+Name: assets/logos/de/1LIVE.png
+SHA1-Digest: HQSDdZLFiDwItuqZ0jX/yvtie7U=
+
+Name: res/drawable-hdpi-v4/btn_pty_press.png
+SHA1-Digest: cWSUIOuoJ1YChp2qCYVoyjMoTzc=
+
+Name: assets/logos/de/BAYERN_3.png
+SHA1-Digest: C1/y4fJh1bINRy05Yfq9T2/ViS4=
+
+Name: assets/logos/de/Bayern_2_Nord.png
+SHA1-Digest: 0olBn4ceOLDopvW1T/hnfOQrBoM=
+
+Name: res/drawable-hdpi-v4/signal_3.png
+SHA1-Digest: YZbVdzRetcaQgzOXM3lrzHZNZ04=
+
+Name: assets/logos/de/Digital_Classix.png
+SHA1-Digest: EE9hlTVul+fXZZUMGSwFCt9y5+Y=
+
+Name: assets/logos/dk/DR_P4_Esbjerg.png
+SHA1-Digest: nLi5HEZOeg0MS1lIXcGcdQSLve8=
+
+Name: res/drawable-hdpi-v4/ic_launcher.png
+SHA1-Digest: Nq8q3HeTluE5JNCBpVvNy3BXtJI=
+
+Name: assets/logos/de/NDR_2.png
+SHA1-Digest: RuujSesC0EYtsgFb60dni7iz6wM=
+
+Name: assets/logos/de/WDR_5.png
+SHA1-Digest: QkH4zU1mWYdCueDChefrE6MpgjI=
+
+Name: assets/logos/dk/DR_P6_Beat.png
+SHA1-Digest: cFUAT5QfTmKTiQZGzKghi7hzYKs=
+
+Name: res/drawable-hdpi-v4/splash_light.png
+SHA1-Digest: yTxlyESjnFOeKUb1WsH8E+Lg9hc=
+
+Name: assets/logos/no/METRO_Follo.png
+SHA1-Digest: pDTcTAdDFof5oeb+cQ1ST1bP+9w=
+
+Name: assets/logos/no/NRK_P1+.png
+SHA1-Digest: 7vgIlPeHIwssF0zdhSFOD4QbhXk=
+
+Name: assets/logos/dk/skalafm_Fyn.png
+SHA1-Digest: 4FNEq4lO7f0wEZot2tIUzKH4TRY=
+
+Name: assets/logos/de/NDR_Kultur.png
+SHA1-Digest: D17leeeURGIjYlVbSRy7tIltJNM=
+
+Name: res/drawable-mdpi-v4/btn_prev_press.png
+SHA1-Digest: dVjYGePgGF4Vi+/g7bmRnczw3uQ=
+
+Name: assets/logos/de/ENERGY_MUENCHEN.png
+SHA1-Digest: stgQg9iMlE1QaLZ2DXN9b0PC6EI=
+
+Name: assets/logos/no/P7_Kristen_Riks.png
+SHA1-Digest: onP6ckzAoLr4fKhJgpkuSiy+4qA=
+
+Name: res/drawable-hdpi-v4/bg_spinner_item_2.png
+SHA1-Digest: xLzktMa89/F+OvJCxIgMzgwg4sY=
+
+Name: assets/logos/uk/Fun_Kids_UK.png
+SHA1-Digest: xGoCXGhUz9C0X6iCRaIaKb/7/wM=
+
+Name: res/drawable-hdpi-v4/bg_spinner_item_bar_2.png
+SHA1-Digest: bDEpK0RBpZ8WAqzXSAAelZG/k9E=
+
+Name: assets/logos/no/NRK_P1_Nordland.png
+SHA1-Digest: pr7tgY5VtQUgyjGKI+9QtoFwloQ=
+
+Name: res/drawable/delete_frm_favor_selector.xml
+SHA1-Digest: mBEUWYZd2G4tUVIOBmfFdHQCyo8=
+
+Name: assets/logos/dk/DR_P4_Midt&Vest.png
+SHA1-Digest: IZO1Q82y/FOOsLLPhxxBmW6jDjQ=
+
+Name: res/drawable-hdpi-v4/ic_notification.png
+SHA1-Digest: zumBcfT8ggDCztdk/9gw1Jn6NZ4=
+
+Name: assets/logos/dk/Radio_Als.png
+SHA1-Digest: VmjjNbgfp5ppU7lNXAHIf6b/oZY=
+
+Name: assets/logos/de/RADIO7.png
+SHA1-Digest: CPA3E18fIvDBzeU2qfmuoUlxoAw=
+
+Name: assets/logos/no/Radio_Visjon.png
+SHA1-Digest: b81dGUgCTRzmnB6IWFR8n6BLKgc=
+
+Name: assets/logos/de/HITRADIO_OHR.jpg
+SHA1-Digest: IfxaLyIvPRl7D/NfYRnVxBh3+Uc=
+
+Name: res/drawable-hdpi-v4/btn_settings2_press.png
+SHA1-Digest: RixV5yZYdQiOvj0BZDLF6sMMrTw=
+
+Name: assets/logos/uk/BBC_R5LiveSportX.png
+SHA1-Digest: HAEvrpAC51kdypSAj0ckiN0OuxA=
+
+Name: res/drawable-xhdpi-v4/btn_scan_press.png
+SHA1-Digest: OevdJy0fylSi28b56R7JqKTsovc=
+
+Name: assets/logos/de/106.4_TOP_FM.png
+SHA1-Digest: 5bmYV5WJ0qvetnsGUEUiBo7bXFo=
+
+Name: assets/logos/de/Radio_Hamburg_HH.png
+SHA1-Digest: qe1zX/DCc3mFUVTfplgM7NaXU/s=
+
+Name: res/drawable-hdpi-v4/backgroud2.png
+SHA1-Digest: JuF7kvtPxlQMqlk4BqhYLDIrgWY=
+
+Name: assets/logos/no/P7_Klem.png
+SHA1-Digest: WMoEgXOvlJMLnlefPuBaEwwcwMM=
+
+Name: assets/logos/dk/Classic_Rock.png
+SHA1-Digest: r3er9WWaVPiMGsT4byMOHGZFp00=
+
+Name: res/drawable-hdpi-v4/listview_highlight.png
+SHA1-Digest: cKKOmBsDO/57yEP8qNBnKsuEitI=
+
+Name: assets/logos/se/SR_P2_Klassiskt.png
+SHA1-Digest: A62i7IWtTTyBdNjA/Ag7IKvNPjo=
+
+Name: assets/logos/no/#247.png
+SHA1-Digest: MDX8QMJ058ICVsn5pSDzDIXzH6I=
+
+Name: assets/logos/nl/NPO_Radio_4_Con..jpg
+SHA1-Digest: amnGLKxgf1DsceyrWLmhs4G+b2U=
+
+Name: assets/logos/de/AB-Primavera.png
+SHA1-Digest: d00Tv8WLQddjMORItY3E/7OUs84=
+
+Name: assets/logos/no/NRK_Trafikk_NTF.png
+SHA1-Digest: ceNLzfM3YbWJM97Jb2d68bSmFv4=
+
+Name: assets/logos/de/NDR_1_SH.png
+SHA1-Digest: qI3bpOBSHmwQBJ4FMZU4yHVTNKQ=
+
+Name: assets/logos/it/RTL_102.5.png
+SHA1-Digest: Z7homq1RIm0ckQnNP2AEPbFaDus=
+
+Name: res/drawable-hdpi-v4/play_focus.png
+SHA1-Digest: NABYV0SYdNAL0OWzvj6EFOELCeM=
+
+Name: assets/logos/dk/Oest_FM.png
+SHA1-Digest: hL4o6BC9en0hZPaBt4DJetNfIO8=
+
+Name: assets/logos/dk/Radio_ABC.png
+SHA1-Digest: SHaEThCjR5x6YfIKsU0LHhmuTIA=
+
+Name: assets/logos/de/Hamburg_Zwei_HH.png
+SHA1-Digest: WV4N6NZh/xglfn2PFRLXXjews1c=
+
+Name: assets/logos/uk/talkSPORT.png
+SHA1-Digest: eZtKAFNQzEMg842RfN8Q5oypoFA=
+
+Name: res/drawable-mdpi-v4/btn_favor_list.png
+SHA1-Digest: /WEZQxlaGTbp9kgc81/ZPVspYgs=
+
+Name: res/layout/spinner_country_dropdown.xml
+SHA1-Digest: oB5PEKFhO/bMQFdmdpF2yr2zwR8=
+
+Name: assets/logos/nl/Omroep_West.png
+SHA1-Digest: REvWzeygp0e4qPjI7Z7lyDhnhG4=
+
+Name: res/drawable-hdpi-v4/radio.png
+SHA1-Digest: 5PozlQDxjZ0lQcXm/23FgCvL5Dw=
+
+Name: lib/x86/libcredits.so
+SHA1-Digest: 1tp2SZPaD2oLrT7sxBu5HGcI/vg=
+
+Name: assets/logos/se/SR_P3.png
+SHA1-Digest: EVFSIEnshZXpRZA/NWTAX8Az3EA=
+
+Name: assets/logos/dk/BM_Radio_Soft.png
+SHA1-Digest: 7esTp1X5ckET2rmN6Lnk/CUKW3E=
+
+Name: assets/logos/nl/GrootNieuwsRadio.png
+SHA1-Digest: rj3RTp4yona4i4mxUlvXA1nr7hM=
+
+Name: res/drawable-xhdpi-v4/btn_list_p.png
+SHA1-Digest: rx5gyC0wArw6gwBYHWum6oF+yIA=
+
+Name: res/drawable-xxhdpi-v4/ic_arrow_drop_down_black_24dp.png
+SHA1-Digest: Z149TjKW+qPhsIi/4AnNlg/a1wo=
+
+Name: assets/logos/de/die_neue_welle.png
+SHA1-Digest: FAHLt9vRfTNK5U1aq/zKKbwFojE=
+
+Name: lib/arm64-v8a/libcredits.so
+SHA1-Digest: YcWmkPI0jVnASw6TPUJWmtX/sM0=
+
+Name: assets/logos/nl/LXCLASSIX.png
+SHA1-Digest: rpHiznPL6Nt9NUr0aYcSZvBL518=
+
+Name: res/drawable-hdpi-v4/next.png
+SHA1-Digest: YnLKJFqjKdULk/bPIQzrVEVib5U=
+
+Name: assets/logos/uk/Panjab_Radio.png
+SHA1-Digest: QQhpRnNu86xxcOZ6x54YpkueMM8=
+
+Name: assets/logos/de/SR_2.png
+SHA1-Digest: JWdmctp6ej19zeLMJw3/SU7ya2A=
+
+Name: assets/logos/de/hr3.png
+SHA1-Digest: 7uuzm7cWCNXH5gK4uCAV/jAtfDE=
+
+Name: assets/logos/no/HamarRadioen.png
+SHA1-Digest: hP5qlUFLPAGvb/vsUlx9vuWiq1Y=
+
+Name: res/drawable-hdpi-v4/btn_next_press.png
+SHA1-Digest: oVewm/2SqSpdlK7xZ0SJsIVw8ec=
+
+Name: res/drawable-mdpi-v4/signal_0.png
+SHA1-Digest: 0jACTtTSwZsbIhxN7z/kDyUa+WI=
+
+Name: assets/logos/de/ANTENNE_MAINZ.png
+SHA1-Digest: rqDW9uBJRjsTXwl4Y7IYvYUL1Iw=
+
+Name: assets/logos/no/METRO_Drammen.png
+SHA1-Digest: 3+oHa8Ewl4J7SHxm6wMSAOy6No0=
+
+Name: assets/logos/no/NRK_P1+M##re_&_Ro.png
+SHA1-Digest: nvwJTA7iEOdKY3Wibch1k2b5cE8=
+
+Name: assets/logos/no/Radio_Grenland.png
+SHA1-Digest: cc5bkG/s1jM1Dzf4xxAeHouvNi4=
+
+Name: assets/logos/uk/LBC.png
+SHA1-Digest: AXa2TSl9rS7M9oS6AqxQXHd4xXA=
+
+Name: assets/logos/de/Radio_VHR.png
+SHA1-Digest: G1HzJ5c1gyOzTKH9vEnyR877Jlo=
+
+Name: res/drawable/favor_list_selector_off.xml
+SHA1-Digest: GYKXBqK6PCMwnzOa8mpzT/x6ZEc=
+
+Name: AndroidManifest.xml
+SHA1-Digest: gAKjmOcc1Eb+gx8ORmTLV7idzNU=
+
+Name: assets/logos/no/Radio_Sandnes.png
+SHA1-Digest: QQu0VNlQlI2tD89UcWgHAAeId+I=
+
+Name: assets/logos/de/Domradio.png
+SHA1-Digest: 4P0BYkbQZ8nWBzNddZZU9FZFyzU=
+
+Name: assets/logos/no/Radio_102.png
+SHA1-Digest: tmdRYmViKaetrsye/atiJocIEFY=
+
+Name: assets/logos/de/Bayern_1_NBy_Obf.png
+SHA1-Digest: 4MESxapiWN/KibUPIjdAvcVYFGQ=
+
+Name: assets/logos/dk/BM_Radio_100.png
+SHA1-Digest: 4+kdJN5jfigMePr9+9p3MzNF2JU=
+
+Name: assets/logos/no/Radio_Norge.png
+SHA1-Digest: a6bZ2lelXB7tdCOHFe8iQbyVBSU=
+
+Name: assets/logos/dk/skala_fm.png
+SHA1-Digest: Xt6ZtWC8L/nDD77HOIw1OmgHDjk=
+
+Name: assets/logos/de/WDR_4.png
+SHA1-Digest: sWNHsdW4WqK23IHsaTKfL4iZfUQ=
+
+Name: assets/logos/no/BEAT_Romerike.png
+SHA1-Digest: 1R534OtJUfvxbM0+iIRrVQOwPXg=
+
+Name: res/drawable-hdpi-v4/btn_list.png
+SHA1-Digest: fN/tkQnkZhLKIEA2s8Rv4KOP9v0=
+
+Name: res/drawable-hdpi-v4/mb.jpg
+SHA1-Digest: w+yj8BT96QwfhOceBoMVvh21spU=
+
+Name: res/drawable-hdpi-v4/stop.png
+SHA1-Digest: MUCtWica6MZvqa8bJTgoXvX7vkQ=
+
+Name: res/drawable-xhdpi-v4/signal_0.png
+SHA1-Digest: 0jACTtTSwZsbIhxN7z/kDyUa+WI=
+
+Name: assets/logos/de/KULMBACH_P-BURG.png
+SHA1-Digest: 0Nryf2QelBqfiZnNsTLQ6hnA2kA=
+
+Name: assets/logos/dk/DR_P4_Fyn.png
+SHA1-Digest: UCtpRIwCewJp+hu9NItR+BzrCFs=
+
+Name: res/drawable/favor_list_selector_on.xml
+SHA1-Digest: eq412MYWLlVMzuddIsPIq6Tz5WE=
+
+Name: assets/logos/de/PRIMATON.png
+SHA1-Digest: eSfHx+t/8XzAUK3lreMalen5uNE=
+
+Name: assets/logos/no/NRK_Trafikk2_BTV.png
+SHA1-Digest: BsLEa5VsY/h78jLXsnmUlGDjDqc=
+
+Name: res/drawable-mdpi-v4/btn_favor_list_p.png
+SHA1-Digest: OSAzbhzc0dRNZSXHdHyr1qJYAac=
+
+Name: res/drawable-xhdpi-v4/signal_scan.png
+SHA1-Digest: IPj2qoHNnVGgC12MKHdz89Fi2+Q=
+
+Name: res/drawable-hdpi-v4/backgroud3.png
+SHA1-Digest: nnClg9V98W2Nei7rG/szcx1KNQE=
+
+Name: res/drawable/usb_connect.xml
+SHA1-Digest: uy/PL83pqWDuG5dENfb79j87BA0=
+
+Name: res/drawable/record_start_selector.xml
+SHA1-Digest: fc1l5GWsjxpm2y6cAcS7CzU6hbg=
+
+Name: res/drawable-hdpi-v4/signal_4.png
+SHA1-Digest: jjzImPI0gIQzbBovj5IPPVsDxXI=
+
+Name: res/drawable-xhdpi-v4/btn_prev.png
+SHA1-Digest: dMvwMh6oEgiO4K/yj9K9Q9MfLFk=
+
+Name: assets/logos/de/B5_plus.png
+SHA1-Digest: 33hE57u+v1YyYRJir/1EUWDHBkg=
+
+Name: assets/logos/no/NRK_P1_M##re_&_Ro.png
+SHA1-Digest: DqUNfAAp4wWRbUAk9J9dq8btOc8=
+
+Name: assets/logos/nl/NPO_Radio_5.png
+SHA1-Digest: W9yQeege+5t6UiGcg4Fr2tU5URs=
+
+Name: assets/logos/uk/Virgin_Radio.png
+SHA1-Digest: IBahFfCAXyFlrkL6AWw3eVvVoM8=
+
+Name: assets/logos/de/SWR1_RP.png
+SHA1-Digest: vqxscAJJaajqk59k/90hLf0Hh2k=
+
+Name: assets/logos/dk/Radio_Diablo.png
+SHA1-Digest: GR5TciKC2e791GP86LawfbFx8vI=
+
+Name: assets/logos/no/NRK_V##r_Nord.png
+SHA1-Digest: 7Y182DpIJ3XkXuIY66iSAL7+4Bc=
+
+Name: assets/logos/de/SWR_Aktuell.png
+SHA1-Digest: 3RozgH9czqI4URxblPSyYtTkUxA=
+
+Name: assets/logos/de/hr4.png
+SHA1-Digest: trPzgBdS/XxAkoqJSl4iehNtEgM=
+
+Name: assets/logos/dk/Radio_Viborg.png
+SHA1-Digest: dVQK/zswknRQrMqY9Oi+41jB3gg=
+
+Name: res/drawable-hdpi-v4/icon.png
+SHA1-Digest: 7IW042DVnW1DAFmJXiwqsICxUjI=
+
+Name: res/drawable-hdpi-v4/btn_scan.png
+SHA1-Digest: g+sZPceVnjhuFTkWBVGpz0kpFMc=
+
+Name: assets/logos/uk/Heart_extra.png
+SHA1-Digest: WA5bOFWF9YWiVFnZLnTlluXbPdI=
+
+Name: assets/logos/de/AB-Galaxy.png
+SHA1-Digest: JoofVB/ePEJykeJuEESlu2BwV4w=
+
+Name: assets/logos/dk/DR_P7_MIX.png
+SHA1-Digest: i2bAzXt4tZCJ90c41r7bBTKQp8Q=
+
+Name: assets/logos/no/P4_LydenAvNorge.png
+SHA1-Digest: 7vFT6+nv6kAa4NTPH9Ty7R0Iqdk=
+
+Name: res/layout/lookup_listgroup.xml
+SHA1-Digest: ywiOrn4dZvx9haIr4qoc+vcp8Zg=
+
+Name: assets/logos/no/Radio_Revolt.png
+SHA1-Digest: /bjterxY9eP3SJNFWL7d0JsFRd0=
+
+Name: assets/logos/no/SCANSAT.png
+SHA1-Digest: /eXxzxtDrJ4KJy349xPA/NDAPio=
+
+Name: assets/logos/uk/BBC_Radio_5_Live.png
+SHA1-Digest: krOHzaCAKU5EenaZPWfIg5z3ZUA=
+
+Name: assets/logos/no/901_ROX.png
+SHA1-Digest: 3FD8eelV19OyOC3wqEpU+9Mt/to=
+
+Name: assets/logos/nl/NPO_SterrenNL.png
+SHA1-Digest: ZX7PX5uY6Om/rqrpQzMyLP6MZwk=
+
+Name: assets/logos/uk/BBC_Radio_4Extra.png
+SHA1-Digest: O8fY64TOvh/WraMVv+iSWDL1XTk=
+
+Name: assets/logos/dk/Din_Radio_Fyn.png
+SHA1-Digest: a5FsH2Pp4WRJwmO/KkvX14lMTGo=
+
+Name: assets/logos/de/SR_1.png
+SHA1-Digest: 3lU9oE2K7InZPp2OFpLY+3KSAKY=
+
+Name: res/drawable-hdpi-v4/scan_p.png
+SHA1-Digest: 5neaxBMVEiQjc+2xZ6IU1xu5Zf0=
+
+Name: assets/logos/it/Rai_IsoRadio.png
+SHA1-Digest: +n2hJ70bicY2V5UJehEZIMxS0pE=
+
+Name: res/drawable-mdpi-v4/signal_scan.png
+SHA1-Digest: IPj2qoHNnVGgC12MKHdz89Fi2+Q=
+
+Name: res/drawable-xhdpi-v4/icon.png
+SHA1-Digest: 30uwnEGLHuafF2KKJJT01OlihvQ=
+
+Name: assets/logos/no/Radio_Nova.png
+SHA1-Digest: 3UX6l9Ieuo+Ff4m3HQJa95PNX/E=
+
+Name: assets/logos/uk/BBC_Radio_4.png
+SHA1-Digest: OvUNxxvhaQG4yZAcKnR6lEJXNR4=
+
+Name: res/drawable-mdpi-v4/signal_1.png
+SHA1-Digest: dueiOwn0ZNQ6Ie3UhwWOE+i3w4Q=
+
+Name: assets/logos/nl/NPO_3FM.png
+SHA1-Digest: CIFu8tZIg/Qwpx7JOrTz5504Kh8=
+
+Name: assets/logos/dk/DR_P5.png
+SHA1-Digest: RpmbRoayxhsvHeBUMKzs3HbKBek=
+
+Name: res/drawable-hdpi-v4/btn_show_p.png
+SHA1-Digest: CLjTcqohpyPwkIrbLGp5XHzbq8s=
+
+Name: assets/logos/dk/Radio_Globus.png
+SHA1-Digest: iFZU0SMTwXU+ir1TpMS1FuREafk=
+
+Name: res/drawable/spinner_item_selector.xml
+SHA1-Digest: Bevu0jsTKVwvpj7pFOMIGQwQZwI=
+
+Name: res/drawable-xxhdpi-v4/backgroud_text_area.png
+SHA1-Digest: Bsxw+RQ5bhMoweCV3rYaj7ptYnE=
+
+Name: assets/logos/dk/Radio_Alfa_Skive.png
+SHA1-Digest: bQzb9jvsVnGXDLeliA99oZCDk/0=
+
+Name: res/layout/brightness_dlg.xml
+SHA1-Digest: /QpbfydoASCHRG597RiDK4pjH3k=
+
+Name: assets/logos/dk/DR_P4_Bornholm.png
+SHA1-Digest: 5LUVeI9tabHEwoo9oz2G+WKBSuY=
+
+Name: assets/logos/uk/Mellow_Magic.png
+SHA1-Digest: EmhOvxu6MDWh8XP1XdjuGGEMkI8=
+
+Name: assets/logos/no/NRK_P1+Telemark.png
+SHA1-Digest: iqdAls2RAxa7mgwOm6FAtcvuqIw=
+
+Name: assets/logos/dk/BM_The_Voice.png
+SHA1-Digest: ETjSsgTZ3HzvLBzUU2fLV1S9xbY=
+
+Name: assets/logos/de/DIE_NEUE_107.7.png
+SHA1-Digest: 7APEmXQX0yfmRqnbKwjuJoq8b3w=
+
+Name: assets/logos/de/RadioTon.png
+SHA1-Digest: V5wOL6p7XXhUgb9Y6uLIwYqh0e8=
+
+Name: assets/logos/dk/DR_P4_Syd.png
+SHA1-Digest: p+Ux4VjWVDqmmBgPT98oHxAoVys=
+
+Name: assets/logos/nl/NPO_Radio_4.png
+SHA1-Digest: xpRufdpgxsGRze26OGHuj13vJOo=
+
+Name: assets/logos/de/FFH.png
+SHA1-Digest: fMx7werFIc1H8+P3Co2Y8a13zGI=
+
+Name: assets/logos/de/MDR_AKTUELL.png
+SHA1-Digest: Hzy3zYme0pre5elmLDApd6/5VZw=
+
+Name: assets/logos/uk/BBC_WorldService.png
+SHA1-Digest: wtVsjgVKTPtbZd4MIJZSZh4ikDg=
+
+Name: assets/logos/de/AntenneSaar.png
+SHA1-Digest: WfZJMBNBfqpYju+SROLYw38bxM8=
+
+Name: assets/logos/no/KISS_N'DANCE.png
+SHA1-Digest: zziqMSR+hOGqOR+3FhnJu24LLt8=
+
+Name: assets/logos/de/RADIO_BOB!.png
+SHA1-Digest: 3HpV8zxfVpCSUOQEkaRPycACQSw=
+
+Name: assets/logos/dk/_Radio_Klassisk.png
+SHA1-Digest: C38A1gwFPIRQcSjcDWvfiJsGONY=
+
+Name: assets/logos/de/NDR_Plus.png
+SHA1-Digest: Rkkh/B7XlEsSacqAk18WvmGNPlw=
+
+Name: assets/logos/no/Silkeveien.png
+SHA1-Digest: Ce7XrmMm2ZkNNXFe0zWHiTQ1hjc=
+
+Name: res/drawable-xxhdpi-v4/ic_launcher.png
+SHA1-Digest: GVIfdEOBv4gEny2T1jDhGGsZOBo=
+
+Name: assets/logos/nl/NPO_3FM_KX_Radio.png
+SHA1-Digest: KWaqA7w4DrZXAUJH/lje+MxEVz4=
+
+Name: res/drawable-hdpi-v4/backgroud4.png
+SHA1-Digest: MAkUqLVvfBO2em6xofaVxwBZsSY=
+
+Name: res/drawable/add_to_favor_selector.xml
+SHA1-Digest: WPR63u6m849BZAU4mgcDMFN/ZdY=
+
+Name: assets/logos/no/TrysilRadioen.png
+SHA1-Digest: oswrqBLAne+KvU2kmYQl7n9L3Bk=
+
+Name: assets/logos/de/pure_fm.png
+SHA1-Digest: 5E7xju+phqOb/96lwsj8J4Pw7Lo=
+
+Name: assets/logos/dk/Radio_M.png
+SHA1-Digest: zL8IJ4g7n4uvIr+GH0zUlSlC2Zs=
+
+Name: assets/logos/de/Dlf_Kultur.png
+SHA1-Digest: 0STRSoWjNgeZlB0tDVQpumDQbtE=
+
+Name: assets/logos/uk/Absolute_Rad_90s.png
+SHA1-Digest: lzTUhZOLG4D90qUgHwIgHqLyQZM=
+
+Name: res/drawable-mdpi-v4/btn_next.png
+SHA1-Digest: fY3ZKkZSNfM1mDkYfN/NAKr200Q=
+
+Name: res/layout/main.xml
+SHA1-Digest: xNkNt3S4qy3osUMwaUilr6lWi30=
+
+Name: assets/logos/de/YOU_FM.png
+SHA1-Digest: JY/LAjx2f+b7XNN0tIbsWkscXEk=
+
+Name: res/layout/settings_layout.xml
+SHA1-Digest: RnLzBihq/v94U4QdpxYjyTOYEPs=
+
+Name: assets/logos/dk/Radio_Skive.png
+SHA1-Digest: ElbcMbjlhYDcOovWa8rVMm82ffc=
+
+Name: assets/logos/dk/Globus_Guld.png
+SHA1-Digest: CknbXsQE3n1zCmGpUoWIdAzr2j4=
+
+Name: res/drawable-hdpi-v4/btn_stop_p.png
+SHA1-Digest: vHYe8qBH0nb2gIIs1IpFhizKT5M=
+
+Name: res/drawable-xhdpi-v4/btn_next_press.png
+SHA1-Digest: oVewm/2SqSpdlK7xZ0SJsIVw8ec=
+
+Name: assets/logos/uk/Capital_XTRA.png
+SHA1-Digest: 2X6EwnNRykarSbjNmKr4KURYKZ8=
+
+Name: assets/logos/no/4_HITS.png
+SHA1-Digest: ObtK1FPzGtqdOUQUxI6myl4WuVU=
+
+Name: res/drawable-hdpi-v4/bg_spinner_item_bar.9.png
+SHA1-Digest: W0cJQVURqUHIu+MYuMx7N4LJMg4=
+
+Name: assets/logos/dk/Ekstra_Bladet.png
+SHA1-Digest: 8xFfnDfBy1nqWHkm/efzebSkE/4=
+
+Name: res/drawable-hdpi-v4/btn_prev_press.png
+SHA1-Digest: dVjYGePgGF4Vi+/g7bmRnczw3uQ=
+
+Name: res/drawable-hdpi-v4/signal_5.png
+SHA1-Digest: iJYct8VIcyBdrYD463/i4gWNaME=
+
+Name: assets/logos/no/Radio_##lesund.png
+SHA1-Digest: F8/Z7JH3Yi2Oi3rWWujyYvw7Yjg=
+
+Name: res/drawable-mdpi-v4/scroll_bar.png
+SHA1-Digest: ID1aTdp+Wa76VWHCEsOobGKRpdE=
+
+Name: assets/logos/se/SR_P7_Sisuradio.png
+SHA1-Digest: iznJZQ3QExyCgNWwnIFMcL1BdSA=
+
+Name: assets/logos/de/ANTENNE_FRANKFRT.jpg
+SHA1-Digest: YnL2UAwRkQZFKzuWGGC+ADgpCHc=
+
+Name: assets/logos/de/NDR_Info.png
+SHA1-Digest: QW7eQA1AqSaxZfPvGF2o64JMJPA=
+
+Name: assets/logos/no/METRO_Oslo.png
+SHA1-Digest: 2d6Ny0Tv8VcIomWyYlcre8cv4uY=
+
+Name: res/drawable-hdpi-v4/btn_common_p.9.png
+SHA1-Digest: nPKmJZYL8xLYQU2xuQDFRn9IhT8=
+
+Name: res/drawable-mdpi-v4/signal_2.png
+SHA1-Digest: 0KmFNQx2rqJCQ0fqhwpLdZITeh8=
+
+Name: assets/logos/dk/Radio_Hinnerup.jpg
+SHA1-Digest: +tMnEIF0KVFC1IGp8YI+XAOkk4U=
+
+Name: assets/logos/se/SR_P1.png
+SHA1-Digest: tBqpcS3ejN/pQz+XrKeD3E/lQRQ=
+
+Name: res/layout/list.xml
+SHA1-Digest: 5HkpPgj1YB8j6ST1jDj2Y6bK8Nk=
+
+Name: assets/logos/no/J##rradioen.png
+SHA1-Digest: jEvnuT/eBCf72e2eBLRV82Hh9Ik=
+
+Name: assets/logos/de/baden.fm.png
+SHA1-Digest: qLv4DFEmtkx+quTsv3gE0pUUSW0=
+
+Name: assets/logos/de/MDR_KLASSIK.png
+SHA1-Digest: y315hDfZact+syjVdvKWF/EDFa4=
+
+Name: res/drawable-xhdpi-v4/btn_list.png
+SHA1-Digest: fN/tkQnkZhLKIEA2s8Rv4KOP9v0=
+
+Name: assets/logos/de/SWR4_BW.png
+SHA1-Digest: KQk9UpG7h9bHlYJ4ThonivpnL0Q=
+
+Name: res/drawable/preset_selector.xml
+SHA1-Digest: MCZ4+mRfvlla1Hy+3S6MqK1OkkY=
+
+Name: res/drawable-xhdpi-v4/btn_favor_list.png
+SHA1-Digest: /WEZQxlaGTbp9kgc81/ZPVspYgs=
+
+Name: res/layout-land/player.xml
+SHA1-Digest: UYSdmoksvFxhamjDN7m2mM68EmI=
+
+Name: res/drawable-hdpi-v4/btn_show.png
+SHA1-Digest: zt6MPm8il/UnmG7vfjRQ8aNzS8k=
+
+Name: assets/logos/de/N-JOY.png
+SHA1-Digest: 7VEHpoE1QAnd9T+XjDBzIuLhWas=
+
+Name: assets/logos/de/BuergerMedien_BW.png
+SHA1-Digest: XKUwBZ4ai6A6rR4vGKL/QwZ6KFI=
+
+Name: assets/logos/de/MDR_S-ANHALT.png
+SHA1-Digest: KhSw/VyXUVBTFouF1YEAaMNXMEk=
+
+Name: res/drawable/scan_selector.xml
+SHA1-Digest: iiGSITwKuzv/6423wmdoSBbHAZQ=
+
+Name: assets/logos/de/80s80s.png
+SHA1-Digest: CPKsl8ySpAp/NWBIYtpeezYrAlA=
+
+Name: assets/logos/de/Bayern_1_Franken.png
+SHA1-Digest: UFkM0+naBIOb+1smQtJvKXAmpws=
+
+Name: assets/logos/it/Radio_KissKiss.png
+SHA1-Digest: iXHVCO/B4RJd1hRcYQ5u/ufC37M=
+
+Name: assets/logos/uk/BBC_Radio_3.png
+SHA1-Digest: rnXQNXDgCAk8I6E55ZxJIHgDxb4=
+
+Name: res/drawable-hdpi-v4/btn_settings2.png
+SHA1-Digest: fX0wvjjfTzZbkLxihYwmEitUICU=
+
+Name: assets/logos/de/BR_Verkehr.png
+SHA1-Digest: 3bwD/o9LyJNbW+ZA1TNU5OH0whw=
+
+Name: assets/logos/dk/Radio_Alfa.png
+SHA1-Digest: 79ksg4lfUjG3v3DZyVSHcN1WKxw=
+
+Name: assets/logos/no/NRK_FOLKEMUSIKK.png
+SHA1-Digest: L2uTe1oRYHpjEXyWB9JV07FettA=
+
+Name: assets/logos/de/Absolut_relax.png
+SHA1-Digest: 5v9mhUS7u7lHZq1wu5qhqd3pHSQ=
+
+Name: assets/logos/de/Absolut_HOT.png
+SHA1-Digest: 8AdIdWp3+HtVUcEKmQM+0JyjEiM=
+
+Name: assets/logos/no/Radio_Kongsvinger.png
+SHA1-Digest: 3/iEOec9bBSMcO49zvPTOpw0pfI=
+
+Name: assets/logos/nl/NPO_3FM_Alterna..png
+SHA1-Digest: rjkJtQNUoa9+e2tmqGxYqesTsU8=
+
+Name: assets/logos/no/NRK_Trafikk4_HSF.png
+SHA1-Digest: xESvZwQe8jpH5EWR6Rr7PF8ZoaE=
+
+Name: assets/logos/uk/Planet_Rock.png
+SHA1-Digest: gZD1odlmuoPA7ce/6phvl7xdxxc=
+
+Name: assets/logos/dk/Radio_Victoria.png
+SHA1-Digest: 66AssefasZNH+QLQXIw/Vt0YV9M=
+
+Name: res/layout/settings.xml
+SHA1-Digest: w2JeTt7PMZd4QKiVRAm2w9m6O2g=
+
+Name: assets/logos/uk/HEAT_RADIO.png
+SHA1-Digest: Z4t2YUA3u2KSE37sXphJApYFmhU=
+
+Name: res/drawable-hdpi-v4/bg_spinner_item.9.png
+SHA1-Digest: 0JqRIIdq0GOlg9LswamV3FrCiXk=
+
+Name: res/drawable/progress_bar_horizontal.xml
+SHA1-Digest: CocagDXo0aa40z0msmOBMBhgk2Y=
+
+Name: res/drawable-mdpi-v4/btn_prev.png
+SHA1-Digest: dMvwMh6oEgiO4K/yj9K9Q9MfLFk=
+
+Name: res/color/secondary_text.xml
+SHA1-Digest: JUJcmZYvJpMQ1ZbMJtXiTgDwbfY=
+
+Name: res/drawable-hdpi-v4/btn_delete.png
+SHA1-Digest: 2HQq+ubROMgaznRXe2Y0zjX/YpU=
+
+Name: assets/logos/no/Visjon_Norge.png
+SHA1-Digest: 1thGK/Qje/UHHhXzQ+DshQkE9v8=
+
+Name: assets/logos/no/JM_Radio.png
+SHA1-Digest: lAKV1sKkXvS4UWmi7zMd812OIko=
+
+Name: res/drawable-xhdpi-v4/btn_scan.png
+SHA1-Digest: g+sZPceVnjhuFTkWBVGpz0kpFMc=
+
+Name: assets/logos/de/WDRCosmo.png
+SHA1-Digest: R6F1H/kpWkYupX7P0J5X/WB+dlA=
+
+Name: assets/logos/no/Siddis_Radio.png
+SHA1-Digest: WYj5fo76CfK/YqEI/JBR4zM56lo=
+
+Name: assets/logos/de/hr1.png
+SHA1-Digest: Z9MaEaV84FaGHATr509w4p9tBKo=
+
+Name: assets/logos/no/NRK_Trafikk_TrMR.png
+SHA1-Digest: wDldUzS3B7xocanRwga5pfvnNKk=
+
+Name: assets/logos/de/DASDING.png
+SHA1-Digest: UkiKJYLrKQxwuTKpB2fs3NejaDc=
+
+Name: assets/logos/it/RTL_Lounge.png
+SHA1-Digest: dTbSt2RvK44uKtkqAZflbrsB3og=
+
+Name: assets/hints.jpg
+SHA1-Digest: 00yi3vxk1qEcE7u28+4JUnBhuNk=
+
+Name: res/drawable-hdpi-v4/backgroud_text_area.png
+SHA1-Digest: bPxQYnsoHAOFr+vZWkV6UiDDsek=
+
+Name: res/drawable/stop_selector.xml
+SHA1-Digest: u/6DfdvlaxEfRrsHlD7IKhtLOE0=
+
+Name: assets/logos/dk/DR_P2.png
+SHA1-Digest: v258DF9B6k4h+MrL8OYJHHozuXc=
+
+Name: res/drawable-hdpi-v4/dlg_btn.9.png
+SHA1-Digest: f31U7BSCZM0j9BQ/1Ih3BWIZ4vg=
+
+Name: assets/logos/no/NRJ_Trondheim.png
+SHA1-Digest: 0GfO5s5Zz46DwP7N3K4a61U4JEg=
+
+Name: assets/logos/uk/Heart_80s.png
+SHA1-Digest: MvZE6rvhAS8cC02mojETTzNmUJE=
+
+Name: assets/logos/uk/Radio_X.png
+SHA1-Digest: GFuKepOyNOXPGWlo877auooxoio=
+
+Name: assets/logos/no/Radio_Trondheim.png
+SHA1-Digest: EpUH7Ns5pCC3Bny3LJQuWi3T5pc=
+
+Name: assets/logos/uk/talkRADIO.png
+SHA1-Digest: 5BMOfbuaApLi3eV3yQU8y1ZpH2Y=
+
+Name: assets/logos/uk/Smooth_Extra.png
+SHA1-Digest: nEE0pH9u3m98NE+Z+40jFRANfsM=
+
+Name: res/drawable-xhdpi-v4/btn_settings2.png
+SHA1-Digest: fX0wvjjfTzZbkLxihYwmEitUICU=
+
+Name: assets/logos/no/P10_Country.png
+SHA1-Digest: JBqxJDwq4pBLVKxvJXmOKNhSzK8=
+
+Name: assets/logos/no/1FM_Molde.png
+SHA1-Digest: YSYwnkRjKSURAGBfcEWqSmDiqAE=
+
+Name: res/drawable-hdpi-v4/btn_favor_list_p.png
+SHA1-Digest: OSAzbhzc0dRNZSXHdHyr1qJYAac=
+
+Name: res/drawable-hdpi-v4/play.png
+SHA1-Digest: EyRkDFi3z4p1kPB6CzstAdNAc0k=
+
+Name: assets/logos/no/KristenradioVest.png
+SHA1-Digest: EXIQ7Pot3jhLkhJzkOKQcukqQgw=
+
+Name: res/drawable-mdpi-v4/icon.png
+SHA1-Digest: GsPhYlDM9qXklSr3ulsK//hGgGI=
+
+Name: res/layout/lookup_listitem.xml
+SHA1-Digest: 3SJLge03ZObFZCi4QRERlzSyaow=
+
+Name: assets/logos/de/KinderRadioKanal.png
+SHA1-Digest: VodaVMq17Cv5OExJI7a2oodp404=
+
+Name: assets/logos/no/Radio_Sorvest.png
+SHA1-Digest: xFrbWwiadBagmQ6fu5fitWzSlF8=
+
+Name: assets/logos/de/Radio_Gong_96.3.png
+SHA1-Digest: uUIysNWu82DsUugNkNT4FgjhU00=
+
+Name: res/drawable-xhdpi-v4/radio.png
+SHA1-Digest: 5PozlQDxjZ0lQcXm/23FgCvL5Dw=
+
+Name: res/drawable-xhdpi-v4/signal_2.png
+SHA1-Digest: 0KmFNQx2rqJCQ0fqhwpLdZITeh8=
+
+Name: assets/logos/uk/BBC_R1Vintage.png
+SHA1-Digest: 7KKT85j67hEgDQIUXdkyvFSxzsc=
+
+Name: assets/logos/de/Dlf_Nova.png
+SHA1-Digest: a+WnsWQUmdhwm+1VTGfpbIhiLU8=
+
+Name: res/drawable/main_background.xml
+SHA1-Digest: 5j3T6AH+e1B0M9mIdaLLtGkH/yA=
+
+Name: res/drawable/record_stop_selector.xml
+SHA1-Digest: BGHhzJ0sSNrXjwoAzWTiWdKC3G0=
+
+Name: res/layout/layout_scan_dialog.xml
+SHA1-Digest: tTztxTeGwN1wTZs4oPCgxLjpiCU=
+
+Name: assets/logos/de/SR_3.png
+SHA1-Digest: 0ut4NS3FYebiRdEJHSrS7R8xrys=
+
+Name: res/drawable-mdpi-v4/btn_list.png
+SHA1-Digest: fN/tkQnkZhLKIEA2s8Rv4KOP9v0=
+
+Name: assets/logos/dk/BM_Radioklassisk.png
+SHA1-Digest: eDJO1dMe9cd+Qt7vJ/KRAGylZOI=
+
+Name: res/menu/activity_main.xml
+SHA1-Digest: lobjHVwKHBM3GQmZ5sggB2HycoA=
+
+Name: assets/logos/no/Nea_Radio.jpg
+SHA1-Digest: 3liEhWC29ddHv7eHRVdg8ASm2uk=
+
+Name: res/drawable-mdpi-v4/btn_scan_press.png
+SHA1-Digest: OevdJy0fylSi28b56R7JqKTsovc=
+
+Name: assets/logos/nl/HOTRADIO_Hits.png
+SHA1-Digest: hk78SY0oxGx2zPZS/3kOirg+4GM=
+
+Name: res/drawable-hdpi-v4/pause_focus.png
+SHA1-Digest: yPf0/oFbccnXFI1z5jPve8d306g=
+
+Name: assets/logos/de/ANTENNE_BAYERN.png
+SHA1-Digest: hcAAl4u1JmHhz7++42OtEfqE+xg=
+
+Name: assets/logos/no/Radio_##st.png
+SHA1-Digest: DkqOGf+j16HwG7QjmFFIiZnR3cY=
+
+Name: assets/logos/dk/24syv.png
+SHA1-Digest: S8j0kS/fQZu5aByBrIokDfdk2ss=
+
+Name: assets/logos/de/R.SH_-_Hamburg.png
+SHA1-Digest: 4XCc2wB9h+LCKvzW3FOJ9voqzyA=
+
+Name: assets/logos/no/NRK_V##r_S##r.png
+SHA1-Digest: YhDpNvwC5GTU1lZfb9hKkTOFDNA=
+
+Name: assets/logos/no/P9_Retro.png
+SHA1-Digest: 7qgRdpRMw/iIgOjlujg6hMYMIZY=
+
+Name: assets/logos/dk/Classic_fm.png
+SHA1-Digest: fmUt4uy1Or8cjn2BHazG+19TPf8=
+
+Name: res/drawable-hdpi-v4/previous.png
+SHA1-Digest: MdjaJkYFQavORU8PpdjxdjZsr9g=
+
+Name: res/drawable-mdpi-v4/signal_3.png
+SHA1-Digest: YZbVdzRetcaQgzOXM3lrzHZNZ04=
+
+Name: assets/logos/de/Bayern_2_Sued.png
+SHA1-Digest: 2W7W2eqk8X3WkJV7qFcv+iMXQ1o=
+
+Name: assets/logos/no/P5_Hits_Trhm.png
+SHA1-Digest: lcfzpb7aJ2vhrnoQTXXdhBTG+gY=
+
+Name: assets/logos/de/EXTRA-RADIO_HOF.png
+SHA1-Digest: beZx56cYAa2xVhbVKoUh4xVjafI=
+
+Name: res/xml/usb_device_filter.xml
+SHA1-Digest: lnuHMwhD0m1q+Y455zC4Z1j5b3k=
+
+Name: assets/logos/no/P7_Kystradioen.png
+SHA1-Digest: Alc35jRAZql7melZC2eSdn3zEfk=
+
+Name: assets/logos/dk/BM_myRock.png
+SHA1-Digest: ifcs5llzgtBD9TfzUMS1RydEUSw=
+
+Name: assets/logos/de/BR-KLASSIK.png
+SHA1-Digest: U087KkCfM5pHGH6oiypRuJJ0ACU=
+
+Name: res/drawable-xhdpi-v4/btn_prev_press.png
+SHA1-Digest: dVjYGePgGF4Vi+/g7bmRnczw3uQ=
+
+Name: assets/logos/de/hr2.png
+SHA1-Digest: wdqlvYzRT1yf5PMGKUeDNGP/5UY=
+
+Name: res/drawable-mdpi-v4/btn_settings2_press.png
+SHA1-Digest: RixV5yZYdQiOvj0BZDLF6sMMrTw=
+
+Name: assets/logos/dk/BBC_WorldService.png
+SHA1-Digest: t2TQf/tW/umTr1FE0b7Dt4m4GZw=
+
+Name: assets/logos/de/SCHLAGERPARADIES.png
+SHA1-Digest: jgbCBtmm96JLT1XeRnnODwTuuAY=
+
+Name: assets/logos/de/PULS.png
+SHA1-Digest: ZuC/N2UfAgFZbehTyzpfIILHUVo=
+
+Name: assets/logos/no/NRK_P1+Troms.png
+SHA1-Digest: yEHTaIfex+gY8+SnCycUwPkA+MQ=
+
+Name: assets/logos/no/Radio_Atlantic.png
+SHA1-Digest: TFj3PqR81mjwDNoAvYkDkTSl90w=
+
+Name: res/layout/layout_service_list.xml
+SHA1-Digest: btr3qgPL8SlqV1n94R+CSRpLFJM=
+
+Name: assets/logos/it/RTL_Guardia_Cost.png
+SHA1-Digest: /Iwgrs+KFmDtfTTbermW5ErsKOA=
+
+Name: assets/logos/de/Bayern_1_Main.png
+SHA1-Digest: VRVurxaR+jJRBwnYrWeeq2tRr6g=
+
+Name: assets/logos/se/SR_Knattekanalen.png
+SHA1-Digest: 5V+ADG2CwoVoISaZDh6mbUS4/KI=
+
+Name: assets/logos/de/MDR_SACHSEN.jpg
+SHA1-Digest: n2u//Yczt5MJxETeqCbML8RlnfM=
+
+Name: res/drawable/favor_list_selector.xml
+SHA1-Digest: MCZ4+mRfvlla1Hy+3S6MqK1OkkY=
+
+Name: res/drawable-hdpi-v4/btn_favor_list.png
+SHA1-Digest: /WEZQxlaGTbp9kgc81/ZPVspYgs=
+
+Name: assets/logos/de/SWR4_RP.png
+SHA1-Digest: hTeJApn8F+A47bg8BH/as2jOfYE=
+
+Name: assets/logos/no/RADIO_SOFT.png
+SHA1-Digest: fxIwFrAl9vYPIbxzuwaELRHrPTs=
+
+Name: assets/logos/no/Gimlekollen_Radio.jpg
+SHA1-Digest: 1foLrktCyr4FFd44ycLamxA2Zf4=
+
+Name: assets/logos/no/RADIO_ROCK.png
+SHA1-Digest: RDr/rkp/1h3tzM0lSWsOCuQfkZU=
+
+Name: res/drawable-xhdpi-v4/btn_settings2_press.png
+SHA1-Digest: RixV5yZYdQiOvj0BZDLF6sMMrTw=
+
+Name: assets/logos/de/VERA.png
+SHA1-Digest: vGwL9v8FHa7+mytwCou+T7UuMns=
+
+Name: res/drawable-mdpi-v4/btn_pty_press.png
+SHA1-Digest: cWSUIOuoJ1YChp2qCYVoyjMoTzc=
+
+Name: assets/logos/uk/BBC_Radio_1.png
+SHA1-Digest: soGKlqR6JTh9Q2+P6xDAPYfLMJk=
+
+Name: lib/armeabi-v7a/libcredits.so
+SHA1-Digest: tAn9O+Nby7jI7DQE12bDlW9Kz9o=
+
+Name: res/drawable-hdpi-v4/backgroud1.jpg
+SHA1-Digest: 1iBqgcQpSGzfnVtHfgH30pxGH4g=
+
+Name: res/drawable-hdpi-v4/radio_white.png
+SHA1-Digest: 6SuOW3tNQoCAdVcMJWBkVZBlpYU=
+
+Name: assets/logos/no/ElverumsRadioen.png
+SHA1-Digest: evl/EKZgKvQT3msK5Z6rBM3n7Go=
+
+Name: assets/logos/no/NRK_SPORT.png
+SHA1-Digest: e7BpxSVn/4XycR7NXvdkEi/2JIs=
+
+Name: assets/logos/de/MDR_JUMP.png
+SHA1-Digest: uF9aPBw0MgU2CJudKk4SDHHQ1q8=
+
+Name: assets/logos/de/BR_Heimat.png
+SHA1-Digest: /T3+8gQ/Y0Gf+gOJtfCF4IsSFSU=
+
+Name: res/drawable-xhdpi-v4/btn_next.png
+SHA1-Digest: fY3ZKkZSNfM1mDkYfN/NAKr200Q=
+
+Name: assets/logos/dk/DR_P3.png
+SHA1-Digest: DnyG3FSSU5jeU/XLI5c++E50/2U=
+
+Name: assets/logos/no/NRK_P1+Buskerud.png
+SHA1-Digest: hXo4YuOvHMVMl4uENDWIRvvMvjk=
+
+Name: res/drawable-hdpi-v4/progress_bar.9.png
+SHA1-Digest: Fn/kHEtLE4xFoEP2NBeVVdFSbxo=
+
+Name: assets/logos/no/NRK_P1_Hed_&_Opp.png
+SHA1-Digest: YkksTqaO4dhBi5PvZO2GvI0/uq8=
+
+Name: res/drawable-mdpi-v4/scroll_bar_bg.png
+SHA1-Digest: WGLbhKgYtcuKvgtzLwlKT1HhNos=
+
+Name: res/drawable-xhdpi-v4/ic_notification.png
+SHA1-Digest: GsPhYlDM9qXklSr3ulsK//hGgGI=
+
+Name: assets/logos/no/NRK_P1+Rogaland.png
+SHA1-Digest: GE+9+hSp/vXuazpulz6REknS4L8=
+
+Name: res/drawable-hdpi-v4/dlg_top.9.png
+SHA1-Digest: uVXJmcLPcszmYMiMikUzMZir2ig=
+
+Name: assets/logos/no/NRK_P1+Tr##ndelag.png
+SHA1-Digest: lLIqHEn57sojZX8w6H/Q6L8rXLk=
+
+Name: res/drawable-hdpi-v4/signal_scan.png
+SHA1-Digest: IPj2qoHNnVGgC12MKHdz89Fi2+Q=
+
+Name: res/drawable-xhdpi-v4/signal_1.png
+SHA1-Digest: dueiOwn0ZNQ6Ie3UhwWOE+i3w4Q=
+
+Name: assets/logos/no/#RRock_Klassiker.png
+SHA1-Digest: M6JFBiM/isAH/g5XgbhYfrQ+IwM=
+
+Name: assets/logos/de/MDR_TH##R.png
+SHA1-Digest: RSh1oVnwhU0qv5z37FH+0ghASHg=
+
+Name: assets/logos/de/RADIO_REGENBOGEN.png
+SHA1-Digest: lLZ2TCtHjmqKX6+t1/5mHqlp1sk=
+
+Name: assets/logos/no/P5_Bergen.png
+SHA1-Digest: i83uk3oogWb1cIbULIBAcCWpfD0=
+
+Name: assets/logos/de/RheinWelle_92,5.png
+SHA1-Digest: vYhSviZTF3EeplWpE1GmwQxNMWw=
+
+Name: assets/logos/it/Rai_R_Classica.png
+SHA1-Digest: hY4IrPvjdZrnICIV8YNGmfjJIgA=
+
+Name: classes.dex
+SHA1-Digest: zXPRiMXBInvjxXztJfxc8KydLSI=
+

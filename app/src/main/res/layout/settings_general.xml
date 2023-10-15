@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:orientation="vertical" android:background="@color/app_background" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="16dp">
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <Switch android:textAppearance="@style/SettingsHeadline" android:id="@+id/switchStartOnUsbAttached" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_start_on_usb" android:layout_alignParentStart="true"/>
+            <TextView android:textAppearance="@style/SettingsText" android:id="@+id/textStartOnUsbAttached" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="" android:layout_below="@+id/switchStartOnUsbAttached" android:layout_alignParentStart="true"/>
+        </RelativeLayout>
+        <View style="@style/HorizontalDividerMargin"/>
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <Switch android:textAppearance="@style/SettingsHeadline" android:id="@+id/switchServiceFollowing" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_ServiceFollowing" android:layout_alignParentStart="true"/>
+            <TextView android:textAppearance="@style/SettingsText" android:id="@+id/textSwitchServiceFollowing" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_text_ServiceFollowing" android:layout_below="@+id/switchServiceFollowing" android:layout_alignParentStart="true"/>
+        </RelativeLayout>
+        <View style="@style/HorizontalDividerMargin"/>
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <Switch android:textAppearance="@style/SettingsHeadline" android:id="@+id/switchOnStartByUsbGotoBackground" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_OnStartByUsbGotoBackground"/>
+            <TextView android:textAppearance="@style/SettingsText" android:id="@+id/textSwitchOnStartByUsbGotoBackground" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_text_OnStartByUsbGotoBackground" android:layout_below="@+id/switchOnStartByUsbGotoBackground" android:layout_alignParentStart="true"/>
+        </RelativeLayout>
+        <View style="@style/HorizontalDividerMargin"/>
+        <Switch android:textAppearance="@style/SettingsHeadline" android:id="@+id/switchSendBroadcastIntent" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_SendBroadcastIntent"/>
+        <View style="@style/HorizontalDividerMargin"/>
+        <Switch android:textAppearance="@style/SettingsHeadline" android:id="@+id/switchSwapPrevNextFromSWC" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_SwapPrevNextFromSWC"/>
+        <View style="@style/HorizontalDividerMargin"/>
+    </LinearLayout>
+</ScrollView>

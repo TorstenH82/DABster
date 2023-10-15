@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <LinearLayout android:orientation="vertical" android:background="@color/app_background" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="16dp">
+        <TextView android:textAppearance="@style/SettingsText" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_text_logos_explain_download"/>
+        <View style="@style/HorizontalDividerMargin"/>
+        <TextView android:textAppearance="@style/SettingsText" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings_text_logos_explain_sync"/>
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="8dp">
+            <Button android:textAppearance="@style/SettingsText" android:id="@+id/btn_stationlogo_sync" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/btn_text_Sync" android:contentDescription="@null"/>
+            <TextView android:textAppearance="@style/SettingsText" android:id="@+id/sync_info" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16dp" android:contentDescription="@null"/>
+        </LinearLayout>
+        <TextView android:textAppearance="@style/SettingsText" android:layout_width="match_parent" android:layout_height="0dp" android:text="@string/settings_text_additional_infos" android:layout_weight="1"/>
+        <View style="@style/HorizontalDividerMargin"/>
+        <ExpandableListView android:id="@+id/expandlist_nologos" android:layout_width="match_parent" android:layout_height="wrap_content" android:dividerHeight="1dp"/>
+        <View style="@style/HorizontalDividerMargin"/>
+    </LinearLayout>
+</ScrollView>
