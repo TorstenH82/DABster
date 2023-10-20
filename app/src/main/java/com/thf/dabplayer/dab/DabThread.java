@@ -459,6 +459,15 @@ public class DabThread extends Thread {
       Message obtainMessage3 = this.playerHandler.obtainMessage();
       obtainMessage3.what = 19;
       this.playerHandler.sendMessage(obtainMessage3);
+
+      // select favourites and send to player
+      List<DabSubChannelInfo> memoryList = this.dbHelper.getFavorites();
+      if (memoryList.size() > 0) {
+        Message obtainMessage4 = this.playerHandler.obtainMessage();
+        obtainMessage4.what = Player.PLAYERMSG_SET_STATIONMEMORY;
+        obtainMessage4.obj = this.channelInfoList;
+        this.playerHandler.sendMessage(obtainMessage4);
+      }
     }
   }
 
