@@ -465,7 +465,7 @@ public class DabThread extends Thread {
       if (memoryList.size() > 0) {
         Message obtainMessage4 = this.playerHandler.obtainMessage();
         obtainMessage4.what = Player.PLAYERMSG_SET_STATIONMEMORY;
-        obtainMessage4.obj = this.channelInfoList;
+        obtainMessage4.obj = memoryList;
         this.playerHandler.sendMessage(obtainMessage4);
       }
     }
