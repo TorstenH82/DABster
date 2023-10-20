@@ -326,62 +326,58 @@ public class Player extends Activity
             player.progressDialog.setMessage(
                 Strings.scanning(Player.this.getApplicationContext(), message.arg1, message.arg2));
             player.progressDialog.show();
-            return;
+            break;
           case PLAYERMSG_NEW_LIST_OF_STATIONS: // 1:
             player.stationList = (List) message.obj;
             player.stationListSize = player.stationList.size();
             if (player.stationListSize > 0) {
               player.updateStationList();
-              return;
             }
-            return;
+            break;
           case PLAYERMSG_DLS: // 9:
             String dls = (String) message.obj;
             if (!player.strDls.equals(dls)) {
               player.strDls = dls;
               player.f41t.setText(dls);
-              return;
             }
-            return;
+            break;
           case PLAYERMSG_MOT: // 10:
             player.showMotImage((String) message.obj);
-            return;
+            break;
           case PLAYERMSG_SIGNAL_QUALITY: // 11
             if (!player.f27f && !player.f26e && player.stationListSize == 0) {
               message.arg1 = 0;
             }
             player.setSignalLevel(message.arg1);
-            return;
+            break;
           case 13:
             // Player.access$802(player, (List) message.obj);
             player.channelInfoList = (List) message.obj;
             // Player.access$900(player);
             player.m78f();
-            return;
+            break;
           case PLAYERMSG_NEW_STATION_LIST: // 18
             Toast.makeText(context, "Attention: reveived PLAYERMSG_NEW_STATION_LIST", Toast.LENGTH_LONG).show();    
             player.fillStationRecycler((List) message.obj);
-            return;
+            break;
           case 19:
             player.isInitialized = true;
             if (player.stationListSize > 0) {
               player.m84a(player.playIndex);
-              return;
             }
-            return;
+            break;
           case 23:
             player.showServiceFollowing(true, (String) message.obj, message.arg1);
-            return;
+            break;
           case PLAYERMSG_HIDE_SERVICE_FOLLOWING: // 24
             player.showServiceFollowing(false, (String) message.obj, message.arg1);
-            return;
+            break;
           case Player.PLAYERMSG_ASSET_FOUND_LOGOS /* 98 */:
             if (player.stationList != null) {
               C0162a.m9a("assetlogos refresh display");
               player.updateStationList();
-              return;
             }
-            return;
+            break;
           case Player.PLAYERMSG_SCAN_FINISHED /* 99 */:
             int i = message.arg1;
             if (player.progressDialog.isShowing()) {
@@ -391,9 +387,8 @@ public class Player extends Activity
             player.updateStationList();
             if (player.stationListSize > 0) {
               player.m84a(0);
-              return;
             }
-            return;
+            break;
           case Player.PLAYERMSG_STATIONINFO_INTENT: // 100
             Intent intent = (Intent) message.obj;
             boolean affectsAndroidMetaData =
@@ -403,26 +398,74 @@ public class Player extends Activity
                   intent.getBooleanExtra(DabService.EXTRA_AFFECTS_ANDROID_METADATA, false);
             }
             player.notifyStationInfo(intent, affectsAndroidMetaData);
-            return;
+            break;
           case Player.PLAYERMSG_HW_FAILURE /* 101 */:
             player.toastAndFinish((String) message.obj);
-            return;
+            break;
           case Player.PLAYERMSG_AUDIO_DISTORTION /* 102 */:
             player.notifyAudioDistortion();
-            return;
+            break;
           case Player.PLAYERMSG_NEXT_STATION /* 103 */:
             player.onStationChange_nextWrapper();
-            return;
+            break;
           case Player.PLAYERMSG_PREV_STATION /* 104 */:
             player.onStationChange_prevWrapper();
-            return;
+            break;
           case PLAYERMSG_SET_STATIONMEMORY:
             List<DabSubChannelInfo> memoryList = (List) message.obj;
             // here we need to set the memory buttons
-            return;
+            foreach (DabSubChannelInfo sci in memoryList) {
+                inf memIdx = sci.mFavorite;
+                ImageView imageViewMemory = null;
+                TextView textViewMemory = null;
+                switch (memIdx) {
+                    case 1:
+                        imageViewMemory = findViewById(R.id.memory1Img);
+                        textViewMemory = findViewById(R.id.memory1Tv);
+                        break;
+                    case 2:
+                        imageViewMemory = findViewById(R.id.memory2Img);
+                        textViewMemory = findViewById(R.id.memory2v);
+                        break;             
+                    case 3:
+                        imageViewMemory = findViewById(R.id.memory3Img);
+                        textViewMemory = findViewById(R.id.memory3Tv);
+                        break;
+                    case 4:
+                        imageViewMemory = findViewById(R.id.memory4Img);
+                        textViewMemory = findViewById(R.id.memory4Tv);
+                        break;
+                    case 5:
+                        imageViewMemory = findViewById(R.id.memory5Img);
+                        textViewMemory = findViewById(R.id.memory5Tv);
+                        break;
+                    case 6:
+                        imageViewMemory = findViewById(R.id.memory6Img);
+                        textViewMemory = findViewById(R.id.memory6Tv);
+                        break;
+                }
+                if (imageViewMemory =! null) {
+                    textViewMemory.setText(sci.mLabel);
+                    LogoDb logoDb = LogoDbHelper.getInstance(this.context);
+                    String pathToLogo = logoDb.getLogoFilenameForStation(sci.mLabel, sci.mSID);
+                    BitmapDrawable logoDrawable = null;
+                    if (pathToLogo != null) {
+                        logoDrawable = LogoDb.getBitmapForStation(this.context, pathToLogo);
+                    }
+                    if (logoDrawable == null) {
+                        logoDrawable = LogoAssets.getBitmapForStation(this.context, sci.mLabel);
+                    }
+                    if (logoDrawable != null) {
+                        imageViewMemory.setImageDrawable(logoDrawable);
+                    } else {
+                        imageViewMemory.setImageResource(R.drawable.radio);
+                    }
+                }
+            }
+            break;
           default:
             Toast.makeText(player.context, "msg.what" + message.what, 0).show();
-            return;
+            break;
         }
       }
     }
@@ -1932,22 +1975,22 @@ public class Player extends Activity
     }
 
     if (v.getId() == R.id.memory1) {
-      setMemory(1, findViewById(R.id.memory1Img), findViewById(R.id.memory1Tv));
+      setMemory(1);
     } else if (v.getId() == R.id.memory2) {
-      setMemory(2, findViewById(R.id.memory2Img), findViewById(R.id.memory2Tv));
+      setMemory(2);
     } else if (v.getId() == R.id.memory3) {
-      setMemory(3, findViewById(R.id.memory3Img), findViewById(R.id.memory3Tv));
+      setMemory(3);
     } else if (v.getId() == R.id.memory4) {
-      setMemory(4, findViewById(R.id.memory4Img), findViewById(R.id.memory4Tv));
+      setMemory(4);
     } else if (v.getId() == R.id.memory5) {
-      setMemory(5, findViewById(R.id.memory5Img), findViewById(R.id.memory5Tv));
+      setMemory(5);
     } else if (v.getId() == R.id.memory6) {
-      setMemory(6, findViewById(R.id.memory6Img), findViewById(R.id.memory6Tv));
+      setMemory(6);
     }
     return true;
   }
 
-  private void setMemory(int storagePos, ImageView imageViewMemory, TextView textViewMemory) {
+  private void setMemory(int storagePos) {
     DabSubChannelInfo subChannelInfo = this.stationList.get(this.playIndex);
     subChannelInfo.mFavorite = storagePos;
     if (this.dabHandler == null) return;
@@ -1956,26 +1999,7 @@ public class Player extends Activity
     obtainMessage.obj = subChannelInfo;
     obtainMessage.arg1 = storagePos;
     this.dabHandler.sendMessage(obtainMessage);
-
-    textViewMemory.setText(subChannelInfo.mLabel);
-    LogoDb logoDb = LogoDbHelper.getInstance(this.context);
-    if (this.mShowLogosInList) {
-      String pathToLogo =
-          logoDb.getLogoFilenameForStation(subChannelInfo.mLabel, subChannelInfo.mSID);
-
-      BitmapDrawable logoDrawable = null;
-      if (pathToLogo != null) {
-        logoDrawable = LogoDb.getBitmapForStation(this.context, pathToLogo);
-      }
-      if (logoDrawable == null) {
-        logoDrawable = LogoAssets.getBitmapForStation(this.context, subChannelInfo.mLabel);
-      }
-      if (logoDrawable != null) {
-        imageViewMemory.setImageDrawable(logoDrawable);
-      } else {
-        imageViewMemory.setImageResource(R.drawable.radio);
-      }
-    }
+    // this comes back with PLAYERMSG_SET_STATIONMEMORY 
   }
 
   private void playFavourite(int storagePos) {
