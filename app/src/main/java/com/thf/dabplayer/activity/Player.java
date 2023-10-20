@@ -584,6 +584,34 @@ public class Player extends Activity
     }
   }
 
+private class SearchDabHandler implements Runnable {
+    public void run() {
+      int i = 0;
+      C0162a.m9a("searching mDabHandler");
+      while (Player.this.dabHandler == null && i < 10) {
+        i++;
+        DabService dabService = Player.this.getDabService();
+        if (dabService != null) {
+          Player.this.dabHandler = Player.this.getDabService().getDabHandlerFromDabThread();
+          C0162a.m9a("mDabHandler:" + Player.this.dabHandler);
+        }
+        try {
+          Thread.sleep(100L);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+      if (i >= 10 && Player.this.dabHandler == null) {
+        C0162a.m9a("failed searching mDabHandler");
+      else {
+          Message obtainMessage = Player.this.dabHandler.obtainMessage();
+          obtainMessage.what = DabThread.MSGTYPE_DAB_INIT; // 2;
+          Player.this.dabHandler.sendMessage(obtainMessage);
+          C0162a.m9a("searching mDabHandler done");
+          return 1L;   
+      }
+  }
+}        
   @SuppressLint({"StaticFieldLeak"})
   /* renamed from: com.ex.dabplayer.pad.activity.Player$n */
   /* loaded from: classes.dex */
@@ -2442,7 +2470,8 @@ public class Player extends Activity
     this.dabService.setUsbDevice(this.usbManager, this.usbDevice);
     this.dabService.m15b();
     this.dabHandler = this.dabService.getDabHandlerFromDabThread();
-    new AsyncTaskC0118n().executeOnExecutor(Executors.newCachedThreadPool(), new Integer[0]);
+    //new AsyncTaskC0118n().executeOnExecutor(Executors.newCachedThreadPool(), new Integer[0]);
+    new Thread(new SearchDabHandler()).start(); 
   }
 
   @Override // android.content.ServiceConnection
