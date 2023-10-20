@@ -1223,7 +1223,7 @@ public class DabThread extends Thread {
                 DabThread.this.scan_service_count += service_count;
                 DabThread.this.stationList = DabThread.this.dbHelper.getStationList();
                 Message obtainMessage = DabThread.this.playerHandler.obtainMessage();
-                obtainMessage.what = 1;
+                obtainMessage.what = Player.PLAYERMSG_NEW_LIST_OF_STATIONS;  // 1;
                 obtainMessage.arg1 = DabThread.this.stationList.size();
                 obtainMessage.obj = DabThread.this.stationList;
                 DabThread.this.playerHandler.sendMessage(obtainMessage);
