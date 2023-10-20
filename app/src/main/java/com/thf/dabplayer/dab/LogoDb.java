@@ -328,4 +328,44 @@ public class LogoDb {
             return this.mType;
         }
     }
+
+private static final String LOGO_PATH = Strings.DAB_path() + File.separator + "logos" + File.separator;    
+public static final String LOGO_PATH_USER = LOGO_PATH + "user" + File.separator;
+
+/* added to store mot as station logo */
+public static boolean storeUserStationLogo(Drawable drawable, String stationName, int serviceId) {
+    FileOutputStream fos;
+    boolean result = false;
+    if (drawable == null || stationName == null) {
+      return false;
+    }
+    File logoUserDir = new File(LOGO_PATH_USER);
+    boolean dirExists = logoUserDir.exists();
+    if (!dirExists) {
+      dirExists = logoUserDir.mkdirs();
+    }
+    if (!dirExists) {
+      C0162a.m9a("does not exist and cannot be created:" + LOGO_PATH_USER);
+    } else {
+      Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+      File imageFile = new File(logoUserDir, stationName + ".png");
+      try {
+        fos = new FileOutputStream(imageFile);
+        result = bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        fos.close();
+        if (result) {
+          StationLogo logo = new StationLogo();
+          logo.mLogoPathFilename = imageFile.getAbsolutePath();
+          logo.mStationServiceId = serviceId;
+          logo.mStationNameNormalized = StationLogo.getNormalizedStationName(stationName);
+          result = updateOrInsertStationLogo(logo);
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    return result;
+  }
+
+    
 }
