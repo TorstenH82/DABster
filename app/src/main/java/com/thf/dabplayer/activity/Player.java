@@ -1944,14 +1944,12 @@ public class Player extends Activity
   private void setMemory(int storagePos, ImageView imageViewMemory, TextView textViewMemory) {
     DabSubChannelInfo subChannelInfo = this.stationList.get(this.playIndex);
     subChannelInfo.mFavorite = storagePos;
-    if (this.dabHandler != null) {
-      Message obtainMessage = this.dabHandler.obtainMessage();
-      obtainMessage.what = DabThread.UPDATE_FAVOURITE;
-      obtainMessage.obj = subChannelInfo;
-      obtainMessage.arg1 = storagePos;
-      this.dabHandler.sendMessage(obtainMessage);
-      return;
-    }
+    if (this.dabHandler == null) return: 
+    Message obtainMessage = this.dabHandler.obtainMessage();
+    obtainMessage.what = DabThread.UPDATE_FAVOURITE;
+    obtainMessage.obj = subChannelInfo;
+    obtainMessage.arg1 = storagePos;
+    this.dabHandler.sendMessage(obtainMessage);
 
     textViewMemory.setText(subChannelInfo.mLabel);
     LogoDb logoDb = LogoDbHelper.getInstance(this.context);
@@ -1978,6 +1976,7 @@ public class Player extends Activity
     Message obtainMessage = this.dabHandler.obtainMessage();
     obtainMessage.what = DabThread.PLAY_FAVOURITE;
     obtainMessage.arg1 = storagePos;
+    Player.this.dabHandler.sendMessage(obtainMessage);
   }
 
   @Override // android.app.Activity, android.content.ComponentCallbacks
