@@ -981,6 +981,7 @@ public class Player extends Activity
     this.stationsAdapter =
         new SwitchStationsAdapter(this.context, switchStationsAdapterListener, arrayList2, false);
     this.recyclerView.setAdapter(stationsAdapter);
+    scrollToPositionRecycler(this.playIndex);
 
     if (arrPty == null && arrayList.size() > 0) {
       arrPty = new String[arrayList.size() + 1];
@@ -1187,7 +1188,6 @@ public class Player extends Activity
 
       stationsAdapter =
           new SwitchStationsAdapter(this.context, switchStationsAdapterListener, arrayList2, false);
-
       this.recyclerView.setAdapter(stationsAdapter);
     }
   }
@@ -2080,13 +2080,13 @@ public class Player extends Activity
     recyclerView.setLayoutManager(linearLayoutManager);
     PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
     pagerSnapHelper.attachToRecyclerView(recyclerView);
-    stationsAdapter =
-        new SwitchStationsAdapter(
-            this.context, switchStationsAdapterListener, new ArrayList<>(), false);
 
-    this.recyclerView.setAdapter(stationsAdapter);
-    // recyclerView.setAdapter(adapter);
-    // end recycler
+    if ("RMX3301EEA".equals(Build.PRODUCT)) {
+        stationsAdapter =
+            new SwitchStationsAdapter(
+                this.context, switchStationsAdapterListener, new ArrayList<>(), false);
+        this.recyclerView.setAdapter(stationsAdapter);
+    }
 
     this.audioManager = (AudioManager) getSystemService("audio");
     this.progressDialog = new ProgressDialog(this);
