@@ -270,6 +270,7 @@
     </TableLayout>
     
     <TableLayout
+        android:id="@+id/infoTable"        
         android:visibility="gone"
         >
         <TableRow
