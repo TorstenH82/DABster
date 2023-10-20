@@ -2053,7 +2053,7 @@ private class SearchDabHandler implements Runnable {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     C0162a.m9a("Player:onCreate");
-    setContentView(R.layout.player);
+    setContentView(R.layout.activity_player);
     this.playIndex = 0;
     this.context = getApplicationContext();
     // this.motImage = (MotImage) findViewById(R.id.mot);
