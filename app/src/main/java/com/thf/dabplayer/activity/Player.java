@@ -414,7 +414,7 @@ public class Player extends Activity
           case PLAYERMSG_SET_STATIONMEMORY:
             List<DabSubChannelInfo> memoryList = (List) message.obj;
             // here we need to set the memory buttons
-            foreach (DabSubChannelInfo sci in memoryList) {
+            for (DabSubChannelInfo sci : memoryList) {
                 inf memIdx = sci.mFavorite;
                 ImageView imageViewMemory = null;
                 TextView textViewMemory = null;
