@@ -32,6 +32,7 @@ public class PageViewerAdapter
   private boolean showAdditionalInfos = false;
   private int motImagePosition = -1;
   private BitmapDrawable motImage;
+  private String[] arrPages;
 
   public interface Listener {
     void onItemClick(int position);
@@ -41,75 +42,63 @@ public class PageViewerAdapter
 
   private final Listener listener;
 
-  public PageViewerAdapter(
-      Context context, Listener listener, List<StationItem> list, boolean showAdditionalInfos) {
+  public PageViewerAdapter(Context context, Listener listener) {
     this.listener = listener;
     this.context = context;
-    this.showAdditionalInfos = showAdditionalInfos;
-    this.stationList = list;
-        
-    if ("RMX3301EEA".equals(Build.PRODUCT)) {
-      StationItem dummy = new StationItem();
-      dummy.Index = 1;
-      dummy.ItemFavorite = 0;
-      dummy.ItemTitle = "This is a very long station name";
-      list.add(dummy);
-      dummy = new StationItem();
-      dummy.Index = 2;
-      dummy.ItemFavorite = 0;
-      dummy.ItemTitle = "Radio 456";
-      list.add(dummy);
-    }
+    this.arrPages = {"m", "m", "i"};  
   }
 
-  class MyViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener {
+  class MyViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener, View.OnClickListener {
 
-    TextView txtIndex, txtTitle, txtInfos;
-    ImageView imgLogo, imgFavor, imgDelete;
-
+    TableLayout layMemory, layInfo;
+    LinearLayout layMemory1, layMemory2, layMemory3, layMemory4, layMemory5, layMemory6;
+    ImageView imageViewMemory1, imageViewMemory2, imageViewMemory3, imageViewMemory4, imageViewMemory5, imageViewMemory6;
+    TextView textViewMemory1, textViewMemory2, textViewMemory3, textViewMemory4, textViewMemory5, textViewMemory6:
+      
     MyViewHolder(View v) {
       super(v);
 
       // v.setOnClickListener(this);
       v.setOnTouchListener(this);
 
-      txtIndex = v.findViewById(R.id.index);
-      txtTitle = v.findViewById(R.id.title);
-      txtInfos = v.findViewById(R.id.infos);
-      imgLogo = v.findViewById(R.id.logo);
-      // imgFavor = v.findViewById(R.id.favor);
-      // imgDelete = v.findViewById(R.id.bt_delete);
+    layMemory = v.findViewById(R.id.memoryTable);
+    layMemory1 = findViewById(R.id.memory1);
+    layMemory1.setOnLongClickListener(this);
+    layMemory1.setOnClickListener(this);
+    imageViewMemory1 = findViewById(R.id.memory1Img);
+    textViewMemory1 = findViewById(R.id.memory1Tv);       
+    layMemory2 = findViewById(R.id.memory2);
+    layMemory2.setOnLongClickListener(this);
+    layMemory2.setOnClickListener(this);
+    imageViewMemory2 = findViewById(R.id.memory2Img);
+    textViewMemory2 = findViewById(R.id.memory2Tv);  
+    layMemory3 = findViewById(R.id.memory3);
+    layMemory3.setOnLongClickListener(this);
+    layMemory3.setOnClickListener(this);
+    imageViewMemory3 = findViewById(R.id.memory3Img);
+    textViewMemory3 = findViewById(R.id.memory3Tv);
+    layMemory4 = findViewById(R.id.memory4);
+    layMemory4.setOnLongClickListener(this);
+    layMemory4.setOnClickListener(this);
+    imageViewMemory4 = findViewById(R.id.memory4Img);
+    textViewMemory4 = findViewById(R.id.memory4Tv); 
+    layMemory5 = findViewById(R.id.memory5);
+    layMemory5.setOnLongClickListener(this);
+    layMemory5.setOnClickListener(this);
+    imageViewMemory5 = findViewById(R.id.memory5Img);
+    textViewMemory5 = findViewById(R.id.memory5Tv);
+    layMemory6 = findViewById(R.id.memory6);
+    layMemory6.setOnLongClickListener(this);
+    layMemory6.setOnClickListener(this);
+    imageViewMemory6 = findViewById(R.id.memory6Img);
+    textViewMemory6 = findViewById(R.id.memory6Tv);
+        
+    layInfo = v.findViewById(R.id.infoTable);
 
-      if (!showAdditionalInfos) {
-        txtInfos.setVisibility(View.GONE);
-      }
+
     }
 
-    final GestureDetector gestureDetector =
-        new GestureDetector(
-            context,
-            new GestureDetector.SimpleOnGestureListener() {
-              public void onLongPress(MotionEvent event) {
-                Log.d("dabster", "Longpress detected");
-                listener.onLongPress(getAdapterPosition());
-                super.onLongPress(event);
-              }
-
-              @Override
-              public boolean onSingleTapUp(MotionEvent event) {
-                // triggers after onDown only for single tap
-                Log.d("dabster", "Click detected");
-                listener.onItemClick(getAdapterPosition());
-                return true;
-              }
-
-              @Override
-              public boolean onDown(MotionEvent event) {
-                // triggers first for both single tap and long press
-                return true;
-              }
-            });
-
+    
     @Override
     public boolean onTouch(View v, MotionEvent event) {
       /*if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -117,49 +106,34 @@ public class PageViewerAdapter
         v.setBackgroundColor(Color.TRANSPARENT);
         listener.onTouch();
       }
-            */
+      */
       selectedPosition = getAdapterPosition();
       return gestureDetector.onTouchEvent(event);
+    }
+    @Override
+    public void onClick(View view) {
     }
   }
 
   @Override
   public PageViewerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     View itemView =
-        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_switch, parent, false);
+        LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_memory, parent, false);
     return new MyViewHolder(itemView);
   }
 
   @Override
   public void onBindViewHolder(MyViewHolder holder, int position) {
-    StationItem station = stationList.get(position);
+    String page = arrPages[position];
+    switch (page) {
+        case "m":
+            
+            break:
+        case "i":
 
-    holder.txtIndex.setText(
-        String.format("%0" + (getItemCount() + "").length() + "d", station.Index));
-    holder.txtTitle.setText(station.ItemTitle);
-    holder.txtInfos.setText(station.ItemInfos);
-
-    String pathToLogo = station.ItemLogo;
-    BitmapDrawable logoDrawable = null;
-
-    if (position != this.motImagePosition) {
-      if (pathToLogo != null) {
-        logoDrawable = LogoDb.getBitmapForStation(this.context, pathToLogo);
-      }
-      if (logoDrawable == null) {
-        logoDrawable = LogoAssets.getBitmapForStation(this.context, station.ItemTitle);
-      }
-      if (logoDrawable != null) {
-        holder.imgLogo.setImageDrawable(logoDrawable);
-      } else {
-        holder.imgLogo.setImageResource(R.drawable.radio);
-      }
-    } else {
-      holder.imgLogo.setImageDrawable(this.motImage);
+            break;
     }
-
-    // if (position == selectedPosition || selectedPosition == -99) {
-
+    //holder.txtTitle.setText(station.ItemTitle);
   }
 
   @Override
@@ -168,65 +142,10 @@ public class PageViewerAdapter
     return stationList.size();
   }
 
-  public void setMot(BitmapDrawable motImage, int position) {
-    int oldPosition = this.motImagePosition;
-    this.motImagePosition = position;
-    if (oldPosition != -1 && oldPosition != position) {
-
-      this.notifyItemChanged(oldPosition);
-    }
-    this.motImage = motImage;
-    this.notifyItemChanged(position);
-  }
-
-  /*
-
   public void setItems(List<StationItem> newList) {
     stationList = newList;
     selectedPosition = 0;
     this.notifyDataSetChanged();
   }
-
-  public void clearPosition() {
-    if (stationList == null) return;
-    if (selectedPosition != -99) {
-      Integer oldPosition = selectedPosition;
-      selectedPosition = -99;
-
-      this.notifyItemRangeChanged(0, stationList.size());
-    }
-  }
-
-  public Integer setPosition() {
-
-    if (stationList == null) return null;
-
-    // this.notifyItemRangeChanged(0, appDataList0.size());
-
-    if (selectedPosition == -99) {
-      selectedPosition = 0;
-      this.notifyItemRangeChanged(0, stationList.size());
-      // this.notifyItemChanged(selectedPosition);
-    } else {
-      Integer oldPosition = selectedPosition;
-      selectedPosition++;
-      if (selectedPosition > getItemCount() - 1) {
-        selectedPosition = 0;
-      }
-      this.notifyItemChanged(selectedPosition);
-      this.notifyItemChanged(oldPosition);
-    }
-    return selectedPosition;
-  }
-
-  public StationItem getCurrentApp() {
-    try {
-      return stationList.get(selectedPosition);
-    } catch (ArrayIndexOutOfBoundsException ex) {
-      Log.e(TAG, "current application cannot be provided based on index " + selectedPosition);
-      return null;
-    }
-  }
-    */
 
 }
