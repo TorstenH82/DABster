@@ -1102,10 +1102,10 @@ public class DabThread extends Thread {
           // update the favourite
           DabThread.this.dbHelper.updateFav((DabSubChannelInfo) message.obj, message.arg1);
           // request player to update the memory buttons
-          Message obtainMessage = this.playerHandler.obtainMessage();
+          Message obtainMessage = DabThread.this.playerHandler.obtainMessage();
           obtainMessage.what = Player.PLAYERMSG_SET_STATIONMEMORY;
           obtainMessage.obj = DabThread.this.dbHelper.getFavorites();
-          this.playerHandler.sendMessage(obtainMessage);
+          DabThread.this.playerHandler.sendMessage(obtainMessage);
           return;
         case PLAY_FAVOURITE:
           DabSubChannelInfo sciFavourite =
