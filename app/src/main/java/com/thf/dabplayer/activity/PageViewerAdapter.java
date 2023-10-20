@@ -1,6 +1,6 @@
 package com.thf.dabplayer.activity;
 
-// import SwitchStationsAdapter.MyViewHolder;
+// import PageViewerAdapter.MyViewHolder;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
@@ -22,8 +22,8 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import com.thf.dabplayer.R;
 
-public class SwitchStationsAdapter
-    extends RecyclerView.Adapter<SwitchStationsAdapter.MyViewHolder> {
+public class PageViewerAdapter
+    extends RecyclerView.Adapter<PageViewerAdapter.MyViewHolder> {
   private static final String TAG = "Dabster";
 
   private List<StationItem> stationList;
@@ -41,7 +41,7 @@ public class SwitchStationsAdapter
 
   private final Listener listener;
 
-  public SwitchStationsAdapter(
+  public PageViewerAdapter(
       Context context, Listener listener, List<StationItem> list, boolean showAdditionalInfos) {
     this.listener = listener;
     this.context = context;
@@ -124,7 +124,7 @@ public class SwitchStationsAdapter
   }
 
   @Override
-  public SwitchStationsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+  public PageViewerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     View itemView =
         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_switch, parent, false);
     return new MyViewHolder(itemView);
