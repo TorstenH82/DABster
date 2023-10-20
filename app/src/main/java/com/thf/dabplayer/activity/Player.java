@@ -99,7 +99,8 @@ public class Player extends Activity
   public static final int PLAYERMSG_HIDE_SERVICE_FOLLOWING = 24;
   public static final int PLAYERMSG_SIGNAL_QUALITY = 11;
   public static final int PLAYERMSG_STATIONINFO_INTENT = 100;
-
+  public static final int PLAYERMSG_SET_STATIONMEMORY = 200;
+        
   /* renamed from: a */
   public static String[] arrPty;
 
@@ -358,6 +359,7 @@ public class Player extends Activity
             player.m78f();
             return;
           case PLAYERMSG_NEW_STATION_LIST: // 18
+            Toast.makeText(context, "Attention: reveived PLAYERMSG_NEW_STATION_LIST", Toast.LENGTH_LONG).show();    
             player.fillStationRecycler((List) message.obj);
             return;
           case 19:
@@ -413,6 +415,10 @@ public class Player extends Activity
             return;
           case Player.PLAYERMSG_PREV_STATION /* 104 */:
             player.onStationChange_prevWrapper();
+            return;
+          case PLAYERMSG_SET_STATIONMEMORY:
+            List<DabSubChannelInfo> memoryList = (List) message.obj;
+            // here we need to set the memory buttons
             return;
           default:
             Toast.makeText(player.context, "msg.what" + message.what, 0).show();
