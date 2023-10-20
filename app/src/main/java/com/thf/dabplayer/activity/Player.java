@@ -452,11 +452,10 @@ public class Player extends Activity
                 }
                 if (imageViewMemory != null) {
                     textViewMemory.setText(sci.mLabel);
-                    LogoDb logoDb = LogoDbHelper.getInstance(player.context);
-                    String pathToLogo = logoDb.getLogoFilenameForStation(sci.mLabel, sci.mSID);
+                    String pathToLogo = mLogoDb.getLogoFilenameForStation(sci.mLabel, sci.mSID);
                     BitmapDrawable logoDrawable = null;
                     if (pathToLogo != null) {
-                        logoDrawable = LogoDb.getBitmapForStation(player.context, pathToLogo);
+                        logoDrawable = mLogoDb.getBitmapForStation(player.context, pathToLogo);
                     }
                     if (logoDrawable == null) {
                         logoDrawable = LogoAssets.getBitmapForStation(player.context, sci.mLabel);
@@ -987,7 +986,6 @@ public class Player extends Activity
   public void updateStationList() {
     List<String> arrayList = new ArrayList<>();
     List<StationItem> arrayList2 = new ArrayList<>();
-    LogoDb logoDb = LogoDbHelper.getInstance(this.context);
     for (int i = 0; i < this.stationList.size(); i++) {
       DabSubChannelInfo info = this.stationList.get(i);
       StationItem item = new StationItem();
@@ -998,7 +996,7 @@ public class Player extends Activity
       String logoFilename = null;
       String normalizedStationName = null;
       if (this.mShowLogosInList) {
-        logoFilename = logoDb.getLogoFilenameForStation(info.mLabel, info.mSID);
+        logoFilename = mLogoDb.getLogoFilenameForStation(info.mLabel, info.mSID);
         normalizedStationName = StationLogo.getNormalizedStationName(info.mLabel);
       }
       item.ItemLogo = logoFilename;
@@ -1113,7 +1111,7 @@ public class Player extends Activity
       if (this.dabHandler == null) {
         this.dabHandler = this.dabService.getDabHandlerFromDabThread();
       }
-      LogoDb logoDb = LogoDbHelper.getInstance(this.context);
+      //LogoDb logoDb = LogoDbHelper.getInstance(this.context);
       if (s_stationListShadow == null) {
         s_stationListShadow = new ArrayList<>();
       } else {
@@ -1138,9 +1136,9 @@ public class Player extends Activity
         BitmapDrawable logoDrawable = null;
         if (showLogoAsMot) {
           String pathToLogo =
-              logoDb.getLogoFilenameForStation(subChannelInfo.mLabel, subChannelInfo.mSID);
+              mLogoDb.getLogoFilenameForStation(subChannelInfo.mLabel, subChannelInfo.mSID);
           if (pathToLogo != null) {
-            logoDrawable = LogoDb.getBitmapForStation(this, pathToLogo);
+            logoDrawable = mLogoDb.getBitmapForStation(this, pathToLogo);
           }
           if (logoDrawable == null) {
             logoDrawable = LogoAssets.getBitmapForStation(this.context, subChannelInfo.mLabel);
@@ -1206,7 +1204,7 @@ public class Player extends Activity
       List<StationItem> arrayList2 = new ArrayList<>();
       int i = 0;
       int i2 = -1;
-      LogoDb logoDb = LogoDbHelper.getInstance(this.context);
+      //LogoDb logoDb = LogoDbHelper.getInstance(this.context);
       while (i < this.stationList.size()) {
         DabSubChannelInfo info = this.stationList.get(i);
         StationItem item = new StationItem();
@@ -1215,7 +1213,7 @@ public class Player extends Activity
         item.ItemInfos = Strings.freq2channelname(info.mFreq) + " - " + info.mEnsembleLabel;
         item.ItemFavorite = info.mFavorite;
         if (this.mShowLogosInList) {
-          item.ItemLogo = logoDb.getLogoFilenameForStation(info.mLabel, info.mSID);
+          item.ItemLogo = mLogoDb.getLogoFilenameForStation(info.mLabel, info.mSID);
         } else {
           item.ItemLogo = null;
         }
@@ -1614,14 +1612,14 @@ public class Player extends Activity
 
       if (this.stationList != null && this.stationList.size() > this.playIndex) {
         String label = this.stationList.get(this.playIndex).mLabel;
-        LogoDb logoDb = LogoDbHelper.getInstance(this.context);
+        //LogoDb logoDb = LogoDbHelper.getInstance(this.context);
         int sid = this.stationList.get(this.playIndex).mSID;
 
-        String logoFilename = logoDb.getLogoFilenameForStation(label, sid);
+        String logoFilename = mLogoDb.getLogoFilenameForStation(label, sid);
         BitmapDrawable logoDrawable = null;
 
         if (logoFilename != null) {
-          logoDrawable = LogoDb.getBitmapForStation(this.context, logoFilename);
+          logoDrawable = mLogoDb.getBitmapForStation(this.context, logoFilename);
         }
         if (logoFilename == null) {
           logoDrawable = LogoAssets.getBitmapForStation(this.context, label);
@@ -2148,6 +2146,9 @@ public class Player extends Activity
     IntentFilter intentFilter = new IntentFilter();
     intentFilter.addAction("android.hardware.usb.action.USB_DEVICE_DETACHED");
     this.context.registerReceiver(this.f23N, intentFilter);
+
+    this.mLogoDb = LogoDbHelper.getInstance(this);
+    this.mLogoAssets = new LogoAssets(this, this.f22M);
     onCreateAdditions(savedInstanceState);
   }
 
@@ -2171,9 +2172,7 @@ public class Player extends Activity
     this.mTouchListener = new TouchListener(this);
     // this.mStationListView.setOnTouchListener(
     //    new StationViewTouchHelper(this.context, this.mTouchListener));
-    this.mLogoDb = LogoDbHelper.getInstance(this);
-    this.mLogoAssets = new LogoAssets(this, this.f22M);
-
+    
     /*LinearLayout leftBackgroundBox = (LinearLayout) findViewById(R.id.left_background_box);
     if (leftBackgroundBox != null) {
       ViewTreeObserver vto = leftBackgroundBox.getViewTreeObserver();
