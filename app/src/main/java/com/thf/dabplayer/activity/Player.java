@@ -193,6 +193,12 @@ public class Player extends Activity
         @Override
         public void onLongPress(int position) {
           Toast.makeText(context, "long clicked at " + position, Toast.LENGTH_SHORT).show();
+          if (this.motImage != null) {
+              if (this.stationList != null && this.stationList.Count() > position) {
+                  DabSubChannelInfo sci = this.stationList.get(position);
+                  this.mLogoDb.storeUserStationLogo(this.motImage, sci.mLabel, sci.mSID);
+              }
+          }  
         }
       };
 
