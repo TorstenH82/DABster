@@ -4,12 +4,17 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import com.thf.dabplayer.activity.SettingsStationLogoActivity;
 import com.thf.dabplayer.service.DabService;
 import com.thf.dabplayer.utils.C0162a;
+import com.thf.dabplayer.utils.Strings;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /* renamed from: com.ex.dabplayer.pad.dab.LogoDb */
@@ -333,7 +338,7 @@ private static final String LOGO_PATH = Strings.DAB_path() + File.separator + "l
 public static final String LOGO_PATH_USER = LOGO_PATH + "user" + File.separator;
 
 /* added to store mot as station logo */
-public static boolean storeUserStationLogo(Drawable drawable, String stationName, int serviceId) {
+public boolean storeUserStationLogo(Drawable drawable, String stationName, int serviceId) {
     FileOutputStream fos;
     boolean result = false;
     if (drawable == null || stationName == null) {

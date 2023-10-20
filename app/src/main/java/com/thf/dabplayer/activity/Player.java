@@ -100,7 +100,7 @@ public class Player extends Activity
   public static final int PLAYERMSG_SIGNAL_QUALITY = 11;
   public static final int PLAYERMSG_STATIONINFO_INTENT = 100;
   public static final int PLAYERMSG_SET_STATIONMEMORY = 200;
-        
+
   /* renamed from: a */
   public static String[] arrPty;
 
@@ -193,12 +193,12 @@ public class Player extends Activity
         @Override
         public void onLongPress(int position) {
           Toast.makeText(context, "long clicked at " + position, Toast.LENGTH_SHORT).show();
-          if (this.motImage != null) {
-              if (this.stationList != null && this.stationList.Count() > position) {
-                  DabSubChannelInfo sci = this.stationList.get(position);
-                  this.mLogoDb.storeUserStationLogo(this.motImage, sci.mLabel, sci.mSID);
-              }
-          }  
+          if (Player.this.motImage != null) {
+            if (Player.this.stationList != null && Player.this.stationList.size() > position) {
+              DabSubChannelInfo sci = Player.this.stationList.get(position);
+              Player.this.mLogoDb.storeUserStationLogo(Player.this.motImage, sci.mLabel, sci.mSID);
+            }
+          }
         }
       };
 
@@ -363,7 +363,9 @@ public class Player extends Activity
             player.m78f();
             break;
           case PLAYERMSG_NEW_STATION_LIST: // 18
-            Toast.makeText(context, "Attention: reveived PLAYERMSG_NEW_STATION_LIST", Toast.LENGTH_LONG).show();    
+            Toast.makeText(
+                    context, "Attention: reveived PLAYERMSG_NEW_STATION_LIST", Toast.LENGTH_LONG)
+                .show();
             player.fillStationRecycler((List) message.obj);
             break;
           case 19:
@@ -421,51 +423,51 @@ public class Player extends Activity
             List<DabSubChannelInfo> memoryList = (List) message.obj;
             // here we need to set the memory buttons
             for (DabSubChannelInfo sci : memoryList) {
-                int memIdx = sci.mFavorite;
-                ImageView imageViewMemory = null;
-                TextView textViewMemory = null;
-                switch (memIdx) {
-                    case 1:
-                        imageViewMemory = findViewById(R.id.memory1Img);
-                        textViewMemory = findViewById(R.id.memory1Tv);
-                        break;
-                    case 2:
-                        imageViewMemory = findViewById(R.id.memory2Img);
-                        textViewMemory = findViewById(R.id.memory2Tv);
-                        break;             
-                    case 3:
-                        imageViewMemory = findViewById(R.id.memory3Img);
-                        textViewMemory = findViewById(R.id.memory3Tv);
-                        break;
-                    case 4:
-                        imageViewMemory = findViewById(R.id.memory4Img);
-                        textViewMemory = findViewById(R.id.memory4Tv);
-                        break;
-                    case 5:
-                        imageViewMemory = findViewById(R.id.memory5Img);
-                        textViewMemory = findViewById(R.id.memory5Tv);
-                        break;
-                    case 6:
-                        imageViewMemory = findViewById(R.id.memory6Img);
-                        textViewMemory = findViewById(R.id.memory6Tv);
-                        break;
+              int memIdx = sci.mFavorite;
+              ImageView imageViewMemory = null;
+              TextView textViewMemory = null;
+              switch (memIdx) {
+                case 1:
+                  imageViewMemory = findViewById(R.id.memory1Img);
+                  textViewMemory = findViewById(R.id.memory1Tv);
+                  break;
+                case 2:
+                  imageViewMemory = findViewById(R.id.memory2Img);
+                  textViewMemory = findViewById(R.id.memory2Tv);
+                  break;
+                case 3:
+                  imageViewMemory = findViewById(R.id.memory3Img);
+                  textViewMemory = findViewById(R.id.memory3Tv);
+                  break;
+                case 4:
+                  imageViewMemory = findViewById(R.id.memory4Img);
+                  textViewMemory = findViewById(R.id.memory4Tv);
+                  break;
+                case 5:
+                  imageViewMemory = findViewById(R.id.memory5Img);
+                  textViewMemory = findViewById(R.id.memory5Tv);
+                  break;
+                case 6:
+                  imageViewMemory = findViewById(R.id.memory6Img);
+                  textViewMemory = findViewById(R.id.memory6Tv);
+                  break;
+              }
+              if (imageViewMemory != null) {
+                textViewMemory.setText(sci.mLabel);
+                String pathToLogo = mLogoDb.getLogoFilenameForStation(sci.mLabel, sci.mSID);
+                BitmapDrawable logoDrawable = null;
+                if (pathToLogo != null) {
+                  logoDrawable = mLogoDb.getBitmapForStation(player.context, pathToLogo);
                 }
-                if (imageViewMemory != null) {
-                    textViewMemory.setText(sci.mLabel);
-                    String pathToLogo = mLogoDb.getLogoFilenameForStation(sci.mLabel, sci.mSID);
-                    BitmapDrawable logoDrawable = null;
-                    if (pathToLogo != null) {
-                        logoDrawable = mLogoDb.getBitmapForStation(player.context, pathToLogo);
-                    }
-                    if (logoDrawable == null) {
-                        logoDrawable = LogoAssets.getBitmapForStation(player.context, sci.mLabel);
-                    }
-                    if (logoDrawable != null) {
-                        imageViewMemory.setImageDrawable(logoDrawable);
-                    } else {
-                        imageViewMemory.setImageResource(R.drawable.radio);
-                    }
+                if (logoDrawable == null) {
+                  logoDrawable = LogoAssets.getBitmapForStation(player.context, sci.mLabel);
                 }
+                if (logoDrawable != null) {
+                  imageViewMemory.setImageDrawable(logoDrawable);
+                } else {
+                  imageViewMemory.setImageResource(R.drawable.radio);
+                }
+              }
             }
             break;
           default:
@@ -1111,7 +1113,7 @@ public class Player extends Activity
       if (this.dabHandler == null) {
         this.dabHandler = this.dabService.getDabHandlerFromDabThread();
       }
-      //LogoDb logoDb = LogoDbHelper.getInstance(this.context);
+      // LogoDb logoDb = LogoDbHelper.getInstance(this.context);
       if (s_stationListShadow == null) {
         s_stationListShadow = new ArrayList<>();
       } else {
@@ -1204,7 +1206,7 @@ public class Player extends Activity
       List<StationItem> arrayList2 = new ArrayList<>();
       int i = 0;
       int i2 = -1;
-      //LogoDb logoDb = LogoDbHelper.getInstance(this.context);
+      // LogoDb logoDb = LogoDbHelper.getInstance(this.context);
       while (i < this.stationList.size()) {
         DabSubChannelInfo info = this.stationList.get(i);
         StationItem item = new StationItem();
@@ -1612,7 +1614,7 @@ public class Player extends Activity
 
       if (this.stationList != null && this.stationList.size() > this.playIndex) {
         String label = this.stationList.get(this.playIndex).mLabel;
-        //LogoDb logoDb = LogoDbHelper.getInstance(this.context);
+        // LogoDb logoDb = LogoDbHelper.getInstance(this.context);
         int sid = this.stationList.get(this.playIndex).mSID;
 
         String logoFilename = mLogoDb.getLogoFilenameForStation(label, sid);
@@ -2003,7 +2005,7 @@ public class Player extends Activity
     obtainMessage.obj = subChannelInfo;
     obtainMessage.arg1 = storagePos;
     this.dabHandler.sendMessage(obtainMessage);
-    // this comes back with PLAYERMSG_SET_STATIONMEMORY 
+    // this comes back with PLAYERMSG_SET_STATIONMEMORY
   }
 
   private void playFavourite(int storagePos) {
@@ -2116,10 +2118,10 @@ public class Player extends Activity
     pagerSnapHelper.attachToRecyclerView(recyclerView);
 
     if ("RMX3301EEA".equals(Build.PRODUCT)) {
-        stationsAdapter =
-            new SwitchStationsAdapter(
-                this.context, switchStationsAdapterListener, new ArrayList<>(), false);
-        this.recyclerView.setAdapter(stationsAdapter);
+      stationsAdapter =
+          new SwitchStationsAdapter(
+              this.context, switchStationsAdapterListener, new ArrayList<>(), false);
+      this.recyclerView.setAdapter(stationsAdapter);
     }
 
     this.audioManager = (AudioManager) getSystemService("audio");
@@ -2172,7 +2174,7 @@ public class Player extends Activity
     this.mTouchListener = new TouchListener(this);
     // this.mStationListView.setOnTouchListener(
     //    new StationViewTouchHelper(this.context, this.mTouchListener));
-    
+
     /*LinearLayout leftBackgroundBox = (LinearLayout) findViewById(R.id.left_background_box);
     if (leftBackgroundBox != null) {
       ViewTreeObserver vto = leftBackgroundBox.getViewTreeObserver();

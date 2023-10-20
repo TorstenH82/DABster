@@ -1,0 +1,35 @@
+{
+  "allFiles": [
+    {
+      "file": "/storage/emulated/0/AppProjects/DABster/app/src/main/java/com/thf/dabplayer/activity/Player.java",
+      "selection": {
+        "end": {
+          "column": 99,
+          "index": -1,
+          "line": 198
+        },
+        "start": {
+          "column": 99,
+          "index": -1,
+          "line": 198
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AppProjects/DABster/app/src/main/java/com/thf/dabplayer/dab/LogoDb.java",
+      "selection": {
+        "end": {
+          "column": 45,
+          "index": -1,
+          "line": 352
+        },
+        "start": {
+          "column": 45,
+          "index": -1,
+          "line": 352
+        }
+      }
+    }
+  ],
+  "selectedFile": "/storage/emulated/0/AppProjects/DABster/app/src/main/java/com/thf/dabplayer/activity/Player.java"
+}
