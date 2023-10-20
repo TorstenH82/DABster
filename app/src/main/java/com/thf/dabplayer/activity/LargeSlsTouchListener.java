@@ -30,34 +30,34 @@ public class LargeSlsTouchListener implements View.OnTouchListener {
     private GestureListener() {}
 
     @Override // android.view.GestureDetector.SimpleOnGestureListener,
-              // android.view.GestureDetector.OnGestureListener
+    // android.view.GestureDetector.OnGestureListener
     public boolean onDown(MotionEvent e) {
       return true;
     }
 
     @Override // android.view.GestureDetector.SimpleOnGestureListener,
-              // android.view.GestureDetector.OnGestureListener
+    // android.view.GestureDetector.OnGestureListener
     public boolean onSingleTapUp(MotionEvent e) {
       onClick();
       return super.onSingleTapUp(e);
     }
 
     @Override // android.view.GestureDetector.SimpleOnGestureListener,
-              // android.view.GestureDetector.OnDoubleTapListener
+    // android.view.GestureDetector.OnDoubleTapListener
     public boolean onDoubleTap(MotionEvent e) {
       onDoubleClick();
       return super.onDoubleTap(e);
     }
 
     @Override // android.view.GestureDetector.SimpleOnGestureListener,
-              // android.view.GestureDetector.OnGestureListener
+    // android.view.GestureDetector.OnGestureListener
     public void onLongPress(MotionEvent e) {
       onLongClick();
       super.onLongPress(e);
     }
 
     @Override // android.view.GestureDetector.SimpleOnGestureListener,
-              // android.view.GestureDetector.OnGestureListener
+    // android.view.GestureDetector.OnGestureListener
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
       try {
         float diffY = e2.getY() - e1.getY();
@@ -95,15 +95,17 @@ public class LargeSlsTouchListener implements View.OnTouchListener {
 
     public void onSwipeUp() {
       C0162a.m9a("LargeSlsTL::onSwipeUp");
-      MotImage image = LargeSlsTouchListener.this.player.getMotImage();
+      /*MotImage image = LargeSlsTouchListener.this.player.getMotImage();
       if (image != null) {
         image.setBrightness(100);
       }
+            */
     }
 
     public void onSwipeDown() {
       C0162a.m9a("LargeSlsTL::onSwipeDown");
-      MotImage image = LargeSlsTouchListener.this.player.getMotImage();
+      /*
+            MotImage image = LargeSlsTouchListener.this.player.getMotImage();
       if (image != null) {
         image.setBrightness(
             LargeSlsTouchListener.this
@@ -112,11 +114,12 @@ public class LargeSlsTouchListener implements View.OnTouchListener {
                 .getSharedPreferences(SettingsActivity.prefname_settings, 0)
                 .getInt(SettingsActivity.pref_key_dim_percent, 50));
       }
+            */
     }
 
     public void onClick() {
       C0162a.m9a("LargeSlsTL::onClick");
-      LargeSlsTouchListener.this.player.onMotClicked();
+      // LargeSlsTouchListener.this.player.onMotClicked();
     }
 
     public void onDoubleClick() {}

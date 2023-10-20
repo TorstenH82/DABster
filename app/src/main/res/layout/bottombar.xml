@@ -1,0 +1,78 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_bar"
+    android:orientation="vertical"
+    tools:context=".Player">
+
+
+    <!-- <ImageView android:id="@+id/bottomBar" android:layout_width="match_parent" android:layout_height="40dp" android:layout_marginBottom="0dp" android:layout_marginEnd="0dp" android:layout_marginStart="0dp" android:layout_marginTop="0dp" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toStartOf="parent" android:scaleType="fitXY" android:src="@drawable/bottom_bar" /> -->
+    <TextClock
+        android:id="@+id/textClock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:format12Hour="hh:mm a"
+        android:format24Hour="HH:mm" />
+
+
+<ImageView
+            android:layout_gravity="center"
+            android:id="@+id/signal_level"
+            
+            android:src="@drawable/signal_0"
+            android:contentDescription="@null"
+            android:layout_width="72dp"
+        android:layout_height="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textClock"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <Button
+        android:layout_gravity="center_vertical"
+        android:id="@+id/bt_settings2"
+        android:background="@drawable/settings_selector"
+        android:layout_width="72dp"
+        android:layout_height="40dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/layScan"
+        app:layout_constraintTop_toTopOf="parent"
+        style="?android:attr/buttonBarButtonStyle" />
+
+
+    <Button
+        android:layout_gravity="center_vertical"
+        android:id="@+id/layScan"
+        android:background="@drawable/scan_selector"
+        android:layout_width="72dp"
+        android:layout_height="40dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/layExit"
+        app:layout_constraintTop_toTopOf="parent"
+        style="?android:attr/buttonBarButtonStyle" />
+
+
+    <Button
+        android:layout_gravity="center_vertical"
+        android:id="@+id/layExit"
+        android:background="@drawable/exit_selector"
+        android:layout_width="72dp"
+        android:layout_height="40dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="?android:attr/buttonBarButtonStyle" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

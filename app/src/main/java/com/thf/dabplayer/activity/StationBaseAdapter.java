@@ -107,7 +107,7 @@ public class StationBaseAdapter extends BaseAdapter {
     } else {
       view.setBackgroundColor(0);
     }
-    updateFavoriteUI(bVar, item.ItemFavorite);
+    //updateFavoriteUI(bVar, item.ItemFavorite);
     BitmapDrawable logoDrawable = null;
     String pathToLogo = item.ItemLogo;
     if (pathToLogo != null) {
@@ -135,7 +135,7 @@ public class StationBaseAdapter extends BaseAdapter {
   }
 
   public void updateFavorite(int i, boolean isFavorite) {
-    this.stationList.get(i).ItemFavorite = isFavorite;
+    //this.stationList.get(i).ItemFavorite = isFavorite;
   }
 
   public void changeData(List<StationItem> changed) {

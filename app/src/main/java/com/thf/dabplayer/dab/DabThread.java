@@ -16,6 +16,7 @@ import android.os.Looper;
 import android.os.Message;
 
 import android.text.TextUtils;
+import android.widget.Toast;
 import com.thf.dabplayer.activity.Player;
 import com.thf.dabplayer.service.DabService;
 import com.thf.dabplayer.utils.C0162a;
@@ -47,9 +48,11 @@ public class DabThread extends Thread {
   public static final int SCANTYPE_FAVOURITE = 2;
   public static final int SCANTYPE_FULL = 0;
   public static final int SCANTYPE_INCREMENTAL = 1;
+  public static final int UPDATE_FAVOURITE = 30;
+  public static final int PLAY_FAVOURITE = 300;
 
   /* renamed from: H */
-  //private String f74H;
+  // private String f74H;
 
   /* renamed from: c */
   private Context context;
@@ -109,7 +112,7 @@ public class DabThread extends Thread {
   private List stationList = new ArrayList();
 
   /* renamed from: b */
-  private List<ChannelInfo> f77b = new ArrayList();
+  private List<ChannelInfo> channelInfoList = new ArrayList();
 
   /* renamed from: m */
   private C0148j f88m = null;
@@ -194,20 +197,22 @@ public class DabThread extends Thread {
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: a */
   public void m54a(DabSubChannelInfo subChannelInfo) {
-    for (ChannelInfo qVar : this.f77b) {
+    Toast.makeText(context, "m54a is not implemented", Toast.LENGTH_LONG).show();
+    /*
+    for (ChannelInfo qVar : this.channelInfoList) {
       if (qVar.freq == subChannelInfo.mFreq
           && qVar.subChannelId == subChannelInfo.mSubChannelId
           && qVar.label.equals(qVar.label)) {
         this.dbHelper.m70a(qVar);
-        this.f77b = this.dbHelper.getPresetChannelInfo();
+        this.channelInfoList = this.dbHelper.getPresetChannelInfo();
         Message obtainMessage = this.playerHandler.obtainMessage();
         obtainMessage.what = 15;
         obtainMessage.obj = subChannelInfo;
         this.playerHandler.sendMessage(obtainMessage);
         Message obtainMessage2 = this.playerHandler.obtainMessage();
         obtainMessage2.what = 13;
-        obtainMessage2.arg1 = this.f77b.size();
-        obtainMessage2.obj = this.f77b;
+        obtainMessage2.arg1 = this.channelInfoList.size();
+        obtainMessage2.obj = this.channelInfoList;
         this.playerHandler.sendMessage(obtainMessage2);
         return;
       }
@@ -223,12 +228,13 @@ public class DabThread extends Thread {
     obtainMessage3.what = 17;
     obtainMessage3.obj = subChannelInfo;
     this.playerHandler.sendMessage(obtainMessage3);
-    this.f77b = this.dbHelper.getPresetChannelInfo();
+    this.channelInfoList = this.dbHelper.getPresetChannelInfo();
     Message obtainMessage4 = this.playerHandler.obtainMessage();
     obtainMessage4.what = 13;
-    obtainMessage4.arg1 = this.f77b.size();
-    obtainMessage4.obj = this.f77b;
+    obtainMessage4.arg1 = this.channelInfoList.size();
+    obtainMessage4.obj = this.channelInfoList;
     this.playerHandler.sendMessage(obtainMessage4);
+        */
   }
 
   /* JADX INFO: Access modifiers changed from: private */
@@ -296,7 +302,7 @@ public class DabThread extends Thread {
   }
 
   /* renamed from: a */
-  /*  
+  /*
   private void getStationLogoFromDabBin(String str) {
     int dab_get_image;
     String dabBinFile = this.context.getFilesDir().getAbsolutePath() + "/dab.bin";
@@ -323,7 +329,7 @@ public class DabThread extends Thread {
       C0162a.m9a("no service logo '" + str + "' in dab.bin, dab_get_image=" + dab_get_image);
     }
   }
-  */  
+  */
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: b */
   public void scan(int scan_which_region, int scan_type) {
@@ -444,11 +450,11 @@ public class DabThread extends Thread {
       obtainMessage.arg1 = this.stationList.size();
       obtainMessage.obj = this.stationList;
       this.playerHandler.sendMessage(obtainMessage);
-      this.f77b = this.dbHelper.getPresetChannelInfo();
+      this.channelInfoList = this.dbHelper.getPresetChannelInfo();
       Message obtainMessage2 = this.playerHandler.obtainMessage();
       obtainMessage2.what = 13;
-      obtainMessage2.arg1 = this.f77b.size();
-      obtainMessage2.obj = this.f77b;
+      obtainMessage2.arg1 = this.channelInfoList.size();
+      obtainMessage2.obj = this.channelInfoList;
       this.playerHandler.sendMessage(obtainMessage2);
       Message obtainMessage3 = this.playerHandler.obtainMessage();
       obtainMessage3.what = 19;
@@ -511,9 +517,9 @@ public class DabThread extends Thread {
         C0162a.m9a("current label:" + subChannelInfo.mLabel);
         C0162a.m9a("bitrate:" + subChannelInfo.mBitrate);
         C0162a.m9a("subchid:" + ((int) subChannelInfo.mSubChannelId));
-        //this.f74H = subChannelInfo.mLabel;
-        //String temp = C0165c.m1a(subChannelInfo.mLabel.trim());
-        //getStationLogoFromDabBin(temp);
+        // this.f74H = subChannelInfo.mLabel;
+        // String temp = C0165c.m1a(subChannelInfo.mLabel.trim());
+        // getStationLogoFromDabBin(temp);
         this.dabSubChannelInfo.mAbbreviatedFlag = subChannelInfo.mAbbreviatedFlag;
         this.dabSubChannelInfo.mBitrate = subChannelInfo.mBitrate;
         this.dabSubChannelInfo.mEID = subChannelInfo.mEID;
@@ -914,7 +920,7 @@ public class DabThread extends Thread {
     C0162a.m9a("refreshStationList");
     this.stationList = this.dbHelper.getStationList();
     Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = 18;
+    obtainMessage.what = Player.PLAYERMSG_NEW_STATION_LIST; // 18
     obtainMessage.arg1 = this.stationList.size();
     obtainMessage.obj = this.stationList;
     this.playerHandler.sendMessage(obtainMessage);
@@ -1043,7 +1049,6 @@ public class DabThread extends Thread {
           DabThread.this.playerHandler = null;
           if (message.arg1 == 1) {
             DabThread.this.erase_fic_db();
-            break;
           }
           break;
         case MSGTYPE_START_PLAY_STATION:
@@ -1075,6 +1080,7 @@ public class DabThread extends Thread {
         case 8:
           break;
         case 16:
+          Toast.makeText(context, "case 16!", Toast.LENGTH_SHORT).show();
           DabThread.this.m54a((DabSubChannelInfo) message.obj);
           return;
         case 20:
@@ -1083,9 +1089,23 @@ public class DabThread extends Thread {
         case 23:
           DabThread.this.m44j();
           return;
-        case 30:
-          DabThread.this.dbHelper.updateFav((DabSubChannelInfo) message.obj);
+        case UPDATE_FAVOURITE:
+          DabThread.this.dbHelper.updateFav((DabSubChannelInfo) message.obj, message.arg1);
           return;
+
+        case PLAY_FAVOURITE:
+          DabSubChannelInfo sciFavourite =
+              DabThread.this.dbHelper.getFavouriteService(message.arg1);
+          if (sciFavourite != null) {
+
+            int idx = DabThread.this.stationList.indexOf(sciFavourite);
+            if (idx != -1) {
+              DabThread.this.playStation(idx);
+            }
+          }
+          // DabThread.this.stationList.indexOf()
+          // DabThread.this.playStation
+          break;
         case 31:
           DabThread.this.activateFavoriteList();
           return;
@@ -1198,7 +1218,8 @@ public class DabThread extends Thread {
                   DabThread.this.dabDec.decoder_fic_get_subch_info(info, (char) n);
                   arrayList.add(RepairEBU.fixLabels(info));
                 }
-                DabThread.this.total_known_services += DabThread.this.dbHelper.getNewStationCount(arrayList);
+                DabThread.this.total_known_services +=
+                    DabThread.this.dbHelper.insertNewStations(arrayList);
                 DabThread.this.scan_service_count += service_count;
                 DabThread.this.stationList = DabThread.this.dbHelper.getStationList();
                 Message obtainMessage = DabThread.this.playerHandler.obtainMessage();

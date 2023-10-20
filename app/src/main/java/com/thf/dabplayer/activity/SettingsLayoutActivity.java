@@ -313,7 +313,7 @@ public class SettingsLayoutActivity extends Activity
     }
     if (restartPlayerNeeded) {
       C0162a.m9a("layout changes require recreation");
-      sendBroadcast(new Intent(Player.HomeKeyReceiver.ACTION_RECREATE));
+      //sendBroadcast(new Intent(Player.HomeKeyReceiver.ACTION_RECREATE));
     }
   }
 

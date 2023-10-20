@@ -12,7 +12,7 @@ public class DabSubChannelInfo {
     public int mEID;
     public String mEnsembleLabel;
     public int mFreq;
-    public boolean mIsFavorite;
+    public int mFavorite;
     public String mLabel;
     public int mPS;
     public byte mPty;
@@ -38,7 +38,7 @@ public class DabSubChannelInfo {
             this.mSID = 0;
             this.mSubChannelId = (byte) 0;
             this.mType = (byte) 0;
-            this.mIsFavorite = false;
+            this.mFavorite = 0;
         }
     }
 
@@ -55,6 +55,6 @@ public class DabSubChannelInfo {
         this.mSID = s.mSID;
         this.mSubChannelId = s.mSubChannelId;
         this.mType = s.mType;
-        this.mIsFavorite = s.mIsFavorite;
+        this.mFavorite = s.mFavorite;
     }
 }

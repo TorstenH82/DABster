@@ -36,7 +36,7 @@ public class TouchListener implements View.OnTouchListener {
   @SuppressLint({"ClickableViewAccessibility"})
   public boolean onTouch(View v, MotionEvent event) {
     this.currentView = v;
-    this.activity.maximizeLeftArea(false, true);
+    //this.activity.maximizeLeftArea(false, true);
     switch (event.getActionMasked()) {
       case 0:
         this.downX = event.getX();
@@ -158,7 +158,8 @@ public class TouchListener implements View.OnTouchListener {
                           GestureListener.this.changeDeleteButton(v2, 8);
                         }
                       };
-                  StationBaseAdapter aVar = (StationBaseAdapter) TouchListener.this.activity.getListView().getAdapter();
+                  /*
+                            StationBaseAdapter aVar = (StationBaseAdapter) TouchListener.this.activity.getListView().getAdapter();
                   String label = (String) aVar.getItem(pos);
                   String msg =
                       TouchListener.this.activity.getResources().getString(R.string.Delete)
@@ -178,6 +179,7 @@ public class TouchListener implements View.OnTouchListener {
                           TouchListener.this.activity.getResources().getString(17039369),
                           dialogClickListener)
                       .show();
+                            */
                 }
               });
           break;
@@ -213,8 +215,8 @@ public class TouchListener implements View.OnTouchListener {
     public void onLongClick() {
       StationBaseAdapter.C0137b bVar = (StationBaseAdapter.C0137b) TouchListener.this.currentView.getTag();
       C0162a.m9a("onLongClick pos " + bVar.posInList);
-      TouchListener.this.activity.toggleFavoriteAtPosition(
-          TouchListener.this.currentView, bVar.posInList);
+      //TouchListener.this.activity.toggleFavoriteAtPosition(
+         // TouchListener.this.currentView, bVar.posInList);
     }
   }
 }

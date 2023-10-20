@@ -109,6 +109,15 @@ public class MainActivity extends Activity {
   protected void onCreate(Bundle bundle) {
     super.onCreate(bundle);
 
+    if ("RMX3301EEA".equals(Build.PRODUCT)) {
+      Intent intentTest = new Intent();
+      intentTest.setClass(this, Player.class);
+      // intentTest.putExtra("UsbDevice", usbDevice);
+      intentTest.putExtra("StartedByIntent", this.startedByIntent);
+      intentTest.addFlags(536870912);
+      startActivity(intentTest);
+    }
+
     C0162a.m9a("MainActivity:onCreate");
     C0162a.m9a("board: " + Build.BOARD);
     C0162a.m9a("device: " + Build.DEVICE);

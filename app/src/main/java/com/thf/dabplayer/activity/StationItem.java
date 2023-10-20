@@ -4,7 +4,7 @@ package com.thf.dabplayer.activity;
 /* loaded from: classes.dex */
 public class StationItem {
     public int Index;
-    public boolean ItemFavorite;
+    public int ItemFavorite;
     public String ItemInfos;
     public String ItemLogo;
     public String ItemTitle;

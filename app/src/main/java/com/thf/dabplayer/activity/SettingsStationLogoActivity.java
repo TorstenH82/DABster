@@ -178,7 +178,7 @@ public class SettingsStationLogoActivity extends Activity {
     super.onDestroy();
     C0162a.m9a("SettingsStationLogoActivity:onDestroy");
     if (this.mPlayerRecreateNeeded) {
-      sendBroadcast(new Intent(Player.HomeKeyReceiver.ACTION_RECREATE));
+      //sendBroadcast(new Intent(Player.HomeKeyReceiver.ACTION_RECREATE));
     }
   }
 

@@ -1,0 +1,9 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+<item android:drawable="@drawable/radio_rect_dn_mod" android:state_pressed="true"/> <!-- pressed -->
+
+<item android:drawable="@drawable/radio_rect_up_mod" android:state_focused="false"/> <!-- focused -->
+
+<item android:drawable="@drawable/radio_rect_up_mod" android:scaleType="fitXY" /> <!-- default -->
+
+</selector>

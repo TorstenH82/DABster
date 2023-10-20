@@ -44,7 +44,7 @@
         <item name="android:layout_marginBottom">16dp</item>
         <item name="android:minHeight">1px</item>
     </style>
-    <style name="StationName" parent="@android:style/TextAppearance.DeviceDefault.Large">
+    <style name="StationName" parent="@android:style/TextAppearance.DeviceDefault.Medium">
     </style>
     <style name="DLS" parent="@android:style/TextAppearance.DeviceDefault.Medium">
     </style>

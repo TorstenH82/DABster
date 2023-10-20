@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -15,7 +14,6 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
@@ -29,7 +27,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 // import android.support.p000v4.media.MediaMetadataCompat;
 // import android.support.p000v4.media.session.MediaSessionCompat;
@@ -50,16 +47,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
-import androidx.core.view.KeyEventDispatcher;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 import com.thf.dabplayer.R;
-import com.thf.dabplayer.activity.StationBaseAdapter;
+// import com.thf.dabplayer.activity.StationBaseAdapter;
 import com.thf.dabplayer.dab.DatabaseHelper;
 import com.thf.dabplayer.dab.DabThread;
 import com.thf.dabplayer.dab.ChannelInfo;
@@ -79,10 +77,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Executors;
+import android.app.Activity;
 
 /* renamed from: com.ex.dabplayer.pad.activity.Player */
 /* loaded from: classes.dex */
-public class Player extends ListActivity implements ServiceConnection, View.OnClickListener {
+public class Player extends Activity
+    implements ServiceConnection, View.OnClickListener, View.OnLongClickListener {
   public static final int PLAYERMSG_ASSET_FOUND_LOGOS = 98;
   public static final int PLAYERMSG_AUDIO_DISTORTION = 102;
   public static final int PLAYERMSG_DISMISS_SERVICE_FOLLOWING = 24;
@@ -110,7 +110,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
   private List<ChannelInfo> channelInfoList;
 
   /* renamed from: C */
-  private AudioManager f16C;
+  private AudioManager audioManager;
 
   /* renamed from: E */
   private ProgressDialog progressDialog;
@@ -141,23 +141,24 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
   private Button f31j;
 
   /* renamed from: k */
-  private Button f32k;
+  private Button btnNext;
 
   /* renamed from: l */
-  private Button f33l;
+  private Button layScan;
+  private Button layExit;
 
   /* renamed from: m */
-  public Button f34m;
+  // public Button f34m;
   private float mDefaultLeftAreaLayoutWeight;
   Intent mServiceIntent;
   private boolean mShowLogosInList;
-  private ListView mStationListView;
+  // private ListView mStationListView;
 
   /* renamed from: n */
   private Button f35n;
 
   /* renamed from: o */
-  private TextView f36o;
+  private TextView txtServiceName;
 
   /* renamed from: p */
   private TextView f37p;
@@ -166,10 +167,10 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
   private TextView f38q;
 
   /* renamed from: r */
-  private MotImage f39r;
+  // private MotImage motImage;
 
   /* renamed from: s */
-  private ImageView f40s;
+  private ImageView imgSignalLevel;
 
   /* renamed from: t */
   private TextView f41t;
@@ -178,6 +179,24 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
   /* renamed from: v */
   private Spinner f42v;
 
+  private SwitchStationsAdapter stationsAdapter;
+  private LinearLayoutManager linearLayoutManager;
+  private RecyclerView recyclerView;
+  private SwitchStationsAdapter.Listener switchStationsAdapterListener =
+      new SwitchStationsAdapter.Listener() {
+        @Override
+        public void onItemClick(int position) {
+          onStationClicked(position);
+        }
+
+        @Override
+        public void onLongPress(int position) {
+          Toast.makeText(context, "long clicked at " + position, Toast.LENGTH_SHORT).show();
+        }
+      };
+
+  private LinearLayout memory1, memory2, memory3, memory4, memory5, memory6;
+
   /* renamed from: w */
   public Handler dabHandler;
 
@@ -185,13 +204,13 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
   private DabService dabService;
 
   /* renamed from: H */
-  private static HomeKeyReceiver f12H = null;
+  // private static HomeKeyReceiver homeKeyReceiver = null;
   private static WeakReference<Intent> sMainActivityStartIntent = null;
   private static WeakReference<Handler> sPlayerHandler = null;
   private static ArrayList<DabSubChannelInfo> s_stationListShadow = null;
 
   /* renamed from: D */
-  public boolean f17D = false;
+  public boolean isInitialized = false;
 
   /* renamed from: J */
   private String strDls = "";
@@ -201,7 +220,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
 
   /* renamed from: N */
   private final BroadcastReceiver f23N = new hBroadcastReceiver();
-  @IdRes private final int R_id_left_area = R.id.left_area;
+  // @IdRes private final int R_id_left_area = R.id.left_area;
 
   /* renamed from: c */
   AudioManager.OnAudioFocusChangeListener f24c =
@@ -271,13 +290,14 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
   private LogoDb mLogoDb = null;
   private MediaMetadataCompat mMetaData = new MediaMetadataCompat.Builder().build();
   private boolean mProperShutdown = false;
-  private boolean mSendBroadcastIntent = false;
+  private boolean mSendBroadcastIntent = true;
   private boolean mShowAdditionalInfos = true;
   private StationDetails mStationDetails = new StationDetails();
   private float mStationNameSizeFromStyle = 0.0f;
   private TouchListener mTouchListener = null;
   private ViewFlipper mViewFlipper = null;
   private DelayedRunnableHandler maximizeLeftAreaHandler = new DelayedRunnableHandler();
+  private BitmapDrawable motImage;
 
   /* renamed from: y */
   private UsbManager usbManager = null;
@@ -310,7 +330,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
             player.stationList = (List) message.obj;
             player.stationListSize = player.stationList.size();
             if (player.stationListSize > 0) {
-              player.m85a();
+              player.updateStationList();
               return;
             }
             return;
@@ -337,11 +357,11 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
             // Player.access$900(player);
             player.m78f();
             return;
-          case 18:
-            player.m83a((List) message.obj);
+          case PLAYERMSG_NEW_STATION_LIST: // 18
+            player.fillStationRecycler((List) message.obj);
             return;
           case 19:
-            player.f17D = true;
+            player.isInitialized = true;
             if (player.stationListSize > 0) {
               player.m84a(player.playIndex);
               return;
@@ -356,7 +376,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
           case Player.PLAYERMSG_ASSET_FOUND_LOGOS /* 98 */:
             if (player.stationList != null) {
               C0162a.m9a("assetlogos refresh display");
-              player.m85a();
+              player.updateStationList();
               return;
             }
             return;
@@ -366,13 +386,13 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
               player.progressDialog.dismiss();
             }
             player.progressDialog.setMessage("");
-            player.m85a();
+            player.updateStationList();
             if (player.stationListSize > 0) {
               player.m84a(0);
               return;
             }
             return;
-          case 100:
+          case Player.PLAYERMSG_STATIONINFO_INTENT: // 100
             Intent intent = (Intent) message.obj;
             boolean affectsAndroidMetaData =
                 intent.hasExtra(DabService.EXTRA_AFFECTS_ANDROID_METADATA);
@@ -445,6 +465,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
 
   /* renamed from: com.ex.dabplayer.pad.activity.Player$HomeKeyReceiver */
   /* loaded from: classes.dex */
+  /*
   public class HomeKeyReceiver extends BroadcastReceiver {
     public static final String ACTION_RECREATE = "com.ex.dabplayer.pad.RECREATE";
     private final WeakReference<Player> mPlayer;
@@ -476,7 +497,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
       }
     }
   }
-
+    */
   /* renamed from: com.ex.dabplayer.pad.activity.Player$MaximizeListener */
   /* loaded from: classes.dex */
   public class MaximizeListener extends AnimatorListenerAdapter
@@ -567,6 +588,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
 
   /* renamed from: com.ex.dabplayer.pad.activity.Player$RunnableMaximizeLeftArea */
   /* loaded from: classes.dex */
+  /*
   public class RunnableMaximizeLeftArea implements Runnable {
     private final boolean mAnimate;
     private final boolean mMaximize;
@@ -581,7 +603,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
       Player.this.maximizeLeftArea(this.mMaximize, this.mAnimate);
     }
   }
-
+  */
   /* renamed from: com.ex.dabplayer.pad.activity.Player$StationDetails */
   /* loaded from: classes.dex */
   public class StationDetails {
@@ -893,19 +915,21 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
       Player player = this.mPlayer.get();
       if (player != null) {
         this.mLeftBackgroundBox.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-        MotImage motImage = player.getMotImage();
+        /*
+                MotImage motImage = player.getMotImage();
         if (motImage != null) {
           motImage.setMaxDimensions(
               this.mLeftBackgroundBox.getMeasuredWidth(),
               this.mLeftBackgroundBox.getMeasuredHeight());
         }
+                */
       }
     }
   }
 
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: a */
-  public void m85a() {
+  public void updateStationList() {
     List<String> arrayList = new ArrayList<>();
     List<StationItem> arrayList2 = new ArrayList<>();
     LogoDb logoDb = LogoDbHelper.getInstance(this.context);
@@ -915,7 +939,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
       item.Index = i + 1;
       item.ItemTitle = info.mLabel;
       item.ItemInfos = Strings.freq2channelname(info.mFreq) + " - " + info.mEnsembleLabel;
-      item.ItemFavorite = info.mIsFavorite;
+      item.ItemFavorite = info.mFavorite;
       String logoFilename = null;
       String normalizedStationName = null;
       if (this.mShowLogosInList) {
@@ -931,7 +955,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
               + "',pty:"
               + c
               + ",fav:"
-              + info.mIsFavorite
+              + info.mFavorite
               + ",logo:'"
               + logoFilename
               + "',norm:'"
@@ -941,17 +965,23 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
         arrayList.add(c);
       }
     }
-    StationBaseAdapter stationAdapter =
-        new StationBaseAdapter(
-            this.context,
-            arrayList2,
-            this.mShowAdditionalInfos,
-            this.mTouchListener,
-            this.mShowLogosInList);
-    stationAdapter.setSelectedIndex(this.playIndex);
-    this.mStationListView.setAdapter((ListAdapter) stationAdapter);
-    this.mStationListView.setTranscriptMode(0);
-    this.mStationListView.setChoiceMode(1);
+    /*
+        StationBaseAdapter stationAdapter =
+            new StationBaseAdapter(
+                this.context,
+                arrayList2,
+                this.mShowAdditionalInfos,
+                this.mTouchListener,
+                this.mShowLogosInList);
+        stationAdapter.setSelectedIndex(this.playIndex);
+        this.mStationListView.setAdapter((ListAdapter) stationAdapter);
+        this.mStationListView.setTranscriptMode(0);
+        this.mStationListView.setChoiceMode(1);
+    */
+    this.stationsAdapter =
+        new SwitchStationsAdapter(this.context, switchStationsAdapterListener, arrayList2, false);
+    this.recyclerView.setAdapter(stationsAdapter);
+
     if (arrPty == null && arrayList.size() > 0) {
       arrPty = new String[arrayList.size() + 1];
       for (int i2 = 0; i2 < arrayList.size(); i2++) {
@@ -1037,11 +1067,11 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
         s_stationListShadow.addAll(this.stationList);
       }
       C0162a.m9a("a(I): station list: " + s_stationListShadow.size());
-      maximizeLeftArea(false, true);
+      // maximizeLeftArea(false, true);
       if (i < this.stationList.size()) {
         DabSubChannelInfo subChannelInfo = this.stationList.get(i);
         updateSelectedStatus(i);
-        this.f36o.setText(subChannelInfo.mLabel);
+        this.txtServiceName.setText(subChannelInfo.mLabel);
         this.f38q.setText("" + subChannelInfo.mFreq);
         this.f37p.setText(PTYname(subChannelInfo.mPty));
         this.f26e = true;
@@ -1060,21 +1090,23 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
             logoDrawable = LogoAssets.getBitmapForStation(this.context, subChannelInfo.mLabel);
           }
         }
-        if (logoDrawable != null) {
-          this.f39r.setImage(logoDrawable, 1);
-        } else {
-          this.f39r.setDefaultImage();
-        }
+        // if (logoDrawable != null) {
+        //  this.motImage.setImage(logoDrawable, 1);
+        // } else {
+        //  this.motImage.setDefaultImage();
+        // }
         this.f41t.setText("");
         this.dabHandler.removeMessages(6);
         Message obtainMessage = this.dabHandler.obtainMessage();
-        obtainMessage.what = DabThread.MSGTYPE_START_PLAY_STATION; //6;
+        obtainMessage.what = DabThread.MSGTYPE_START_PLAY_STATION; // 6;
         obtainMessage.arg1 = i;
         this.dabHandler.sendMessage(obtainMessage);
-                
+
         this.playIndex = i;
         C0162a.m9a("dab play index:" + this.playIndex);
-        DeterminedScrollTo(this.mStationListView, this.playIndex);
+        // DeterminedScrollTo(this.mStationListView, this.playIndex);
+        scrollToPositionRecycler(this.playIndex);
+
         SharedPreferences.Editor edit = this.f20I.edit();
         edit.putInt("current_playing", this.playIndex);
         edit.apply();
@@ -1085,9 +1117,15 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     }
   }
 
+  private void scrollToPositionRecycler(int idx) {
+    this.linearLayoutManager.scrollToPosition(this.playIndex);
+    this.stationsAdapter.setMot(null, -1);
+    this.motImage = null;
+  }
+
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: a */
-  public void m83a(List list) {
+  public void fillStationRecycler(List list) {
     if (this.stationList == null) {
       this.stationList = new ArrayList();
     } else {
@@ -1105,11 +1143,11 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
       s_stationListShadow.addAll(list);
     }
     C0162a.m9a("a(list): station list : " + s_stationListShadow.size());
-    maximizeLeftArea(false, true);
+    // maximizeLeftArea(false, true);
     this.stationListSize = this.stationList.size();
     if (this.stationListSize != 0) {
-      String str = (String) this.f36o.getText();
-      List arrayList2 = new ArrayList();
+      String str = (String) this.txtServiceName.getText();
+      List<StationItem> arrayList2 = new ArrayList<>();
       int i = 0;
       int i2 = -1;
       LogoDb logoDb = LogoDbHelper.getInstance(this.context);
@@ -1119,7 +1157,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
         item.Index = i + 1;
         item.ItemTitle = info.mLabel;
         item.ItemInfos = Strings.freq2channelname(info.mFreq) + " - " + info.mEnsembleLabel;
-        item.ItemFavorite = info.mIsFavorite;
+        item.ItemFavorite = info.mFavorite;
         if (this.mShowLogosInList) {
           item.ItemLogo = logoDb.getLogoFilenameForStation(info.mLabel, info.mSID);
         } else {
@@ -1130,6 +1168,8 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
         i++;
         i2 = i3;
       }
+
+      /*
       StationBaseAdapter aVar =
           new StationBaseAdapter(
               this.context,
@@ -1143,11 +1183,17 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
         m84a(0);
       }
       this.mStationListView.setAdapter((ListAdapter) aVar);
+      */
+
+      stationsAdapter =
+          new SwitchStationsAdapter(this.context, switchStationsAdapterListener, arrayList2, false);
+
+      this.recyclerView.setAdapter(stationsAdapter);
     }
   }
 
   /* renamed from: b */
-  private void m81b(int i) {
+  private void playPreset(int i) {
     ChannelInfo qVar = new ChannelInfo();
     C0162a.m9a("----dabPresetPlay:" + i);
     if (this.dabHandler == null) {
@@ -1173,11 +1219,11 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
           }
           i2++;
         }
-        this.f36o.setText(qVar.label);
+        this.txtServiceName.setText(qVar.label);
         this.f27f = true;
         this.playIndex = i;
         this.f26e = true;
-        this.f39r.setImageResource(R.drawable.radio);
+        // this.motImage.setImageResource(R.drawable.radio);
         this.f41t.setText("");
         this.dabHandler.removeMessages(6);
         Message obtainMessage = this.dabHandler.obtainMessage();
@@ -1198,7 +1244,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     if (!this.progressDialog.isShowing() && this.stationListSize > 0) {
       int i = ((this.playIndex + this.stationListSize) + 1) % this.stationListSize;
       if (this.f27f) {
-        m81b(i);
+        playPreset(i);
       } else {
         m84a(i);
       }
@@ -1209,23 +1255,28 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
   /* renamed from: b */
   public void showMotImage(String str) {
     if (str.isEmpty()) {
-      this.f39r.setDefaultImage();
+      // this.motImage.setDefaultImage();
+      this.stationsAdapter.setMot(null, -1);
+      this.motImage = null;
       return;
     }
     SharedPreferences pref_settings =
         this.context.getSharedPreferences(SettingsActivity.prefname_settings, 0);
-    //if (pref_settings.getBoolean(SettingsActivity.pref_key_motSlideshowEnabled, true)) {
-      File file = new File(this.context.getFilesDir(), str);
-      if (file.exists()) {
-        Bitmap decodeFile = BitmapFactory.decodeFile(file.getAbsolutePath());
-        if (decodeFile != null) {
-          this.f39r.setImage(new BitmapDrawable(getResources(), decodeFile), 2);
-          return;
-        }
+    // if (pref_settings.getBoolean(SettingsActivity.pref_key_motSlideshowEnabled, true)) {
+    File file = new File(this.context.getFilesDir(), str);
+    if (file.exists()) {
+      Bitmap decodeFile = BitmapFactory.decodeFile(file.getAbsolutePath());
+      if (decodeFile != null) {
+        // this.motImage.setImage(new BitmapDrawable(getResources(), decodeFile), 2);
+        Toast.makeText(context, "set mot to pos " + this.playIndex, Toast.LENGTH_LONG).show();
+        this.motImage = new BitmapDrawable(getResources(), decodeFile);
+        this.stationsAdapter.setMot(this.motImage, playIndex);
         return;
       }
-      C0162a.m9a("file '" + file.getAbsolutePath() + "' not found");
-    //}
+      return;
+    }
+    C0162a.m9a("file '" + file.getAbsolutePath() + "' not found");
+    // }
   }
 
   /* JADX INFO: Access modifiers changed from: private */
@@ -1254,7 +1305,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     if (!this.progressDialog.isShowing() && this.stationListSize > 0) {
       int i = ((this.playIndex + this.stationListSize) - 1) % this.stationListSize;
       if (this.f27f) {
-        m81b(i);
+        playPreset(i);
       } else {
         m84a(i);
       }
@@ -1296,11 +1347,15 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
   }
 
   private void updateSelectedStatus(int index) {
+    /*
     StationBaseAdapter stationAdapter = (StationBaseAdapter) this.mStationListView.getAdapter();
     if (stationAdapter != null) {
       stationAdapter.setSelectedIndex(index);
     }
     this.mStationListView.setItemChecked(index, true);
+    */
+    Toast.makeText(context, "updateSelectedStatus is not implements", Toast.LENGTH_LONG).show();
+    scrollToPositionRecycler(index);
   }
 
   private void DeterminedScrollTo(AbsListView listView, int index) {
@@ -1325,9 +1380,12 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
               + " target="
               + target);
       if (index > firstPos) {
-        listView.smoothScrollToPosition(target);
+        // listView.smoothScrollToPosition(target);
+        scrollToPositionRecycler(target);
+
       } else {
-        listView.smoothScrollToPositionFromTop(target, 0);
+        // listView.smoothScrollToPositionFromTop(target, 0);
+        scrollToPositionRecycler(target);
       }
     }
   }
@@ -1370,7 +1428,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: e */
   public void m79e() {
-    this.f36o.setText("");
+    this.txtServiceName.setText("");
     this.f37p.setText("");
     this.f38q.setText("");
     this.f26e = false;
@@ -1423,7 +1481,8 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     }
     if (!isDestroyed) {
       C0162a.m9a("finish()");
-      finish();
+      finishAffinity();
+      // finish();
     }
     this.mProperShutdown = true;
   }
@@ -1492,8 +1551,32 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     return sMainActivityStartIntent;
   }
 
-  public MotImage getMotImage() {
-    return this.f39r;
+  public BitmapDrawable getMotLogoOrIcon() {
+
+    if (this.motImage != null) {
+      return this.motImage;
+    } else {
+
+      if (this.stationList != null && this.stationList.size() > this.playIndex) {
+        String label = this.stationList.get(this.playIndex).mLabel;
+        LogoDb logoDb = LogoDbHelper.getInstance(this.context);
+        int sid = this.stationList.get(this.playIndex).mSID;
+
+        String logoFilename = logoDb.getLogoFilenameForStation(label, sid);
+        BitmapDrawable logoDrawable = null;
+
+        if (logoFilename != null) {
+          logoDrawable = LogoDb.getBitmapForStation(this.context, logoFilename);
+        }
+        if (logoFilename == null) {
+          logoDrawable = LogoAssets.getBitmapForStation(this.context, label);
+        }
+        if (logoDrawable != null) {
+          return logoDrawable;
+        }
+      }
+      return (BitmapDrawable) context.getDrawable(R.drawable.radio);
+    }
   }
 
   public static WeakReference<Handler> getPlayerHandler() {
@@ -1512,10 +1595,12 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     return this.isFavoriteListActive;
   }
 
-  public final boolean isLeftAreaMaximized() {
-    return this.mIsLeftAreaMaximized;
-  }
-
+  /*
+    public final boolean isLeftAreaMaximized() {
+      return this.mIsLeftAreaMaximized;
+    }
+  */
+  /*
   public void maximizeLeftArea(boolean maximize, boolean animate) {
     float start;
     float stop;
@@ -1575,6 +1660,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
       this.maximizeLeftAreaHandler.sendMessageDelayed(msg, delayMs);
     }
   }
+  */
 
   public void notifyAudioDistortion() {
     if (this.mAudioDistortionToast != null) {
@@ -1645,8 +1731,8 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     String sender;
     DabService dabService;
     MediaSessionCompat mediaSession;
-    Bitmap logoOrSlsBitmap = getMotImage().getBitmap();
-    intent.putExtra(DabService.EXTRA_SLSBITMAP, logoOrSlsBitmap);
+    Bitmap motImage = getMotLogoOrIcon().getBitmap();
+    intent.putExtra(DabService.EXTRA_SLSBITMAP, motImage);
     this.mStationDetails.updateAllDetailsViewFromIntent(intent);
     if (this.mSendBroadcastIntent
         && affectsAndroidMetaData
@@ -1681,7 +1767,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
         metaDataBuilder.putString(
             MediaMetadataCompat.METADATA_KEY_GENRE, intent.getStringExtra(DabService.EXTRA_PTY));
       }
-      metaDataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, logoOrSlsBitmap);
+      metaDataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, motImage);
       this.mMetaData = metaDataBuilder.build();
       mediaSession.setMetadata(this.mMetaData);
     }
@@ -1714,7 +1800,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     String stringExtra = intent.getStringExtra("title");
     if (stringExtra != null) {
       if (stringExtra.contains("Preset")) {
-        m81b(i2);
+        playPreset(i2);
       } else if (!stringExtra.equals("pty dialog")) {
         this.stationListSize = this.stationList.size();
         if (i > 0) {
@@ -1735,14 +1821,31 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     C0162a.m9a("onClick 0x" + Integer.toHexString(view.getId()));
     if (view.getId() == R.id.bt_settings2) {
       onSettingsButtonClicked();
-    } else if (!this.f17D) {
+    } else if (view.getId() == R.id.layExit) {
+      finishTheApp();
+    } else if (!this.isInitialized) {
       String text = getResources().getString(R.string.waitfewseconds);
-      Toast.makeText(this.context, text, 0).show();
+      Toast.makeText(this.context, text, Toast.LENGTH_LONG).show();
+
+    } else if (view.getId() == R.id.memory1) {
+      playFavourite(1);
+    } else if (view.getId() == R.id.memory2) {
+      playFavourite(2);
+    } else if (view.getId() == R.id.memory3) {
+      playFavourite(3);
+    } else if (view.getId() == R.id.memory4) {
+      playFavourite(4);
+    } else if (view.getId() == R.id.memory5) {
+      playFavourite(5);
+    } else if (view.getId() == R.id.memory6) {
+      playFavourite(6);
+
     } else if (this.stationListSize != 0
-        || view.getId() == R.id.bt_scan
+        || view.getId() == R.id.layScan
         || view.getId() == R.id.bt_favor) {
-      if (view.getId() == R.id.bt_scan) {
+      if (view.getId() == R.id.layScan) {
         /* 2131427335 */
+        Toast.makeText(context, "scsn", Toast.LENGTH_LONG).show();
         onScanButtonClicked();
         return;
       } else if (view.getId() == R.id.signal_level) {
@@ -1754,25 +1857,27 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
         }
         C0162a.m9a("manually activation ignored");
         return;
-      } else if (view.getId() == R.id.bt_record) {
-        /* 2131427347 */
-        if (this.f27f || this.f26e) {
-          Message obtainMessage = this.dabHandler.obtainMessage();
-          if (this.f28g) {
-            this.f28g = false;
-            this.f34m.setBackgroundResource(R.drawable.record_start_selector);
-            obtainMessage.what = 22;
-            this.dabHandler.sendMessage(obtainMessage);
-          } else {
-            this.f28g = true;
-            this.f34m.setBackgroundResource(R.drawable.record_stop_selector);
-            obtainMessage.what = 21;
-            this.dabHandler.sendMessage(obtainMessage);
+        /*
+        } else if (view.getId() == R.id.bt_record) {
+          // 2131427347
+          if (this.f27f || this.f26e) {
+            Message obtainMessage = this.dabHandler.obtainMessage();
+            if (this.f28g) {
+              this.f28g = false;
+              this.f34m.setBackgroundResource(R.drawable.record_start_selector);
+              obtainMessage.what = 22;
+              this.dabHandler.sendMessage(obtainMessage);
+            } else {
+              this.f28g = true;
+              this.f34m.setBackgroundResource(R.drawable.record_stop_selector);
+              obtainMessage.what = 21;
+              this.dabHandler.sendMessage(obtainMessage);
+            }
+            C0162a.m9a("recorder:" + this.f28g);
+            return;
           }
-          C0162a.m9a("recorder:" + this.f28g);
           return;
-        }
-        return;
+        */
       } else if (view.getId() == R.id.bt_prev) {
         /* 2131427353 */
         selectPreviousStation();
@@ -1812,6 +1917,69 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     }
   }
 
+  @Override
+  public boolean onLongClick(View v) {
+    if (!this.isInitialized) {
+      String text = getResources().getString(R.string.waitfewseconds);
+      Toast.makeText(this.context, text, Toast.LENGTH_LONG).show();
+      return true;
+    }
+
+    if (v.getId() == R.id.memory1) {
+      setMemory(1, findViewById(R.id.memory1Img), findViewById(R.id.memory1Tv));
+    } else if (v.getId() == R.id.memory2) {
+      setMemory(2, findViewById(R.id.memory2Img), findViewById(R.id.memory2Tv));
+    } else if (v.getId() == R.id.memory3) {
+      setMemory(3, findViewById(R.id.memory3Img), findViewById(R.id.memory3Tv));
+    } else if (v.getId() == R.id.memory4) {
+      setMemory(4, findViewById(R.id.memory4Img), findViewById(R.id.memory4Tv));
+    } else if (v.getId() == R.id.memory5) {
+      setMemory(5, findViewById(R.id.memory5Img), findViewById(R.id.memory5Tv));
+    } else if (v.getId() == R.id.memory6) {
+      setMemory(6, findViewById(R.id.memory6Img), findViewById(R.id.memory6Tv));
+    }
+    return true;
+  }
+
+  private void setMemory(int storagePos, ImageView imageViewMemory, TextView textViewMemory) {
+    DabSubChannelInfo subChannelInfo = this.stationList.get(this.playIndex);
+    subChannelInfo.mFavorite = storagePos;
+    if (this.dabHandler != null) {
+      Message obtainMessage = this.dabHandler.obtainMessage();
+      obtainMessage.what = DabThread.UPDATE_FAVOURITE;
+      obtainMessage.obj = subChannelInfo;
+      obtainMessage.arg1 = storagePos;
+      this.dabHandler.sendMessage(obtainMessage);
+      return;
+    }
+
+    textViewMemory.setText(subChannelInfo.mLabel);
+    LogoDb logoDb = LogoDbHelper.getInstance(this.context);
+    if (this.mShowLogosInList) {
+      String pathToLogo =
+          logoDb.getLogoFilenameForStation(subChannelInfo.mLabel, subChannelInfo.mSID);
+
+      BitmapDrawable logoDrawable = null;
+      if (pathToLogo != null) {
+        logoDrawable = LogoDb.getBitmapForStation(this.context, pathToLogo);
+      }
+      if (logoDrawable == null) {
+        logoDrawable = LogoAssets.getBitmapForStation(this.context, subChannelInfo.mLabel);
+      }
+      if (logoDrawable != null) {
+        imageViewMemory.setImageDrawable(logoDrawable);
+      } else {
+        imageViewMemory.setImageResource(R.drawable.radio);
+      }
+    }
+  }
+
+  private void playFavourite(int storagePos) {
+    Message obtainMessage = this.dabHandler.obtainMessage();
+    obtainMessage.what = DabThread.PLAY_FAVOURITE;
+    obtainMessage.arg1 = storagePos;
+  }
+
   @Override // android.app.Activity, android.content.ComponentCallbacks
   public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
@@ -1825,24 +1993,46 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     setContentView(R.layout.player);
     this.playIndex = 0;
     this.context = getApplicationContext();
-    this.f39r = (MotImage) findViewById(R.id.mot);
-    this.f40s = (ImageView) findViewById(R.id.signal_level);
-    this.f40s.setOnClickListener(this);
-    this.f32k = (Button) findViewById(R.id.bt_next);
-    this.f32k.setOnClickListener(this);
+    // this.motImage = (MotImage) findViewById(R.id.mot);
+    this.imgSignalLevel = (ImageView) findViewById(R.id.signal_level);
+    this.imgSignalLevel.setOnClickListener(this);
+    this.btnNext = (Button) findViewById(R.id.bt_next);
+    this.btnNext.setOnClickListener(this);
     this.f31j = (Button) findViewById(R.id.bt_prev);
     this.f31j.setOnClickListener(this);
-    this.f33l = (Button) findViewById(R.id.bt_scan);
-    this.f33l.setOnClickListener(this);
+    this.layScan = (Button) findViewById(R.id.layScan);
+    this.layScan.setOnClickListener(this);
+    this.layExit = (Button) findViewById(R.id.layExit);
+    this.layExit.setOnClickListener(this);
     this.f35n = (Button) findViewById(R.id.bt_pty);
     this.f35n.setOnClickListener(this);
+
+    this.memory1 = findViewById(R.id.memory1);
+    this.memory1.setOnLongClickListener(this);
+    this.memory1.setOnClickListener(this);
+    this.memory2 = findViewById(R.id.memory2);
+    this.memory2.setOnLongClickListener(this);
+    this.memory2.setOnClickListener(this);
+    this.memory3 = findViewById(R.id.memory3);
+    this.memory3.setOnLongClickListener(this);
+    this.memory3.setOnClickListener(this);
+    this.memory4 = findViewById(R.id.memory4);
+    this.memory4.setOnLongClickListener(this);
+    this.memory4.setOnClickListener(this);
+    this.memory5 = findViewById(R.id.memory5);
+    this.memory5.setOnLongClickListener(this);
+    this.memory5.setOnClickListener(this);
+    this.memory6 = findViewById(R.id.memory6);
+    this.memory6.setOnLongClickListener(this);
+    this.memory6.setOnClickListener(this);
+
     this.f28g = false;
-    this.f34m = (Button) findViewById(R.id.bt_record);
-    this.f34m.setOnClickListener(this);
+    // this.f34m = (Button) findViewById(R.id.bt_record);
+    // this.f34m.setOnClickListener(this);
     this.f38q = (TextView) findViewById(R.id.service_freq);
     this.f38q.setText("");
-    this.f36o = (TextView) findViewById(R.id.service_name);
-    this.f36o.setText("");
+    this.txtServiceName = (TextView) findViewById(R.id.service_name);
+    this.txtServiceName.setText("");
     this.f37p = (TextView) findViewById(R.id.service_pty);
     this.f37p.setText("");
     this.f42v = (Spinner) findViewById(R.id.pty_spinner);
@@ -1865,8 +2055,41 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
         });
     this.f41t = (TextView) findViewById(R.id.dls_scroll);
     this.f41t.setText("");
-    this.mStationListView = getListView();
-    this.f16C = (AudioManager) getSystemService("audio");
+    // this.mStationListView = getListView();
+
+    // recycler
+
+    recyclerView = this.findViewById(R.id.recycler);
+    recyclerView.setHasFixedSize(true);
+    recyclerView.setItemAnimator(new DefaultItemAnimator());
+    linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+    recyclerView.addOnScrollListener(
+        new RecyclerView.OnScrollListener() {
+          @Override
+          public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+              int position =
+                  ((LinearLayoutManager) recyclerView.getLayoutManager())
+                      .findFirstVisibleItemPosition();
+              Toast.makeText(context, position + " OnScrollListener", Toast.LENGTH_LONG).show();
+              onStationClicked(position);
+            }
+          }
+        });
+
+    recyclerView.setLayoutManager(linearLayoutManager);
+    PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+    pagerSnapHelper.attachToRecyclerView(recyclerView);
+    stationsAdapter =
+        new SwitchStationsAdapter(
+            this.context, switchStationsAdapterListener, new ArrayList<>(), false);
+
+    this.recyclerView.setAdapter(stationsAdapter);
+    // recyclerView.setAdapter(adapter);
+    // end recycler
+
+    this.audioManager = (AudioManager) getSystemService("audio");
     this.progressDialog = new ProgressDialog(this);
     this.progressDialog.setProgressStyle(0);
     this.progressDialog.setTitle("");
@@ -1875,19 +2098,19 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     this.progressDialog.setIndeterminate(false);
     this.progressDialog.setIndeterminateDrawable(
         getResources().getDrawable(R.anim.progress_dialog_anim));
-    new IntentFilter("com.microntek.app");
-    Intent intent = new Intent("com.microntek.app");
-    intent.putExtra("app", DabService.SENDER_DAB);
-    intent.putExtra("state", "ENTER");
-    this.context.sendBroadcast(intent);
-    this.f16C.requestAudioFocus(this.f24c, 3, 1);
-    Intent intent2 = new Intent(this, DabService.class);
-    this.mServiceIntent = intent2;
-    startService(intent2);
-    bindService(intent2, this, 1);
+    // new IntentFilter("com.microntek.app");
+    // Intent intent = new Intent("com.microntek.app");
+    // intent.putExtra("app", DabService.SENDER_DAB);
+    // intent.putExtra("state", "ENTER");
+    // this.context.sendBroadcast(intent);
+
+    this.audioManager.requestAudioFocus(this.f24c, 3, 1);
+
+    this.mServiceIntent = new Intent(this, DabService.class);
+    startService(this.mServiceIntent);
+    bindService(this.mServiceIntent, this, 1);
+
     IntentFilter intentFilter = new IntentFilter();
-    intentFilter.addAction("com.microntek.bootcheck");
-    intentFilter.addAction("com.microntek.irkeyDown");
     intentFilter.addAction("android.hardware.usb.action.USB_DEVICE_DETACHED");
     this.context.registerReceiver(this.f23N, intentFilter);
     onCreateAdditions(savedInstanceState);
@@ -1896,7 +2119,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
   @SuppressLint({"ClickableViewAccessibility"})
   private void onCreateAdditions(Bundle savedInstanceState) {
     LinearLayout.LayoutParams params;
-    f12H = new HomeKeyReceiver(this);
+    // homeKeyReceiver = new HomeKeyReceiver(this);
     sPlayerHandler = new WeakReference<>(this.f22M);
     if (this.f20I == null) {
       this.f20I = this.context.getSharedPreferences("playing", 0);
@@ -1911,15 +2134,17 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
       this.favorBtn.setBackgroundResource(R.drawable.favor_list_selector_off);
     }
     this.mTouchListener = new TouchListener(this);
-    this.mStationListView.setOnTouchListener(
-        new StationViewTouchHelper(this.context, this.mTouchListener));
+    // this.mStationListView.setOnTouchListener(
+    //    new StationViewTouchHelper(this.context, this.mTouchListener));
     this.mLogoDb = LogoDbHelper.getInstance(this);
     this.mLogoAssets = new LogoAssets(this, this.f22M);
-    LinearLayout leftBackgroundBox = (LinearLayout) findViewById(R.id.left_background_box);
+
+    /*LinearLayout leftBackgroundBox = (LinearLayout) findViewById(R.id.left_background_box);
     if (leftBackgroundBox != null) {
       ViewTreeObserver vto = leftBackgroundBox.getViewTreeObserver();
       vto.addOnGlobalLayoutListener(new VTOLayoutListener(this, leftBackgroundBox));
     }
+    */
     Intent startedByIntent = getIntent();
     if (startedByIntent != null) {
       C0162a.m9a("Player startedByIntent=" + startedByIntent.toString());
@@ -1934,7 +2159,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
           if (settingsPreferences.getBoolean(
               SettingsActivity.pref_key_onstartbyusb_gotobackground, false)) {
             C0162a.m9a("started by USB_DEVICE_ATTACHED -> background");
-            moveTaskToBack(true);
+            // moveTaskToBack(true);
           }
         }
       }
@@ -1945,11 +2170,13 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
       btnSettings2.setOnClickListener(this);
     }
     this.mDefaultLeftAreaLayoutWeight = 5.0f;
-    LinearLayout leftArea = (LinearLayout) findViewById(R.id.left_area);
+    /*
+        LinearLayout leftArea = (LinearLayout) findViewById(R.id.left_area);
     if (leftArea != null
         && (params = (LinearLayout.LayoutParams) leftArea.getLayoutParams()) != null) {
       this.mDefaultLeftAreaLayoutWeight = params.weight;
     }
+        */
     this.mViewFlipper = (ViewFlipper) findViewById(R.id.viewflipper);
     if (this.mViewFlipper != null) {
       LargeSlsTouchListener touchListener = new LargeSlsTouchListener(this);
@@ -1973,7 +2200,9 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     if (textView2 != null) {
       this.mDlsSizeFromStyle = textView2.getTextSize();
     }
-    String[] buttonNames = {"bt_prev", "bt_favor", "bt_next", "bt_scan", "bt_pty", "bt_settings2"};
+
+    /*
+    String[] buttonNames = {"bt_prev", "bt_favor", "bt_next", "bt_pty", "bt_settings2"};
     int length = buttonNames.length;
     int i2 = 0;
     while (true) {
@@ -2002,6 +2231,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
         return;
       }
     }
+    */
   }
 
   public void onDeleteButtonClicked(int posInList) {
@@ -2022,7 +2252,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     }
     unbindService(this);
     stopService(this.mServiceIntent);
-    this.f16C.abandonAudioFocus(this.f24c);
+    this.audioManager.abandonAudioFocus(this.f24c);
     this.context.unregisterReceiver(this.f23N);
     this.mLogoDb.closeDb();
     File f = new File(SettingsStationLogoActivity.LOGO_PATH_TMP);
@@ -2060,6 +2290,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     return super.onKeyDown(i, keyEvent);
   }
 
+  /*
   public void onMotClicked() {
     if (isLeftAreaMaximized()) {
       maximizeLeftArea(false, true);
@@ -2067,10 +2298,12 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
       maximizeLeftArea(true, true);
     }
   }
+  */
 
   public void onMotLongClicked() {
+    /*
     DabSubChannelInfo currentStation;
-    if (this.f39r.getSource() == 2
+    if (this.motImage.getSource() == 2
         && this.stationList != null
         && this.stationList.size() > 0
         && this.playIndex >= 0
@@ -2078,11 +2311,13 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
         && (currentStation = this.stationList.get(this.playIndex)) != null) {
       int first_pos = FirstPosition(this.mStationListView);
       if (SettingsStationLogoActivity.storeUserStationLogo(
-          this.context, this.f39r.getDrawable(), currentStation.mLabel, currentStation.mSID)) {
-        m85a();
+          this.context, this.motImage.getDrawable(), currentStation.mLabel, currentStation.mSID)) {
+        updateStationList();
         QuickScrollTo(this.mStationListView, first_pos);
       }
     }
+    */
+    Toast.makeText(context, "onMotLongClicked is not implements", Toast.LENGTH_LONG).show();
   }
 
   @Override // android.app.Activity
@@ -2093,9 +2328,9 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     if (this.progressDialog.isShowing()) {
       this.progressDialog.dismiss();
     }
-    if (f12H != null) {
-      this.context.unregisterReceiver(f12H);
-    }
+    // if (homeKeyReceiver != null) {
+    // this.context.unregisterReceiver(homeKeyReceiver);
+    // }
     if (this.f19G) {
       m79e();
       if (this.dabHandler != null) {
@@ -2134,9 +2369,11 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     this.f19G = false;
     this.f20I = this.context.getSharedPreferences("playing", 0);
     this.playIndex = this.f20I.getInt("current_playing", 0);
-    if (this.mStationListView != null) {
-      DeterminedScrollTo(this.mStationListView, this.playIndex);
-    }
+    // if (this.mStationListView != null) {
+    //  DeterminedScrollTo(this.mStationListView, this.playIndex);
+    // }
+    scrollToPositionRecycler(this.playIndex);
+    /*
     SharedPreferences sharedPreferences =
         getSharedPreferences(SettingsActivity.prefname_settings, 0);
     Button btnRecord = (Button) findViewById(R.id.bt_record);
@@ -2146,7 +2383,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
       } else {
         btnRecord.setVisibility(8);
       }
-    }
+    */
     if (this.dabService != null) {
       this.dabService.m16a(this.f22M);
     }
@@ -2154,101 +2391,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     onResumeAdditions();
   }
 
-  public void onResumeAdditions() {
-    IntentFilter filter = new IntentFilter();
-    filter.addAction("android.intent.action.CLOSE_SYSTEM_DIALOGS");
-    filter.addAction(HomeKeyReceiver.ACTION_RECREATE);
-    if (f12H != null) {
-      this.context.registerReceiver(f12H, filter);
-    }
-    Intent intent = new Intent("com.microntek.bootcheck");
-    intent.putExtra("class", DabService.SENDER_DAB);
-    this.context.sendBroadcast(intent);
-    SharedPreferences settingsPreferences =
-        getSharedPreferences(SettingsActivity.prefname_settings, 0);
-    LinearLayout leftBackgroundBox = (LinearLayout) findViewById(R.id.left_background_box);
-    LinearLayout rightBackgroundBox = (LinearLayout) findViewById(R.id.right_area);
-    if (leftBackgroundBox != null) {
-      if (!settingsPreferences.getBoolean(SettingsActivity.pref_key_background_boxes, false)) {
-        leftBackgroundBox.setBackgroundResource(0);
-      } else {
-        leftBackgroundBox.setBackgroundResource(R.drawable.backgroud_text_area);
-      }
-    }
-    if (rightBackgroundBox != null) {
-      if (!settingsPreferences.getBoolean(SettingsActivity.pref_key_background_boxes, false)) {
-        rightBackgroundBox.setBackgroundResource(0);
-      } else {
-        rightBackgroundBox.setBackgroundResource(R.drawable.backgroud_text_area);
-      }
-    }
-    this.mShowAdditionalInfos =
-        settingsPreferences.getBoolean(SettingsActivity.pref_key_showAdditionalInfos, true);
-    this.mShowLogosInList =
-        settingsPreferences.getBoolean(SettingsActivity.pref_key_showStationLogoInList, true);
-    this.f39r.setMaxScaleFactor(
-        settingsPreferences.getFloat(SettingsActivity.pref_key_maxScaleFactor, 2.0f));
-    if (this.f39r.getBrightness() < 100) {
-      this.f39r.setBrightness(
-          settingsPreferences.getInt(SettingsActivity.pref_key_dim_percent, 50));
-    }
-    this.mSendBroadcastIntent =
-        settingsPreferences.getBoolean(SettingsActivity.pref_key_sendBroadcastIntent, false);
-    boolean showLogoAsMot =
-        this.context
-            .getSharedPreferences(SettingsActivity.prefname_settings, 0)
-            .getBoolean(SettingsActivity.pref_key_logo_as_mot, true);
-    boolean motSlideshowEnabled =
-        this.context
-            .getSharedPreferences(SettingsActivity.prefname_settings, 0)
-            .getBoolean(SettingsActivity.pref_key_motSlideshowEnabled, true);
-    if ((!motSlideshowEnabled && this.f39r.getSource() == 2) || this.f39r.getSource() == 1) {
-      if (showLogoAsMot) {
-        LogoDb logoDb = LogoDbHelper.getInstance(this.context);
-        if (this.stationList != null
-            && this.stationList.size() > 0
-            && this.playIndex >= 0
-            && this.playIndex < this.stationList.size()) {
-          DabSubChannelInfo subChannelInfo = this.stationList.get(this.playIndex);
-          String pathToLogo =
-              logoDb.getLogoFilenameForStation(subChannelInfo.mLabel, subChannelInfo.mSID);
-          BitmapDrawable logoDrawable = null;
-          if (pathToLogo != null) {
-            logoDrawable = LogoDb.getBitmapForStation(this, pathToLogo);
-          }
-          if (logoDrawable == null) {
-            logoDrawable = LogoAssets.getBitmapForStation(this.context, subChannelInfo.mLabel);
-          }
-          if (logoDrawable != null) {
-            this.f39r.setImage(logoDrawable, 1);
-          }
-        }
-      } else {
-        this.f39r.setDefaultImage();
-      }
-    }
-    TextView textView =
-        (TextView)
-            findViewById(
-                getResources()
-                    .getIdentifier("service_name", DabService.EXTRA_ID, getPackageName()));
-    if (textView != null) {
-      int stationNameSizeIncrement =
-          settingsPreferences.getInt(SettingsActivity.pref_key_stationNameSizeIncrement, 0);
-      textView.setTextSize(this.mStationNameSizeFromStyle + stationNameSizeIncrement);
-      textView.setTextColor(
-          settingsPreferences.getInt(SettingsActivity.pref_key_stationNameColor, -1));
-    }
-    TextView textView2 =
-        (TextView)
-            findViewById(
-                getResources().getIdentifier("dls_scroll", DabService.EXTRA_ID, getPackageName()));
-    if (textView2 != null) {
-      int dlsSizeIncrement =
-          settingsPreferences.getInt(SettingsActivity.pref_key_dlsSizeIncrement, 0);
-      textView2.setTextSize(this.mDlsSizeFromStyle + dlsSizeIncrement);
-    }
-  }
+  public void onResumeAdditions() {}
 
   public void onScanButtonClicked() {
     C0162a.m9a("scan button clicked");
@@ -2274,7 +2417,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
 
   public void onServiceFollowRequested() {
     Message obtainMessage = this.dabHandler.obtainMessage();
-    obtainMessage.what = 23;
+    obtainMessage.what = DabThread.MSGTYPE_START_SERVICE_FOLLOWING; // 23
     obtainMessage.obj = "";
     obtainMessage.arg1 = 0;
     this.dabHandler.sendMessage(obtainMessage);
@@ -2293,6 +2436,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     return Strings.PTYname(getApplicationContext(), i);
   }
 
+  /*
   public void recreateLayout() {
     View v;
     View v2 = findViewById(R.id.left_area);
@@ -2301,6 +2445,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
       v.requestLayout();
     }
   }
+     */
 
   public void setFavoriteListActive(boolean enabled) {
     int what;
@@ -2321,76 +2466,28 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
   }
 
   public void setSignalLevel(int level) {
-    int tintWithStationNameColor_Ok = 0;
-    boolean tintColorful_Ok = false;
     switch (level) {
       case -1:
-        this.f40s.setImageDrawable(getResources().getDrawable(R.drawable.signal_scan));
-        tintWithStationNameColor_Ok = 1;
-        tintColorful_Ok = false;
+        this.imgSignalLevel.setImageDrawable(getResources().getDrawable(R.drawable.signal_scan));
         break;
       case 0:
-        this.f40s.setImageDrawable(getResources().getDrawable(R.drawable.signal_0));
-        tintWithStationNameColor_Ok = 0;
-        tintColorful_Ok = false;
+        this.imgSignalLevel.setImageDrawable(getResources().getDrawable(R.drawable.signal_0));
         break;
       case 1:
-        this.f40s.setImageDrawable(getResources().getDrawable(R.drawable.signal_1));
-        tintColorful_Ok = true;
-        tintWithStationNameColor_Ok = 1;
+        this.imgSignalLevel.setImageDrawable(getResources().getDrawable(R.drawable.signal_1));
         break;
       case 2:
-        this.f40s.setImageDrawable(getResources().getDrawable(R.drawable.signal_2));
-        tintColorful_Ok = true;
-        tintWithStationNameColor_Ok = 1;
+        this.imgSignalLevel.setImageDrawable(getResources().getDrawable(R.drawable.signal_2));
         break;
       case 3:
-        this.f40s.setImageDrawable(getResources().getDrawable(R.drawable.signal_3));
-        tintColorful_Ok = true;
-        tintWithStationNameColor_Ok = 1;
+        this.imgSignalLevel.setImageDrawable(getResources().getDrawable(R.drawable.signal_3));
         break;
       case 4:
-        this.f40s.setImageDrawable(getResources().getDrawable(R.drawable.signal_4));
-        tintColorful_Ok = true;
-        tintWithStationNameColor_Ok = 1;
+        this.imgSignalLevel.setImageDrawable(getResources().getDrawable(R.drawable.signal_4));
         break;
       case 5:
-        this.f40s.setImageDrawable(getResources().getDrawable(R.drawable.signal_5));
-        tintColorful_Ok = true;
-        tintWithStationNameColor_Ok = 1;
+        this.imgSignalLevel.setImageDrawable(getResources().getDrawable(R.drawable.signal_5));
         break;
-    }
-    if (level > -2 && level < 6) {
-      SharedPreferences preferences = getSharedPreferences(SettingsActivity.prefname_settings, 0);
-      int colorOption = preferences.getInt(SettingsActivity.pref_key_signalBarColorOption, 1);
-      int color = -1;
-      switch (colorOption) {
-        case 0:
-          if (tintWithStationNameColor_Ok != 0) {
-            color = preferences.getInt(SettingsActivity.pref_key_stationNameColor, -1);
-            break;
-          }
-          break;
-        case 1:
-          if (tintColorful_Ok) {
-            int id = getResources().getIdentifier("signal_" + level, "color", getPackageName());
-            if (id != 0) {
-              try {
-                color = getResources().getColor(id);
-                break;
-              } catch (Resources.NotFoundException e) {
-                C0162a.m9a("color/signal_" + level + " not found for id " + id);
-                e.printStackTrace();
-                break;
-              }
-            } else {
-              C0162a.m9a("res id not found for color/signal_" + level);
-              break;
-            }
-          }
-          break;
-      }
-      this.f40s.setColorFilter(color);
     }
   }
 
@@ -2398,15 +2495,15 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     if (this.dabHandler == null) {
       this.dabHandler = this.dabService.getDabHandlerFromDabThread();
     }
-    this.f36o.setText("");
+    this.txtServiceName.setText("");
     this.f38q.setText("");
     this.f37p.setText("");
     this.f41t.setText("");
-    this.f39r.setDefaultImage();
+    // this.motImage.setDefaultImage();
     arrPty = null;
     this.f42v.setAdapter((SpinnerAdapter) null);
     Message obtainMessage = this.dabHandler.obtainMessage();
-    obtainMessage.what = 3;
+    obtainMessage.what = DabThread.MSGTYPE_START_STATION_SCAN; // 3
     obtainMessage.arg1 = 0;
     obtainMessage.arg2 = scanType;
     if (scanType != 1) {
@@ -2423,6 +2520,7 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
     finishTheApp();
   }
 
+  /*
   public void toggleFavoriteAtPosition(View view, int pos) {
     StationBaseAdapter.C0137b bVar;
     if (pos >= 0
@@ -2435,10 +2533,10 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
       try {
         this.stationList.set(pos, subChannelInfo);
         StationBaseAdapter.updateFavoriteUI(bVar, subChannelInfo.mIsFavorite);
-        StationBaseAdapter adapter = (StationBaseAdapter) this.mStationListView.getAdapter();
-        if (adapter != null) {
-          adapter.updateFavorite(pos, subChannelInfo.mIsFavorite);
-        }
+        // StationBaseAdapter adapter = (StationBaseAdapter) this.mStationListView.getAdapter();
+        // if (adapter != null) {
+        //  adapter.updateFavorite(pos, subChannelInfo.mIsFavorite);
+        // }
         if (this.dabHandler != null) {
           Message obtainMessage = this.dabHandler.obtainMessage();
           obtainMessage.what = 30;
@@ -2451,5 +2549,5 @@ public class Player extends ListActivity implements ServiceConnection, View.OnCl
         e.printStackTrace();
       }
     }
-  }
+  */
 }
