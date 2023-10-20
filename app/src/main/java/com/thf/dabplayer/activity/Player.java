@@ -1944,7 +1944,7 @@ public class Player extends Activity
   private void setMemory(int storagePos, ImageView imageViewMemory, TextView textViewMemory) {
     DabSubChannelInfo subChannelInfo = this.stationList.get(this.playIndex);
     subChannelInfo.mFavorite = storagePos;
-    if (this.dabHandler == null) return: 
+    if (this.dabHandler == null) return;
     Message obtainMessage = this.dabHandler.obtainMessage();
     obtainMessage.what = DabThread.UPDATE_FAVOURITE;
     obtainMessage.obj = subChannelInfo;
