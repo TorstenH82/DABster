@@ -415,7 +415,7 @@ public class Player extends Activity
             List<DabSubChannelInfo> memoryList = (List) message.obj;
             // here we need to set the memory buttons
             for (DabSubChannelInfo sci : memoryList) {
-                inf memIdx = sci.mFavorite;
+                int memIdx = sci.mFavorite;
                 ImageView imageViewMemory = null;
                 TextView textViewMemory = null;
                 switch (memIdx) {
@@ -425,7 +425,7 @@ public class Player extends Activity
                         break;
                     case 2:
                         imageViewMemory = findViewById(R.id.memory2Img);
-                        textViewMemory = findViewById(R.id.memory2v);
+                        textViewMemory = findViewById(R.id.memory2Tv);
                         break;             
                     case 3:
                         imageViewMemory = findViewById(R.id.memory3Img);
@@ -444,16 +444,16 @@ public class Player extends Activity
                         textViewMemory = findViewById(R.id.memory6Tv);
                         break;
                 }
-                if (imageViewMemory =! null) {
+                if (imageViewMemory != null) {
                     textViewMemory.setText(sci.mLabel);
-                    LogoDb logoDb = LogoDbHelper.getInstance(this.context);
+                    LogoDb logoDb = LogoDbHelper.getInstance(player.context);
                     String pathToLogo = logoDb.getLogoFilenameForStation(sci.mLabel, sci.mSID);
                     BitmapDrawable logoDrawable = null;
                     if (pathToLogo != null) {
-                        logoDrawable = LogoDb.getBitmapForStation(this.context, pathToLogo);
+                        logoDrawable = LogoDb.getBitmapForStation(player.context, pathToLogo);
                     }
                     if (logoDrawable == null) {
-                        logoDrawable = LogoAssets.getBitmapForStation(this.context, sci.mLabel);
+                        logoDrawable = LogoAssets.getBitmapForStation(player.context, sci.mLabel);
                     }
                     if (logoDrawable != null) {
                         imageViewMemory.setImageDrawable(logoDrawable);
