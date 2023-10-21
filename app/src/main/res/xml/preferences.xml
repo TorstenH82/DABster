@@ -3,46 +3,26 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <androidx.preference.PreferenceCategory android:title="Update">
-        <androidx.preference.Preference
-            android:persistent="false"
-            android:title="Update MainUI"
-            android:selectable="true"
-            android:key="intentMainUi"
-            android:summary="Replace MainUI.apk">
-            <intent
-                android:targetPackage="com.thf.mainuiupd"
-                android:targetClass="com.thf.mainuiupd.UpdateActivity">
-                <extra
-                    android:name="job"
-                    android:value="MainUI" />
-            </intent>
-        </androidx.preference.Preference>
-        <androidx.preference.Preference
-            android:persistent="false"
-            android:title="Logcat Reader"
-            android:selectable="true"
-            android:key="intentLogcatReader"
-            android:summary="Grant permission">
-            <intent
-                android:targetPackage="com.thf.mainuiupd"
-                android:targetClass="com.thf.mainuiupd.UpdateActivity">
-                <extra
-                    android:name="job"
-                    android:value="LogcatReader" />
-            </intent>
-        </androidx.preference.Preference>
-    </androidx.preference.PreferenceCategory>
-    <androidx.preference.PreferenceCategory android:title="Settings">
+    
+    <androidx.preference.PreferenceCategory android:title="General">
         <androidx.preference.SwitchPreference
             android:defaultValue="@string/pref_serviceFollowing"
             android:key="serviceFollowing"
             android:title="@string/ServiceFollowing" />
+    </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory android:title="Audio">
         <androidx.preference.SwitchPreference
             android:defaultValue="@string/pref_suppressNoise"
             android:key="suppressNoise"
             android:title="@string/SuppressNoise" />
     </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory android:title="Other">
+        <androidx.preference.SwitchPreference
+            android:defaultValue="@string/pref_showClock"
+            android:key="showClock"
+            android:title="@string/ShowClock" />
+    </androidx.preference.PreferenceCategory> 
+    
     <androidx.preference.PreferenceCategory android:title="Donate">
         <androidx.preference.Preference
             android:key="prefDonate"

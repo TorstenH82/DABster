@@ -38,7 +38,7 @@ public class ScanDialog {
       AlertDialog.Builder builder = new AlertDialog.Builder(player, 2);
       builder
           .setTitle(R.string.dialog_select_scantype_caption)
-          .setIcon(R.drawable.btn_scan)
+          .setIcon(R.drawable.radio)
           .setSingleChoiceItems(items, default_choice, dialogClickListener)
           .setPositiveButton(player.getResources().getString(17039379), dialogClickListener)
           .setNegativeButton(player.getResources().getString(17039369), dialogClickListener)

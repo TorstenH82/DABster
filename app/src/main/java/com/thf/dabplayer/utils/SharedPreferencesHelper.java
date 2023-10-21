@@ -59,6 +59,10 @@ public class SharedPreferencesHelper {
   public int getInteger(String key) {
     return sharedPreferences.getInt(key, getDefaultInt(key));
   }
+    
+   public int getInteger(String key, int def) {
+    return sharedPreferences.getInt(key, def);
+  }
 
   public void setInteger(String key, int valueInt) {
     sharedPreferences.edit().putInt(key, valueInt).apply();

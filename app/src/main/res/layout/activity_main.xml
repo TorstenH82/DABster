@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
-    <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
-        <TextView android:textAppearance="?android:attr/textAppearanceSmall" android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/usb"/>
-        <EditText android:gravity="top" android:id="@+id/editText1" android:layout_width="332dp" android:layout_height="0dp" android:ems="10" android:layout_weight="0.43" android:inputType="none">
-            <requestFocus/>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <TextView
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/usb" />
+        <EditText
+                android:gravity="top"
+                android:id="@+id/editText1"
+                android:layout_width="332dp"
+                android:layout_height="0dp"
+                android:ems="10"
+                android:layout_weight="0.43"
+                android:inputType="none">
+            <requestFocus />
         </EditText>
     </LinearLayout>
 </LinearLayout>

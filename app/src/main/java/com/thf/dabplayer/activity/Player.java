@@ -49,6 +49,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -70,6 +71,7 @@ import com.thf.dabplayer.service.DabService;
 import com.thf.dabplayer.utils.C0162a;
 import com.thf.dabplayer.utils.DirCleaner;
 import com.thf.dabplayer.utils.ServiceFollowing;
+import com.thf.dabplayer.utils.SharedPreferencesHelper;
 import com.thf.dabplayer.utils.Strings;
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -120,7 +122,7 @@ public class Player extends Activity
   private boolean f19G;
 
   /* renamed from: I */
-  private SharedPreferences f20I;
+  // private SharedPreferences f20I;
 
   /* renamed from: d */
   public Context context;
@@ -139,7 +141,7 @@ public class Player extends Activity
   private int playIndex;
 
   /* renamed from: j */
-  private Button f31j;
+  private Button btnPrev;
 
   /* renamed from: k */
   private Button btnNext;
@@ -162,10 +164,10 @@ public class Player extends Activity
   private TextView txtServiceName;
 
   /* renamed from: p */
-  private TextView f37p;
+  // private TextView f37p;
 
   /* renamed from: q */
-  private TextView f38q;
+  // private TextView f38q;
 
   /* renamed from: r */
   // private MotImage motImage;
@@ -173,8 +175,10 @@ public class Player extends Activity
   /* renamed from: s */
   private ImageView imgSignalLevel;
 
+  private TextClock textClock;
+
   /* renamed from: t */
-  private TextView f41t;
+  private TextView txtDls;
   private Toast toast_service_following;
 
   /* renamed from: v */
@@ -344,7 +348,7 @@ public class Player extends Activity
             String dls = (String) message.obj;
             if (!player.strDls.equals(dls)) {
               player.strDls = dls;
-              player.f41t.setText(dls);
+              player.txtDls.setText(dls);
             }
             break;
           case PLAYERMSG_MOT: // 10:
@@ -371,7 +375,7 @@ public class Player extends Activity
           case 19:
             player.isInitialized = true;
             if (player.stationListSize > 0) {
-              player.m84a(player.playIndex);
+              player.playStation(player.playIndex);
             }
             break;
           case 23:
@@ -394,7 +398,7 @@ public class Player extends Activity
             player.progressDialog.setMessage("");
             player.updateStationList();
             if (player.stationListSize > 0) {
-              player.m84a(0);
+              player.playStation(0);
             }
             break;
           case Player.PLAYERMSG_STATIONINFO_INTENT: // 100
@@ -584,7 +588,7 @@ public class Player extends Activity
     }
   }
 
-private class SearchDabHandler implements Runnable {
+  private class SearchDabHandler implements Runnable {
     public void run() {
       int i = 0;
       C0162a.m9a("searching mDabHandler");
@@ -603,15 +607,15 @@ private class SearchDabHandler implements Runnable {
       }
       if (i >= 10 && Player.this.dabHandler == null) {
         C0162a.m9a("failed searching mDabHandler");
-      else {
-          Message obtainMessage = Player.this.dabHandler.obtainMessage();
-          obtainMessage.what = DabThread.MSGTYPE_DAB_INIT; // 2;
-          Player.this.dabHandler.sendMessage(obtainMessage);
-          C0162a.m9a("searching mDabHandler done");
-          return 1L;   
+      } else {
+        Message obtainMessage = Player.this.dabHandler.obtainMessage();
+        obtainMessage.what = DabThread.MSGTYPE_DAB_INIT; // 2;
+        Player.this.dabHandler.sendMessage(obtainMessage);
+        C0162a.m9a("searching mDabHandler done");
       }
+    }
   }
-}        
+
   @SuppressLint({"StaticFieldLeak"})
   /* renamed from: com.ex.dabplayer.pad.activity.Player$n */
   /* loaded from: classes.dex */
@@ -1089,7 +1093,7 @@ private class SearchDabHandler implements Runnable {
             }
           };
       lVar.notifyDataSetInvalidated();
-      this.f42v.setAdapter((SpinnerAdapter) lVar);
+      // this.f42v.setAdapter((SpinnerAdapter) lVar);
     }
   }
 
@@ -1101,7 +1105,7 @@ private class SearchDabHandler implements Runnable {
         this.toast_service_following.cancel();
       }
       if (str != null && !str.isEmpty()) {
-        this.f38q.setText(str);
+        // this.f38q.setText(str);
         return;
       }
       return;
@@ -1136,7 +1140,7 @@ private class SearchDabHandler implements Runnable {
 
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: a */
-  public void m84a(int i) {
+  public void playStation(int i) {
     if (i >= 0) {
       if (this.dabHandler == null) {
         this.dabHandler = this.dabService.getDabHandlerFromDabThread();
@@ -1147,63 +1151,72 @@ private class SearchDabHandler implements Runnable {
       } else {
         s_stationListShadow.clear();
       }
-      if (this.stationList != null) {
+      if (this.stationList == null) {
+        C0162a.m9a("station list is null");
+      } else {
         s_stationListShadow.addAll(this.stationList);
-      }
-      C0162a.m9a("a(I): station list: " + s_stationListShadow.size());
-      // maximizeLeftArea(false, true);
-      if (i < this.stationList.size()) {
-        DabSubChannelInfo subChannelInfo = this.stationList.get(i);
-        updateSelectedStatus(i);
-        this.txtServiceName.setText(subChannelInfo.mLabel);
-        this.f38q.setText("" + subChannelInfo.mFreq);
-        this.f37p.setText(PTYname(subChannelInfo.mPty));
-        this.f26e = true;
-        boolean showLogoAsMot =
-            this.context
-                .getSharedPreferences(SettingsActivity.prefname_settings, 0)
-                .getBoolean(SettingsActivity.pref_key_logo_as_mot, true);
-        BitmapDrawable logoDrawable = null;
-        if (showLogoAsMot) {
-          String pathToLogo =
-              mLogoDb.getLogoFilenameForStation(subChannelInfo.mLabel, subChannelInfo.mSID);
-          if (pathToLogo != null) {
-            logoDrawable = mLogoDb.getBitmapForStation(this, pathToLogo);
+        C0162a.m9a("a(I): station list: " + s_stationListShadow.size());
+        // maximizeLeftArea(false, true);
+
+        if (i < this.stationList.size()) {
+          DabSubChannelInfo subChannelInfo = this.stationList.get(i);
+          updateSelectedStatus(i);
+          this.txtServiceName.setText(subChannelInfo.mLabel);
+          // this.f38q.setText("" + subChannelInfo.mFreq);
+          // this.f37p.setText(PTYname(subChannelInfo.mPty));
+          this.f26e = true;
+
+          /*
+          boolean showLogoAsMot =
+              this.context
+                  .getSharedPreferences(SettingsActivity.prefname_settings, 0)
+                  .getBoolean(SettingsActivity.pref_key_logo_as_mot, true);
+          BitmapDrawable logoDrawable = null;
+          if (showLogoAsMot) {
+            String pathToLogo =
+                mLogoDb.getLogoFilenameForStation(subChannelInfo.mLabel, subChannelInfo.mSID);
+            if (pathToLogo != null) {
+              logoDrawable = mLogoDb.getBitmapForStation(this, pathToLogo);
+            }
+            if (logoDrawable == null) {
+              logoDrawable = LogoAssets.getBitmapForStation(this.context, subChannelInfo.mLabel);
+            }
           }
-          if (logoDrawable == null) {
-            logoDrawable = LogoAssets.getBitmapForStation(this.context, subChannelInfo.mLabel);
-          }
+          */
+          // if (logoDrawable != null) {
+          //  this.motImage.setImage(logoDrawable, 1);
+          // } else {
+          //  this.motImage.setDefaultImage();
+          // }
+          this.txtDls.setText("");
+          this.dabHandler.removeMessages(DabThread.MSGTYPE_START_PLAY_STATION);
+          Message obtainMessage = this.dabHandler.obtainMessage();
+          obtainMessage.what = DabThread.MSGTYPE_START_PLAY_STATION; // 6;
+          obtainMessage.arg1 = i;
+          this.dabHandler.sendMessage(obtainMessage);
+
+          this.playIndex = i;
+          C0162a.m9a("dab play index:" + this.playIndex);
+          // DeterminedScrollTo(this.mStationListView, this.playIndex);
+          scrollToPositionRecycler(this.playIndex);
+
+          // SharedPreferences.Editor edit = this.f20I.edit();
+          // edit.putInt("current_playing", this.playIndex);
+          // edit.apply();
+          SharedPreferencesHelper.getInstance().setInteger("current_playing", this.playIndex);
+          m78f();
+          displayPrevCurrNextStation(this.playIndex);
+          notifyStationChangesTo(subChannelInfo, this.playIndex, this.stationList.size());
         }
-        // if (logoDrawable != null) {
-        //  this.motImage.setImage(logoDrawable, 1);
-        // } else {
-        //  this.motImage.setDefaultImage();
-        // }
-        this.f41t.setText("");
-        this.dabHandler.removeMessages(6);
-        Message obtainMessage = this.dabHandler.obtainMessage();
-        obtainMessage.what = DabThread.MSGTYPE_START_PLAY_STATION; // 6;
-        obtainMessage.arg1 = i;
-        this.dabHandler.sendMessage(obtainMessage);
-
-        this.playIndex = i;
-        C0162a.m9a("dab play index:" + this.playIndex);
-        // DeterminedScrollTo(this.mStationListView, this.playIndex);
-        scrollToPositionRecycler(this.playIndex);
-
-        SharedPreferences.Editor edit = this.f20I.edit();
-        edit.putInt("current_playing", this.playIndex);
-        edit.apply();
-        m78f();
-        displayPrevCurrNextStation(this.playIndex);
-        notifyStationChangesTo(subChannelInfo, this.playIndex, this.stationList.size());
       }
     }
   }
 
   private void scrollToPositionRecycler(int idx) {
     this.linearLayoutManager.scrollToPosition(this.playIndex);
-    this.stationsAdapter.setMot(null, -1);
+    if (this.stationsAdapter != null) {
+      this.stationsAdapter.setMot(null, -1);
+    }
     this.motImage = null;
   }
 
@@ -1211,7 +1224,7 @@ private class SearchDabHandler implements Runnable {
   /* renamed from: a */
   public void fillStationRecycler(List list) {
     if (this.stationList == null) {
-      this.stationList = new ArrayList();
+      this.stationList = new ArrayList<>();
     } else {
       this.stationList.clear();
     }
@@ -1264,7 +1277,7 @@ private class SearchDabHandler implements Runnable {
       if (i2 > -1) {
         aVar.setSelectedIndex(i2);
       } else {
-        m84a(0);
+        playStation(0);
       }
       this.mStationListView.setAdapter((ListAdapter) aVar);
       */
@@ -1307,16 +1320,19 @@ private class SearchDabHandler implements Runnable {
         this.playIndex = i;
         this.f26e = true;
         // this.motImage.setImageResource(R.drawable.radio);
-        this.f41t.setText("");
+        this.txtDls.setText("");
         this.dabHandler.removeMessages(6);
         Message obtainMessage = this.dabHandler.obtainMessage();
         obtainMessage.what = 12;
         obtainMessage.obj = qVar;
         this.dabHandler.sendMessage(obtainMessage);
         C0162a.m9a("dab play preset index:" + this.playIndex);
-        SharedPreferences.Editor edit = this.f20I.edit();
-        edit.putInt("current_playing", this.playIndex);
-        edit.apply();
+        // SharedPreferences.Editor edit = this.f20I.edit();
+        // edit.putInt("current_playing", this.playIndex);
+        // edit.apply();
+
+        SharedPreferencesHelper.getInstance().setInteger("current_playing", this.playIndex);
+
         m78f();
       }
     }
@@ -1329,7 +1345,7 @@ private class SearchDabHandler implements Runnable {
       if (this.f27f) {
         playPreset(i);
       } else {
-        m84a(i);
+        playStation(i);
       }
     }
   }
@@ -1390,7 +1406,7 @@ private class SearchDabHandler implements Runnable {
       if (this.f27f) {
         playPreset(i);
       } else {
-        m84a(i);
+        playStation(i);
       }
     }
   }
@@ -1512,8 +1528,8 @@ private class SearchDabHandler implements Runnable {
   /* renamed from: e */
   public void m79e() {
     this.txtServiceName.setText("");
-    this.f37p.setText("");
-    this.f38q.setText("");
+    // this.f37p.setText("");
+    // this.f38q.setText("");
     this.f26e = false;
     if (this.dabHandler != null) {
       this.dabHandler.removeMessages(7);
@@ -1887,7 +1903,7 @@ private class SearchDabHandler implements Runnable {
       } else if (!stringExtra.equals("pty dialog")) {
         this.stationListSize = this.stationList.size();
         if (i > 0) {
-          m84a(i2);
+          playStation(i2);
         }
       } else if (i2 >= 0 && arrPty != null && this.dabHandler != null) {
         String stringExtra2 = arrPty[i2];
@@ -2037,6 +2053,7 @@ private class SearchDabHandler implements Runnable {
   }
 
   private void playFavourite(int storagePos) {
+    this.dabHandler.removeMessages(DabThread.PLAY_FAVOURITE);
     Message obtainMessage = this.dabHandler.obtainMessage();
     obtainMessage.what = DabThread.PLAY_FAVOURITE;
     obtainMessage.arg1 = storagePos;
@@ -2061,14 +2078,14 @@ private class SearchDabHandler implements Runnable {
     this.imgSignalLevel.setOnClickListener(this);
     this.btnNext = (Button) findViewById(R.id.bt_next);
     this.btnNext.setOnClickListener(this);
-    this.f31j = (Button) findViewById(R.id.bt_prev);
-    this.f31j.setOnClickListener(this);
+    this.btnPrev = (Button) findViewById(R.id.bt_prev);
+    this.btnPrev.setOnClickListener(this);
     this.layScan = (Button) findViewById(R.id.layScan);
     this.layScan.setOnClickListener(this);
     this.layExit = (Button) findViewById(R.id.layExit);
     this.layExit.setOnClickListener(this);
-    this.f35n = (Button) findViewById(R.id.bt_pty);
-    this.f35n.setOnClickListener(this);
+    // this.f35n = (Button) findViewById(R.id.bt_pty);
+    // this.f35n.setOnClickListener(this);
 
     this.memory1 = findViewById(R.id.memory1);
     this.memory1.setOnLongClickListener(this);
@@ -2089,15 +2106,16 @@ private class SearchDabHandler implements Runnable {
     this.memory6.setOnLongClickListener(this);
     this.memory6.setOnClickListener(this);
 
-    this.f28g = false;
+    // this.f28g = false;
     // this.f34m = (Button) findViewById(R.id.bt_record);
     // this.f34m.setOnClickListener(this);
-    this.f38q = (TextView) findViewById(R.id.service_freq);
-    this.f38q.setText("");
+    // this.f38q = (TextView) findViewById(R.id.service_freq);
+    // this.f38q.setText("");
     this.txtServiceName = (TextView) findViewById(R.id.service_name);
     this.txtServiceName.setText("");
-    this.f37p = (TextView) findViewById(R.id.service_pty);
-    this.f37p.setText("");
+    // this.f37p = (TextView) findViewById(R.id.service_pty);
+    // this.f37p.setText("");
+    /*
     this.f42v = (Spinner) findViewById(R.id.pty_spinner);
     this.f42v.setOnItemSelectedListener(
         new AdapterView
@@ -2116,11 +2134,17 @@ private class SearchDabHandler implements Runnable {
           @Override // android.widget.AdapterView.OnItemSelectedListener
           public void onNothingSelected(AdapterView<?> parent) {}
         });
-    this.f41t = (TextView) findViewById(R.id.dls_scroll);
-    this.f41t.setText("");
+        */
+    this.txtDls = (TextView) findViewById(R.id.dls_scroll);
+    this.txtDls.setText("");
     // this.mStationListView = getListView();
 
     // recycler
+
+    this.textClock = (TextClock) findViewById(R.id.textClock);
+    if (!SharedPreferencesHelper.getInstance().getBoolean("showClock")) {
+      this.textClock.setVisibility(View.GONE);
+    }
 
     recyclerView = this.findViewById(R.id.recycler);
     recyclerView.setHasFixedSize(true);
@@ -2187,18 +2211,23 @@ private class SearchDabHandler implements Runnable {
     LinearLayout.LayoutParams params;
     // homeKeyReceiver = new HomeKeyReceiver(this);
     sPlayerHandler = new WeakReference<>(this.f22M);
+
+    /*
     if (this.f20I == null) {
       this.f20I = this.context.getSharedPreferences("playing", 0);
     }
     int filter = this.f20I.getInt("current_filter", 0);
     this.isFavoriteListActive = filter == 2 || filter == 3;
-    this.favorBtn = (Button) findViewById(R.id.bt_favor);
+     */
+    /*
+        this.favorBtn = (Button) findViewById(R.id.bt_favor);
     this.favorBtn.setOnClickListener(this);
     if (this.isFavoriteListActive) {
       this.favorBtn.setBackgroundResource(R.drawable.favor_list_selector_on);
     } else {
       this.favorBtn.setBackgroundResource(R.drawable.favor_list_selector_off);
     }
+        */
     this.mTouchListener = new TouchListener(this);
     // this.mStationListView.setOnTouchListener(
     //    new StationViewTouchHelper(this.context, this.mTouchListener));
@@ -2345,9 +2374,11 @@ private class SearchDabHandler implements Runnable {
         handled = true;
         break;
     }
+    /*
     if (i == 4) {
       this.f19G = true;
     }
+    */
     if (handled) {
       return true;
     }
@@ -2395,18 +2426,22 @@ private class SearchDabHandler implements Runnable {
     // if (homeKeyReceiver != null) {
     // this.context.unregisterReceiver(homeKeyReceiver);
     // }
+
+    // stop on back key?
     if (this.f19G) {
       m79e();
       if (this.dabHandler != null) {
-        this.dabHandler.removeMessages(5);
+        this.dabHandler.removeMessages(DabThread.MSGTYPE_DAB_DEINIT);
         Message obtainMessage = this.dabHandler.obtainMessage();
-        obtainMessage.what = 5;
+        obtainMessage.what = DabThread.MSGTYPE_DAB_DEINIT; // 5
         this.dabHandler.sendMessage(obtainMessage);
       }
+      /*
       Intent intent = new Intent("com.microntek.app");
       intent.putExtra("app", DabService.SENDER_DAB);
       intent.putExtra("state", "EXIT");
       this.context.sendBroadcast(intent);
+      */
     }
     this.mProperShutdown = isFinishing();
   }
@@ -2431,8 +2466,10 @@ private class SearchDabHandler implements Runnable {
     super.onResume();
     this.isInForeground = true;
     this.f19G = false;
-    this.f20I = this.context.getSharedPreferences("playing", 0);
-    this.playIndex = this.f20I.getInt("current_playing", 0);
+
+    // this.f20I = this.context.getSharedPreferences("playing", 0);
+    // this.playIndex = this.f20I.getInt("current_playing", 0);
+    this.playIndex = SharedPreferencesHelper.getInstance().getInteger("current_playing", 0);
     // if (this.mStationListView != null) {
     //  DeterminedScrollTo(this.mStationListView, this.playIndex);
     // }
@@ -2470,8 +2507,8 @@ private class SearchDabHandler implements Runnable {
     this.dabService.setUsbDevice(this.usbManager, this.usbDevice);
     this.dabService.m15b();
     this.dabHandler = this.dabService.getDabHandlerFromDabThread();
-    //new AsyncTaskC0118n().executeOnExecutor(Executors.newCachedThreadPool(), new Integer[0]);
-    new Thread(new SearchDabHandler()).start(); 
+    // new AsyncTaskC0118n().executeOnExecutor(Executors.newCachedThreadPool(), new Integer[0]);
+    new Thread(new SearchDabHandler()).start();
   }
 
   @Override // android.content.ServiceConnection
@@ -2494,7 +2531,7 @@ private class SearchDabHandler implements Runnable {
 
   public void onStationClicked(int posInList) {
     C0162a.m9a("Player:onStationClicked pos " + posInList);
-    m84a(posInList);
+    playStation(posInList);
   }
 
   private String PTYname(int i) {
@@ -2561,12 +2598,12 @@ private class SearchDabHandler implements Runnable {
       this.dabHandler = this.dabService.getDabHandlerFromDabThread();
     }
     this.txtServiceName.setText("");
-    this.f38q.setText("");
-    this.f37p.setText("");
-    this.f41t.setText("");
+    // this.f38q.setText("");
+    // this.f37p.setText("");
+    this.txtDls.setText("");
     // this.motImage.setDefaultImage();
     arrPty = null;
-    this.f42v.setAdapter((SpinnerAdapter) null);
+    // this.f42v.setAdapter((SpinnerAdapter) null);
     Message obtainMessage = this.dabHandler.obtainMessage();
     obtainMessage.what = DabThread.MSGTYPE_START_STATION_SCAN; // 3
     obtainMessage.arg1 = 0;

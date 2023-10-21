@@ -1,238 +1,401 @@
-<TableLayout
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/memoryTable"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <!-- first row of the table layout -->
-
-    <TableRow
-        android:id="@+id/row1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:gravity="center_vertical">
-
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/memory1"
-            android:layout_height="40dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/memory"
-            android:forceDarkAllowed="false"
-            android:gravity="center_vertical"
-            android:padding="0dp">
-
-            <ImageView
-                android:id="@+id/memory1Img"
-                android:layout_width="30dp"
-                android:layout_height="fill_parent"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginStart="9dp"
-                android:layout_marginTop="8dp" />
-
-            <TextView
-                android:id="@+id/memory1Tv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="0dp"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text=""
-                android:textColor="#FFFFFF"
-                android:visibility="visible" />
-        </LinearLayout>
-
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/memory2"
-            android:layout_height="40dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginStart="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/memory"
-            android:forceDarkAllowed="false"
-            android:gravity="center_vertical"
-            android:padding="0dp">
-
-            <ImageView
-                android:id="@+id/memory2Img"
-                android:layout_width="30dp"
-                android:layout_height="fill_parent"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginStart="9dp"
-                android:layout_marginTop="8dp" />
-
-            <TextView
-                android:id="@+id/memory2Tv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="0dp"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text=""
-                android:textColor="#FFFFFF"
-                android:visibility="visible" />
-        </LinearLayout>
-
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/memory3"
-            android:layout_height="40dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/memory"
-            android:forceDarkAllowed="false"
-            android:gravity="center_vertical"
-            android:padding="0dp">
-
-            <ImageView
-                android:id="@+id/memory3Img"
-                android:layout_width="30dp"
-                android:layout_height="fill_parent"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginStart="9dp"
-                android:layout_marginTop="8dp" />
-
-            <TextView
-                android:id="@+id/memory3Tv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="0dp"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text=""
-                android:textColor="#FFFFFF"
-                android:visibility="visible" />
-        </LinearLayout>
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/row2"
-        android:layout_width="fill_parent"
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/memoryTable"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/memory4"
-            android:layout_height="40dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/memory"
-            android:forceDarkAllowed="false"
-            android:gravity="center_vertical"
-            android:padding="0dp">
+        <!-- first row of the table layout -->
 
-            <ImageView
-                android:id="@+id/memory4Img"
-                android:layout_width="30dp"
-                android:layout_height="fill_parent"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginStart="9dp"
-                android:layout_marginTop="8dp" />
+        <TableRow
+            android:id="@+id/row1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/memory4Tv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/memory1"
+                android:layout_height="40dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/memory"
+                android:forceDarkAllowed="false"
+                android:gravity="center_vertical"
+                android:padding="0dp">
+
+                <ImageView
+                    android:id="@+id/memory1Img"
+                    android:layout_width="30dp"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:id="@+id/memory1Tv"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="0dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="#FFFFFF"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/memory2"
+                android:layout_height="40dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/memory"
+                android:forceDarkAllowed="false"
+                android:gravity="center_vertical"
+                android:padding="0dp">
+
+                <ImageView
+                    android:id="@+id/memory2Img"
+                    android:layout_width="30dp"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:id="@+id/memory2Tv"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="0dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="#FFFFFF"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/memory3"
+                android:layout_height="40dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="0dp"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text=""
-                android:textColor="#FFFFFF"
-                android:visibility="visible" />
-        </LinearLayout>
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/memory"
+                android:forceDarkAllowed="false"
+                android:gravity="center_vertical"
+                android:padding="0dp">
 
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/memory5"
-            android:layout_height="40dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginStart="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/memory"
-            android:forceDarkAllowed="false"
-            android:gravity="center_vertical"
-            android:padding="0dp">
+                <ImageView
+                    android:id="@+id/memory3Img"
+                    android:layout_width="30dp"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="8dp" />
 
-            <ImageView
-                android:id="@+id/memory5Img"
-                android:layout_width="30dp"
-                android:layout_height="fill_parent"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginStart="9dp"
-                android:layout_marginTop="8dp" />
+                <TextView
+                    android:id="@+id/memory3Tv"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="0dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="#FFFFFF"
+                    android:visibility="visible" />
+            </LinearLayout>
+        </TableRow>
 
-            <TextView
-                android:id="@+id/memory5Tv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
+        <TableRow
+            android:id="@+id/row2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/memory4"
+                android:layout_height="40dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/memory"
+                android:forceDarkAllowed="false"
+                android:gravity="center_vertical"
+                android:padding="0dp">
+
+                <ImageView
+                    android:id="@+id/memory4Img"
+                    android:layout_width="30dp"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:id="@+id/memory4Tv"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="0dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="#FFFFFF"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/memory5"
+                android:layout_height="40dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/memory"
+                android:forceDarkAllowed="false"
+                android:gravity="center_vertical"
+                android:padding="0dp">
+
+                <ImageView
+                    android:id="@+id/memory5Img"
+                    android:layout_width="30dp"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:id="@+id/memory5Tv"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="0dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="#FFFFFF"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/memory6"
+                android:layout_height="40dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="0dp"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text=""
-                android:textColor="#FFFFFF"
-                android:visibility="visible" />
-        </LinearLayout>
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/memory"
+                android:forceDarkAllowed="false"
+                android:gravity="center_vertical"
+                android:padding="0dp">
 
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/memory6"
-            android:layout_height="40dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/memory"
-            android:forceDarkAllowed="false"
+                <ImageView
+                    android:id="@+id/memory6Img"
+                    android:layout_width="30dp"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:id="@+id/memory6Tv"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="0dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="#FFFFFF"
+                    android:visibility="visible" />
+            </LinearLayout>
+        </TableRow>
+    </TableLayout>
+
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/infoTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <TableRow
             android:gravity="center_vertical"
-            android:padding="0dp">
-
-            <ImageView
-                android:id="@+id/memory6Img"
-                android:layout_width="30dp"
-                android:layout_height="fill_parent"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginStart="9dp"
-                android:layout_marginTop="8dp" />
-
+            android:layout_marginTop="@dimen/ChannelDetailsLayoutMargin"
+            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
             <TextView
-                android:id="@+id/memory6Tv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="0dp"
-                android:ellipsize="end"
+                android:textAppearance="@style/ChannelDetails"
+                android:gravity="right"
+                android:text="@string/StationName"
+                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:id="@+id/details_station_name"
+                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+        </TableRow>
+        <TableRow
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:gravity="right"
+                android:text="@string/PTY"
+                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:id="@+id/details_pty"
+                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+        </TableRow>
+        <TableRow
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:gravity="right"
+                android:text="@string/Ensemble"
+                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:id="@+id/details_ensemble"
+                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+        </TableRow>
+        <TableRow
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:gravity="right"
+                android:text="@string/ServiceID"
+                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:id="@+id/details_service_id"
+                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+        </TableRow>
+        <TableRow
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:gravity="right"
+                android:text="@string/Frequency"
+                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:id="@+id/details_frequency"
+                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+        </TableRow>
+        <TableRow
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:gravity="right"
+                android:text="@string/Bitrate"
+                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:id="@+id/details_bitrate"
+                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+        </TableRow>
+        <TableRow
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:gravity="right"
+                android:text="@string/AudioCodec"
+                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:id="@+id/details_audiocodec"
+                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+        </TableRow>
+        <TableRow
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:gravity="right"
+                android:text="@string/AudioSampleRate"
+                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:id="@+id/details_audiobitrate"
+                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+        </TableRow>
+        <TableRow
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:gravity="right"
+                android:text="@string/SignalQuality"
+                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:textSize="15sp"
+                android:textColor="#00ffff"
+                android:id="@+id/details_signalquality"
+                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+        </TableRow>
+        <TableRow
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:gravity="right"
+                android:text="@string/ServiceFollowing" />
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:id="@+id/details_servicefollowing"
+                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+        </TableRow>
+        <TableRow
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="8dp">
+            <TextView
+                android:textAppearance="@style/ChannelDetails"
+                android:ellipsize="marquee"
+                android:gravity="center_horizontal"
+                android:id="@+id/details_servicelog"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:fadingEdge="horizontal"
+                android:layout_span="2"
+                android:scrollHorizontally="true"
                 android:singleLine="true"
-                android:text=""
-                android:textColor="#FFFFFF"
-                android:visibility="visible" />
-        </LinearLayout>
-    </TableRow>
-</TableLayout>
+                android:marqueeRepeatLimit="marquee_forever" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

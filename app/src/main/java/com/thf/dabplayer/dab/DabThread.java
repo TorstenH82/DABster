@@ -88,10 +88,10 @@ public class DabThread extends Thread {
   private Looper looper;
 
   /* renamed from: A */
-  private int[] f68A = new int[16];
+  private int[] arrFreqs = new int[16];
 
   /* renamed from: B */
-  private int[] f69B = new int[16];
+  private int[] arrSids = new int[16];
 
   /* renamed from: C */
   private RingBuffer ficRingBuffer = null;
@@ -115,7 +115,7 @@ public class DabThread extends Thread {
   private List<ChannelInfo> channelInfoList = new ArrayList();
 
   /* renamed from: m */
-  private C0148j f88m = null;
+  private SignalMotDlsMgr f88m = null;
 
   /* renamed from: n */
   private AacThread aacThread = null;
@@ -296,7 +296,7 @@ public class DabThread extends Thread {
       C0162a.m9a("bitrate: " + subChannelInfo.mBitrate);
     }
     if (this.f88m == null) {
-      this.f88m = new C0148j();
+      this.f88m = new SignalMotDlsMgr();
       this.f88m.start();
     }
   }
@@ -594,13 +594,13 @@ public class DabThread extends Thread {
         C0162a.m8a("bitrate: ", subChannelInfo.mBitrate);
         if (ServiceFollowing.is_enabled()) {
           ServiceLink sf = new ServiceLink(this.dabDec);
-          sf.read(subChannelInfo, this.f68A, this.f69B);
-          ServiceFollowing.manTune(subChannelInfo, this.f68A, this.f69B);
+          sf.read(subChannelInfo, this.arrFreqs, this.arrSids);
+          ServiceFollowing.manTune(subChannelInfo, this.arrFreqs, this.arrSids);
           notifyNewStationPlaying(subChannelInfo, i, stationList.size());
         }
       }
       if (this.f88m == null) {
-        this.f88m = new C0148j();
+        this.f88m = new SignalMotDlsMgr();
         this.f88m.start();
       }
     }
@@ -690,7 +690,7 @@ public class DabThread extends Thread {
     C0162a.m9a("service linking");
     synchronized (this.dabDec) {
       int i2 = this.freq;
-      ServiceFollowing serviceFollowing = new ServiceFollowing(this.f68A, this.f69B);
+      ServiceFollowing serviceFollowing = new ServiceFollowing(this.arrFreqs, this.arrSids);
       do {
         int try_freq = serviceFollowing.next_frequency();
         if (try_freq <= 0) {
@@ -829,14 +829,14 @@ public class DabThread extends Thread {
       }
       C0162a.m8a("bitrate: ", this.dabSubChannelInfo.mBitrate);
       if (was_success) {
-        new ServiceLink(this.dabDec).read(this.dabSubChannelInfo, this.f68A, this.f69B);
-        ServiceFollowing.autoTune(this.dabSubChannelInfo, this.f68A, this.f69B);
+        new ServiceLink(this.dabDec).read(this.dabSubChannelInfo, this.arrFreqs, this.arrSids);
+        ServiceFollowing.autoTune(this.dabSubChannelInfo, this.arrFreqs, this.arrSids);
       } else {
         ServiceFollowing.autoTune(this.dabSubChannelInfo);
       }
     }
     if (this.f88m == null) {
-      this.f88m = new C0148j();
+      this.f88m = new SignalMotDlsMgr();
       this.f88m.start();
     }
     Message obtainMessage2 = this.playerHandler.obtainMessage();
@@ -1114,12 +1114,14 @@ public class DabThread extends Thread {
 
             int idx = DabThread.this.stationList.indexOf(sciFavourite);
             if (idx != -1) {
+              Toast.makeText(context, "call playStation with index " + idx, Toast.LENGTH_LONG)
+                  .show();
               DabThread.this.playStation(idx);
             }
           }
           // DabThread.this.stationList.indexOf()
           // DabThread.this.playStation
-          break;
+          return;
         case 31:
           DabThread.this.activateFavoriteList();
           return;
@@ -1237,7 +1239,7 @@ public class DabThread extends Thread {
                 DabThread.this.scan_service_count += service_count;
                 DabThread.this.stationList = DabThread.this.dbHelper.getStationList();
                 Message obtainMessage = DabThread.this.playerHandler.obtainMessage();
-                obtainMessage.what = Player.PLAYERMSG_NEW_LIST_OF_STATIONS;  // 1;
+                obtainMessage.what = Player.PLAYERMSG_NEW_LIST_OF_STATIONS; // 1;
                 obtainMessage.arg1 = DabThread.this.stationList.size();
                 obtainMessage.obj = DabThread.this.stationList;
                 DabThread.this.playerHandler.sendMessage(obtainMessage);
@@ -1345,10 +1347,10 @@ public class DabThread extends Thread {
   /* JADX INFO: Access modifiers changed from: package-private */
   /* renamed from: com.ex.dabplayer.pad.dab.f$j */
   /* loaded from: classes.dex */
-  public class C0148j extends Thread {
+  public class SignalMotDlsMgr extends Thread {
 
     /* renamed from: b */
-    private volatile boolean f102b;
+    private volatile boolean exit;
     private byte[] get_dls_buff;
     private byte[] get_mot_data_buff;
     private byte[] get_mot_type_buff;
@@ -1356,8 +1358,8 @@ public class DabThread extends Thread {
     private int prevSignal;
     private int times_little_signal;
 
-    private C0148j() {
-      this.f102b = false;
+    private SignalMotDlsMgr() {
+      this.exit = false;
       this.times_little_signal = 0;
       this.get_dls_buff = new byte[102400];
       this.get_mot_type_buff = new byte[2];
@@ -1469,8 +1471,8 @@ public class DabThread extends Thread {
                 this.get_mot_data_buff, this.get_mot_type_buff);
       }
       if (decoder_get_mot_data > 0) {
-        String str = this.get_mot_type_buff[0] == 0 ? "mot.png" : "mot.jpg";
-        File file = new File(DabThread.this.context.getFilesDir(), str);
+        String fileName = this.get_mot_type_buff[0] == 0 ? "mot.png" : "mot.jpg";
+        File file = new File(DabThread.this.context.getFilesDir(), fileName);
         if (file.exists()) {
           file.delete();
         }
@@ -1485,8 +1487,8 @@ public class DabThread extends Thread {
           e2.printStackTrace();
         }
         Message obtainMessage = DabThread.this.playerHandler.obtainMessage();
-        obtainMessage.what = 10;
-        obtainMessage.obj = str;
+        obtainMessage.what = Player.PLAYERMSG_MOT; // 10
+        obtainMessage.obj = fileName;
         DabThread.this.playerHandler.sendMessage(obtainMessage);
         try {
           String canonicalPath = file.getCanonicalPath();
@@ -1505,7 +1507,7 @@ public class DabThread extends Thread {
 
     /* renamed from: a */
     public void exit() {
-      this.f102b = true;
+      this.exit = true;
       sendSignalQuality(DabService.SIGNALQUALITY_NONE);
       sendDls("");
     }
@@ -1514,7 +1516,7 @@ public class DabThread extends Thread {
     public void run() {
       setPriority(1);
       int i = 0;
-      while (!this.f102b) {
+      while (!this.exit) {
         poll_dls();
         if (i > 1) {
           poll_signallevel();

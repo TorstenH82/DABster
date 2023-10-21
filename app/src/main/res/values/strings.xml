@@ -92,12 +92,13 @@
     <string name="colored">colorful</string>
     <string name="settings_MotSlideshow">Show MOT slide show</string>
     <string name="settings_SwapPrevNextFromSWC">Swap the reaction to NEXT and PREV commands</string>
-    <!--<string name="app_Version">AndroidAutoShop-1.0</string>
-    <string name="date">03.10.18</string>-->
+    <!-- <string name="app_Version">AndroidAutoShop-1.0</string> <string name="date">03.10.18</string> -->
     <string name="channel_name">Default</string>
     <string name="channel_description">Dabster channel</string>
     <string name="ServiceFollowing">Service Following</string>
     <string name="pref_serviceFollowing">true</string>
     <string name="SuppressNoise">Suppress noise</string>
     <string name="pref_suppressNoise">true</string>
+    <string name="ShowClock">Show clock on bottom bar</string>
+    <string name="pref_showClock">true</string>
 </resources>
