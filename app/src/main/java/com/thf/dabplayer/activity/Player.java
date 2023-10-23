@@ -1377,11 +1377,11 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
   public void selectNextStation() {
     if (!this.progressDialog.isShowing() && this.stationListSize > 0) {
       int i = ((this.playIndex + this.stationListSize) + 1) % this.stationListSize;
-      if (this.f27f) {
-        playPreset(i);
-      } else {
-        playStation(i);
-      }
+      // if (this.f27f) {
+      //  playPreset(i);
+      // } else {
+      playStation(i);
+      // }
     }
   }
 
@@ -2267,7 +2267,7 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
         && (params = (LinearLayout.LayoutParams) leftArea.getLayoutParams()) != null) {
       this.mDefaultLeftAreaLayoutWeight = params.weight;
     }
-        
+
     this.mViewFlipper = (ViewFlipper) findViewById(R.id.viewflipper);
     if (this.mViewFlipper != null) {
       LargeSlsTouchListener touchListener = new LargeSlsTouchListener(this);
