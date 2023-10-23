@@ -444,18 +444,24 @@ public class DabThread extends Thread {
       C0162a.m9a("get version fail");
       sendHardwareFailure("Failed to get version from DAB hardware");
     } else {
+
+      // send stationlist to player
       this.stationList = this.dbHelper.getStationList();
       Message obtainMessage = this.playerHandler.obtainMessage();
       obtainMessage.what = Player.PLAYERMSG_NEW_LIST_OF_STATIONS; // 1;
       obtainMessage.arg1 = this.stationList.size();
       obtainMessage.obj = this.stationList;
       this.playerHandler.sendMessage(obtainMessage);
+
+      /*
       this.channelInfoList = this.dbHelper.getPresetChannelInfo();
       Message obtainMessage2 = this.playerHandler.obtainMessage();
       obtainMessage2.what = 13;
       obtainMessage2.arg1 = this.channelInfoList.size();
       obtainMessage2.obj = this.channelInfoList;
       this.playerHandler.sendMessage(obtainMessage2);
+      */
+
       Message obtainMessage3 = this.playerHandler.obtainMessage();
       obtainMessage3.what = 19;
       this.playerHandler.sendMessage(obtainMessage3);
@@ -1116,8 +1122,28 @@ public class DabThread extends Thread {
             if (idx != -1) {
               Toast.makeText(context, "call playStation with index " + idx, Toast.LENGTH_LONG)
                   .show();
-              DabThread.this.playStation(idx);
+
+              if (!DabThread.this.isOnExit) {
+                ServiceFollowing.update_enabled_status(DabThread.this.getContext());
+                DabThread.this.playStation(idx);
+                return;
+              }
+
+            } else {
+              Toast.makeText(
+                      context,
+                      "favourite station "
+                          + sciFavourite.mLabel
+                          + " not found"
+                          + idx
+                          + ". Station list size is "
+                          + DabThread.this.stationList.size(),
+                      Toast.LENGTH_LONG)
+                  .show();
             }
+          } else {
+            Toast.makeText(context, "favourite" + message.arg1 + " not in db?", Toast.LENGTH_LONG)
+                .show();
           }
           // DabThread.this.stationList.indexOf()
           // DabThread.this.playStation

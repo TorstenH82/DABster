@@ -59,9 +59,8 @@
             android:name="com.thf.dabplayer.service.SchedulingService"
             android:exported="false" />
         <activity
-            android:theme="@style/Theme.DAB.Player"
             android:name="com.thf.dabplayer.activity.Player"
-            android:configChanges="density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode" />
+             />
         <activity
             android:theme="@android:style/Theme.Dialog"
             android:name="com.thf.dabplayer.activity.PtyActivity" />

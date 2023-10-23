@@ -2,22 +2,13 @@ package com.thf.mainuiupd;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.recyclerview.widget.ItemTouchHelper;
 
 
-import java.util.List;
-import java.util.stream.Collectors;
 import com.thf.dabplayer.R;
 
 /* loaded from: classes.dex */

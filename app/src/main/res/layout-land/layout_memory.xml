@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <TableLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -243,159 +243,153 @@
         </TableRow>
     </TableLayout>
 
-    <TableLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/infoTable"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="88dp"
+        android:id="@+id/infoTable"
         android:visibility="gone">
-        <TableRow
-            android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/ChannelDetailsLayoutMargin"
-            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:gravity="right"
-                android:text="@string/StationName"
-                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:id="@+id/details_station_name"
-                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
-        </TableRow>
-        <TableRow
-            android:gravity="center_vertical"
-            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:gravity="right"
-                android:text="@string/PTY"
-                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:id="@+id/details_pty"
-                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
-        </TableRow>
-        <TableRow
-            android:gravity="center_vertical"
-            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:gravity="right"
-                android:text="@string/Ensemble"
-                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:id="@+id/details_ensemble"
-                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
-        </TableRow>
-        <TableRow
-            android:gravity="center_vertical"
-            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:gravity="right"
-                android:text="@string/ServiceID"
-                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:id="@+id/details_service_id"
-                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
-        </TableRow>
-        <TableRow
-            android:gravity="center_vertical"
-            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:gravity="right"
-                android:text="@string/Frequency"
-                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:id="@+id/details_frequency"
-                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
-        </TableRow>
-        <TableRow
-            android:gravity="center_vertical"
-            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:gravity="right"
-                android:text="@string/Bitrate"
-                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:id="@+id/details_bitrate"
-                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
-        </TableRow>
-        <TableRow
-            android:gravity="center_vertical"
-            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:gravity="right"
-                android:text="@string/AudioCodec"
-                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:id="@+id/details_audiocodec"
-                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
-        </TableRow>
-        <TableRow
-            android:gravity="center_vertical"
-            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:gravity="right"
-                android:text="@string/AudioSampleRate"
-                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:id="@+id/details_audiobitrate"
-                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
-        </TableRow>
-        <TableRow
-            android:gravity="center_vertical"
-            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:gravity="right"
-                android:text="@string/SignalQuality"
-                android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:textSize="15sp"
-                android:textColor="#00ffff"
-                android:id="@+id/details_signalquality"
-                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
-        </TableRow>
-        <TableRow
-            android:gravity="center_vertical"
-            android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:gravity="right"
-                android:text="@string/ServiceFollowing" />
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:id="@+id/details_servicefollowing"
-                android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
-        </TableRow>
-        <TableRow
-            android:gravity="center_horizontal"
-            android:layout_marginBottom="8dp">
-            <TextView
-                android:textAppearance="@style/ChannelDetails"
-                android:ellipsize="marquee"
+
+        <TableLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TableRow
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/ChannelDetailsLayoutMargin"
+                android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:gravity="right"
+                    android:text="@string/StationName"
+                    android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:id="@+id/details_station_name"
+                    android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+
+                <Space android:layout_width="40dp" />
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:gravity="right"
+                    android:text="@string/PTY"
+                    android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:id="@+id/details_pty"
+                    android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+            </TableRow>
+
+            <TableRow
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:gravity="right"
+                    android:text="@string/Ensemble"
+                    android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:id="@+id/details_ensemble"
+                    android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+                <Space android:layout_width="40dp" />
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:gravity="right"
+                    android:text="@string/ServiceID"
+                    android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:id="@+id/details_service_id"
+                    android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+            </TableRow>
+
+            <TableRow
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:gravity="right"
+                    android:text="@string/Frequency"
+                    android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:id="@+id/details_frequency"
+                    android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+                <Space android:layout_width="40dp" />
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:gravity="right"
+                    android:text="@string/Bitrate"
+                    android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:id="@+id/details_bitrate"
+                    android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+            </TableRow>
+
+            <TableRow
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:gravity="right"
+                    android:text="@string/AudioCodec"
+                    android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:id="@+id/details_audiocodec"
+                    android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+                <Space android:layout_width="40dp" />
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:gravity="right"
+                    android:text="@string/AudioSampleRate"
+                    android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:id="@+id/details_audiobitrate"
+                    android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+            </TableRow>
+
+            <TableRow
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:gravity="right"
+                    android:text="@string/SignalQuality"
+                    android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:id="@+id/details_signalquality"
+                    android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+                <Space android:layout_width="40dp" />
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:gravity="right"
+                    android:text="@string/ServiceFollowing" />
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:id="@+id/details_servicefollowing"
+                    android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+            </TableRow>
+
+            <TableRow
                 android:gravity="center_horizontal"
-                android:id="@+id/details_servicelog"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:fadingEdge="horizontal"
-                android:layout_span="2"
-                android:scrollHorizontally="true"
-                android:singleLine="true"
-                android:marqueeRepeatLimit="marquee_forever" />
-        </TableRow>
-    </TableLayout>
+                android:layout_marginBottom="8dp">
+                <TextView
+                    android:textAppearance="@style/ChannelDetails"
+                    android:ellipsize="marquee"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/details_servicelog"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:fadingEdge="horizontal"
+                    android:layout_span="2"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:marqueeRepeatLimit="marquee_forever" />
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
 </LinearLayout>

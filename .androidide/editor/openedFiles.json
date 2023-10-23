@@ -1,0 +1,95 @@
+{
+  "allFiles": [
+    {
+      "file": "/storage/emulated/0/AppProjects/DABster/app/src/main/java/com/thf/dabplayer/dab/DabThread.java",
+      "selection": {
+        "end": {
+          "column": 44,
+          "index": -1,
+          "line": 1101
+        },
+        "start": {
+          "column": 44,
+          "index": -1,
+          "line": 1101
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AppProjects/DABster/app/src/main/java/com/thf/dabplayer/dab/DabSubChannelInfo.java",
+      "selection": {
+        "end": {
+          "column": 62,
+          "index": -1,
+          "line": 30
+        },
+        "start": {
+          "column": 62,
+          "index": -1,
+          "line": 30
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AppProjects/DABster/app/src/main/java/com/thf/dabplayer/activity/ViewPagerAdapter.java",
+      "selection": {
+        "end": {
+          "column": 3,
+          "index": -1,
+          "line": 268
+        },
+        "start": {
+          "column": 3,
+          "index": -1,
+          "line": 268
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AppProjects/DABster/app/src/main/java/com/thf/dabplayer/activity/Player.java",
+      "selection": {
+        "end": {
+          "column": 42,
+          "index": -1,
+          "line": 447
+        },
+        "start": {
+          "column": 15,
+          "index": -1,
+          "line": 447
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AppProjects/DABster/app/src/main/res/layout/layout_memory.xml",
+      "selection": {
+        "end": {
+          "column": 66,
+          "index": -1,
+          "line": 398
+        },
+        "start": {
+          "column": 66,
+          "index": -1,
+          "line": 398
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AppProjects/DABster/app/src/main/res/layout-land/layout_memory.xml",
+      "selection": {
+        "end": {
+          "column": 23,
+          "index": -1,
+          "line": 374
+        },
+        "start": {
+          "column": 23,
+          "index": -1,
+          "line": 374
+        }
+      }
+    }
+  ],
+  "selectedFile": "/storage/emulated/0/AppProjects/DABster/app/src/main/java/com/thf/dabplayer/activity/Player.java"
+}

@@ -10,7 +10,6 @@ public class LogoDbHelper {
     public static LogoDb getInstance(Context context) {
         if (mLogoDbInst == null) {
             mLogoDbInst = new LogoDb(context);
-            return mLogoDbInst;
         }
         return mLogoDbInst;
     }

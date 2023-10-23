@@ -21,6 +21,15 @@
             android:defaultValue="@string/pref_showClock"
             android:key="showClock"
             android:title="@string/ShowClock" />
+        <androidx.preference.SeekBarPreference
+            android:defaultValue="@string/pref_presetPages"
+            android:key="presetPages"
+            android:max="5"
+            android:min="1"
+            android:summary="summary"
+            android:title="@string/PresetPages" />
+        
+        
     </androidx.preference.PreferenceCategory> 
     
     <androidx.preference.PreferenceCategory android:title="Donate">

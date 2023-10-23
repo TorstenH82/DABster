@@ -105,6 +105,8 @@ public class DatabaseHelper {
         == 1) {
       C0162a.m9a("create dab.db");
       SQLiteDatabase sQLiteDatabase = this.mDatabase;
+     
+      /*      
       StringBuilder append = new StringBuilder().append("CREATE TABLE ");
       getClass();
       sQLiteDatabase.execSQL(
@@ -113,6 +115,7 @@ public class DatabaseHelper {
               .append(
                   " (_id INTEGER PRIMARY KEY AUTOINCREMENT, subid INTEGER, freq INTEGER, bitrate INTEGER, type INTEGER, label TEXT)")
               .toString());
+       */     
       this.mDatabase.execSQL(
           "CREATE TABLE service (_id INTEGER PRIMARY KEY AUTOINCREMENT, label TEXT, subid INTEGER, bitrate INTEGER, sid INTEGER, freq INTEGER, pty INTEGER, type INTEGER, abbreviated INTEGER, eid INTEGER, elabel TEXT, scid INTEGER, ps INTEGER, fav INTEGER)");
     }
@@ -149,6 +152,7 @@ public class DatabaseHelper {
   }
 
   /* renamed from: a */
+    /*
   public void m70a(ChannelInfo qVar) {
     StringBuilder append = new StringBuilder().append("DELETE from ");
     getClass();
@@ -173,7 +177,8 @@ public class DatabaseHelper {
             .toString());
     updateFavCount();
   }
-
+*/
+    
   /* renamed from: a */
   public int insertNewStations(List list) {
     int new_stations = 0;
@@ -190,6 +195,7 @@ public class DatabaseHelper {
   }
 
   /* renamed from: b */
+    /*
   public List getPresetChannelInfo() {
     // StringBuilder append = new StringBuilder().append("SELECT from ");
     // getClass();
@@ -210,8 +216,9 @@ public class DatabaseHelper {
     }
     return arrayList;
   }
-
+*/
   /* renamed from: b */
+   /* 
   public void insertPreset(ChannelInfo channelInfo) {
     ContentValues contentValues = new ContentValues();
     contentValues.put("subid", Integer.valueOf(channelInfo.subChannelId));
@@ -223,7 +230,7 @@ public class DatabaseHelper {
     getClass();
     sQLiteDatabase.insert("preset", null, contentValues);
   }
-
+*/
   /* renamed from: c */
   public List getStationList() {
     return getServiceSubchannelInfo(this.mFilter);

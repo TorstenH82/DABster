@@ -101,4 +101,6 @@
     <string name="pref_suppressNoise">true</string>
     <string name="ShowClock">Show clock on bottom bar</string>
     <string name="pref_showClock">true</string>
+    <string name="PresetPages">Number of preset pages</string>
+    <string name="pref_presetPages">2</string>
 </resources>
