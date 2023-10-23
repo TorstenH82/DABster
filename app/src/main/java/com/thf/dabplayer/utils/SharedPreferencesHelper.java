@@ -59,8 +59,8 @@ public class SharedPreferencesHelper {
   public int getInteger(String key) {
     return sharedPreferences.getInt(key, getDefaultInt(key));
   }
-    
-   public int getInteger(String key, int def) {
+
+  public int getInteger(String key, int def) {
     return sharedPreferences.getInt(key, def);
   }
 
@@ -80,5 +80,9 @@ public class SharedPreferencesHelper {
 
   public boolean getBoolean(String key) {
     return sharedPreferences.getBoolean(key, getDefaultBool(key));
+  }
+
+  public SharedPreferences getSharedPreferences() {
+    return this.sharedPreferences;
   }
 }

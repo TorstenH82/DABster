@@ -263,11 +263,8 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
         @Override // android.media.AudioManager.OnAudioFocusChangeListener
         public void onAudioFocusChange(int i) {
           int arg = -1;
-          boolean isAudiolossSupportEnabled =
-              Player.this
-                  .context
-                  .getSharedPreferences(SettingsActivity.prefname_settings, 0)
-                  .getBoolean(SettingsActivity.pref_key_audioloss_support, true);
+          boolean isAudiolossSupportEnabled = true;
+
           switch (i) {
             case -3:
               C0162a.m9a("AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK");
@@ -328,7 +325,7 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
   private boolean mShowAdditionalInfos = true;
   // private StationDetails mStationDetails = new StationDetails();
   private float mStationNameSizeFromStyle = 0.0f;
-  private TouchListener mTouchListener = null;
+  // private TouchListener mTouchListener = null;
   private ViewFlipper mViewFlipper = null;
   private DelayedRunnableHandler maximizeLeftAreaHandler = new DelayedRunnableHandler();
   private BitmapDrawable motImage;
@@ -1402,8 +1399,8 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
       this.motImage = null;
       return;
     }
-    SharedPreferences pref_settings =
-        this.context.getSharedPreferences(SettingsActivity.prefname_settings, 0);
+    // SharedPreferences pref_settings =
+    //  this.context.getSharedPreferences(SettingsActivity.prefname_settings, 0);
     // if (pref_settings.getBoolean(SettingsActivity.pref_key_motSlideshowEnabled, true)) {
     File file = new File(this.context.getFilesDir(), str);
     if (file.exists()) {
@@ -1423,19 +1420,13 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
 
   /* JADX INFO: Access modifiers changed from: private */
   public void onStationChange_nextWrapper() {
-    SharedPreferences prefSettings =
-        this.context.getSharedPreferences(SettingsActivity.prefname_settings, 0);
-    boolean swapPrevNext = prefSettings.getBoolean(SettingsActivity.pref_key_swapPrevNext, false);
+
     if (this.keyDownHandler != null) {
       this.keyDownHandler.removeMessages(1);
       Message msg = this.keyDownHandler.obtainMessage();
       msg.what = DelayedRunnableHandler.MSG_DELAYED_RUN; // 1
-      if (!swapPrevNext) {
-        msg.obj = new RunnableBWrapperNext();
-      } else {
-        C0162a.m9a("NEXT->PREV");
-        msg.obj = new RunnableCWrapperPrev();
-      }
+      msg.obj = new RunnableBWrapperNext();
+
       this.keyDownHandler.sendMessageDelayed(msg, getKeyDownDebounceTimeMs());
       return;
     }
@@ -1456,19 +1447,13 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
 
   /* JADX INFO: Access modifiers changed from: private */
   public void onStationChange_prevWrapper() {
-    SharedPreferences prefSettings =
-        this.context.getSharedPreferences(SettingsActivity.prefname_settings, 0);
-    boolean swapPrevNext = prefSettings.getBoolean(SettingsActivity.pref_key_swapPrevNext, false);
+
     if (this.keyDownHandler != null) {
       this.keyDownHandler.removeMessages(1);
       Message msg = this.keyDownHandler.obtainMessage();
-      msg.what = 1;
-      if (!swapPrevNext) {
-        msg.obj = new RunnableCWrapperPrev();
-      } else {
-        C0162a.m9a("PREV->NEXT");
-        msg.obj = new RunnableBWrapperNext();
-      }
+      msg.what = DelayedRunnableHandler.MSG_DELAYED_RUN;
+      msg.obj = new RunnableCWrapperPrev();
+
       this.keyDownHandler.sendMessageDelayed(msg, getKeyDownDebounceTimeMs());
       return;
     }
@@ -2239,7 +2224,7 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
       this.favorBtn.setBackgroundResource(R.drawable.favor_list_selector_off);
     }
         */
-    this.mTouchListener = new TouchListener(this);
+    //this.mTouchListener = new TouchListener(this);
     // this.mStationListView.setOnTouchListener(
     //    new StationViewTouchHelper(this.context, this.mTouchListener));
 
@@ -2257,15 +2242,6 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
       if (mainWasStartedByIntent != null) {
         sMainActivityStartIntent = new WeakReference<>(mainWasStartedByIntent);
         String action = mainWasStartedByIntent.getAction();
-        if (action != null && action.equals("android.hardware.usb.action.USB_DEVICE_ATTACHED")) {
-          SharedPreferences settingsPreferences =
-              getSharedPreferences(SettingsActivity.prefname_settings, 0);
-          if (settingsPreferences.getBoolean(
-              SettingsActivity.pref_key_onstartbyusb_gotobackground, false)) {
-            C0162a.m9a("started by USB_DEVICE_ATTACHED -> background");
-            // moveTaskToBack(true);
-          }
-        }
       }
     }
 
@@ -2356,7 +2332,8 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
     this.audioManager.abandonAudioFocus(this.f24c);
     this.context.unregisterReceiver(this.f23N);
     this.mLogoDb.closeDb();
-    File f = new File(SettingsStationLogoActivity.LOGO_PATH_TMP);
+    File f = new File(Strings.LOGO_PATH_TMP);
+
     if (f.exists()) {
       new DirCleaner(f).clean();
       f.delete();

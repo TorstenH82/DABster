@@ -288,7 +288,6 @@
                 android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
                 <TextView
                     android:textAppearance="@style/ChannelDetails"
-                    android:gravity="right"
                     android:text="@string/StationName"
                     android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
                 <TextView
@@ -301,7 +300,6 @@
                 android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
                 <TextView
                     android:textAppearance="@style/ChannelDetails"
-                    android:gravity="right"
                     android:text="@string/PTY"
                     android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
                 <TextView
@@ -314,7 +312,6 @@
                 android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
                 <TextView
                     android:textAppearance="@style/ChannelDetails"
-                    android:gravity="right"
                     android:text="@string/Ensemble"
                     android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
                 <TextView
@@ -327,7 +324,6 @@
                 android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
                 <TextView
                     android:textAppearance="@style/ChannelDetails"
-                    android:gravity="right"
                     android:text="@string/ServiceID"
                     android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
                 <TextView
@@ -340,7 +336,6 @@
                 android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
                 <TextView
                     android:textAppearance="@style/ChannelDetails"
-                    android:gravity="right"
                     android:text="@string/Frequency"
                     android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
                 <TextView
@@ -353,7 +348,6 @@
                 android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
                 <TextView
                     android:textAppearance="@style/ChannelDetails"
-                    android:gravity="right"
                     android:text="@string/Bitrate"
                     android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
                 <TextView
@@ -366,7 +360,6 @@
                 android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
                 <TextView
                     android:textAppearance="@style/ChannelDetails"
-                    android:gravity="right"
                     android:text="@string/AudioCodec"
                     android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
                 <TextView
@@ -379,7 +372,6 @@
                 android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
                 <TextView
                     android:textAppearance="@style/ChannelDetails"
-                    android:gravity="right"
                     android:text="@string/AudioSampleRate"
                     android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
                 <TextView
@@ -392,7 +384,6 @@
                 android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
                 <TextView
                     android:textAppearance="@style/ChannelDetails"
-                    android:gravity="right"
                     android:text="@string/SignalQuality"
                     android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
                 <TextView
@@ -405,7 +396,6 @@
                 android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
                 <TextView
                     android:textAppearance="@style/ChannelDetails"
-                    android:gravity="right"
                     android:text="@string/ServiceFollowing" />
                 <TextView
                     android:textAppearance="@style/ChannelDetails"

@@ -958,7 +958,7 @@ public class DabThread extends Thread {
     intent.putExtra(DabService.EXTRA_ENSEMBLE_ID, info.mEID);
     intent.putExtra(DabService.EXTRA_AFFECTS_ANDROID_METADATA, true);
     Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = 100;
+    obtainMessage.what = Player.PLAYERMSG_STATIONINFO_INTENT;
     obtainMessage.obj = intent;
     this.playerHandler.sendMessage(obtainMessage);
   }
@@ -975,7 +975,7 @@ public class DabThread extends Thread {
     intent.putExtra(DabService.EXTRA_ENSEMBLE_ID, info.mEID);
     intent.putExtra(DabService.EXTRA_AFFECTS_ANDROID_METADATA, true);
     Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = 100;
+    obtainMessage.what = Player.PLAYERMSG_STATIONINFO_INTENT;
     obtainMessage.obj = intent;
     this.playerHandler.sendMessage(obtainMessage);
   }
@@ -998,7 +998,7 @@ public class DabThread extends Thread {
     intent.putExtra(DabService.EXTRA_SERVICELOG, "");
     intent.putExtra(DabService.EXTRA_AUDIOFORMAT, "");
     Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = 100;
+    obtainMessage.what = Player.PLAYERMSG_STATIONINFO_INTENT;
     obtainMessage.obj = intent;
     this.playerHandler.sendMessage(obtainMessage);
   }
@@ -1009,7 +1009,7 @@ public class DabThread extends Thread {
     intent.putExtra(DabService.EXTRA_NUMSTATIONS, numStations);
     intent.putExtra(DabService.EXTRA_FREQUENCY_KHZ, frequency);
     Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = 100;
+    obtainMessage.what = Player.PLAYERMSG_STATIONINFO_INTENT;
     obtainMessage.obj = intent;
     this.playerHandler.sendMessage(obtainMessage);
   }
@@ -1020,7 +1020,7 @@ public class DabThread extends Thread {
     intent.putExtra(DabService.EXTRA_NUMSTATIONS, numStations);
     intent.putExtra(DabService.EXTRA_FREQUENCY_KHZ, 0);
     Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = 100;
+    obtainMessage.what = Player.PLAYERMSG_STATIONINFO_INTENT;
     obtainMessage.obj = intent;
     this.playerHandler.sendMessage(obtainMessage);
   }
@@ -1411,7 +1411,7 @@ public class DabThread extends Thread {
           intent.putExtra(DabService.EXTRA_SENDER, DabService.SENDER_DAB);
           intent.putExtra(DabService.EXTRA_SIGNALQUALITY, dab_api_get_signal);
           Message intentMessage = playerHandler.obtainMessage();
-          intentMessage.what = 100;
+          intentMessage.what = Player.PLAYERMSG_STATIONINFO_INTENT;
           intentMessage.obj = intent;
           playerHandler.sendMessage(intentMessage);
         }
@@ -1450,7 +1450,7 @@ public class DabThread extends Thread {
         intent.putExtra(DabService.EXTRA_DLS, dls);
         intent.putExtra(DabService.EXTRA_AFFECTS_ANDROID_METADATA, true);
         Message intentMessage = handler.obtainMessage();
-        intentMessage.what = 100;
+        intentMessage.what = Player.PLAYERMSG_STATIONINFO_INTENT;
         intentMessage.obj = intent;
         handler.sendMessage(intentMessage);
       }

@@ -38,7 +38,6 @@
     <string name="dialog_select_scantype_caption">Station scan method</string>
     <string name="text_full_scan">Replace entire station list</string>
     <string name="text_incr_scan">Update station list</string>
-    <string name="credits_translations">Translations\nDanish by RidgebackAttack\nDutch by Gerben Bol\nFrench by james013\nItalian by John Dai\nNorwegian (Norsk bokmål) by syk02jcb@hotmail.com</string>
     <string name="settings_header_stationlogos">Station logos</string>
     <string name="settings_ShowStationLogoInList">Show logos in station list</string>
     <string name="settings_LogoAsMot">Show station logo as slide show picture</string>
@@ -103,4 +102,6 @@
     <string name="pref_showClock">true</string>
     <string name="PresetPages">Number of preset pages</string>
     <string name="pref_presetPages">2</string>
+   <string name="StartUsb">Automatic start on USB device detection</string>
+    <string name="pref_startUsb">false</string>
 </resources>

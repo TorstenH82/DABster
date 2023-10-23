@@ -32,11 +32,11 @@ import androidx.media.session.MediaButtonReceiver;
 //import com.thf.dabplayer.activity.AlarmReceiver;
 import com.thf.dabplayer.activity.MainActivity;
 import com.thf.dabplayer.activity.Player;
-import com.thf.dabplayer.activity.SettingsActivity;
 import com.thf.dabplayer.dab.DabThread;
 import com.thf.dabplayer.dab.UsbDeviceConnector;
 import com.thf.dabplayer.utils.C0162a;
 import com.thf.dabplayer.utils.Credits;
+import com.thf.dabplayer.activity.SettingsActivity;
 import java.util.ArrayList;
 import java.util.List;
 import androidx.media.MediaBrowserServiceCompat;
@@ -390,6 +390,9 @@ public class DabService extends MediaBrowserServiceCompat {
               .setShowActionsInCompactView(0, 1));
     }
     Notification notification = this.mNotificationBuilder.build();
+        
+        
+    /*    
     LayoutInflater layoutInflater = (LayoutInflater) getSystemService("layout_inflater");
     View settingsInfoView = null;
     if (layoutInflater != null) {
@@ -397,7 +400,7 @@ public class DabService extends MediaBrowserServiceCompat {
           layoutInflater.inflate(
               getResourceId("settings_about", "layout", getPackageName()), (ViewGroup) null, false);
     }
-
+*/
     createChannel();
     startForeground(NOTIFCATION_ID, notification);
 

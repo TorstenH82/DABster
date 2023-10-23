@@ -20,10 +20,6 @@
                 <Button android:id="@+id/btnHints" android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/Hints" android:layout_weight="1"/>
             </LinearLayout>
         </LinearLayout>
-        <View style="@style/HorizontalDividerMargin"/>
-        <TextView android:textAppearance="@style/SettingsText" android:gravity="center" android:id="@+id/text_credits_authors" android:visibility="visible" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="delete" android:textAlignment="gravity"/>
-        <View style="@style/HorizontalDividerMargin"/>
-        <TextView android:textAppearance="@style/SettingsText" android:gravity="center" android:id="@+id/text_credits_translations" android:visibility="visible" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/credits_translations" android:textAlignment="gravity"/>
-        <View style="@style/HorizontalDividerMargin"/>
+        
     </LinearLayout>
 </ScrollView>

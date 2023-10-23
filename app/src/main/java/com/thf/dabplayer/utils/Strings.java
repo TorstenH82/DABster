@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 // import android.support.p000v4.view.ViewCompat;
 import androidx.core.view.ViewCompat;
 import com.thf.dabplayer.R;
-import com.thf.dabplayer.activity.SettingsActivity;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,8 +22,8 @@ public class Strings {
   @NonNull
   public static String scanning(@NonNull Context ct, int percent, int freq_kHz) {
     if (percent == 0) {
-      SharedPreferences sp = ct.getSharedPreferences(SettingsActivity.prefname_settings, 0);
-      show_additional_infos = sp.getBoolean(SettingsActivity.pref_key_showAdditionalInfos, true);
+      //SharedPreferences sp = ct.getSharedPreferences(SettingsActivity.prefname_settings, 0);
+      show_additional_infos = true; //sp.getBoolean(SettingsActivity.pref_key_showAdditionalInfos, true);
     }
     StringBuilder sb = new StringBuilder(ct.getResources().getString(R.string.scanning));
     sb.append(" ").append(percent).append("%");
@@ -92,4 +92,9 @@ public class Strings {
   public static String DAB_path() {
     return Environment.getExternalStorageDirectory() + File.separator + "DAB";
   }
+
+  private static final String LOGO_PATH =
+      (Strings.DAB_path() + File.separator + "logos" + File.separator);
+  public static final String LOGO_PATH_TMP = (LOGO_PATH + "tmp" + File.separator);
+  public static final String LOGO_PATH_USER = (LOGO_PATH + "user" + File.separator);
 }

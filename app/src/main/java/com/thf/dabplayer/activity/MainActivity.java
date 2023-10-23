@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 import com.thf.dabplayer.R;
 import com.thf.dabplayer.utils.C0162a;
+import com.thf.dabplayer.utils.SharedPreferencesHelper;
 import com.thf.dabplayer.utils.UsbDeviceHandling;
 /* renamed from: com.ex.dabplayer.pad.activity.MainActivity */
 /* loaded from: classes.dex */
@@ -206,10 +207,8 @@ public class MainActivity extends Activity {
   }
 
   public void startPlayerWithUsbDevice(UsbDevice usbDevice) {
-    SharedPreferences preferences =
-        getApplicationContext().getSharedPreferences(SettingsActivity.prefname_settings, 0);
-    boolean startOnUsbAttached =
-        preferences.getBoolean(SettingsActivity.pref_key_startOnUsbAttached, true);
+
+    boolean startOnUsbAttached = SharedPreferencesHelper.getInstance().getBoolean("startUsb");
     if ("android.hardware.usb.action.USB_DEVICE_ATTACHED".equals(this.startedByIntent.getAction())
         && !startOnUsbAttached) {
       C0162a.m9a("start on USB device attached NOT allowed by settings");

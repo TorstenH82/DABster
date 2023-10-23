@@ -65,26 +65,8 @@
             android:theme="@android:style/Theme.Dialog"
             android:name="com.thf.dabplayer.activity.PtyActivity" />
         <activity
-            android:theme="@style/Theme.DAB.Settings"
             android:name="com.thf.dabplayer.activity.SettingsActivity" />
-        <activity
-            android:theme="@style/Theme.DAB.Settings"
-            android:name="com.thf.dabplayer.activity.SettingsGeneralActivity" />
-        <activity
-            android:theme="@style/Theme.DAB.Settings"
-            android:name="com.thf.dabplayer.activity.SettingsLayoutActivity" />
-        <activity
-            android:theme="@style/Theme.DAB.Settings"
-            android:name="com.thf.dabplayer.activity.SettingsAudioActivity" />
-        <activity
-            android:theme="@style/Theme.DAB.Settings"
-            android:name="com.thf.dabplayer.activity.SettingsStationLogoActivity" />
-        <activity
-            android:theme="@style/Theme.DAB.Settings"
-            android:name="com.thf.dabplayer.activity.SettingsAboutActivity" />
-        <activity
-            android:theme="@style/Theme.DAB.Settings"
-            android:name="com.thf.dabplayer.activity.ShowNote" />
+       
         <receiver
             android:name="android.support.v4.media.session.MediaButtonReceiver">
             <intent-filter>

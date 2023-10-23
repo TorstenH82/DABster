@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import com.thf.dabplayer.R;
 import com.thf.dabplayer.activity.Player;
-import com.thf.dabplayer.activity.SettingsActivity;
 import com.thf.dabplayer.dab.DabSubChannelInfo;
 import com.thf.dabplayer.service.DabService;
 import java.io.BufferedReader;

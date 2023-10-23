@@ -13,10 +13,8 @@ public class ScanDialog {
   public ScanDialog(Player player, int num_stations) {
     int default_choice;
     if (num_stations > 0) {
-      int default_scan_type =
-          player
-              .getSharedPreferences(SettingsActivity.prefname_settings, 0)
-              .getInt(SettingsActivity.pref_default_scan_type, 2);
+      int default_scan_type = 2;
+          
       PlayerScanTypeDialogClickListener dialogClickListener =
           new PlayerScanTypeDialogClickListener(player, default_scan_type);
       CharSequence[] items = {
@@ -72,10 +70,12 @@ public class ScanDialog {
         case -1:
           this.mPlayer.startScan(this.mScanType);
           if (this.mScanType != this.mDefaultScanType) {
+            /*        
             SharedPreferences.Editor preferences =
                 this.mPlayer.getSharedPreferences(SettingsActivity.prefname_settings, 0).edit();
             preferences.putInt(SettingsActivity.pref_default_scan_type, this.mScanType);
             preferences.apply();
+            */        
             return;
           }
           return;
