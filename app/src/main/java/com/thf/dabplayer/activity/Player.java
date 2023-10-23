@@ -96,6 +96,7 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
   public static final int PLAYERMSG_SIGNAL_QUALITY = 11;
   public static final int PLAYERMSG_STATIONINFO_INTENT = 100;
   public static final int PLAYERMSG_SET_STATIONMEMORY = 200;
+  public static final int PLAYERMSG_PLAYING_STATION = 300;
 
   /* renamed from: a */
   public static String[] arrPty;
@@ -445,6 +446,12 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
           case Player.PLAYERMSG_PREV_STATION /* 104 */:
             player.onStationChange_prevWrapper();
             break;
+
+          case Player.PLAYERMSG_PLAYING_STATION:
+            player.playIndex = message.arg1;
+            player.scrollToPositionRecycler(player.playIndex);
+            break;
+
           case PLAYERMSG_SET_STATIONMEMORY:
             viewPagerAdapter.setItems((List) message.obj);
 
@@ -1248,7 +1255,8 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
   }
 
   private void scrollToPositionRecycler(int idx) {
-    this.linearLayoutManager.scrollToPosition(this.playIndex);
+    Toast.makeText(context, "scroll to pos " + idx, Toast.LENGTH_LONG).show();
+    this.linearLayoutManager.scrollToPosition(idx);
     if (this.stationsAdapter != null) {
       this.stationsAdapter.setMot(null, -1);
     }
@@ -2068,6 +2076,7 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
     obtainMessage.what = DabThread.PLAY_FAVOURITE;
     obtainMessage.arg1 = storagePos;
     Player.this.dabHandler.sendMessage(obtainMessage);
+    // this comes back with PLAYERMSG_PLAYING_STATION
   }
 
   /*

@@ -1126,6 +1126,13 @@ public class DabThread extends Thread {
               if (!DabThread.this.isOnExit) {
                 ServiceFollowing.update_enabled_status(DabThread.this.getContext());
                 DabThread.this.playStation(idx);
+
+                // inform player which index gets played            
+                Message obtainMessage2 = DabThread.this.playerHandler.obtainMessage();
+                obtainMessage2.what = Player.PLAYERMSG_PLAYING_STATION;
+                obtainMessage2.arg1 = idx;
+                DabThread.this.playerHandler.sendMessage(obtainMessage2);
+
                 return;
               }
 

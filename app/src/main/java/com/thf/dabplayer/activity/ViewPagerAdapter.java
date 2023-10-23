@@ -200,6 +200,19 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
         holder.layMemory.setVisibility(View.VISIBLE);
         holder.layInfo.setVisibility(View.GONE);
 
+        holder.imageViewMemory1.setVisibility(View.INVISIBLE);
+        holder.textViewMemory1.setVisibility(View.INVISIBLE);
+        holder.imageViewMemory2.setVisibility(View.INVISIBLE);
+        holder.textViewMemory2.setVisibility(View.INVISIBLE);
+        holder.imageViewMemory3.setVisibility(View.INVISIBLE);
+        holder.textViewMemory3.setVisibility(View.INVISIBLE);
+        holder.imageViewMemory4.setVisibility(View.INVISIBLE);
+        holder.textViewMemory4.setVisibility(View.INVISIBLE);
+        holder.imageViewMemory5.setVisibility(View.INVISIBLE);
+        holder.textViewMemory5.setVisibility(View.INVISIBLE);
+        holder.imageViewMemory6.setVisibility(View.INVISIBLE);
+        holder.textViewMemory6.setVisibility(View.INVISIBLE);
+
         for (DabSubChannelInfo sci : listSci) {
           ImageView imageViewMemory = null;
           TextView textViewMemory = null;
@@ -239,6 +252,8 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
             } else {
               imageViewMemory.setImageResource(R.drawable.radio);
             }
+            imageViewMemory.setVisibility(View.VISIBLE);
+            textViewMemory.setVisibility(View.VISIBLE);
           }
         }
 
@@ -270,8 +285,9 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
 
   public void setItems(List<DabSubChannelInfo> listSci) {
     this.listSci = listSci;
-    //selectedPageIdx = 0;
+    // selectedPageIdx = 0;
     this.notifyDataSetChanged();
+    Toast.makeText(context, "notifued viewpageradapter", Toast.LENGTH_LONG).show();
   }
 
   public void setDetails(Intent intent) {
@@ -279,7 +295,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
     if (intent == null) {
       return;
     }
-    //this.serviceName = "";
+    // this.serviceName = "";
     if (intent.hasExtra(DabService.EXTRA_STATION)) {
       int totalStations = 0;
       if (intent.hasExtra(DabService.EXTRA_NUMSTATIONS)) {
@@ -293,18 +309,18 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
       }
     }
 
-    //this.servicefollowing = "";
+    // this.servicefollowing = "";
     if (intent.hasExtra(DabService.EXTRA_SERVICEFOLLOWING)) {
       this.servicefollowing = intent.getStringExtra(DabService.EXTRA_SERVICEFOLLOWING);
     }
 
-    //this.serviceId = "";
+    // this.serviceId = "";
     if (intent.hasExtra(DabService.EXTRA_SERVICEID)) {
       int sid = intent.getIntExtra(DabService.EXTRA_SERVICEID, 0);
       this.serviceId = Integer.toHexString(sid);
     }
 
-    //this.frequency = "";
+    // this.frequency = "";
     if (intent.hasExtra(DabService.EXTRA_FREQUENCY_KHZ)) {
       int freq = intent.getIntExtra(DabService.EXTRA_FREQUENCY_KHZ, 0);
       if (freq != 0) {
@@ -314,17 +330,17 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
       }
     }
 
-    //this.audiocodec = "";
+    // this.audiocodec = "";
     if (intent.hasExtra(DabService.EXTRA_AUDIOFORMAT)) {
       this.audiocodec = intent.getStringExtra(DabService.EXTRA_AUDIOFORMAT);
     }
 
-    //this.pty = "";
+    // this.pty = "";
     if (intent.hasExtra(DabService.EXTRA_PTY)) {
       this.pty = intent.getStringExtra(DabService.EXTRA_PTY);
     }
 
-    //this.ensemble = "";
+    // this.ensemble = "";
     if (intent.hasExtra(DabService.EXTRA_ENSEMBLE_NAME)) {
       String name = intent.getStringExtra(DabService.EXTRA_ENSEMBLE_NAME);
       int id = 0;
@@ -338,7 +354,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
       }
     }
 
-    //this.bitrate = "";
+    // this.bitrate = "";
     if (intent.hasExtra(DabService.EXTRA_BITRATE)) {
       int bitrate = intent.getIntExtra(DabService.EXTRA_BITRATE, 0);
       if (bitrate != 0) {
@@ -346,7 +362,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
       }
     }
 
-    //this.audiobitrate = "";
+    // this.audiobitrate = "";
     if (intent.hasExtra(DabService.EXTRA_AUDIOSAMPLERATE)) {
       int samplerate = intent.getIntExtra(DabService.EXTRA_AUDIOSAMPLERATE, 0);
       if (samplerate > 0) {
@@ -358,7 +374,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
       }
     }
 
-    //this.signalquality = "";
+    // this.signalquality = "";
     if (intent.hasExtra(DabService.EXTRA_SIGNALQUALITY)) {
       int qual = intent.getIntExtra(DabService.EXTRA_SIGNALQUALITY, -1);
       if (qual >= 0) {
@@ -366,7 +382,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
       }
     }
 
-    //this.servicelog = "";
+    // this.servicelog = "";
     if (intent.hasExtra(DabService.EXTRA_SERVICELOG)) {
       this.servicelog = intent.getStringExtra(DabService.EXTRA_SERVICELOG);
     }
