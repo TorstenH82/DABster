@@ -36,7 +36,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MainActivity"
-            android:theme="@style/Theme.Transparent">
+            android:theme="@style/Theme.Transparent"
             android:exported="true">
             <intent-filter>
                 <action
@@ -55,18 +55,15 @@
                     android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
-        <service
-            android:name="com.thf.dabplayer.service.SchedulingService"
-            android:exported="false" />
         <activity
             android:name="com.thf.dabplayer.activity.Player"
-             />
+        />
         <activity
             android:theme="@android:style/Theme.Dialog"
             android:name="com.thf.dabplayer.activity.PtyActivity" />
         <activity
             android:name="com.thf.dabplayer.activity.SettingsActivity" />
-       
+
         <receiver
             android:name="android.support.v4.media.session.MediaButtonReceiver">
             <intent-filter>
@@ -74,14 +71,5 @@
                     android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name="com.thf.dabplayer.activity.BootReceiver">
-            <intent-filter>
-                <action
-                    android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name="com.thf.dabplayer.activity.AlarmReceiver" />
     </application>
 </manifest>

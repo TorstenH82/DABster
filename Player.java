@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
@@ -24,6 +25,9 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.NonNull;
+// import android.support.p000v4.media.MediaMetadataCompat;
+// import android.support.p000v4.media.session.MediaSessionCompat;
+// import android.support.p000v4.view.MotionEventCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.view.KeyEvent;
@@ -51,8 +55,9 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.thf.dabplayer.R;
+// import com.thf.dabplayer.activity.StationBaseAdapter;
 import com.thf.dabplayer.dab.DabThread;
-// import com.thf.dabplayer.dab.ChannelInfo;
+import com.thf.dabplayer.dab.ChannelInfo;
 import com.thf.dabplayer.dab.LogoDb;
 import com.thf.dabplayer.dab.LogoDbHelper;
 import com.thf.dabplayer.dab.StationLogo;
@@ -91,33 +96,88 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
   public static final int PLAYERMSG_SIGNAL_QUALITY = 11;
   public static final int PLAYERMSG_STATIONINFO_INTENT = 100;
   public static final int PLAYERMSG_SET_STATIONMEMORY = 200;
-  public static final int PLAYERMSG_PLAY_STATION = 300;
+  public static final int PLAYERMSG_PLAYING_STATION = 300;
 
+  /* renamed from: a */
   public static String[] arrPty;
+
+  /* renamed from: A */
   private List<DabSubChannelInfo> stationList;
-  // private List<ChannelInfo> channelInfoList;
+
+  /* renamed from: B */
+  private List<ChannelInfo> channelInfoList;
+
+  /* renamed from: C */
   private AudioManager audioManager;
+
+  /* renamed from: E */
   private ProgressDialog progressDialog;
+
+  /* renamed from: G */
   private boolean f19G;
+
+  /* renamed from: I */
+  // private SharedPreferences f20I;
+
+  /* renamed from: d */
   public Context context;
+
+  /* renamed from: e */
   public boolean f26e;
-  // public boolean f27f;
+
+  /* renamed from: f */
+  public boolean f27f;
   public Button favorBtn;
+
+  /* renamed from: g */
   public boolean f28g;
+
+  /* renamed from: h */
   private int playIndex;
+
+  /* renamed from: j */
   private Button btnPrev;
+
+  /* renamed from: k */
   private Button btnNext;
+
+  /* renamed from: l */
   private Button layScan;
   private Button layExit;
 
-  // private float mDefaultLeftAreaLayoutWeight;
+  /* renamed from: m */
+  // public Button f34m;
+  private float mDefaultLeftAreaLayoutWeight;
   Intent mServiceIntent;
   private boolean mShowLogosInList;
+  // private ListView mStationListView;
+
+  /* renamed from: n */
+  // private Button f35n;
+
+  /* renamed from: o */
   private TextView txtServiceName;
+
+  /* renamed from: p */
+  // private TextView f37p;
+
+  /* renamed from: q */
+  // private TextView f38q;
+
+  /* renamed from: r */
+  // private MotImage motImage;
+
+  /* renamed from: s */
   private ImageView imgSignalLevel;
+
   private TextClock textClock;
+
+  /* renamed from: t */
   private TextView txtDls;
   private Toast toast_service_following;
+
+  /* renamed from: v */
+  // private Spinner f42v;
 
   private SwitchStationsAdapter stationsAdapter;
   private LinearLayoutManager linearLayoutManager;
@@ -137,8 +197,6 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
               DabSubChannelInfo sci = Player.this.stationList.get(position);
               Player.this.mLogoDb.storeUserStationLogo(Player.this.motImage, sci.mLabel, sci.mSID);
             }
-            // refresh presets
-            viewPagerAdapter.refreshWithoutNewData();
           }
         }
       };
@@ -171,20 +229,34 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
       };
   private TabLayout tabLayout;
 
+  // private LinearLayout memory1, memory2, memory3, memory4, memory5, memory6;
+
+  /* renamed from: w */
   public Handler dabHandler;
+
+  /* renamed from: x */
   private DabService dabService;
 
+  /* renamed from: H */
+  // private static HomeKeyReceiver homeKeyReceiver = null;
   private static WeakReference<Intent> sMainActivityStartIntent = null;
   private static WeakReference<Handler> sPlayerHandler = null;
   private static ArrayList<DabSubChannelInfo> s_stationListShadow = null;
 
+  /* renamed from: D */
   public boolean isInitialized = false;
+
+  /* renamed from: J */
   private String strDls = "";
 
+  /* renamed from: M */
   private Handler f22M = new DabFHandler(this);
 
+  /* renamed from: N */
   private final BroadcastReceiver f23N = new hBroadcastReceiver();
+  // @IdRes private final int R_id_left_area = R.id.left_area;
 
+  /* renamed from: c */
   AudioManager.OnAudioFocusChangeListener f24c =
       new AudioManager
           .OnAudioFocusChangeListener() { // from class: com.ex.dabplayer.pad.activity.Player.1
@@ -303,16 +375,16 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
             player.showMotImage((String) message.obj);
             break;
           case PLAYERMSG_SIGNAL_QUALITY: // 11
-            // if (!player.f27f && !player.f26e && player.stationListSize == 0) {
-            //  message.arg1 = 0;
-            // }
+            if (!player.f27f && !player.f26e && player.stationListSize == 0) {
+              message.arg1 = 0;
+            }
             player.setSignalLevel(message.arg1);
             break;
           case 13:
             // Player.access$802(player, (List) message.obj);
-            // player.channelInfoList = (List) message.obj;
+            player.channelInfoList = (List) message.obj;
             // Player.access$900(player);
-            // player.m78f();
+            player.m78f();
             break;
           case PLAYERMSG_NEW_STATION_LIST: // 18
             Toast.makeText(
@@ -372,15 +444,65 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
             player.onStationChange_prevWrapper();
             break;
 
-          case Player.PLAYERMSG_PLAY_STATION:
-            //player.playIndex = message.arg1;
-            player.playStation(message.arg1);
-            //SharedPreferencesHelper.getInstance().setInteger("current_playing", this.player.playIndex);
-            //player.scrollToPositionRecycler(player.playIndex);
+          case Player.PLAYERMSG_PLAYING_STATION:
+            player.playIndex = message.arg1;
+            player.scrollToPositionRecycler(player.playIndex);
             break;
 
           case PLAYERMSG_SET_STATIONMEMORY:
             viewPagerAdapter.setItems((List) message.obj);
+
+            /*
+            List<DabSubChannelInfo> memoryList = (List) message.obj;
+            // here we need to set the memory buttons
+            for (DabSubChannelInfo sci : memoryList) {
+              int memIdx = sci.mFavorite;
+              ImageView imageViewMemory = null;
+              TextView textViewMemory = null;
+              switch (memIdx) {
+                case 1:
+                  imageViewMemory = findViewById(R.id.memory1Img);
+                  textViewMemory = findViewById(R.id.memory1Tv);
+                  break;
+                case 2:
+                  imageViewMemory = findViewById(R.id.memory2Img);
+                  textViewMemory = findViewById(R.id.memory2Tv);
+                  break;
+                case 3:
+                  imageViewMemory = findViewById(R.id.memory3Img);
+                  textViewMemory = findViewById(R.id.memory3Tv);
+                  break;
+                case 4:
+                  imageViewMemory = findViewById(R.id.memory4Img);
+                  textViewMemory = findViewById(R.id.memory4Tv);
+                  break;
+                case 5:
+                  imageViewMemory = findViewById(R.id.memory5Img);
+                  textViewMemory = findViewById(R.id.memory5Tv);
+                  break;
+                case 6:
+                  imageViewMemory = findViewById(R.id.memory6Img);
+                  textViewMemory = findViewById(R.id.memory6Tv);
+                  break;
+              }
+              if (imageViewMemory != null) {
+                textViewMemory.setText(sci.mLabel);
+                String pathToLogo = mLogoDb.getLogoFilenameForStation(sci.mLabel, sci.mSID);
+                BitmapDrawable logoDrawable = null;
+                if (pathToLogo != null) {
+                  logoDrawable = mLogoDb.getBitmapForStation(player.context, pathToLogo);
+                }
+                if (logoDrawable == null) {
+                  logoDrawable = LogoAssets.getBitmapForStation(player.context, sci.mLabel);
+                }
+                if (logoDrawable != null) {
+                  imageViewMemory.setImageDrawable(logoDrawable);
+                } else {
+                  imageViewMemory.setImageResource(R.drawable.radio);
+                }
+              }
+            }
+                    */
             break;
           default:
             Toast.makeText(player.context, "msg.what" + message.what, 0).show();
@@ -431,6 +553,73 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
     }
   }
 
+  /* renamed from: com.ex.dabplayer.pad.activity.Player$HomeKeyReceiver */
+  /* loaded from: classes.dex */
+  /*
+  public class HomeKeyReceiver extends BroadcastReceiver {
+    public static final String ACTION_RECREATE = "com.ex.dabplayer.pad.RECREATE";
+    private final WeakReference<Player> mPlayer;
+
+    public HomeKeyReceiver(Player player) {
+      this.mPlayer = new WeakReference<>(player);
+    }
+
+    @Override // android.content.BroadcastReceiver
+    public void onReceive(Context context, Intent intent) {
+      Player player = this.mPlayer.get();
+      if (player != null) {
+        if (intent.getAction().equals("android.intent.action.CLOSE_SYSTEM_DIALOGS")) {
+          if ("homekey".equals(intent.getStringExtra("reason"))) {
+            C0162a.m9a("home key press");
+          }
+        } else if (intent.getAction().equals(ACTION_RECREATE)) {
+          C0162a.m9a("recreate Player");
+          Player.this.m79e();
+          if (Player.this.dabHandler != null) {
+            Player.this.dabHandler.removeMessages(5);
+            Message obtainMessage = Player.this.dabHandler.obtainMessage();
+            obtainMessage.what = 5;
+            obtainMessage.arg1 = 0;
+            Player.this.dabHandler.sendMessage(obtainMessage);
+          }
+          player.recreate();
+        }
+      }
+    }
+  }
+
+  /* renamed from: com.ex.dabplayer.pad.activity.Player$MaximizeListener */
+  /* loaded from: classes.dex */
+  /*
+      /*
+    public class MaximizeListener extends AnimatorListenerAdapter
+        implements ValueAnimator.AnimatorUpdateListener {
+      private View mView;
+
+      public MaximizeListener(View view) {
+        if (view.getLayoutParams() instanceof LinearLayout.LayoutParams) {
+          this.mView = view;
+          return;
+        }
+        throw new IllegalArgumentException("view must be instanceof LinearLayout");
+      }
+
+      @Override // android.animation.ValueAnimator.AnimatorUpdateListener
+      public void onAnimationUpdate(ValueAnimator animation) {
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) this.mView.getLayoutParams();
+        params.weight = ((Float) animation.getAnimatedValue()).floatValue();
+        this.mView.setLayoutParams(params);
+        this.mView.getParent().requestLayout();
+      }
+
+      @Override // android.animation.AnimatorListenerAdapter,
+      // android.animation.Animator.AnimatorListener
+      public void onAnimationCancel(Animator animation) {
+        super.onAnimationCancel(animation);
+        C0162a.m9a("animation cancelled");
+      }
+    }
+  */
   private class SearchDabHandler implements Runnable {
     public void run() {
       int i = 0;
@@ -459,6 +648,44 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
     }
   }
 
+  // @SuppressLint({"StaticFieldLeak"})
+  /* renamed from: com.ex.dabplayer.pad.activity.Player$n */
+  /* loaded from: classes.dex */
+
+  // private class AsyncTaskC0118n extends AsyncTask<Integer, Long, Long> {
+  // private AsyncTaskC0118n() {}
+
+  /* JADX INFO: Access modifiers changed from: protected
+      @Override // android.os.AsyncTask
+      public Long doInBackground(Integer... objects) {
+        int i = 0;
+        C0162a.m9a("searching mDabHandler");
+        while (Player.this.dabHandler == null && i < 10) {
+          i++;
+          DabService dabService = Player.this.getDabService();
+          if (dabService != null) {
+            Player.this.dabHandler = Player.this.getDabService().getDabHandlerFromDabThread();
+            C0162a.m9a("mDabHandler:" + Player.this.dabHandler);
+          }
+          try {
+            Thread.sleep(100L);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
+        if (i >= 10 && Player.this.dabHandler == null) {
+          C0162a.m9a("failed searching mDabHandler");
+          return 0L;
+        }
+        Message obtainMessage = Player.this.dabHandler.obtainMessage();
+        obtainMessage.what = DabThread.MSGTYPE_DAB_INIT; // 2;
+        Player.this.dabHandler.sendMessage(obtainMessage);
+        C0162a.m9a("searching mDabHandler done");
+        return 1L;
+      }
+    }
+  */
+
   /* renamed from: com.ex.dabplayer.pad.activity.Player$RunnableBWrapperNext */
   /* loaded from: classes.dex */
   public class RunnableBWrapperNext implements Runnable {
@@ -481,6 +708,297 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
     }
   }
 
+  /* renamed from: com.ex.dabplayer.pad.activity.Player$RunnableMaximizeLeftArea */
+  /* loaded from: classes.dex */
+  /*
+  public class RunnableMaximizeLeftArea implements Runnable {
+    private final boolean mAnimate;
+    private final boolean mMaximize;
+
+    public RunnableMaximizeLeftArea(boolean maximize, boolean animate) {
+      this.mMaximize = maximize;
+      this.mAnimate = animate;
+    }
+
+    @Override // java.lang.Runnable
+    public void run() {
+      Player.this.maximizeLeftArea(this.mMaximize, this.mAnimate);
+    }
+  }
+  */
+  /* renamed from: com.ex.dabplayer.pad.activity.Player$StationDetails */
+  /* loaded from: classes.dex */
+  /*
+    public class StationDetails {
+      private int mCurrStation = 0;
+      private int mTotalStations = 0;
+      private String mStationName = "";
+      private boolean mIsPlaying = false;
+
+      public StationDetails() {}
+
+      public void updateAllDetailsViewFromIntent(Intent intent) {
+        String filename;
+        String str;
+        String str2;
+        int eid;
+        if (intent != null) {
+                  viewPagerAdapter.setDetails(intent);
+
+
+          if (intent.hasExtra(DabService.EXTRA_ID)
+              && (eid = intent.getIntExtra(DabService.EXTRA_ID, 0)) > 0) {
+            C0162a.m8a("* id : ", eid);
+          }
+          if (intent.hasExtra(DabService.EXTRA_ARTIST)
+              && (str2 = intent.getStringExtra(DabService.EXTRA_ARTIST)) != null
+              && !str2.isEmpty()) {
+            C0162a.m5a("* artist : ", str2);
+          }
+          if (intent.hasExtra(DabService.EXTRA_TRACK)
+              && (str = intent.getStringExtra(DabService.EXTRA_TRACK)) != null
+              && !str.isEmpty()) {
+            C0162a.m5a("* track : ", str);
+          }
+          if (intent.hasExtra(DabService.EXTRA_STATION)) {
+            this.mStationName = intent.getStringExtra(DabService.EXTRA_STATION);
+            if (this.mStationName == null) {
+              this.mStationName = "";
+            }
+            if (!this.mStationName.isEmpty()) {
+              C0162a.m5a("* station : ", this.mStationName);
+            }
+            //updateStationName();
+          }
+          if (intent.hasExtra(DabService.EXTRA_DLS)) {
+            C0162a.m5a("* dls : ", intent.getStringExtra(DabService.EXTRA_DLS));
+            updateDls(intent.getStringExtra(DabService.EXTRA_DLS));
+          }
+          if (intent.hasExtra("playing")) {
+            this.mIsPlaying = intent.getBooleanExtra("playing", false);
+            C0162a.m9a("* playing : " + this.mIsPlaying);
+          }
+          if (intent.hasExtra(DabService.EXTRA_SERVICEID)) {
+            int sid = intent.getIntExtra(DabService.EXTRA_SERVICEID, 0);
+            if (sid > 0) {
+              C0162a.m5a("* serviceid : ", String.format("0x%04X", Integer.valueOf(sid)));
+            }
+            //updateServiceId(sid);
+          }
+          if (intent.hasExtra(DabService.EXTRA_FREQUENCY_KHZ)) {
+            int freq = intent.getIntExtra(DabService.EXTRA_FREQUENCY_KHZ, 0);
+            if (freq != 0) {
+              C0162a.m8a("* frequency_khz : ", freq);
+            }
+            updateFrequency(freq);
+          }
+          if (intent.hasExtra(DabService.EXTRA_PTY)) {
+            String str3 = intent.getStringExtra(DabService.EXTRA_PTY);
+            if (str3 != null && !str3.isEmpty()) {
+              C0162a.m5a("* pty : ", str3);
+            }
+            updatePty(str3);
+          }
+          if (intent.hasExtra(DabService.EXTRA_ENSEMBLE_NAME)
+              && intent.hasExtra(DabService.EXTRA_ENSEMBLE_ID)) {
+            String str4 = intent.getStringExtra(DabService.EXTRA_ENSEMBLE_NAME);
+            int id = intent.getIntExtra(DabService.EXTRA_ENSEMBLE_ID, 0);
+            if (id > 0) {
+              C0162a.m5a("* ensemble_name : ", str4);
+              C0162a.m5a("* ensemble_id : ", String.format("0x%04X", Integer.valueOf(id)));
+            }
+            updateEnsemble(str4, id);
+          }
+          if (intent.hasExtra(DabService.EXTRA_BITRATE)) {
+            int bitrate = intent.getIntExtra(DabService.EXTRA_BITRATE, 0);
+            if (bitrate > 0) {
+              C0162a.m8a("* bitrate : ", bitrate);
+            }
+            updateBitrate(bitrate);
+          }
+          if (intent.hasExtra(DabService.EXTRA_SIGNALQUALITY)) {
+            int signal = intent.getIntExtra(DabService.EXTRA_SIGNALQUALITY, -1);
+            if (signal >= 0) {
+              C0162a.m8a("* signal : ", signal);
+            }
+            updateSignalQuality(signal);
+          }
+          if (intent.hasExtra(DabService.EXTRA_SERVICEFOLLOWING)) {
+            String info = intent.getStringExtra(DabService.EXTRA_SERVICEFOLLOWING);
+            if (!info.isEmpty()) {
+              C0162a.m5a("* service_following : ", info);
+            }
+            updateServiceFollowing(info);
+          }
+          if (intent.hasExtra(DabService.EXTRA_SERVICELOG)) {
+            updateServiceLog(intent.getStringExtra(DabService.EXTRA_SERVICELOG));
+          }
+          if (intent.hasExtra(DabService.EXTRA_SLS)
+              && (filename = intent.getStringExtra(DabService.EXTRA_SLS)) != null) {
+            C0162a.m5a("* sls : ", filename);
+            updateSls(filename);
+          }
+          if (intent.hasExtra(DabService.EXTRA_ID)) {
+            this.mCurrStation = intent.getIntExtra(DabService.EXTRA_ID, 0);
+            if (this.mCurrStation > 0) {
+              C0162a.m8a("* id : ", this.mCurrStation);
+            }
+            updateStationName();
+          }
+          if (intent.hasExtra(DabService.EXTRA_NUMSTATIONS)) {
+            this.mTotalStations = intent.getIntExtra(DabService.EXTRA_NUMSTATIONS, 0);
+            C0162a.m8a("* num_stations : ", this.mTotalStations);
+            updateStationName();
+          }
+          if (intent.hasExtra(DabService.EXTRA_AUDIOFORMAT)) {
+            String str5 = intent.getStringExtra(DabService.EXTRA_AUDIOFORMAT);
+            if (str5 != null && !str5.isEmpty()) {
+              C0162a.m5a("* audio_format : ", str5);
+            }
+            updateAudioformat(str5);
+          }
+          if (intent.hasExtra(DabService.EXTRA_AUDIOSAMPLERATE)) {
+            int samplerate = intent.getIntExtra(DabService.EXTRA_AUDIOSAMPLERATE, 0);
+            if (samplerate != 0) {
+              C0162a.m8a("* samplerate : ", samplerate);
+            }
+            updateAudioSamplerate(samplerate);
+          }
+        }
+      }
+
+      public boolean isPlaying() {
+        return this.mIsPlaying;
+      }
+
+      private void updateStationName() {
+        int[] idArray = {R.id.details_station_name, 2131427406};
+        for (int id : idArray) {
+          TextView textView = (TextView) Player.this.findViewById(id);
+          if (textView != null) {
+            if (id == R.id.details_station_name
+                && this.mTotalStations != 0
+                && this.mCurrStation == 0) {
+              String details = this.mStationName + " /" + this.mTotalStations;
+              textView.setText(details);
+            } else if (id == 2131427406
+                || (id == R.id.details_station_name
+                    && (this.mTotalStations == 0 || this.mCurrStation == 0))) {
+              textView.setText(this.mStationName);
+            } else if (id == R.id.details_station_name
+                && this.mTotalStations != 0
+                && this.mCurrStation != 0) {
+              String details2 =
+                  this.mStationName + " (" + this.mCurrStation + "/" + this.mTotalStations + ")";
+              textView.setText(details2);
+            }
+          }
+        }
+      }
+
+      private void updateServiceId(int sid) {
+        TextView textView = (TextView) Player.this.findViewById(R.id.details_service_id);
+        if (textView != null) {
+          String text = Integer.toHexString(sid).toUpperCase();
+          if (sid == 0) {
+            text = "";
+          }
+          textView.setText(text);
+        }
+      }
+
+      private void updateFrequency(int freq) {
+        TextView textView = (TextView) Player.this.findViewById(R.id.details_frequency);
+        if (textView != null) {
+          if (freq != 0) {
+            float fFreq = freq / 1000.0f;
+            String text =
+                Strings.freq2channelname(freq) + String.format(" - %,.3f MHz", Float.valueOf(fFreq));
+            textView.setText(text);
+            return;
+          }
+          textView.setText("");
+        }
+      }
+
+      private void updatePty(String pty) {
+        TextView textView = (TextView) Player.this.findViewById(R.id.details_pty);
+        if (textView != null) {
+          textView.setText(pty);
+        }
+      }
+
+      private void updateBitrate(int bitrate) {
+        TextView textView = (TextView) Player.this.findViewById(R.id.details_bitrate);
+        if (textView != null) {
+          textView.setText(bitrate != 0 ? String.format("%d kbits/s", Integer.valueOf(bitrate)) : "");
+        }
+      }
+
+      private void updateDls(String dlsText) {}
+
+      private void updateEnsemble(String name, int id) {
+        TextView textView = (TextView) Player.this.findViewById(R.id.details_ensemble);
+        if (textView != null) {
+          if (id != 0) {
+            name = String.format("%s (%04X)", name, Integer.valueOf(id));
+          }
+          textView.setText(name);
+        }
+      }
+
+      private void updateSignalQuality(int qual) {
+        TextView textView = (TextView) Player.this.findViewById(R.id.details_signalquality);
+        if (textView != null) {
+          if (qual < 0) {
+            textView.setText("");
+          } else {
+            textView.setText(String.format("%d", Integer.valueOf(qual)));
+          }
+        }
+      }
+
+      private void updateServiceFollowing(@NonNull String info) {
+        TextView textView = (TextView) Player.this.findViewById(R.id.details_servicefollowing);
+        if (textView != null) {
+          textView.setText(info);
+        }
+      }
+
+      private void updateServiceLog(@NonNull String info) {
+        TextView textView = (TextView) Player.this.findViewById(R.id.details_servicelog);
+        if (textView != null) {
+          textView.setText(info);
+          textView.setSelected(true);
+        }
+      }
+
+      private void updateSls(String motFilename) {}
+
+      private void updateAudioformat(String audioformat) {
+        TextView textView = (TextView) Player.this.findViewById(R.id.details_audiocodec);
+        if (textView != null && audioformat != null) {
+          textView.setText(audioformat);
+        }
+      }
+
+      private void updateAudioSamplerate(int sampleRate) {
+        TextView textView = (TextView) Player.this.findViewById(R.id.details_audiobitrate);
+        if (textView != null) {
+          if (sampleRate > 0) {
+            if (sampleRate % 1000 == 0) {
+              textView.setText(String.format("%d kHz", Integer.valueOf(sampleRate / 1000)));
+              return;
+            } else {
+              textView.setText(String.format("%,.1f kHz", Float.valueOf(sampleRate / 1000.0f)));
+              return;
+            }
+          }
+          textView.setText("");
+        }
+      }
+    }
+  */
   /* renamed from: com.ex.dabplayer.pad.activity.Player$TouchDelegateRunnable */
   /* loaded from: classes.dex */
   public class TouchDelegateRunnable implements Runnable {
@@ -524,6 +1042,14 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
       Player player = this.mPlayer.get();
       if (player != null) {
         this.mLeftBackgroundBox.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+        /*
+                MotImage motImage = player.getMotImage();
+        if (motImage != null) {
+          motImage.setMaxDimensions(
+              this.mLeftBackgroundBox.getMeasuredWidth(),
+              this.mLeftBackgroundBox.getMeasuredHeight());
+        }
+                */
       }
     }
   }
@@ -565,7 +1091,19 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
         arrayList.add(c);
       }
     }
-
+    /*
+        StationBaseAdapter stationAdapter =
+            new StationBaseAdapter(
+                this.context,
+                arrayList2,
+                this.mShowAdditionalInfos,
+                this.mTouchListener,
+                this.mShowLogosInList);
+        stationAdapter.setSelectedIndex(this.playIndex);
+        this.mStationListView.setAdapter((ListAdapter) stationAdapter);
+        this.mStationListView.setTranscriptMode(0);
+        this.mStationListView.setChoiceMode(1);
+    */
     this.stationsAdapter =
         new SwitchStationsAdapter(this.context, switchStationsAdapterListener, arrayList2, false);
     this.recyclerView.setAdapter(stationsAdapter);
@@ -667,6 +1205,28 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
           // this.f37p.setText(PTYname(subChannelInfo.mPty));
           this.f26e = true;
 
+          /*
+          boolean showLogoAsMot =
+              this.context
+                  .getSharedPreferences(SettingsActivity.prefname_settings, 0)
+                  .getBoolean(SettingsActivity.pref_key_logo_as_mot, true);
+          BitmapDrawable logoDrawable = null;
+          if (showLogoAsMot) {
+            String pathToLogo =
+                mLogoDb.getLogoFilenameForStation(subChannelInfo.mLabel, subChannelInfo.mSID);
+            if (pathToLogo != null) {
+              logoDrawable = mLogoDb.getBitmapForStation(this, pathToLogo);
+            }
+            if (logoDrawable == null) {
+              logoDrawable = LogoAssets.getBitmapForStation(this.context, subChannelInfo.mLabel);
+            }
+          }
+          */
+          // if (logoDrawable != null) {
+          //  this.motImage.setImage(logoDrawable, 1);
+          // } else {
+          //  this.motImage.setDefaultImage();
+          // }
           this.txtDls.setText("");
           this.dabHandler.removeMessages(DabThread.MSGTYPE_START_PLAY_STATION);
           Message obtainMessage = this.dabHandler.obtainMessage();
@@ -679,8 +1239,11 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
           // DeterminedScrollTo(this.mStationListView, this.playIndex);
           scrollToPositionRecycler(this.playIndex);
 
+          // SharedPreferences.Editor edit = this.f20I.edit();
+          // edit.putInt("current_playing", this.playIndex);
+          // edit.apply();
           SharedPreferencesHelper.getInstance().setInteger("current_playing", this.playIndex);
-          // m78f();
+          m78f();
           displayPrevCurrNextStation(this.playIndex);
           notifyStationChangesTo(subChannelInfo, this.playIndex, this.stationList.size());
         }
@@ -743,6 +1306,22 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
         i2 = i3;
       }
 
+      /*
+      StationBaseAdapter aVar =
+          new StationBaseAdapter(
+              this.context,
+              arrayList2,
+              this.mShowAdditionalInfos,
+              this.mTouchListener,
+              this.mShowLogosInList);
+      if (i2 > -1) {
+        aVar.setSelectedIndex(i2);
+      } else {
+        playStation(0);
+      }
+      this.mStationListView.setAdapter((ListAdapter) aVar);
+      */
+
       stationsAdapter =
           new SwitchStationsAdapter(this.context, switchStationsAdapterListener, arrayList2, false);
       this.recyclerView.setAdapter(stationsAdapter);
@@ -750,7 +1329,6 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
   }
 
   /* renamed from: b */
-  /*
   private void playPreset(int i) {
     ChannelInfo qVar = new ChannelInfo();
     C0162a.m9a("----dabPresetPlay:" + i);
@@ -789,13 +1367,17 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
         obtainMessage.obj = qVar;
         this.dabHandler.sendMessage(obtainMessage);
         C0162a.m9a("dab play preset index:" + this.playIndex);
+        // SharedPreferences.Editor edit = this.f20I.edit();
+        // edit.putInt("current_playing", this.playIndex);
+        // edit.apply();
 
         SharedPreferencesHelper.getInstance().setInteger("current_playing", this.playIndex);
-        //m78f();
+
+        m78f();
       }
     }
   }
-    */
+
   /* JADX INFO: Access modifiers changed from: private */
   public void selectNextStation() {
     if (!this.progressDialog.isShowing() && this.stationListSize > 0) {
@@ -855,11 +1437,11 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
   public void selectPreviousStation() {
     if (!this.progressDialog.isShowing() && this.stationListSize > 0) {
       int i = ((this.playIndex + this.stationListSize) - 1) % this.stationListSize;
-      // if (this.f27f) {
-      //  playPreset(i);
-      // } else {
-      playStation(i);
-      // }
+      if (this.f27f) {
+        playPreset(i);
+      } else {
+        playStation(i);
+      }
     }
   }
 
@@ -987,29 +1569,28 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
 
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: f */
-  /*
-    public void m78f() {
-      ChannelInfo channelInfo = new ChannelInfo();
-      if (this.channelInfoList != null
-          && this.channelInfoList.size() != 0
-          && this.stationList != null
-          && this.stationList.size() != 0
-          && this.playIndex >= 0
-          && this.playIndex < this.stationList.size()) {
-        channelInfo.label = this.stationList.get(this.playIndex).mLabel;
-        channelInfo.freq = this.stationList.get(this.playIndex).mFreq;
-        channelInfo.subChannelId = this.stationList.get(this.playIndex).mSubChannelId;
-        channelInfo.bitrate = this.stationList.get(this.playIndex).mBitrate;
-        for (ChannelInfo qVar2 : this.channelInfoList) {
-          if (qVar2.freq == channelInfo.freq
-              && qVar2.subChannelId == channelInfo.subChannelId
-              && qVar2.label.equals(channelInfo.label)) {
-            return;
-          }
+  public void m78f() {
+    ChannelInfo channelInfo = new ChannelInfo();
+    if (this.channelInfoList != null
+        && this.channelInfoList.size() != 0
+        && this.stationList != null
+        && this.stationList.size() != 0
+        && this.playIndex >= 0
+        && this.playIndex < this.stationList.size()) {
+      channelInfo.label = this.stationList.get(this.playIndex).mLabel;
+      channelInfo.freq = this.stationList.get(this.playIndex).mFreq;
+      channelInfo.subChannelId = this.stationList.get(this.playIndex).mSubChannelId;
+      channelInfo.bitrate = this.stationList.get(this.playIndex).mBitrate;
+      for (ChannelInfo qVar2 : this.channelInfoList) {
+        if (qVar2.freq == channelInfo.freq
+            && qVar2.subChannelId == channelInfo.subChannelId
+            && qVar2.label.equals(channelInfo.label)) {
+          return;
         }
       }
     }
-  */
+  }
+
   /* JADX INFO: Access modifiers changed from: private */
   public void finishTheApp() {
     C0162a.m9a("finishTheApp");
@@ -1140,6 +1721,73 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
   public boolean isFavoriteListActive() {
     return this.isFavoriteListActive;
   }
+
+  /*
+    public final boolean isLeftAreaMaximized() {
+      return this.mIsLeftAreaMaximized;
+    }
+  */
+  /*
+  public void maximizeLeftArea(boolean maximize, boolean animate) {
+    float start;
+    float stop;
+    C0162a.m9a("maximize=" + maximize + " animate=" + animate);
+    if (this.mIsLeftAreaMaximized == maximize) {
+      C0162a.m9a("maximize no state change");
+    } else {
+      this.mIsLeftAreaMaximized = maximize;
+      View leftArea = findViewById(R.id.left_area);
+      if (leftArea != null) {
+        if (animate) {
+          if (maximize) {
+            start = this.mDefaultLeftAreaLayoutWeight;
+            stop = 0.0f;
+          } else {
+            start = 0.0f;
+            stop = this.mDefaultLeftAreaLayoutWeight;
+          }
+          ValueAnimator animator = ValueAnimator.ofFloat(start, stop);
+          if (maximize) {
+            animator.setDuration(1000L);
+            animator.setInterpolator(new AccelerateInterpolator());
+          } else {
+            animator.setDuration(200L);
+            animator.setInterpolator(new DecelerateInterpolator());
+          }
+          MaximizeListener listener = new MaximizeListener(leftArea);
+          animator.addListener(listener);
+          animator.addUpdateListener(listener);
+          animator.start();
+        } else {
+          LinearLayout.LayoutParams layoutParams =
+              (LinearLayout.LayoutParams) leftArea.getLayoutParams();
+          if (maximize) {
+            layoutParams.weight = 0.0f;
+          } else {
+            layoutParams.weight = this.mDefaultLeftAreaLayoutWeight;
+          }
+          leftArea.setLayoutParams(layoutParams);
+          leftArea.getParent().requestLayout();
+        }
+      }
+    }
+    SharedPreferences settingsPreferences =
+        getSharedPreferences(SettingsActivity.prefname_settings, 0);
+    if (!maximize
+        && settingsPreferences.getBoolean(SettingsActivity.pref_key_auto_maximize, false)) {
+      long delayMs =
+          settingsPreferences.getLong(
+              SettingsActivity.pref_key_auto_maximize_timeout,
+              SettingsActivity.pref_defvalue_auto_maximize_timeout_msec.longValue());
+      C0162a.m9a("maximize again in " + delayMs + " ms");
+      this.maximizeLeftAreaHandler.removeMessages(1);
+      Message msg = this.maximizeLeftAreaHandler.obtainMessage();
+      msg.what = 1;
+      msg.obj = new RunnableMaximizeLeftArea(true, true);
+      this.maximizeLeftAreaHandler.sendMessageDelayed(msg, delayMs);
+    }
+  }
+  */
 
   public void notifyAudioDistortion() {
     if (this.mAudioDistortionToast != null) {
@@ -1285,7 +1933,9 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
     super.onActivityResult(i, i2, intent);
     String stringExtra = intent.getStringExtra("title");
     if (stringExtra != null) {
-      if (!stringExtra.equals("pty dialog")) {
+      if (stringExtra.contains("Preset")) {
+        playPreset(i2);
+      } else if (!stringExtra.equals("pty dialog")) {
         this.stationListSize = this.stationList.size();
         if (i > 0) {
           playStation(i2);
@@ -1293,7 +1943,7 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
       } else if (i2 >= 0 && arrPty != null && this.dabHandler != null) {
         String stringExtra2 = arrPty[i2];
         Message obtainMessage = this.dabHandler.obtainMessage();
-        obtainMessage.what = DabThread.MSGTYPE_SELECT_PTY; //  20;
+        obtainMessage.what = 20;
         obtainMessage.arg1 = Strings.PTYnumber(stringExtra2);
         this.dabHandler.sendMessage(obtainMessage);
       }
@@ -1312,10 +1962,12 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
       Toast.makeText(this.context, text, Toast.LENGTH_LONG).show();
     } else if (this.stationListSize != 0 || view.getId() == R.id.layScan) {
       if (view.getId() == R.id.layScan) {
+        /* 2131427335 */
         Toast.makeText(context, "scsn", Toast.LENGTH_LONG).show();
         onScanButtonClicked();
         return;
       } else if (view.getId() == R.id.signal_level) {
+        /* 2131427346 */
         if (ServiceFollowing.is_possible()) {
           C0162a.m9a("manually activated service following");
           onServiceFollowRequested();
@@ -1323,12 +1975,60 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
         }
         C0162a.m9a("manually activation ignored");
         return;
+        /*
+        } else if (view.getId() == R.id.bt_record) {
+          // 2131427347
+          if (this.f27f || this.f26e) {
+            Message obtainMessage = this.dabHandler.obtainMessage();
+            if (this.f28g) {
+              this.f28g = false;
+              this.f34m.setBackgroundResource(R.drawable.record_start_selector);
+              obtainMessage.what = 22;
+              this.dabHandler.sendMessage(obtainMessage);
+            } else {
+              this.f28g = true;
+              this.f34m.setBackgroundResource(R.drawable.record_stop_selector);
+              obtainMessage.what = 21;
+              this.dabHandler.sendMessage(obtainMessage);
+            }
+            C0162a.m9a("recorder:" + this.f28g);
+            return;
+          }
+          return;
+        */
       } else if (view.getId() == R.id.bt_prev) {
+        /* 2131427353 */
         selectPreviousStation();
         return;
       } else if (view.getId() == R.id.bt_next) {
+        /* 2131427354 */
         selectNextStation();
         return;
+        /*
+        } else if (view.getId() == R.id.bt_pty) {
+
+          onPtyButtonClicked();
+          return;
+        } else if (view.getId() == R.id.bt_favor) {
+
+          boolean active = isFavoriteListActive();
+          if (!active && DatabaseHelper.getFavCount() < 1) {
+            String text2 = getResources().getString(R.string.selectfavoritesfirst);
+            Toast.makeText(this.context, text2, 0).show();
+            return;
+          }
+
+          setFavoriteListActive(active ? false : true);
+          boolean active2 = isFavoriteListActive();
+          C0162a.m9a("favorite:" + active2);
+          if (active2) {
+            this.favorBtn.setBackgroundResource(R.drawable.favor_list_selector_on);
+            return;
+          } else {
+            this.favorBtn.setBackgroundResource(R.drawable.favor_list_selector_off);
+            return;
+          }
+          */
       } else {
         return;
       }
@@ -1361,13 +2061,19 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
     obtainMessage.what = DabThread.PLAY_FAVOURITE;
     obtainMessage.arg1 = storagePos;
     Player.this.dabHandler.sendMessage(obtainMessage);
-    // this comes back with PLAYERMSG_PLAY_STATION
+    // this comes back with PLAYERMSG_PLAYING_STATION
   }
 
+  /*
+    @Override // android.app.Activity, android.content.ComponentCallbacks
+    public void onConfigurationChanged(Configuration newConfig) {
+      super.onConfigurationChanged(newConfig);
+      C0162a.m9a("config change ignored");
+    }
+  */
   @Override // android.app.Activity
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
     C0162a.m9a("Player:onCreate");
     setContentView(R.layout.activity_player);
     this.playIndex = 0;
@@ -1385,11 +2091,43 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
     this.layExit.setOnClickListener(this);
     Button btnSettings2 = (Button) findViewById(R.id.bt_settings);
     btnSettings2.setOnClickListener(this);
+    // this.f35n = (Button) findViewById(R.id.bt_pty);
+    // this.f35n.setOnClickListener(this);
+
+    // this.f28g = false;
+    // this.f34m = (Button) findViewById(R.id.bt_record);
+    // this.f34m.setOnClickListener(this);
+    // this.f38q = (TextView) findViewById(R.id.service_freq);
+    // this.f38q.setText("");
     this.txtServiceName = (TextView) findViewById(R.id.service_name);
     this.txtServiceName.setText("");
+    // this.f37p = (TextView) findViewById(R.id.service_pty);
+    // this.f37p.setText("");
+    /*
+    this.f42v = (Spinner) findViewById(R.id.pty_spinner);
+    this.f42v.setOnItemSelectedListener(
+        new AdapterView
+            .OnItemSelectedListener() { // from class: com.ex.dabplayer.pad.activity.Player.3
+          @Override // android.widget.AdapterView.OnItemSelectedListener
+          public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (Player.arrPty != null && Player.this.dabHandler != null) {
+              String str = Player.arrPty[Player.this.stationListSize];
+              Message obtainMessage = Player.this.dabHandler.obtainMessage();
+              obtainMessage.what = 20;
+              obtainMessage.arg1 = Strings.PTYnumber(str);
+              Player.this.dabHandler.sendMessage(obtainMessage);
+            }
+          }
 
+          @Override // android.widget.AdapterView.OnItemSelectedListener
+          public void onNothingSelected(AdapterView<?> parent) {}
+        });
+        */
     this.txtDls = (TextView) findViewById(R.id.dls_scroll);
     this.txtDls.setText("");
+    // this.mStationListView = getListView();
+
+    // recycler
 
     this.textClock = (TextClock) findViewById(R.id.textClock);
     if (!SharedPreferencesHelper.getInstance().getBoolean("showClock")) {
@@ -1443,6 +2181,11 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
     this.progressDialog.setIndeterminate(false);
     this.progressDialog.setIndeterminateDrawable(
         getResources().getDrawable(R.anim.progress_dialog_anim));
+    // new IntentFilter("com.microntek.app");
+    // Intent intent = new Intent("com.microntek.app");
+    // intent.putExtra("app", DabService.SENDER_DAB);
+    // intent.putExtra("state", "ENTER");
+    // this.context.sendBroadcast(intent);
 
     this.audioManager.requestAudioFocus(this.f24c, 3, 1);
 
@@ -1465,6 +2208,32 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
     // homeKeyReceiver = new HomeKeyReceiver(this);
     sPlayerHandler = new WeakReference<>(this.f22M);
 
+    /*
+    if (this.f20I == null) {
+      this.f20I = this.context.getSharedPreferences("playing", 0);
+    }
+    int filter = this.f20I.getInt("current_filter", 0);
+    this.isFavoriteListActive = filter == 2 || filter == 3;
+     */
+    /*
+        this.favorBtn = (Button) findViewById(R.id.bt_favor);
+    this.favorBtn.setOnClickListener(this);
+    if (this.isFavoriteListActive) {
+      this.favorBtn.setBackgroundResource(R.drawable.favor_list_selector_on);
+    } else {
+      this.favorBtn.setBackgroundResource(R.drawable.favor_list_selector_off);
+    }
+        */
+    //this.mTouchListener = new TouchListener(this);
+    // this.mStationListView.setOnTouchListener(
+    //    new StationViewTouchHelper(this.context, this.mTouchListener));
+
+    /*LinearLayout leftBackgroundBox = (LinearLayout) findViewById(R.id.left_background_box);
+    if (leftBackgroundBox != null) {
+      ViewTreeObserver vto = leftBackgroundBox.getViewTreeObserver();
+      vto.addOnGlobalLayoutListener(new VTOLayoutListener(this, leftBackgroundBox));
+    }
+    */
     Intent startedByIntent = getIntent();
     if (startedByIntent != null) {
       C0162a.m9a("Player startedByIntent=" + startedByIntent.toString());
@@ -1476,8 +2245,23 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
       }
     }
 
-    // this.mDefaultLeftAreaLayoutWeight = 5.0f;
+    this.mDefaultLeftAreaLayoutWeight = 5.0f;
     /*
+        LinearLayout leftArea = (LinearLayout) findViewById(R.id.left_area);
+    if (leftArea != null
+        && (params = (LinearLayout.LayoutParams) leftArea.getLayoutParams()) != null) {
+      this.mDefaultLeftAreaLayoutWeight = params.weight;
+    }
+
+    this.mViewFlipper = (ViewFlipper) findViewById(R.id.viewflipper);
+    if (this.mViewFlipper != null) {
+      LargeSlsTouchListener touchListener = new LargeSlsTouchListener(this);
+      for (int i = 0; i < this.mViewFlipper.getChildCount(); i++) {
+        this.mViewFlipper.getChildAt(i).setClickable(true);
+        this.mViewFlipper.getChildAt(i).setOnTouchListener(touchListener);
+      }
+    }
+        */
     TextView textView =
         (TextView)
             findViewById(
@@ -1493,17 +2277,46 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
     if (textView2 != null) {
       this.mDlsSizeFromStyle = textView2.getTextSize();
     }
-        */
+
+    /*
+    String[] buttonNames = {"bt_prev", "bt_favor", "bt_next", "bt_pty", "bt_settings2"};
+    int length = buttonNames.length;
+    int i2 = 0;
+    while (true) {
+      int i3 = i2;
+      if (i3 < length) {
+        String buttonName = buttonNames[i3];
+        Button btn =
+            (Button)
+                findViewById(
+                    getResources()
+                        .getIdentifier(buttonName, DabService.EXTRA_ID, getPackageName()));
+        if (btn != null) {
+          ViewParent parent = btn.getParent();
+          if (parent == null) {
+            C0162a.m9a(buttonName + " has no parent");
+          } else if (View.class.isInstance(parent)) {
+            ((View) parent).post(new TouchDelegateRunnable(btn, (View) parent));
+          } else {
+            C0162a.m9a("not a View instance: " + parent.toString());
+          }
+        } else {
+          C0162a.m9a("findViewById null for " + buttonName);
+        }
+        i2 = i3 + 1;
+      } else {
+        return;
+      }
+    }
+    */
   }
 
-  /*
   public void onDeleteButtonClicked(int posInList) {
     C0162a.m9a("Player:onDeleteButtonClicked pos " + posInList);
     if (posInList >= 0 && posInList < this.stationList.size()) {
       deleteStationAtPosition(posInList);
     }
   }
-   */
 
   @Override // android.app.ListActivity, android.app.Activity
   protected void onDestroy() {
@@ -1557,7 +2370,33 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
     return super.onKeyDown(i, keyEvent);
   }
 
+  /*
+  public void onMotClicked() {
+    if (isLeftAreaMaximized()) {
+      maximizeLeftArea(false, true);
+    } else {
+      maximizeLeftArea(true, true);
+    }
+  }
+  */
+
   public void onMotLongClicked() {
+    /*
+    DabSubChannelInfo currentStation;
+    if (this.motImage.getSource() == 2
+        && this.stationList != null
+        && this.stationList.size() > 0
+        && this.playIndex >= 0
+        && this.playIndex < this.stationList.size()
+        && (currentStation = this.stationList.get(this.playIndex)) != null) {
+      int first_pos = FirstPosition(this.mStationListView);
+      if (SettingsStationLogoActivity.storeUserStationLogo(
+          this.context, this.motImage.getDrawable(), currentStation.mLabel, currentStation.mSID)) {
+        updateStationList();
+        QuickScrollTo(this.mStationListView, first_pos);
+      }
+    }
+    */
     Toast.makeText(context, "onMotLongClicked is not implements", Toast.LENGTH_LONG).show();
   }
 
@@ -1569,6 +2408,9 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
     if (this.progressDialog.isShowing()) {
       this.progressDialog.dismiss();
     }
+    // if (homeKeyReceiver != null) {
+    // this.context.unregisterReceiver(homeKeyReceiver);
+    // }
 
     // stop on back key?
     if (this.f19G) {
@@ -1579,6 +2421,12 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
         obtainMessage.what = DabThread.MSGTYPE_DAB_DEINIT; // 5
         this.dabHandler.sendMessage(obtainMessage);
       }
+      /*
+      Intent intent = new Intent("com.microntek.app");
+      intent.putExtra("app", DabService.SENDER_DAB);
+      intent.putExtra("state", "EXIT");
+      this.context.sendBroadcast(intent);
+      */
     }
     this.mProperShutdown = isFinishing();
   }
@@ -1604,9 +2452,24 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
     this.isInForeground = true;
     this.f19G = false;
 
+    // this.f20I = this.context.getSharedPreferences("playing", 0);
+    // this.playIndex = this.f20I.getInt("current_playing", 0);
     this.playIndex = SharedPreferencesHelper.getInstance().getInteger("current_playing", 0);
-
+    // if (this.mStationListView != null) {
+    //  DeterminedScrollTo(this.mStationListView, this.playIndex);
+    // }
     scrollToPositionRecycler(this.playIndex);
+    /*
+    SharedPreferences sharedPreferences =
+        getSharedPreferences(SettingsActivity.prefname_settings, 0);
+    Button btnRecord = (Button) findViewById(R.id.bt_record);
+    if (btnRecord != null) {
+      if (sharedPreferences.getBoolean(SettingsActivity.pref_key_record_button, false)) {
+        btnRecord.setVisibility(0);
+      } else {
+        btnRecord.setVisibility(8);
+      }
+    */
     if (this.dabService != null) {
       this.dabService.m16a(this.f22M);
     }
@@ -1661,6 +2524,16 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
   }
 
   /*
+  public void recreateLayout() {
+    View v;
+    View v2 = findViewById(R.id.left_area);
+    if (v2 != null && (v = v2.getRootView()) != null) {
+      v.invalidate();
+      v.requestLayout();
+    }
+  }
+     */
+
   public void setFavoriteListActive(boolean enabled) {
     int what;
     if (enabled != this.isFavoriteListActive) {
@@ -1678,7 +2551,6 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
       }
     }
   }
-  */
 
   public void setSignalLevel(int level) {
     switch (level) {
@@ -1734,4 +2606,35 @@ public class Player extends Activity implements ServiceConnection, View.OnClickL
     }
     finishTheApp();
   }
+
+  /*
+  public void toggleFavoriteAtPosition(View view, int pos) {
+    StationBaseAdapter.C0137b bVar;
+    if (pos >= 0
+        && pos < this.stationList.size()
+        && view != null
+        && (bVar = (StationBaseAdapter.C0137b) view.getTag()) != null) {
+      DabSubChannelInfo subChannelInfo = this.stationList.get(pos);
+      subChannelInfo.mIsFavorite = !subChannelInfo.mIsFavorite;
+      C0162a.m9a("toggle fav @pos " + pos + " to " + subChannelInfo.mIsFavorite);
+      try {
+        this.stationList.set(pos, subChannelInfo);
+        StationBaseAdapter.updateFavoriteUI(bVar, subChannelInfo.mIsFavorite);
+        // StationBaseAdapter adapter = (StationBaseAdapter) this.mStationListView.getAdapter();
+        // if (adapter != null) {
+        //  adapter.updateFavorite(pos, subChannelInfo.mIsFavorite);
+        // }
+        if (this.dabHandler != null) {
+          Message obtainMessage = this.dabHandler.obtainMessage();
+          obtainMessage.what = 30;
+          obtainMessage.obj = subChannelInfo;
+          this.dabHandler.sendMessage(obtainMessage);
+          return;
+        }
+        C0162a.m9a("no handler created yet, fav setting not saved");
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+  */
 }

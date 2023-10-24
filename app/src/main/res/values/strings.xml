@@ -62,7 +62,7 @@
     <string name="stationlogovolkswagen_condition">The following downloads station logos, which are made available publicly by Volkswagen. The logos are only provided for use in Volkswagen Radio systems. No other use is permitted.\n\nAgree with these conditions and continue?</string>
     <string name="Connecting">Connecting …</string>
     <string name="UsbPermission">USB permission …</string>
-    <string name="attemptXofY">\nattempt %1$d of %2$d …</string>
+    <string name="attemptXofY">attempt %1$d of %2$d…</string>
     <string name="settings_text_OnStartByUsbGotoBackground">If enabled, the app remains in background after it was started automatically.</string>
     <string name="settings_text_declip_notification">Show a short notification when audio distortions have been filtered.</string>
     <string name="N_logos_in">logos in</string>
@@ -88,6 +88,7 @@
     <string name="density">unknown</string>
     <string name="settings_AudioLevel">Sound volume</string>
     <string name="Hints">Hints</string>
+   <string name="next">Continue</string>
     <string name="colored">colorful</string>
     <string name="settings_MotSlideshow">Show MOT slide show</string>
     <string name="settings_SwapPrevNextFromSWC">Swap the reaction to NEXT and PREV commands</string>

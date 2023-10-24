@@ -11,7 +11,7 @@
     
    <color name="colorPrimary">#F66F00</color>
     <color name="colorPrimaryDark">#F66F00</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#F66F00</color>
     <color name="colorLightGray">#D3D3D3</color>
 
     <color name="status_bar_light">#FFea80fc</color>

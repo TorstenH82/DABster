@@ -112,7 +112,7 @@ public class DabThread extends Thread {
   private List stationList = new ArrayList();
 
   /* renamed from: b */
-  private List<ChannelInfo> channelInfoList = new ArrayList();
+  // private List<ChannelInfo> channelInfoList = new ArrayList();
 
   /* renamed from: m */
   private SignalMotDlsMgr f88m = null;
@@ -239,68 +239,69 @@ public class DabThread extends Thread {
 
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: a */
-  public void m53a(ChannelInfo qVar) {
-    if (this.mp2Thread != null) {
-      this.mp2Thread.exit();
-      this.mp2Thread = null;
-    }
-    if (this.f88m != null) {
-      this.f88m.exit();
-      this.f88m = null;
-    }
-    if (this.aacThread != null) {
-      this.aacThread.exit();
-      this.aacThread = null;
-    }
-    if (this.ficThread != null) {
-      this.ficThread.exit();
-      this.ficThread = null;
-    }
-    if (this.mscThread != null) {
-      this.mscThread.m39a();
-    }
-    try {
-      sleep(500L);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-    synchronized (this.dabDec) {
-      DabSubChannelInfo subChannelInfo = new DabSubChannelInfo();
-      subChannelInfo.mBitrate = qVar.bitrate;
-      subChannelInfo.mFreq = qVar.freq;
-      subChannelInfo.mSubChannelId = (byte) qVar.subChannelId;
-      subChannelInfo.mType = (byte) qVar.type;
-      subChannelInfo.mLabel = qVar.label;
-      C0162a.m9a("current label:" + subChannelInfo.mLabel);
-      C0162a.m9a("current service type:" + ((int) subChannelInfo.mType));
-      this.dabDec.dab_api_set_subid(65);
-      this.dabDec.dab_api_set_msc_size((short) (subChannelInfo.mBitrate * 3));
-      this.dabDec.dab_api_tune(subChannelInfo.mFreq);
-      C0162a.m9a("current frequency[a]: " + subChannelInfo.mFreq);
-      this.dabDec.dab_api_set_subid(subChannelInfo.mSubChannelId);
-      ServiceFollowing.manTune(subChannelInfo);
-      this.mscThread = new MscThread(subChannelInfo.mBitrate);
-      this.mscThread.start();
-      this.audioType = subChannelInfo.mType == 63 ? AUDIOTYPE_AAC : AUDIOTYPE_MP2;
-      if (this.audioType == AUDIOTYPE_AAC) {
-        C0162a.m9a("play aac audio");
-        this.aacThread = new AacThread(this.context, this.inputRingBuffer);
-        this.aacThread.start();
-      } else if (this.audioType == AUDIOTYPE_MP2) {
-        C0162a.m9a("play mp2 audio");
-        this.mp2Thread = new Mp2Thread(this.context, this.inputRingBuffer);
-        this.mp2Thread.start();
-      } else {
-        C0162a.m9a("unknown audio type");
+  /*
+    public void m53a(ChannelInfo qVar) {
+      if (this.mp2Thread != null) {
+        this.mp2Thread.exit();
+        this.mp2Thread = null;
       }
-      C0162a.m9a("bitrate: " + subChannelInfo.mBitrate);
+      if (this.f88m != null) {
+        this.f88m.exit();
+        this.f88m = null;
+      }
+      if (this.aacThread != null) {
+        this.aacThread.exit();
+        this.aacThread = null;
+      }
+      if (this.ficThread != null) {
+        this.ficThread.exit();
+        this.ficThread = null;
+      }
+      if (this.mscThread != null) {
+        this.mscThread.m39a();
+      }
+      try {
+        sleep(500L);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      synchronized (this.dabDec) {
+        DabSubChannelInfo subChannelInfo = new DabSubChannelInfo();
+        subChannelInfo.mBitrate = qVar.bitrate;
+        subChannelInfo.mFreq = qVar.freq;
+        subChannelInfo.mSubChannelId = (byte) qVar.subChannelId;
+        subChannelInfo.mType = (byte) qVar.type;
+        subChannelInfo.mLabel = qVar.label;
+        C0162a.m9a("current label:" + subChannelInfo.mLabel);
+        C0162a.m9a("current service type:" + ((int) subChannelInfo.mType));
+        this.dabDec.dab_api_set_subid(65);
+        this.dabDec.dab_api_set_msc_size((short) (subChannelInfo.mBitrate * 3));
+        this.dabDec.dab_api_tune(subChannelInfo.mFreq);
+        C0162a.m9a("current frequency[a]: " + subChannelInfo.mFreq);
+        this.dabDec.dab_api_set_subid(subChannelInfo.mSubChannelId);
+        ServiceFollowing.manTune(subChannelInfo);
+        this.mscThread = new MscThread(subChannelInfo.mBitrate);
+        this.mscThread.start();
+        this.audioType = subChannelInfo.mType == 63 ? AUDIOTYPE_AAC : AUDIOTYPE_MP2;
+        if (this.audioType == AUDIOTYPE_AAC) {
+          C0162a.m9a("play aac audio");
+          this.aacThread = new AacThread(this.context, this.inputRingBuffer);
+          this.aacThread.start();
+        } else if (this.audioType == AUDIOTYPE_MP2) {
+          C0162a.m9a("play mp2 audio");
+          this.mp2Thread = new Mp2Thread(this.context, this.inputRingBuffer);
+          this.mp2Thread.start();
+        } else {
+          C0162a.m9a("unknown audio type");
+        }
+        C0162a.m9a("bitrate: " + subChannelInfo.mBitrate);
+      }
+      if (this.f88m == null) {
+        this.f88m = new SignalMotDlsMgr();
+        this.f88m.start();
+      }
     }
-    if (this.f88m == null) {
-      this.f88m = new SignalMotDlsMgr();
-      this.f88m.start();
-    }
-  }
-
+  */
   /* renamed from: a */
   /*
   private void getStationLogoFromDabBin(String str) {
@@ -345,7 +346,7 @@ public class DabThread extends Thread {
       this.dbHelper.deleteNonFavs();
     }
     this.stationList.clear();
-    this.dbHelper.m72a(32);
+    //this.dbHelper.m72a(32);
     this.dabDec.decoder_fic_reset(1);
     if (this.mscThread != null) {
       this.mscThread.m39a();
@@ -479,6 +480,7 @@ public class DabThread extends Thread {
 
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: c */
+  /*  
   public void m48c(int i) {
     C0162a.m9a("select pty:" + i);
     if (i != this.dbHelper.getCurrentStation()) {
@@ -486,6 +488,7 @@ public class DabThread extends Thread {
       refreshStationList();
     }
   }
+  */  
 
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: d */
@@ -613,7 +616,7 @@ public class DabThread extends Thread {
   }
 
   private void scanFrequencies(int[] freqs) {
-    this.total_known_services = this.dbHelper.getStationCountByFilter(0);
+    this.total_known_services = this.dbHelper.getStationCount();
     this.scan_service_count = 0;
     showSearchIcon();
     notifyScanning(this.total_known_services);
@@ -727,7 +730,7 @@ public class DabThread extends Thread {
             Object obj = null;
             this.dabDec.decoder_fic_reset(1);
             // this.j.a(32);
-            this.dbHelper.m72a(32);
+            //this.dbHelper.m72a(32);
 
             long currentTimeMillis = System.currentTimeMillis();
             Object obj2 = null;
@@ -916,16 +919,17 @@ public class DabThread extends Thread {
     }
   }
 
-  public void activateFavoriteList() {
-    this.dbHelper.m72a(-33);
-    refreshStationList();
-  }
+  /*
+    public void activateFavoriteList() {
+      this.dbHelper.m72a(-33);
+      refreshStationList();
+    }
 
-  public void deActivateFavoriteList() {
-    this.dbHelper.m72a(32);
-    refreshStationList();
-  }
-
+    public void deActivateFavoriteList() {
+      this.dbHelper.m72a(32);
+      refreshStationList();
+    }
+  */
   public void deleteStationAndUpdateList(DabSubChannelInfo subChannelInfo) {
     this.dbHelper.delete(subChannelInfo);
     refreshStationList();
@@ -1099,7 +1103,7 @@ public class DabThread extends Thread {
           DabThread.this.m54a((DabSubChannelInfo) message.obj);
           return;
         case 20:
-          DabThread.this.m48c(message.arg1);
+          //DabThread.this.m48c(message.arg1);
           return;
         case 23:
           DabThread.this.m44j();
@@ -1117,50 +1121,29 @@ public class DabThread extends Thread {
           DabSubChannelInfo sciFavourite =
               DabThread.this.dbHelper.getFavouriteService(message.arg1);
           if (sciFavourite != null) {
-
             int idx = DabThread.this.stationList.indexOf(sciFavourite);
             if (idx != -1) {
-              Toast.makeText(context, "call playStation with index " + idx, Toast.LENGTH_LONG)
-                  .show();
-
               if (!DabThread.this.isOnExit) {
                 ServiceFollowing.update_enabled_status(DabThread.this.getContext());
                 DabThread.this.playStation(idx);
 
-                // inform player which index gets played            
+                // inform player which index gets played
                 Message obtainMessage2 = DabThread.this.playerHandler.obtainMessage();
-                obtainMessage2.what = Player.PLAYERMSG_PLAYING_STATION;
+                obtainMessage2.what = Player.PLAYERMSG_PLAY_STATION;
                 obtainMessage2.arg1 = idx;
                 DabThread.this.playerHandler.sendMessage(obtainMessage2);
-
-                return;
               }
-
-            } else {
-              Toast.makeText(
-                      context,
-                      "favourite station "
-                          + sciFavourite.mLabel
-                          + " not found"
-                          + idx
-                          + ". Station list size is "
-                          + DabThread.this.stationList.size(),
-                      Toast.LENGTH_LONG)
-                  .show();
             }
-          } else {
-            Toast.makeText(context, "favourite" + message.arg1 + " not in db?", Toast.LENGTH_LONG)
-                .show();
           }
-          // DabThread.this.stationList.indexOf()
-          // DabThread.this.playStation
           return;
+
         case 31:
-          DabThread.this.activateFavoriteList();
+          // DabThread.this.activateFavoriteList();
           return;
         case 32:
-          DabThread.this.deActivateFavoriteList();
+          // DabThread.this.deActivateFavoriteList();
           return;
+
         default:
           return;
       }

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import com.thf.dabplayer.R;
 import com.thf.dabplayer.utils.C0162a;
+import com.thf.dabplayer.utils.SharedPreferencesHelper;
 
 /* renamed from: com.ex.dabplayer.pad.activity.ScanDialog */
 /* loaded from: classes.dex */
@@ -13,8 +14,8 @@ public class ScanDialog {
   public ScanDialog(Player player, int num_stations) {
     int default_choice;
     if (num_stations > 0) {
-      int default_scan_type = 2;
-          
+      int default_scan_type = SharedPreferencesHelper.getInstance().getInteger("default_scan_type");
+
       PlayerScanTypeDialogClickListener dialogClickListener =
           new PlayerScanTypeDialogClickListener(player, default_scan_type);
       CharSequence[] items = {
@@ -70,12 +71,8 @@ public class ScanDialog {
         case -1:
           this.mPlayer.startScan(this.mScanType);
           if (this.mScanType != this.mDefaultScanType) {
-            /*        
-            SharedPreferences.Editor preferences =
-                this.mPlayer.getSharedPreferences(SettingsActivity.prefname_settings, 0).edit();
-            preferences.putInt(SettingsActivity.pref_default_scan_type, this.mScanType);
-            preferences.apply();
-            */        
+            SharedPreferencesHelper.getInstance().setInteger("default_scan_type", this.mScanType);
+
             return;
           }
           return;

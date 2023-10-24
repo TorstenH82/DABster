@@ -45,13 +45,7 @@
         <item name="android:textColorSecondary">@color/secondary_text</item>
         <item name="android:textColorTertiary">@color/secondary_text</item>
     </style>
-    <style
-        name="Theme.DAB.Settings"
-        parent="@android:style/Theme.DeviceDefault.Wallpaper.NoTitleBar">
-        <item name="android:textColorPrimary">@color/primary_text</item>
-        <item name="android:textColorSecondary">@color/secondary_text</item>
-        <item name="android:textColorTertiary">@color/secondary_text</item>
-    </style>
+
     <style
         name="HorizontalDividerMargin"
         parent="">
@@ -133,16 +127,17 @@
     </style>
     <style
         name="Theme.Transparent"
-        parent="android:Theme">
+        parent="Base.AppTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:backgroundDimEnabled">false</item>
-        <item name="android:progressTint">@color/colorLightGray</item>
-        <item name="android:progressBackgroundTint">@android:color/transparent</item>
+        <!-- <item name="android:progressTint">@color/colorLightGray</item> -->
+        <!-- <item name="android:progressBackgroundTint">@android:color/transparent</item> -->
         <!-- added to avoid flickering -->
         <item name="android:windowAnimationStyle">@null</item>
+        
     </style>
 </resources>
