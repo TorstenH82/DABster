@@ -12,12 +12,12 @@ import java.util.List;
 /* renamed from: com.ex.dabplayer.pad.dab.d */
 /* loaded from: classes.dex */
 public class DatabaseHelper {
-  public static final int STATIONLIST_FILTER_ALL = 0;
-  public static final int STATIONLIST_FILTER_FAV = 2;
-  public static final int STATIONLIST_FILTER_FAV_AND_PTY = 3;
-  public static final int STATIONLIST_FILTER_PTY = 1;
-  public static final int STATIONLIST_RANGE_ALL = 32;
-  public static final int STATIONLIST_RANGE_FAV = -33;
+  //public static final int STATIONLIST_FILTER_ALL = 0;
+  //public static final int STATIONLIST_FILTER_FAV = 2;
+  //public static final int STATIONLIST_FILTER_FAV_AND_PTY = 3;
+  //public static final int STATIONLIST_FILTER_PTY = 1;
+  //public static final int STATIONLIST_RANGE_ALL = 32;
+  //public static final int STATIONLIST_RANGE_FAV = -33;
   private static int favCount = 0;
   private Context mContext;
  // private int mCurrentStation;
@@ -30,31 +30,7 @@ public class DatabaseHelper {
  // private final String pref_key_filter = "current_filter";
 
   public DatabaseHelper(Context context) {
-    //this.mFilter = 0;
     this.mContext = context;
-    /*
-    SharedPreferences sharedPreferences = context.getSharedPreferences("playing", 0);
-    if (sharedPreferences != null) {
-      int filter = sharedPreferences.getInt("current_filter", 0);
-      int playIndex = sharedPreferences.getInt("current_playing", 0);
-      this.mFilter = filter;
-      switch (filter) {
-        case 1:
-        case 2:
-        case 3:
-          this.mCurrentStation = playIndex;
-          break;
-        default:
-          this.mFilter = 0;
-          this.mCurrentStation = 32;
-          break;
-      }
-    } else {
-      C0162a.m9a("getSharedPreferences failed");
-      this.mFilter = 0;
-      this.mCurrentStation = 32;
-    }
-        */
     OpenDatabase();
     updateFavCount();
   }
@@ -106,84 +82,11 @@ public class DatabaseHelper {
         == 1) {
       C0162a.m9a("create dab.db");
       SQLiteDatabase sQLiteDatabase = this.mDatabase;
-
-      /*
-      StringBuilder append = new StringBuilder().append("CREATE TABLE ");
-      getClass();
-      sQLiteDatabase.execSQL(
-          append
-              .append("preset")
-              .append(
-                  " (_id INTEGER PRIMARY KEY AUTOINCREMENT, subid INTEGER, freq INTEGER, bitrate INTEGER, type INTEGER, label TEXT)")
-              .toString());
-       */
       this.mDatabase.execSQL(
           "CREATE TABLE service (_id INTEGER PRIMARY KEY AUTOINCREMENT, label TEXT, subid INTEGER, bitrate INTEGER, sid INTEGER, freq INTEGER, pty INTEGER, type INTEGER, abbreviated INTEGER, eid INTEGER, elabel TEXT, scid INTEGER, ps INTEGER, fav INTEGER)");
     }
   }
-
-  /* renamed from: a */
-  /*
-  public int getCurrentStation() {
-    return this.mCurrentStation;
-  }
-   */
-
-  /* renamed from: a */
-  /*
-  public void m72a(int pty) {
-    if (pty >= 32) {
-      C0162a.m9a("set station filter ALL (" + pty + ")");
-      this.mFilter = 0;
-    } else if (pty >= 0 && pty < 32) {
-      C0162a.m9a("set station filter PTY (" + pty + ")");
-      this.mFilter = 1;
-    } else if (pty >= -32 && pty < 0) {
-      C0162a.m9a("set station filter FAV+PTY (" + pty + ")");
-      this.mFilter = 3;
-    } else {
-      C0162a.m9a("set station filter FAV (" + pty + ")");
-      this.mFilter = 2;
-    }
-    this.mCurrentStation = pty;
-    SharedPreferences.Editor editor = this.mContext.getSharedPreferences("playing", 0).edit();
-    if (editor != null) {
-      editor.putInt("current_filter", this.mFilter);
-      editor.commit();
-      return;
-    }
-    C0162a.m9a("getSharedPreferences.edit failed");
-  }
-   */
-
-  /* renamed from: a */
-  /*
-    public void m70a(ChannelInfo qVar) {
-      StringBuilder append = new StringBuilder().append("DELETE from ");
-      getClass();
-      C0162a.m9a(
-          append
-              .append("preset")
-              .append(" freq=")
-              .append(qVar.freq)
-              .append(" subid=")
-              .append(qVar.subChannelId)
-              .toString());
-      SQLiteDatabase sQLiteDatabase = this.mDatabase;
-      StringBuilder append2 = new StringBuilder().append("DELETE FROM ");
-      getClass();
-      sQLiteDatabase.execSQL(
-          append2
-              .append("preset")
-              .append(" WHERE freq=")
-              .append(qVar.freq)
-              .append(" AND subid=")
-              .append(qVar.subChannelId)
-              .toString());
-      updateFavCount();
-    }
-  */
-
+  
   /* renamed from: a */
   public int insertNewStations(List list) {
     int new_stations = 0;
@@ -198,44 +101,7 @@ public class DatabaseHelper {
     }
     return new_stations;
   }
-
-  /* renamed from: b */
-  /*
-    public List getPresetChannelInfo() {
-      // StringBuilder append = new StringBuilder().append("SELECT from ");
-      // getClass();
-      // C0162a.m9a(append.append("preset").append(" ").append(this.mCurrentStation).toString());
-      List arrayList = new ArrayList();
-      SQLiteDatabase sQLiteDatabase = this.mDatabase;
-      String query = "SELECT * FROM preset";
-      getClass();
-      Cursor rawQuery = sQLiteDatabase.rawQuery(query, null);
-      while (rawQuery.moveToNext()) {
-        ChannelInfo channelInfo = new ChannelInfo();
-        channelInfo.freq = rawQuery.getInt(rawQuery.getColumnIndex("freq"));
-        channelInfo.subChannelId = rawQuery.getInt(rawQuery.getColumnIndex("subid"));
-        channelInfo.label = rawQuery.getString(rawQuery.getColumnIndex("label"));
-        channelInfo.bitrate = rawQuery.getInt(rawQuery.getColumnIndex(DabService.EXTRA_BITRATE));
-        channelInfo.type = rawQuery.getInt(rawQuery.getColumnIndex("type"));
-        arrayList.add(channelInfo);
-      }
-      return arrayList;
-    }
-  */
-  /* renamed from: b */
-  /*
-    public void insertPreset(ChannelInfo channelInfo) {
-      ContentValues contentValues = new ContentValues();
-      contentValues.put("subid", Integer.valueOf(channelInfo.subChannelId));
-      contentValues.put("freq", Integer.valueOf(channelInfo.freq));
-      contentValues.put(DabService.EXTRA_BITRATE, Integer.valueOf(channelInfo.bitrate));
-      contentValues.put("type", Integer.valueOf(channelInfo.type));
-      contentValues.put("label", channelInfo.label);
-      SQLiteDatabase sQLiteDatabase = this.mDatabase;
-      getClass();
-      sQLiteDatabase.insert("preset", null, contentValues);
-    }
-  */
+  
   /* renamed from: c */
   public List getStationList() {
     return getServiceSubchannelInfo();
@@ -262,7 +128,6 @@ public class DatabaseHelper {
         subchannelinfo.mSCID = rawQuery.getInt(rawQuery.getColumnIndex("scid"));
         subchannelinfo.mPS = rawQuery.getInt(rawQuery.getColumnIndex("ps"));
         subchannelinfo.mFavorite = rawQuery.getInt(rawQuery.getColumnIndex("fav"));
-
         return subchannelinfo;
       }
     }
@@ -309,44 +174,12 @@ public class DatabaseHelper {
     updateFavCount();
     return arrayList;
   }
-
-  /* renamed from: d */
-  /*  
-  public int m63d() {
-    return getStationCountByFilter(this.mFilter);
-  }
-    */
-
-  /* renamed from: d */
-    /*
-  public int getStationCountByFilter(int filter) {
-
-    String query = "SELECT * FROM service";
-    switch (filter) {
-      case STATIONLIST_FILTER_PTY: // 1
-        query += " where pty=";
-        query += this.mCurrentStation;
-        break;
-      case STATIONLIST_FILTER_FAV: // 2
-        query += " where fav>0";
-        break;
-      case STATIONLIST_FILTER_FAV_AND_PTY: // 3
-        query += " where fav>0 AND pty=";
-        query += this.mCurrentStation;
-        break;
-    }
-    Cursor rawQuery = this.mDatabase.rawQuery(query.toString(), null);
-    return rawQuery.getCount();
-  }
-    */
-
-    public int getStationCount() {
-
+  
+  public int getStationCount() {
     String query = "SELECT * FROM service";
     Cursor rawQuery = this.mDatabase.rawQuery(query.toString(), null);
     return rawQuery.getCount();
   }
-    
     
   /* renamed from: e */
   public void deleteAllFromServiceTbl() {
@@ -413,7 +246,6 @@ public class DatabaseHelper {
         contentValues.put("scid", Integer.valueOf(subChannelInfo.mSCID));
         contentValues.put("ps", Integer.valueOf(subChannelInfo.mPS));
         contentValues.put("fav", Integer.valueOf(favoPos));
-        // subChannelInfo.mIsFavorite ? "1" : "0");
         String where =
             "freq="
                 + subChannelInfo.mFreq
@@ -429,7 +261,6 @@ public class DatabaseHelper {
 
         C0162a.m9a(
             "updateFav " + subChannelInfo.mLabel + " to pos " + favoPos + " returned " + response);
-
         updateFavCount();
       }
     }
@@ -438,13 +269,9 @@ public class DatabaseHelper {
   private void updateFavCount() {
     synchronized (this) {
       if (this.mDatabase.isOpen()) {
-        SQLiteDatabase sQLiteDatabase = this.mDatabase;
-        StringBuilder append = new StringBuilder().append("SELECT * FROM ");
-        getClass();
-        Cursor rawQuery =
-            sQLiteDatabase.rawQuery(
-                append.append("service").append(" where fav>0").toString(), null);
-        favCount = rawQuery.getCount();
+        String query = "SELECT * FROM where fav>0";
+        Cursor rawQuery = this.mDatabase.rawQuery(query, null);
+        this.favCount = rawQuery.getCount();
       }
     }
   }
