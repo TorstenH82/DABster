@@ -264,7 +264,7 @@
                     android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
                 <TextView
                     android:textAppearance="@style/ChannelDetails"
-                   android:layout_weight="20"
+                    android:layout_weight="20"
                     android:id="@+id/details_station_name"
                     android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
 
@@ -382,23 +382,6 @@
                     android:layout_weight="20"
                     android:id="@+id/details_servicefollowing"
                     android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
-            </TableRow>
-
-            <TableRow
-                android:gravity="center_horizontal"
-                android:layout_marginBottom="8dp">
-                <TextView
-                    android:textAppearance="@style/ChannelDetails"
-                    android:layout_weight="20"
-                    android:ellipsize="marquee"
-                    android:id="@+id/details_servicelog"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:fadingEdge="horizontal"
-                    android:layout_span="2"
-                    android:scrollHorizontally="true"
-                    android:singleLine="true"
-                    android:marqueeRepeatLimit="marquee_forever" />
             </TableRow>
         </TableLayout>
     </ScrollView>

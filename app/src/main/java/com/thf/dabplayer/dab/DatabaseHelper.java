@@ -184,18 +184,14 @@ public class DatabaseHelper {
   /* renamed from: e */
   public void deleteAllFromServiceTbl() {
     C0162a.m9a("delete all from SQL table service");
-    SQLiteDatabase sQLiteDatabase = this.mDatabase;
-    StringBuilder append = new StringBuilder().append("DELETE FROM ");
-    getClass();
-    sQLiteDatabase.execSQL(append.append("service").toString());
+    String query = "DELETE FROM service";
+    this.mDatabase.execSQL(query);
   }
 
   public void deleteNonFavs() {
     C0162a.m9a("delete non-favorites from SQL table service");
-    SQLiteDatabase sQLiteDatabase = this.mDatabase;
-    StringBuilder append = new StringBuilder().append("DELETE FROM ");
-    getClass();
-    sQLiteDatabase.execSQL(append.append("service").append(" WHERE fav=0").toString());
+    String query = "DELETE FROM service WHERE fav=0";
+    this.mDatabase.execSQL(query);
   }
 
   /* renamed from: f */
@@ -269,7 +265,7 @@ public class DatabaseHelper {
   private void updateFavCount() {
     synchronized (this) {
       if (this.mDatabase.isOpen()) {
-        String query = "SELECT * FROM where fav>0";
+        String query = "SELECT * FROM service where fav>0";
         Cursor rawQuery = this.mDatabase.rawQuery(query, null);
         this.favCount = rawQuery.getCount();
       }

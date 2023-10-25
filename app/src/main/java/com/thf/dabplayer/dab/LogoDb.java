@@ -2,9 +2,11 @@ package com.thf.dabplayer.dab;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
@@ -15,6 +17,7 @@ import com.thf.dabplayer.utils.Strings;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /* renamed from: com.ex.dabplayer.pad.dab.LogoDb */
@@ -37,7 +40,6 @@ public class LogoDb {
   }
 
   public LogoDb(Context context) {
-    this.mContext = null;
     this.mContext = context;
     openOrCreateDb();
   }
@@ -173,7 +175,40 @@ public class LogoDb {
   }
 
   public String getLogoFilenameForStation(String name, int sid) {
-    return getLogoFilenameForStationAndIssue(name, sid, null);
+    String path = getLogoFilenameForStationAndIssue(name, sid, null);
+
+    if (sid == -99) {
+      path = "logos/" + path;
+    }
+
+    return path;
+  }
+
+  public BitmapDrawable getLogo(String name, int sid) {
+
+    BitmapDrawable logo = null;
+
+    String path = getLogoFilenameForStationAndIssue(name, sid, null);
+    if (path != null) {
+      logo = getBitmapForStation(mContext, path);
+    }
+    if (logo == null) {
+      path = getLogoFilenameForStationAndIssue(name, -99, null);
+      if (path != null) {
+        AssetManager mAssetMgr = mContext.getAssets();
+        Bitmap bitmap;
+        try {
+          InputStream stream = mAssetMgr.open("logos/" + path);
+          if (stream != null && (bitmap = BitmapFactory.decodeStream(stream)) != null) {
+            logo = new BitmapDrawable(mContext.getResources(), bitmap);
+          }
+        } catch (IOException e) {
+          C0162a.m9a("error getting asset '" + "logos/" + path + "':" + e.toString());
+        }
+      }
+    }
+
+    return logo;
   }
 
   public static BitmapDrawable getBitmapForStation(Context ct, String logopath) {

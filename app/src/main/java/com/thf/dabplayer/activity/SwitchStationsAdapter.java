@@ -14,7 +14,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
 import androidx.recyclerview.widget.RecyclerView;
+import com.thf.dabplayer.dab.DabSubChannelInfo;
 import com.thf.dabplayer.dab.LogoDb;
+import com.thf.dabplayer.dab.LogoDbHelper;
 import java.util.List;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +28,13 @@ public class SwitchStationsAdapter
     extends RecyclerView.Adapter<SwitchStationsAdapter.MyViewHolder> {
   private static final String TAG = "Dabster";
 
-  private List<StationItem> stationList;
+  private List<DabSubChannelInfo> stationList;
   private static int selectedPosition = 0;
   private Context context;
   private boolean showAdditionalInfos = false;
   private int motImagePosition = -1;
   private BitmapDrawable motImage;
+  private LogoDb logoDb = null;
 
   public interface Listener {
     void onItemClick(int position);
@@ -42,22 +45,22 @@ public class SwitchStationsAdapter
   private final Listener listener;
 
   public SwitchStationsAdapter(
-      Context context, Listener listener, List<StationItem> list, boolean showAdditionalInfos) {
+      Context context,
+      Listener listener,
+      List<DabSubChannelInfo> list,
+      boolean showAdditionalInfos) {
     this.listener = listener;
     this.context = context;
     this.showAdditionalInfos = showAdditionalInfos;
     this.stationList = list;
-        
+    this.logoDb = LogoDbHelper.getInstance(context);
+
     if ("RMX3301EEA".equals(Build.PRODUCT)) {
-      StationItem dummy = new StationItem();
-      dummy.Index = 1;
-      dummy.ItemFavorite = 0;
-      dummy.ItemTitle = "This is a very long station name";
+      DabSubChannelInfo dummy = new DabSubChannelInfo();
+      dummy.mLabel = "This is a very long station name";
       list.add(dummy);
-      dummy = new StationItem();
-      dummy.Index = 2;
-      dummy.ItemFavorite = 0;
-      dummy.ItemTitle = "Radio 456";
+      dummy = new DabSubChannelInfo();
+      dummy.mLabel = "Radio 456";
       list.add(dummy);
     }
   }
@@ -132,23 +135,15 @@ public class SwitchStationsAdapter
 
   @Override
   public void onBindViewHolder(MyViewHolder holder, int position) {
-    StationItem station = stationList.get(position);
+    DabSubChannelInfo sci = stationList.get(position);
 
     holder.txtIndex.setText(
-        String.format("%0" + (getItemCount() + "").length() + "d", station.Index));
-    holder.txtTitle.setText(station.ItemTitle);
-    holder.txtInfos.setText(station.ItemInfos);
-
-    String pathToLogo = station.ItemLogo;
-    BitmapDrawable logoDrawable = null;
+        String.format("%0" + (getItemCount() + "").length() + "d", position + 1));
+    holder.txtTitle.setText(sci.mLabel);
+    // holder.txtInfos.setText(station.ItemInfos);
 
     if (position != this.motImagePosition) {
-      if (pathToLogo != null) {
-        logoDrawable = LogoDb.getBitmapForStation(this.context, pathToLogo);
-      }
-      if (logoDrawable == null) {
-        logoDrawable = LogoAssets.getBitmapForStation(this.context, station.ItemTitle);
-      }
+      BitmapDrawable logoDrawable = logoDb.getLogo(sci.mLabel, sci.mSID);
       if (logoDrawable != null) {
         holder.imgLogo.setImageDrawable(logoDrawable);
       } else {
@@ -157,9 +152,6 @@ public class SwitchStationsAdapter
     } else {
       holder.imgLogo.setImageDrawable(this.motImage);
     }
-
-    // if (position == selectedPosition || selectedPosition == -99) {
-
   }
 
   @Override
@@ -172,61 +164,9 @@ public class SwitchStationsAdapter
     int oldPosition = this.motImagePosition;
     this.motImagePosition = position;
     if (oldPosition != -1 && oldPosition != position) {
-
       this.notifyItemChanged(oldPosition);
     }
     this.motImage = motImage;
     this.notifyItemChanged(position);
   }
-
-  /*
-
-  public void setItems(List<StationItem> newList) {
-    stationList = newList;
-    selectedPosition = 0;
-    this.notifyDataSetChanged();
-  }
-
-  public void clearPosition() {
-    if (stationList == null) return;
-    if (selectedPosition != -99) {
-      Integer oldPosition = selectedPosition;
-      selectedPosition = -99;
-
-      this.notifyItemRangeChanged(0, stationList.size());
-    }
-  }
-
-  public Integer setPosition() {
-
-    if (stationList == null) return null;
-
-    // this.notifyItemRangeChanged(0, appDataList0.size());
-
-    if (selectedPosition == -99) {
-      selectedPosition = 0;
-      this.notifyItemRangeChanged(0, stationList.size());
-      // this.notifyItemChanged(selectedPosition);
-    } else {
-      Integer oldPosition = selectedPosition;
-      selectedPosition++;
-      if (selectedPosition > getItemCount() - 1) {
-        selectedPosition = 0;
-      }
-      this.notifyItemChanged(selectedPosition);
-      this.notifyItemChanged(oldPosition);
-    }
-    return selectedPosition;
-  }
-
-  public StationItem getCurrentApp() {
-    try {
-      return stationList.get(selectedPosition);
-    } catch (ArrayIndexOutOfBoundsException ex) {
-      Log.e(TAG, "current application cannot be provided based on index " + selectedPosition);
-      return null;
-    }
-  }
-    */
-
 }

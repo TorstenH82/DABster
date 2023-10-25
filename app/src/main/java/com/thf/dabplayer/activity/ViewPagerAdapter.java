@@ -97,8 +97,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
         txtAudiocodec,
         txtAudiobitrate,
         txtSignalquality,
-        txtServicefollowing,
-        txtServicelog;
+        txtServicefollowing;
 
     MyViewHolder(View v) {
       super(v);
@@ -145,7 +144,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
       txtAudiobitrate = (TextView) v.findViewById(R.id.details_audiobitrate);
       txtSignalquality = (TextView) v.findViewById(R.id.details_signalquality);
       txtServicefollowing = (TextView) v.findViewById(R.id.details_servicefollowing);
-      txtServicelog = (TextView) v.findViewById(R.id.details_servicelog);
+      
     }
 
     @Override
@@ -239,14 +238,25 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
 
           if (imageViewMemory != null) {
             textViewMemory.setText(sci.mLabel);
+            BitmapDrawable logoDrawable = logoDb.getLogo(sci.mLabel, sci.mSID);
+
+            /*
             String pathToLogo = logoDb.getLogoFilenameForStation(sci.mLabel, sci.mSID);
             BitmapDrawable logoDrawable = null;
             if (pathToLogo != null) {
               logoDrawable = LogoDb.getBitmapForStation(this.context, pathToLogo);
             }
             if (logoDrawable == null) {
-              logoDrawable = LogoAssets.getBitmapForStation(this.context, sci.mLabel);
+              pathToLogo = logoDb.getLogoFilenameForStation(sci.mLabel, -99);
+              if (pathToLogo != null) {
+                logoDrawable = LogoDb.getBitmapForStation(this.context, pathToLogo);
+              }
             }
+            if (logoDrawable == null) {
+              //logoDrawable = LogoAssets.getBitmapForStation(this.context, sci.mLabel);
+            }
+                    */
+
             if (logoDrawable != null) {
               imageViewMemory.setImageDrawable(logoDrawable);
             } else {
@@ -272,7 +282,6 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
         holder.txtAudiobitrate.setText(this.audiobitrate);
         holder.txtSignalquality.setText(this.signalquality);
         holder.txtServicefollowing.setText(this.servicefollowing);
-        holder.txtServicelog.setText(this.servicelog);
         break;
     }
   }
@@ -287,13 +296,12 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
     this.listSci = listSci;
     // selectedPageIdx = 0;
     this.notifyDataSetChanged();
-    Toast.makeText(context, "notifued viewpageradapter", Toast.LENGTH_LONG).show();
   }
 
   public void refreshWithoutNewData() {
-    
     this.notifyDataSetChanged();
-    Toast.makeText(context, "ViewPagerAdapter refreshed without new data", Toast.LENGTH_LONG).show();
+    Toast.makeText(context, "ViewPagerAdapter refreshed without new data", Toast.LENGTH_LONG)
+        .show();
   }
 
   public void setDetails(Intent intent) {
@@ -386,11 +394,6 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
       if (qual >= 0) {
         this.signalquality = String.format("%d", Integer.valueOf(qual));
       }
-    }
-
-    // this.servicelog = "";
-    if (intent.hasExtra(DabService.EXTRA_SERVICELOG)) {
-      this.servicelog = intent.getStringExtra(DabService.EXTRA_SERVICELOG);
     }
 
     // we only need to update info page

@@ -402,22 +402,6 @@
                     android:id="@+id/details_servicefollowing"
                     android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
             </TableRow>
-            <TableRow
-                android:gravity="center_horizontal"
-                android:layout_marginBottom="8dp">
-                <TextView
-                    android:textAppearance="@style/ChannelDetails"
-                    android:ellipsize="marquee"
-                    android:gravity="center_horizontal"
-                    android:id="@+id/details_servicelog"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:fadingEdge="horizontal"
-                    android:layout_span="2"
-                    android:scrollHorizontally="true"
-                    android:singleLine="true"
-                    android:marqueeRepeatLimit="marquee_forever" />
-            </TableRow>
         </TableLayout>
     </ScrollView>
 </LinearLayout>

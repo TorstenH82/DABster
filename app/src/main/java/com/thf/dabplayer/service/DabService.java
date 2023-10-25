@@ -1,5 +1,6 @@
 package com.thf.dabplayer.service;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -29,9 +30,9 @@ import android.view.View;
 import androidx.media.MediaBrowserServiceCompat.Result;
 import android.view.ViewGroup;
 import androidx.media.session.MediaButtonReceiver;
-//import com.thf.dabplayer.activity.AlarmReceiver;
+// import com.thf.dabplayer.activity.AlarmReceiver;
 import com.thf.dabplayer.activity.MainActivity;
-import com.thf.dabplayer.activity.Player;
+import com.thf.dabplayer.activity.PlayerActivity;
 import com.thf.dabplayer.dab.DabThread;
 import com.thf.dabplayer.dab.UsbDeviceConnector;
 import com.thf.dabplayer.utils.C0162a;
@@ -96,7 +97,7 @@ public class DabService extends MediaBrowserServiceCompat {
   private Notification.Builder mNotificationBuilder = null;
   private MediaSessionCompat mMediaSession = null;
   private PlaybackStateCompat.Builder mPlaybackStateBuilder = null;
-  //private final AlarmReceiver alarm = new AlarmReceiver();
+  // private final AlarmReceiver alarm = new AlarmReceiver();
 
   /* renamed from: com.ex.dabplayer.pad.service.DabService$MediaSessionCallback */
   /* loaded from: classes.dex */
@@ -123,8 +124,11 @@ public class DabService extends MediaBrowserServiceCompat {
             switch (keyCode) {
               case 87:
                 if (DabService.this.playerHandler != null) {
-                  DabService.this.playerHandler.removeMessages(Player.PLAYERMSG_NEXT_STATION);
-                  Message m = DabService.this.playerHandler.obtainMessage(Player.PLAYERMSG_NEXT_STATION);
+                  DabService.this.playerHandler.removeMessages(
+                      PlayerActivity.PLAYERMSG_NEXT_STATION);
+                  Message m =
+                      DabService.this.playerHandler.obtainMessage(
+                          PlayerActivity.PLAYERMSG_NEXT_STATION);
                   DabService.this.playerHandler.sendMessage(m);
                 } else {
                   C0162a.m9a("no handler to handle NEXT");
@@ -133,8 +137,11 @@ public class DabService extends MediaBrowserServiceCompat {
                 break;
               case 88:
                 if (DabService.this.playerHandler != null) {
-                  DabService.this.playerHandler.removeMessages(Player.PLAYERMSG_PREV_STATION);
-                  Message m2 = DabService.this.playerHandler.obtainMessage(Player.PLAYERMSG_PREV_STATION);
+                  DabService.this.playerHandler.removeMessages(
+                      PlayerActivity.PLAYERMSG_PREV_STATION);
+                  Message m2 =
+                      DabService.this.playerHandler.obtainMessage(
+                          PlayerActivity.PLAYERMSG_PREV_STATION);
                   DabService.this.playerHandler.sendMessage(m2);
                 } else {
                   C0162a.m9a("no handler to handle PREV");
@@ -176,8 +183,9 @@ public class DabService extends MediaBrowserServiceCompat {
     public void onSkipToNext() {
       C0162a.m9a("MediaSessionCallback:onSkipToNext");
       if (DabService.this.playerHandler != null) {
-        DabService.this.playerHandler.removeMessages(Player.PLAYERMSG_NEXT_STATION);
-        Message m = DabService.this.playerHandler.obtainMessage(Player.PLAYERMSG_NEXT_STATION);
+        DabService.this.playerHandler.removeMessages(PlayerActivity.PLAYERMSG_NEXT_STATION);
+        Message m =
+            DabService.this.playerHandler.obtainMessage(PlayerActivity.PLAYERMSG_NEXT_STATION);
         DabService.this.playerHandler.sendMessage(m);
         return;
       }
@@ -188,8 +196,9 @@ public class DabService extends MediaBrowserServiceCompat {
     public void onSkipToPrevious() {
       C0162a.m9a("MediaSessionCallback:onSkipToPrevious");
       if (DabService.this.playerHandler != null) {
-        DabService.this.playerHandler.removeMessages(Player.PLAYERMSG_PREV_STATION);
-        Message m = DabService.this.playerHandler.obtainMessage(Player.PLAYERMSG_PREV_STATION);
+        DabService.this.playerHandler.removeMessages(PlayerActivity.PLAYERMSG_PREV_STATION);
+        Message m =
+            DabService.this.playerHandler.obtainMessage(PlayerActivity.PLAYERMSG_PREV_STATION);
         DabService.this.playerHandler.sendMessage(m);
         return;
       }
@@ -208,7 +217,7 @@ public class DabService extends MediaBrowserServiceCompat {
   }
 
   /* renamed from: a */
-  public void m16a(Handler playerHandler) {
+  public void setPlayerHandler(Handler playerHandler) {
     C0162a.m9a("service set handler");
     this.playerHandler = playerHandler;
     if (this.dabThread != null) {
@@ -272,8 +281,8 @@ public class DabService extends MediaBrowserServiceCompat {
   public void onCreate() {
     C0162a.m9a("DabService:onCreate");
     super.onCreate();
-    //this.alarm.setAlarm(this);
-    //C0162a.m9a("ALARM IN DABSERVICE LAUNCHED");
+    // this.alarm.setAlarm(this);
+    // C0162a.m9a("ALARM IN DABSERVICE LAUNCHED");
     this.mMediaSession = new MediaSessionCompat(getApplicationContext(), "dab");
     this.mMediaSession.setFlags(3);
     this.mPlaybackStateBuilder =
@@ -368,7 +377,7 @@ public class DabService extends MediaBrowserServiceCompat {
     if (Build.VERSION.SDK_INT < 20) {
       this.mNotificationBuilder.addAction(android.R.drawable.ic_media_previous, "", prevIntent);
       this.mNotificationBuilder.addAction(android.R.drawable.ic_media_next, "", nextIntent);
-      //this.mNotificationBuilder.addAction(
+      // this.mNotificationBuilder.addAction(
       //    android.R.drawable.ic_menu_preferences, settingsStr, settingsIntent);
     } else {
       this.mNotificationBuilder.addAction(
@@ -377,10 +386,10 @@ public class DabService extends MediaBrowserServiceCompat {
       this.mNotificationBuilder.addAction(
           new Notification.Action.Builder(android.R.drawable.ic_media_next, "", nextIntent)
               .build());
-     // this.mNotificationBuilder.addAction(
-          //new Notification.Action.Builder(
-            //      android.R.drawable.ic_menu_preferences, settingsStr, settingsIntent)
-           //   .build());
+      // this.mNotificationBuilder.addAction(
+      // new Notification.Action.Builder(
+      //      android.R.drawable.ic_menu_preferences, settingsStr, settingsIntent)
+      //   .build());
     }
     if (Build.VERSION.SDK_INT >= 21) {
       this.mNotificationBuilder.setCategory("service");
@@ -390,17 +399,16 @@ public class DabService extends MediaBrowserServiceCompat {
               .setShowActionsInCompactView(0, 1));
     }
     Notification notification = this.mNotificationBuilder.build();
-        
-        
-    /*    
-    LayoutInflater layoutInflater = (LayoutInflater) getSystemService("layout_inflater");
-    View settingsInfoView = null;
-    if (layoutInflater != null) {
-      settingsInfoView =
-          layoutInflater.inflate(
-              getResourceId("settings_about", "layout", getPackageName()), (ViewGroup) null, false);
-    }
-*/
+
+    /*
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService("layout_inflater");
+        View settingsInfoView = null;
+        if (layoutInflater != null) {
+          settingsInfoView =
+              layoutInflater.inflate(
+                  getResourceId("settings_about", "layout", getPackageName()), (ViewGroup) null, false);
+        }
+    */
     createChannel();
     startForeground(NOTIFCATION_ID, notification);
 

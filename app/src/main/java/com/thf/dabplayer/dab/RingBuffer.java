@@ -1,7 +1,7 @@
 package com.thf.dabplayer.dab;
 
 import android.widget.Toast;
-import com.thf.dabplayer.activity.Player;
+import com.thf.dabplayer.activity.PlayerActivity;
 
 /* renamed from: com.ex.dabplayer.pad.dab.r */
 /* loaded from: classes.dex */
@@ -13,7 +13,7 @@ public class RingBuffer {
     private static final boolean useOldCode = false;
     private static final boolean useTracing = false;
     private byte[] byteArrSamples;
-    Player player;
+    PlayerActivity player;
     private int iSamplesSize;
     private int lastLevel = 0;
     private boolean inInitialBuffering = false;
@@ -99,7 +99,7 @@ public class RingBuffer {
         return this.lastLevel;
     }
 
-    public void setPlayer(Player p) {
+    public void setPlayer(PlayerActivity p) {
         this.player = p;
     }
 

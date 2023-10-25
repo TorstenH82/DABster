@@ -7,9 +7,13 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+    <Space
+        android:layout_width="16dp"
+        android:layout_height="0dp"
+    />
+
     <ProgressBar
         android:id="@+id/loader"
-        android:layout_marginStart="12dp"
         android:layout_marginEnd="5dp"
         android:layout_width="25dp"
         android:layout_height="25dp" />
@@ -23,7 +27,7 @@
         android:layout_toEndOf="@+id/loader"
         android:layout_height="wrap_content" />
 
-   <RadioGroup
+    <RadioGroup
         android:id="@+id/radiogroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

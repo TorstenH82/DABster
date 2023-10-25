@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Toast;
 import com.thf.dabplayer.R;
+import com.thf.dabplayer.dab.LogoDbAssets;
 import com.thf.dabplayer.utils.C0162a;
 import com.thf.dabplayer.utils.SharedPreferencesHelper;
 import com.thf.dabplayer.utils.UsbDeviceHandling;
@@ -49,7 +50,7 @@ public class MainActivity extends Activity {
 
         @Override // com.thf.dabplayer.utils.UsbDeviceHandling.OnUsbDeviceHandlingResultListener
         public void onUsbConnectAttemptStarted(int attempt, int maxAttempts) {
-          String text = ""; //MainActivity.this.getResources().getString(R.string.Connecting);
+          String text = ""; // MainActivity.this.getResources().getString(R.string.Connecting);
           if (attempt > 1) {
             updateProgress(
                 TextUtils.concat(
@@ -111,9 +112,14 @@ public class MainActivity extends Activity {
   protected void onCreate(Bundle bundle) {
     super.onCreate(bundle);
 
-    if ("RMX3301EEAx".equals(Build.PRODUCT)) {
+    if ("RMX3301EEA".equals(Build.PRODUCT)) {
+
+      // new LogoDbAssets(context).execute();
+      
+      
+      
       Intent intentTest = new Intent();
-      intentTest.setClass(this, Player.class);
+      intentTest.setClass(this, PlayerActivity.class);
       // intentTest.putExtra("UsbDevice", usbDevice);
       intentTest.putExtra("StartedByIntent", this.startedByIntent);
       intentTest.addFlags(536870912);
@@ -136,18 +142,19 @@ public class MainActivity extends Activity {
     this.context = getApplicationContext();
 
     this.progressDialog = new SimpleDialog(this, "Connecting");
+    this.progressDialog.showProgress();
     this.progressDialog.show();
 
-    //this.progressDialog = ProgressDialog.show(this, "", "Connecting...", true, true);
-    //this.progressDialog.setIndeterminateDrawable(
+    // this.progressDialog = ProgressDialog.show(this, "", "Connecting...", true, true);
+    // this.progressDialog.setIndeterminateDrawable(
     //    getResources().getDrawable(R.anim.progress_dialog_anim));
-    //setContentView(R.layout.main);
+    // setContentView(R.layout.main);
     this.usbDeviceHandling =
         new UsbDeviceHandling(
             getApplicationContext(), DAB_USB_VID, DAB_USB_PID, this.usbDeviceResultListener);
     this.usbDeviceHandling.start();
 
-    //this.progressDialog.show();
+    // this.progressDialog.show();
 
     //    Intent intent = new Intent("com.microntek.app");
     //    intent.putExtra("app", DabService.SENDER_DAB);
@@ -193,14 +200,14 @@ public class MainActivity extends Activity {
   }
 
   private boolean isPlayerRunning() {
-    boolean isPlayerRunning = Player.getPlayerHandler() != null;
+    boolean isPlayerRunning = PlayerActivity.getPlayerHandler() != null;
     C0162a.m9a("isPlayerRunning: " + isPlayerRunning);
     return isPlayerRunning;
   }
 
   private void bringPlayerActivityToFrontAndFinish() {
     Intent intent = new Intent();
-    intent.setClass(this, Player.class);
+    intent.setClass(this, PlayerActivity.class);
     intent.setFlags(131072);
     try {
       startActivity(intent);
@@ -221,7 +228,7 @@ public class MainActivity extends Activity {
       return;
     }
     Intent intent = new Intent();
-    intent.setClass(this, Player.class);
+    intent.setClass(this, PlayerActivity.class);
     intent.putExtra("UsbDevice", usbDevice);
     intent.putExtra("StartedByIntent", this.startedByIntent);
     intent.addFlags(536870912);

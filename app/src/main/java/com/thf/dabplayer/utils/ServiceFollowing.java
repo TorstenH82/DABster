@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 // import android.support.p000v4.view.ViewCompat;
 import androidx.core.view.ViewCompat;
 import com.thf.dabplayer.R;
-import com.thf.dabplayer.activity.Player;
+import com.thf.dabplayer.activity.PlayerActivity;
 import com.thf.dabplayer.dab.DabSubChannelInfo;
 import com.thf.dabplayer.service.DabService;
 import java.io.BufferedReader;
@@ -348,7 +348,7 @@ public class ServiceFollowing {
 
   private static void update_info() {
     Handler handler;
-    WeakReference<Handler> playerHandler = Player.getPlayerHandler();
+    WeakReference<Handler> playerHandler = PlayerActivity.getPlayerHandler();
     if (playerHandler != null && (handler = playerHandler.get()) != null) {
       Intent intent = new Intent(DabService.META_CHANGED);
       intent.putExtra(DabService.EXTRA_SENDER, DabService.SENDER_DAB);

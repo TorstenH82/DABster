@@ -56,7 +56,7 @@
             </intent-filter>
         </service>
         <activity
-            android:name="com.thf.dabplayer.activity.Player"
+            android:name="com.thf.dabplayer.activity.PlayerActivity"
         />
         <activity
             android:theme="@android:style/Theme.Dialog"

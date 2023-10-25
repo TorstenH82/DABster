@@ -7,7 +7,7 @@ import android.media.AudioTrack;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
-import com.thf.dabplayer.activity.Player;
+import com.thf.dabplayer.activity.PlayerActivity;
 
 import com.thf.dabplayer.service.DabService;
 import com.thf.dabplayer.utils.AudioTools;
@@ -107,7 +107,7 @@ public class Mp2Thread extends Thread {
 
   private void notifyIntent(int samplerate, boolean isPlaying) {
     Handler handler;
-    WeakReference<Handler> playerHandler = Player.getPlayerHandler();
+    WeakReference<Handler> playerHandler = PlayerActivity.getPlayerHandler();
     if (playerHandler != null && (handler = playerHandler.get()) != null) {
       Intent intent = new Intent(DabService.META_CHANGED);
       intent.putExtra(DabService.EXTRA_SENDER, DabService.SENDER_DAB);
@@ -239,10 +239,10 @@ public class Mp2Thread extends Thread {
     Handler playerHandler;
     C0162a.m9a("Clipping detected");
     if (this.mIsClippedSampleNotificationEnabled
-        && (playerHandlerWeak = Player.getPlayerHandler()) != null
+        && (playerHandlerWeak = PlayerActivity.getPlayerHandler()) != null
         && (playerHandler = playerHandlerWeak.get()) != null) {
-      playerHandler.removeMessages(Player.PLAYERMSG_AUDIO_DISTORTION);
-      Message m = playerHandler.obtainMessage(Player.PLAYERMSG_AUDIO_DISTORTION);
+      playerHandler.removeMessages(PlayerActivity.PLAYERMSG_AUDIO_DISTORTION);
+      Message m = playerHandler.obtainMessage(PlayerActivity.PLAYERMSG_AUDIO_DISTORTION);
       playerHandler.sendMessage(m);
     }
   }

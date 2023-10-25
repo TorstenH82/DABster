@@ -17,7 +17,8 @@ import android.os.Message;
 
 import android.text.TextUtils;
 import android.widget.Toast;
-import com.thf.dabplayer.activity.Player;
+import com.thf.dabplayer.activity.PlayerActivity;
+import com.thf.dabplayer.dab.Decode;
 import com.thf.dabplayer.service.DabService;
 import com.thf.dabplayer.utils.C0162a;
 import com.thf.dabplayer.utils.C0165c;
@@ -334,6 +335,10 @@ public class DabThread extends Thread {
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: b */
   public void scan(int scan_which_region, int scan_type) {
+
+    C0162a.m9a("add assets to logo database");
+    new LogoDbAssets(context).execute();
+
     C0162a.m6a("scan location:", scan_which_region, ", type:", scan_type);
     int priority = getPriority();
     setPriority(1);
@@ -342,11 +347,11 @@ public class DabThread extends Thread {
     }
     if (scan_type == 0) {
       this.dbHelper.deleteAllFromServiceTbl();
-    } else if (scan_type == 2) {
+    } else if (scan_type == 1) {
       this.dbHelper.deleteNonFavs();
     }
     this.stationList.clear();
-    //this.dbHelper.m72a(32);
+    // this.dbHelper.m72a(32);
     this.dabDec.decoder_fic_reset(1);
     if (this.mscThread != null) {
       this.mscThread.m39a();
@@ -393,7 +398,7 @@ public class DabThread extends Thread {
 
   private void sendHardwareFailure(String text) {
     Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = Player.PLAYERMSG_HW_FAILURE;
+    obtainMessage.what = PlayerActivity.PLAYERMSG_HW_FAILURE;
     obtainMessage.obj = text;
     this.playerHandler.sendMessage(obtainMessage);
   }
@@ -449,7 +454,7 @@ public class DabThread extends Thread {
       // send stationlist to player
       this.stationList = this.dbHelper.getStationList();
       Message obtainMessage = this.playerHandler.obtainMessage();
-      obtainMessage.what = Player.PLAYERMSG_NEW_LIST_OF_STATIONS; // 1;
+      obtainMessage.what = PlayerActivity.PLAYERMSG_NEW_LIST_OF_STATIONS; // 1;
       obtainMessage.arg1 = this.stationList.size();
       obtainMessage.obj = this.stationList;
       this.playerHandler.sendMessage(obtainMessage);
@@ -464,14 +469,14 @@ public class DabThread extends Thread {
       */
 
       Message obtainMessage3 = this.playerHandler.obtainMessage();
-      obtainMessage3.what = 19;
+      obtainMessage3.what = PlayerActivity.PLAYERMSG_DAB_THREAD_INITIALIZED;
       this.playerHandler.sendMessage(obtainMessage3);
 
       // select favourites and send to player
       List<DabSubChannelInfo> memoryList = this.dbHelper.getFavorites();
       if (memoryList.size() > 0) {
         Message obtainMessage4 = this.playerHandler.obtainMessage();
-        obtainMessage4.what = Player.PLAYERMSG_SET_STATIONMEMORY;
+        obtainMessage4.what = PlayerActivity.PLAYERMSG_SET_STATIONMEMORY;
         obtainMessage4.obj = memoryList;
         this.playerHandler.sendMessage(obtainMessage4);
       }
@@ -480,7 +485,7 @@ public class DabThread extends Thread {
 
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: c */
-  /*  
+  /*
   public void m48c(int i) {
     C0162a.m9a("select pty:" + i);
     if (i != this.dbHelper.getCurrentStation()) {
@@ -488,7 +493,7 @@ public class DabThread extends Thread {
       refreshStationList();
     }
   }
-  */  
+  */
 
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: d */
@@ -623,7 +628,7 @@ public class DabThread extends Thread {
     for (int i = 0; i < freqs.length; i++) {
       int progress = (i * 100) / freqs.length;
       Message obtainMessage = this.playerHandler.obtainMessage();
-      obtainMessage.what = Player.PLAYERMSG_SCAN_PROGRESS_UPDATE; // 0;
+      obtainMessage.what = PlayerActivity.PLAYERMSG_SCAN_PROGRESS_UPDATE; // 0;
       obtainMessage.arg1 = progress;
       obtainMessage.arg2 = freqs[i];
       this.playerHandler.sendMessage(obtainMessage);
@@ -645,9 +650,18 @@ public class DabThread extends Thread {
     notifyScanningDone(this.total_known_services);
     refreshStationList();
     Message obtainMessage2 = this.playerHandler.obtainMessage();
-    obtainMessage2.what = Player.PLAYERMSG_SCAN_FINISHED; // 99;
+    obtainMessage2.what = PlayerActivity.PLAYERMSG_SCAN_FINISHED; // 99;
     obtainMessage2.arg1 = this.scan_service_count;
     this.playerHandler.sendMessage(obtainMessage2);
+
+    // select favourites and send to player
+    List<DabSubChannelInfo> memoryList = this.dbHelper.getFavorites();
+    if (memoryList.size() > 0) {
+      Message obtainMessage4 = this.playerHandler.obtainMessage();
+      obtainMessage4.what = PlayerActivity.PLAYERMSG_SET_STATIONMEMORY;
+      obtainMessage4.obj = memoryList;
+      this.playerHandler.sendMessage(obtainMessage4);
+    }
   }
 
   /* renamed from: i */
@@ -730,7 +744,7 @@ public class DabThread extends Thread {
             Object obj = null;
             this.dabDec.decoder_fic_reset(1);
             // this.j.a(32);
-            //this.dbHelper.m72a(32);
+            // this.dbHelper.m72a(32);
 
             long currentTimeMillis = System.currentTimeMillis();
             Object obj2 = null;
@@ -849,7 +863,7 @@ public class DabThread extends Thread {
       this.f88m.start();
     }
     Message obtainMessage2 = this.playerHandler.obtainMessage();
-    obtainMessage2.what = Player.PLAYERMSG_HIDE_SERVICE_FOLLOWING;
+    obtainMessage2.what = PlayerActivity.PLAYERMSG_HIDE_SERVICE_FOLLOWING;
     obtainMessage2.arg1 = this.dabSubChannelInfo.mFreq;
     obtainMessage2.obj = "";
     this.playerHandler.sendMessage(obtainMessage2);
@@ -939,7 +953,7 @@ public class DabThread extends Thread {
     C0162a.m9a("refreshStationList");
     this.stationList = this.dbHelper.getStationList();
     Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = Player.PLAYERMSG_NEW_STATION_LIST; // 18
+    obtainMessage.what = PlayerActivity.PLAYERMSG_NEW_STATION_LIST; // 18
     obtainMessage.arg1 = this.stationList.size();
     obtainMessage.obj = this.stationList;
     this.playerHandler.sendMessage(obtainMessage);
@@ -962,7 +976,7 @@ public class DabThread extends Thread {
     intent.putExtra(DabService.EXTRA_ENSEMBLE_ID, info.mEID);
     intent.putExtra(DabService.EXTRA_AFFECTS_ANDROID_METADATA, true);
     Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = Player.PLAYERMSG_STATIONINFO_INTENT;
+    obtainMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO_INTENT;
     obtainMessage.obj = intent;
     this.playerHandler.sendMessage(obtainMessage);
   }
@@ -979,7 +993,7 @@ public class DabThread extends Thread {
     intent.putExtra(DabService.EXTRA_ENSEMBLE_ID, info.mEID);
     intent.putExtra(DabService.EXTRA_AFFECTS_ANDROID_METADATA, true);
     Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = Player.PLAYERMSG_STATIONINFO_INTENT;
+    obtainMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO_INTENT;
     obtainMessage.obj = intent;
     this.playerHandler.sendMessage(obtainMessage);
   }
@@ -1002,7 +1016,7 @@ public class DabThread extends Thread {
     intent.putExtra(DabService.EXTRA_SERVICELOG, "");
     intent.putExtra(DabService.EXTRA_AUDIOFORMAT, "");
     Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = Player.PLAYERMSG_STATIONINFO_INTENT;
+    obtainMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO_INTENT;
     obtainMessage.obj = intent;
     this.playerHandler.sendMessage(obtainMessage);
   }
@@ -1013,7 +1027,7 @@ public class DabThread extends Thread {
     intent.putExtra(DabService.EXTRA_NUMSTATIONS, numStations);
     intent.putExtra(DabService.EXTRA_FREQUENCY_KHZ, frequency);
     Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = Player.PLAYERMSG_STATIONINFO_INTENT;
+    obtainMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO_INTENT;
     obtainMessage.obj = intent;
     this.playerHandler.sendMessage(obtainMessage);
   }
@@ -1024,7 +1038,7 @@ public class DabThread extends Thread {
     intent.putExtra(DabService.EXTRA_NUMSTATIONS, numStations);
     intent.putExtra(DabService.EXTRA_FREQUENCY_KHZ, 0);
     Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = Player.PLAYERMSG_STATIONINFO_INTENT;
+    obtainMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO_INTENT;
     obtainMessage.obj = intent;
     this.playerHandler.sendMessage(obtainMessage);
   }
@@ -1103,7 +1117,7 @@ public class DabThread extends Thread {
           DabThread.this.m54a((DabSubChannelInfo) message.obj);
           return;
         case 20:
-          //DabThread.this.m48c(message.arg1);
+          // DabThread.this.m48c(message.arg1);
           return;
         case 23:
           DabThread.this.m44j();
@@ -1113,7 +1127,7 @@ public class DabThread extends Thread {
           DabThread.this.dbHelper.updateFav((DabSubChannelInfo) message.obj, message.arg1);
           // request player to update the memory buttons
           Message obtainMessage = DabThread.this.playerHandler.obtainMessage();
-          obtainMessage.what = Player.PLAYERMSG_SET_STATIONMEMORY;
+          obtainMessage.what = PlayerActivity.PLAYERMSG_SET_STATIONMEMORY;
           obtainMessage.obj = DabThread.this.dbHelper.getFavorites();
           DabThread.this.playerHandler.sendMessage(obtainMessage);
           return;
@@ -1129,7 +1143,7 @@ public class DabThread extends Thread {
 
                 // inform player which index gets played
                 Message obtainMessage2 = DabThread.this.playerHandler.obtainMessage();
-                obtainMessage2.what = Player.PLAYERMSG_PLAY_STATION;
+                obtainMessage2.what = PlayerActivity.PLAYERMSG_PLAY_STATION;
                 obtainMessage2.arg1 = idx;
                 DabThread.this.playerHandler.sendMessage(obtainMessage2);
               }
@@ -1255,7 +1269,7 @@ public class DabThread extends Thread {
                 DabThread.this.scan_service_count += service_count;
                 DabThread.this.stationList = DabThread.this.dbHelper.getStationList();
                 Message obtainMessage = DabThread.this.playerHandler.obtainMessage();
-                obtainMessage.what = Player.PLAYERMSG_NEW_LIST_OF_STATIONS; // 1;
+                obtainMessage.what = PlayerActivity.PLAYERMSG_NEW_LIST_OF_STATIONS; // 1;
                 obtainMessage.arg1 = DabThread.this.stationList.size();
                 obtainMessage.obj = DabThread.this.stationList;
                 DabThread.this.playerHandler.sendMessage(obtainMessage);
@@ -1388,16 +1402,18 @@ public class DabThread extends Thread {
       int dab_api_get_signal2;
       if (this.prevSignal != dab_api_get_signal) {
         this.prevSignal = dab_api_get_signal;
+
         Handler playerHandler = DabThread.this.getPlayerHandler();
         if (playerHandler != null) {
           Intent intent = new Intent(DabService.META_CHANGED);
           intent.putExtra(DabService.EXTRA_SENDER, DabService.SENDER_DAB);
           intent.putExtra(DabService.EXTRA_SIGNALQUALITY, dab_api_get_signal);
           Message intentMessage = playerHandler.obtainMessage();
-          intentMessage.what = Player.PLAYERMSG_STATIONINFO_INTENT;
+          intentMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO_INTENT;
           intentMessage.obj = intent;
           playerHandler.sendMessage(intentMessage);
         }
+
         if (dab_api_get_signal > 900) {
           dab_api_get_signal2 = 0;
         } else {
@@ -1410,7 +1426,7 @@ public class DabThread extends Thread {
         }
         if (DabThread.this.playerHandler != null) {
           Message obtainMessage = DabThread.this.playerHandler.obtainMessage();
-          obtainMessage.what = Player.PLAYERMSG_SIGNAL_QUALITY; // 11;
+          obtainMessage.what = PlayerActivity.PLAYERMSG_SIGNAL_QUALITY; // 11;
           obtainMessage.arg1 = dab_api_get_signal2;
           DabThread.this.playerHandler.sendMessage(obtainMessage);
         }
@@ -1421,11 +1437,11 @@ public class DabThread extends Thread {
       Handler handler;
       if (DabThread.this.playerHandler != null) {
         Message obtainMessage = DabThread.this.playerHandler.obtainMessage();
-        obtainMessage.what = Player.PLAYERMSG_DLS; // 9;
+        obtainMessage.what = PlayerActivity.PLAYERMSG_DLS; // 9;
         obtainMessage.obj = dls;
         DabThread.this.playerHandler.sendMessage(obtainMessage);
       }
-      WeakReference<Handler> playerHandler = Player.getPlayerHandler();
+      WeakReference<Handler> playerHandler = PlayerActivity.getPlayerHandler();
       if (playerHandler != null && (handler = playerHandler.get()) != null) {
         Intent intent = new Intent(DabService.META_CHANGED);
         intent.putExtra(DabService.EXTRA_SENDER, DabService.SENDER_DAB);
@@ -1433,7 +1449,7 @@ public class DabThread extends Thread {
         intent.putExtra(DabService.EXTRA_DLS, dls);
         intent.putExtra(DabService.EXTRA_AFFECTS_ANDROID_METADATA, true);
         Message intentMessage = handler.obtainMessage();
-        intentMessage.what = Player.PLAYERMSG_STATIONINFO_INTENT;
+        intentMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO_INTENT;
         intentMessage.obj = intent;
         handler.sendMessage(intentMessage);
       }
@@ -1469,7 +1485,7 @@ public class DabThread extends Thread {
       if (decoder_get_dls > 0) {
         byte[] obj2 = new byte[decoder_get_dls];
         System.arraycopy(this.get_dls_buff, 0, obj2, 0, decoder_get_dls);
-        byte[] a = C0153m.m30a(obj2);
+        byte[] a = Decode.decodeToCharacter(obj2);
         String newDlsString = new String(a);
         if (!newDlsString.equals(this.prevDlsString)) {
           C0162a.m9a("decoder_get_dls: " + newDlsString);
@@ -1503,7 +1519,7 @@ public class DabThread extends Thread {
           e2.printStackTrace();
         }
         Message obtainMessage = DabThread.this.playerHandler.obtainMessage();
-        obtainMessage.what = Player.PLAYERMSG_MOT; // 10
+        obtainMessage.what = PlayerActivity.PLAYERMSG_MOT; // 10
         obtainMessage.obj = fileName;
         DabThread.this.playerHandler.sendMessage(obtainMessage);
         try {
