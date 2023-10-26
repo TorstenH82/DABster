@@ -96,7 +96,6 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
         txtBitrate,
         txtAudiocodec,
         txtAudiobitrate,
-        txtSignalquality,
         txtServicefollowing;
 
     MyViewHolder(View v) {
@@ -142,9 +141,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
       txtBitrate = (TextView) v.findViewById(R.id.details_bitrate);
       txtAudiocodec = (TextView) v.findViewById(R.id.details_audiocodec);
       txtAudiobitrate = (TextView) v.findViewById(R.id.details_audiobitrate);
-      txtSignalquality = (TextView) v.findViewById(R.id.details_signalquality);
       txtServicefollowing = (TextView) v.findViewById(R.id.details_servicefollowing);
-      
     }
 
     @Override
@@ -280,7 +277,6 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
         holder.txtBitrate.setText(this.bitrate);
         holder.txtAudiocodec.setText(this.audiocodec);
         holder.txtAudiobitrate.setText(this.audiobitrate);
-        holder.txtSignalquality.setText(this.signalquality);
         holder.txtServicefollowing.setText(this.servicefollowing);
         break;
     }
@@ -290,6 +286,18 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
   public int getItemCount() {
     if (listPages == null) return 0;
     return listPages.size();
+  }
+
+  public void setNumPages(int numPages) {
+
+    this.listPages = new ArrayList<>();
+    this.numPages = numPages;
+    for (int i = 0; i < numPages; i++) {
+      this.listPages.add("m");
+    }
+    this.listPages.add("i");
+
+    this.notifyDataSetChanged();
   }
 
   public void setItems(List<DabSubChannelInfo> listSci) {
@@ -389,12 +397,14 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
     }
 
     // this.signalquality = "";
+    /*
     if (intent.hasExtra(DabService.EXTRA_SIGNALQUALITY)) {
       int qual = intent.getIntExtra(DabService.EXTRA_SIGNALQUALITY, -1);
       if (qual >= 0) {
         this.signalquality = String.format("%d", Integer.valueOf(qual));
       }
     }
+    */
 
     // we only need to update info page
     this.notifyItemChanged(this.numPages);

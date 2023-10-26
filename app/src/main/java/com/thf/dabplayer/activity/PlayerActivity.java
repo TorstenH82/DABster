@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
@@ -23,18 +24,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.view.KeyEvent;
 import android.view.TouchDelegate;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -55,7 +51,6 @@ import com.thf.dabplayer.dab.DabThread;
 // import com.thf.dabplayer.dab.ChannelInfo;
 import com.thf.dabplayer.dab.LogoDb;
 import com.thf.dabplayer.dab.LogoDbHelper;
-import com.thf.dabplayer.dab.StationLogo;
 import com.thf.dabplayer.dab.DabSubChannelInfo;
 import com.thf.dabplayer.service.DabServiceBinder;
 import com.thf.dabplayer.service.DabService;
@@ -72,7 +67,10 @@ import android.app.Activity;
 
 /* renamed from: com.ex.dabplayer.pad.activity.Player */
 /* loaded from: classes.dex */
-public class PlayerActivity extends Activity implements ServiceConnection, View.OnClickListener {
+public class PlayerActivity extends Activity
+    implements ServiceConnection,
+        View.OnClickListener,
+        SharedPreferences.OnSharedPreferenceChangeListener {
   public static final int PLAYERMSG_ASSET_FOUND_LOGOS = 98;
   public static final int PLAYERMSG_AUDIO_DISTORTION = 102;
   public static final int PLAYERMSG_DISMISS_SERVICE_FOLLOWING = 24;
@@ -349,7 +347,7 @@ public class PlayerActivity extends Activity implements ServiceConnection, View.
             if (player.stationListSize > 0) {
               player.playStation(0);
             }
-                    
+
             break;
           case PlayerActivity.PLAYERMSG_STATIONINFO_INTENT: // 100
             Intent intent = (Intent) message.obj;
@@ -628,7 +626,7 @@ public class PlayerActivity extends Activity implements ServiceConnection, View.
   }
 
   private void scrollToPositionRecycler(int idx) {
-    //Toast.makeText(context, "scroll to pos " + idx, Toast.LENGTH_LONG).show();
+    // Toast.makeText(context, "scroll to pos " + idx, Toast.LENGTH_LONG).show();
     this.linearLayoutManager.scrollToPosition(idx);
     if (this.stationsAdapter != null) {
       this.stationsAdapter.setMot(null, -1);
@@ -763,7 +761,7 @@ public class PlayerActivity extends Activity implements ServiceConnection, View.
     }
     this.mStationListView.setItemChecked(index, true);
     */
-    //Toast.makeText(context, "updateSelectedStatus is not implements", Toast.LENGTH_LONG).show();
+    // Toast.makeText(context, "updateSelectedStatus is not implements", Toast.LENGTH_LONG).show();
     scrollToPositionRecycler(index);
   }
 
@@ -850,31 +848,6 @@ public class PlayerActivity extends Activity implements ServiceConnection, View.
   }
 
   /* JADX INFO: Access modifiers changed from: private */
-  /* renamed from: f */
-  /*
-    public void m78f() {
-      ChannelInfo channelInfo = new ChannelInfo();
-      if (this.channelInfoList != null
-          && this.channelInfoList.size() != 0
-          && this.stationList != null
-          && this.stationList.size() != 0
-          && this.playIndex >= 0
-          && this.playIndex < this.stationList.size()) {
-        channelInfo.label = this.stationList.get(this.playIndex).mLabel;
-        channelInfo.freq = this.stationList.get(this.playIndex).mFreq;
-        channelInfo.subChannelId = this.stationList.get(this.playIndex).mSubChannelId;
-        channelInfo.bitrate = this.stationList.get(this.playIndex).mBitrate;
-        for (ChannelInfo qVar2 : this.channelInfoList) {
-          if (qVar2.freq == channelInfo.freq
-              && qVar2.subChannelId == channelInfo.subChannelId
-              && qVar2.label.equals(channelInfo.label)) {
-            return;
-          }
-        }
-      }
-    }
-  */
-  /* JADX INFO: Access modifiers changed from: private */
   public void finishTheApp() {
     C0162a.m9a("finishTheApp");
     m79e();
@@ -895,40 +868,6 @@ public class PlayerActivity extends Activity implements ServiceConnection, View.
       // finish();
     }
     this.mProperShutdown = true;
-  }
-
-  public void flipViews(boolean leftToRight) {
-    float visToInvisStartDeg;
-    float visToInvisStopDeg;
-    float invisToVisStartDeg;
-    float invisToVisStopDeg;
-    int flipToViewIdx;
-    int currentViewIdx = this.mViewFlipper.getDisplayedChild();
-    if (leftToRight) {
-      visToInvisStartDeg = 0.0f;
-      visToInvisStopDeg = 90.0f;
-      invisToVisStartDeg = -90.0f;
-      invisToVisStopDeg = 0.0f;
-      flipToViewIdx =
-          ((this.mViewFlipper.getChildCount() + currentViewIdx) - 1)
-              % this.mViewFlipper.getChildCount();
-    } else {
-      visToInvisStartDeg = 0.0f;
-      visToInvisStopDeg = -90.0f;
-      invisToVisStartDeg = 90.0f;
-      invisToVisStopDeg = 0.0f;
-      flipToViewIdx = (currentViewIdx + 1) % this.mViewFlipper.getChildCount();
-    }
-    View currentVis = this.mViewFlipper.getChildAt(currentViewIdx);
-    View currentInvis = this.mViewFlipper.getChildAt(flipToViewIdx);
-    ObjectAnimator visToInvis =
-        ObjectAnimator.ofFloat(currentVis, "rotationY", visToInvisStartDeg, visToInvisStopDeg);
-    visToInvis.setDuration(250L).setInterpolator(new AccelerateInterpolator());
-    ObjectAnimator invisToVis =
-        ObjectAnimator.ofFloat(currentInvis, "rotationY", invisToVisStartDeg, invisToVisStopDeg);
-    invisToVis.setDuration(250L).setInterpolator(new DecelerateInterpolator());
-    visToInvis.addListener(new FlipViewAnimatorListener(invisToVis, flipToViewIdx));
-    visToInvis.start();
   }
 
   /* renamed from: g */
@@ -966,15 +905,12 @@ public class PlayerActivity extends Activity implements ServiceConnection, View.
     if (this.motImage != null) {
       return this.motImage;
     } else {
-
       if (this.stationList != null && this.stationList.size() > this.playIndex) {
         String label = this.stationList.get(this.playIndex).mLabel;
         // LogoDb logoDb = LogoDbHelper.getInstance(this.context);
         int sid = this.stationList.get(this.playIndex).mSID;
-
         String logoFilename = mLogoDb.getLogoFilenameForStation(label, sid);
         BitmapDrawable logoDrawable = mLogoDb.getLogo(label, sid);
-
         if (logoDrawable != null) {
           return logoDrawable;
         }
@@ -1120,7 +1056,6 @@ public class PlayerActivity extends Activity implements ServiceConnection, View.
         && (sender = intent.getStringExtra(DabService.EXTRA_SENDER)) != null
         && sender.equals(DabService.SENDER_DAB)) {
       if (!intent.hasExtra("playing")) {
-
         // Toast.makeText(context, "no playing info", Toast.LENGTH_LONG).show();
         // intent.putExtra("playing", this.mStationDetails.isPlaying());
       }
@@ -1210,16 +1145,12 @@ public class PlayerActivity extends Activity implements ServiceConnection, View.
     // this comes back with PLAYERMSG_SET_STATIONMEMORY
   }
 
-  private void playFavourite(int storagePos) {
-    Toast.makeText(
-            context,
-            "request DabThread to play favourite from storage pos  " + storagePos,
-            Toast.LENGTH_LONG)
-        .show();
+  private void playFavourite(int memoryPos) {
+    
     this.dabHandler.removeMessages(DabThread.PLAY_FAVOURITE);
     Message obtainMessage = this.dabHandler.obtainMessage();
     obtainMessage.what = DabThread.PLAY_FAVOURITE;
-    obtainMessage.arg1 = storagePos;
+    obtainMessage.arg1 = memoryPos;
     PlayerActivity.this.dabHandler.sendMessage(obtainMessage);
     // this comes back with PLAYERMSG_PLAY_STATION
   }
@@ -1424,6 +1355,12 @@ public class PlayerActivity extends Activity implements ServiceConnection, View.
   protected void onPause() {
     C0162a.m9a("Player:onPause");
     super.onPause();
+
+    /*
+        SharedPreferencesHelper.getInstance()
+            .getSharedPreferences()
+            .unregisterOnSharedPreferenceChangeListener(this);
+    */
     this.isInForeground = false;
     if (this.progressDialog.isShowing()) {
       this.progressDialog.dismiss();
@@ -1462,6 +1399,10 @@ public class PlayerActivity extends Activity implements ServiceConnection, View.
   protected void onResume() {
     C0162a.m9a("Player:onResume");
     super.onResume();
+    SharedPreferencesHelper.getInstance()
+        .getSharedPreferences()
+        .registerOnSharedPreferenceChangeListener(this);
+
     this.isInForeground = true;
     this.f19G = false;
 
@@ -1474,10 +1415,25 @@ public class PlayerActivity extends Activity implements ServiceConnection, View.
       this.dabService.setPlayerHandler(this.dabFHandler);
     }
     setUsbDeviceFromDeviceList();
-    onResumeAdditions();
   }
 
-  public void onResumeAdditions() {}
+  @Override // android.content.SharedPreferences.OnSharedPreferenceChangeListener
+  public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+    switch (key) {
+      case "presetPages":
+        viewPagerAdapter.setNumPages(SharedPreferencesHelper.getInstance().getInteger(key));
+        break;
+      case "showClock":
+        boolean showClock = SharedPreferencesHelper.getInstance().getBoolean(key);
+        if (showClock) {
+          this.textClock.setVisibility(View.VISIBLE);
+        } else {
+          this.textClock.setVisibility(View.GONE);
+        }
+        break;
+    }
+  }
 
   public void onScanButtonClicked() {
     C0162a.m9a("scan button clicked");

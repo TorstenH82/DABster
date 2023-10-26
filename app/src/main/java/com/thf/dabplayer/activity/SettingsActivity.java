@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
-import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -27,7 +27,6 @@ public class SettingsActivity extends AppCompatActivity {
       switch (key) {
         case "presetPages":
           seekBarPreference = findPreference(key);
-          Toast.makeText(context, seekBarPreference.getValue() + "", 1).show();
           seekBarPreference.setSummary(seekBarPreference.getValue() + "");
           break;
       }

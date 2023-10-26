@@ -153,12 +153,12 @@ public class PcmThread extends Thread {
           switch (this.mAudioState) {
             case DabThread.AUDIOSTATE_PLAY /* 200 */:
             case DabThread.AUDIOSTATE_DUCK /* 202 */:
-              if (this.audioTrack.getPlayState() == 2) {
+              if (this.audioTrack.getPlayState() == AudioTrack.PLAYSTATE_PAUSED) {
                 C0162a.m9a("paused -> playing");
                 this.audioTrack.play();
                 notifyIntent(this.mSampleRateInHz, true);
               }
-              if (this.audioTrack.getPlayState() == 3) {
+              if (this.audioTrack.getPlayState() == AudioTrack.PLAYSTATE_PLAYING) {
                 if (this.mIsClippedSampleDetectionEnabled) {
                   if (!cad.areSamplesClipped(bArr, a)) {
                     this.audioTrack.write(bArr, 0, a);
@@ -207,7 +207,7 @@ public class PcmThread extends Thread {
   }
 
   public void setAudioState(int audioState) {
-    
+
     if (this.audioTrack != null) {
       if (this.mAudioState == 200 && audioState == 202) {
         // float volume = pref_settings.getFloat(SettingsActivity.pref_key_audioLevel, 1.0f);
@@ -218,7 +218,7 @@ public class PcmThread extends Thread {
         AudioTools.setVolume(this.audioTrack, volume * volumeDucked);
         C0162a.m9a("playing -> duck");
       } else if (this.mAudioState == 202 && audioState != 202) {
-        //float volume2 = pref_settings.getFloat(SettingsActivity.pref_key_audioLevel, 1.0f);
+        // float volume2 = pref_settings.getFloat(SettingsActivity.pref_key_audioLevel, 1.0f);
         float volume2 = 1.0f;
         AudioTools.setVolume(this.audioTrack, volume2);
         if (audioState == 200) {

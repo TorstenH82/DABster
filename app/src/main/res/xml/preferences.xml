@@ -35,13 +35,6 @@
             android:defaultValue="@string/pref_startUsb"
             android:key="startUsb"
             android:title="@string/StartUsb" />
-        <androidx.preference.SeekBarPreference
-            android:defaultValue="@string/pref_presetPages"
-            android:key="presetPages"
-            android:max="5"
-            android:min="1"
-            android:summary="summary"
-            android:title="@string/PresetPages" />
     </androidx.preference.PreferenceCategory> 
     <androidx.preference.PreferenceCategory android:title="Donate">
         <androidx.preference.Preference

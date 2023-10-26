@@ -379,18 +379,7 @@
                     android:id="@+id/details_audiobitrate"
                     android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
             </TableRow>
-            <TableRow
-                android:gravity="center_vertical"
-                android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
-                <TextView
-                    android:textAppearance="@style/ChannelDetails"
-                    android:text="@string/SignalQuality"
-                    android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
-                <TextView
-                    android:textAppearance="@style/ChannelDetails"
-                    android:id="@+id/details_signalquality"
-                    android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
-            </TableRow>
+             
             <TableRow
                 android:gravity="center_vertical"
                 android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">

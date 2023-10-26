@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-
 import android.text.TextUtils;
 import android.widget.Toast;
 import com.thf.dabplayer.activity.PlayerActivity;
@@ -65,7 +64,7 @@ public class DabThread extends Thread {
   private Handler dabHandler;
 
   /* renamed from: g */
-  private RingBuffer ringBuffer;
+  // private RingBuffer ringBuffer;
 
   /* renamed from: i */
   private UsbDeviceConnector usbDeviceConnector;
@@ -354,7 +353,7 @@ public class DabThread extends Thread {
     // this.dbHelper.m72a(32);
     this.dabDec.decoder_fic_reset(1);
     if (this.mscThread != null) {
-      this.mscThread.m39a();
+      this.mscThread.exit();
       this.mscThread = null;
     }
     if (this.ficThread == null) {
@@ -459,15 +458,6 @@ public class DabThread extends Thread {
       obtainMessage.obj = this.stationList;
       this.playerHandler.sendMessage(obtainMessage);
 
-      /*
-      this.channelInfoList = this.dbHelper.getPresetChannelInfo();
-      Message obtainMessage2 = this.playerHandler.obtainMessage();
-      obtainMessage2.what = 13;
-      obtainMessage2.arg1 = this.channelInfoList.size();
-      obtainMessage2.obj = this.channelInfoList;
-      this.playerHandler.sendMessage(obtainMessage2);
-      */
-
       Message obtainMessage3 = this.playerHandler.obtainMessage();
       obtainMessage3.what = PlayerActivity.PLAYERMSG_DAB_THREAD_INITIALIZED;
       this.playerHandler.sendMessage(obtainMessage3);
@@ -482,18 +472,6 @@ public class DabThread extends Thread {
       }
     }
   }
-
-  /* JADX INFO: Access modifiers changed from: private */
-  /* renamed from: c */
-  /*
-  public void m48c(int i) {
-    C0162a.m9a("select pty:" + i);
-    if (i != this.dbHelper.getCurrentStation()) {
-      this.dbHelper.m72a(i);
-      refreshStationList();
-    }
-  }
-  */
 
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: d */
@@ -532,7 +510,8 @@ public class DabThread extends Thread {
         this.ficThread = null;
       }
       if (this.mscThread != null) {
-        this.mscThread.m39a();
+        this.mscThread.exit();
+        this.mscThread = null;
       }
       this.isExecutingServiceFollowing = false;
       synchronized (this.dabDec) {
@@ -683,7 +662,7 @@ public class DabThread extends Thread {
     }
   }
 
-  private void m44j() {
+  private void startServiceFollowing() {
     if (this.isExecutingServiceFollowing) {
       C0162a.m9a("already service following");
       return;
@@ -707,7 +686,8 @@ public class DabThread extends Thread {
       this.ficThread = null;
     }
     if (this.mscThread != null) {
-      this.mscThread.m39a();
+      this.mscThread.exit();
+      this.mscThread = null;
     }
     showSearchIcon();
     C0162a.m9a("service linking");
@@ -725,7 +705,7 @@ public class DabThread extends Thread {
         int i;
         if (serviceFollowing.change_frequency()) {
           Message obtainMessage = this.playerHandler.obtainMessage();
-          obtainMessage.what = 23;
+          obtainMessage.what = MSGTYPE_START_SERVICE_FOLLOWING;
           obtainMessage.arg1 = 0;
           obtainMessage.obj = String.valueOf(try_freq);
           this.playerHandler.sendMessage(obtainMessage);
@@ -907,7 +887,7 @@ public class DabThread extends Thread {
       this.ficThread = null;
     }
     if (this.mscThread != null) {
-      this.mscThread.m39a();
+      this.mscThread.exit();
       this.mscThread = null;
     }
   }
@@ -928,22 +908,11 @@ public class DabThread extends Thread {
       this.ficThread = null;
     }
     if (this.mscThread != null) {
-      this.mscThread.m39a();
+      this.mscThread.exit();
       this.mscThread = null;
     }
   }
 
-  /*
-    public void activateFavoriteList() {
-      this.dbHelper.m72a(-33);
-      refreshStationList();
-    }
-
-    public void deActivateFavoriteList() {
-      this.dbHelper.m72a(32);
-      refreshStationList();
-    }
-  */
   public void deleteStationAndUpdateList(DabSubChannelInfo subChannelInfo) {
     this.dbHelper.delete(subChannelInfo);
     refreshStationList();
@@ -1102,7 +1071,7 @@ public class DabThread extends Thread {
             DabThread.this.ficThread = null;
           }
           if (DabThread.this.mscThread != null) {
-            DabThread.this.mscThread.m39a();
+            DabThread.this.mscThread.exit();
             DabThread.this.mscThread = null;
           }
           if (DabThread.this.dabRecorder != null && DabThread.this.dabRecorder.isAlive()) {
@@ -1119,8 +1088,8 @@ public class DabThread extends Thread {
         case 20:
           // DabThread.this.m48c(message.arg1);
           return;
-        case 23:
-          DabThread.this.m44j();
+        case MSGTYPE_START_SERVICE_FOLLOWING:
+          DabThread.this.startServiceFollowing();
           return;
         case UPDATE_FAVOURITE:
           // update the favourite
@@ -1149,13 +1118,6 @@ public class DabThread extends Thread {
               }
             }
           }
-          return;
-
-        case 31:
-          // DabThread.this.activateFavoriteList();
-          return;
-        case 32:
-          // DabThread.this.deActivateFavoriteList();
           return;
 
         default:
@@ -1302,7 +1264,7 @@ public class DabThread extends Thread {
     }
 
     /* renamed from: a */
-    public void m39a() {
+    public void exit() {
       this.exit = true;
       if (DabThread.this.mp2Thread != null) {
         DabThread.this.mp2Thread.exit();
@@ -1330,46 +1292,29 @@ public class DabThread extends Thread {
         synchronized (DabThread.this.inputRingBuffer) {
           bufferSize = DabThread.this.inputRingBuffer.getRemainingCapacity();
         }
-        // String strArrLength = bArr == null ? "null" : bArr.length + "";
-        // C0162a.m9a("buffer size is: " + bufferSize + " and bArr length is: " + strArrLength);
 
         if (bArr == null || bufferSize >= bArr.length) {
           msc_data = 0;
-          // if (DabThread.this.audioType != 0) {
           if (DabThread.this.audioType == AUDIOTYPE_AAC) {
             bArr = new byte[2048];
             msc_data = DabThread.this.dabDec.dab_api_get_msc_data(bArr);
-            // C0162a.m9a("return from dab_api_get_msc_data: " + msc_data);
             if (msc_data != -1) {
               msc_data = DabThread.this.dabDec.decoder_msc2aac(bArr, msc_data, bArr);
-              // C0162a.m9a("return from decoder_msc2aac: " + msc_data);
             }
           } else if (DabThread.this.audioType == AUDIOTYPE_MP2) {
             bArr = new byte[4096];
             msc_data = DabThread.this.dabDec.dab_api_get_msc_data(bArr);
           }
           if (msc_data > 0) {
-            C0162a.m9a("return from decoder_msc2aac: " + msc_data);
             synchronized (DabThread.this.inputRingBuffer) {
-              C0162a.m9a(
-                  "inputRingBuffer free before: "
-                      + DabThread.this.inputRingBuffer.getRemainingCapacity());
               DabThread.this.inputRingBuffer.writeBuffer(bArr, msc_data);
-              C0162a.m9a(
-                  "inputRingBuffer free after: "
-                      + DabThread.this.inputRingBuffer.getRemainingCapacity());
             }
           }
           // }
+        } else {
+          C0162a.m9a("no free buffer space");
         }
       }
-
-      /*
-      if (DabThread.this.dabRecorder != null && DabThread.this.dabRecorder.isAlive()) {
-        DabThread.this.dabRecorder.m59a();
-        DabThread.this.ringBuffer = null;
-      }
-      */
       C0162a.m9a("msc thread exit");
     }
   }
@@ -1404,7 +1349,7 @@ public class DabThread extends Thread {
         this.prevSignal = dab_api_get_signal;
 
         Handler playerHandler = DabThread.this.getPlayerHandler();
-        if (playerHandler != null) {
+        if (playerHandler != null && 1 == 2) {
           Intent intent = new Intent(DabService.META_CHANGED);
           intent.putExtra(DabService.EXTRA_SENDER, DabService.SENDER_DAB);
           intent.putExtra(DabService.EXTRA_SIGNALQUALITY, dab_api_get_signal);
@@ -1428,6 +1373,7 @@ public class DabThread extends Thread {
           Message obtainMessage = DabThread.this.playerHandler.obtainMessage();
           obtainMessage.what = PlayerActivity.PLAYERMSG_SIGNAL_QUALITY; // 11;
           obtainMessage.arg1 = dab_api_get_signal2;
+          DabThread.this.playerHandler.removeMessages(PlayerActivity.PLAYERMSG_SIGNAL_QUALITY);
           DabThread.this.playerHandler.sendMessage(obtainMessage);
         }
       }
@@ -1468,7 +1414,7 @@ public class DabThread extends Thread {
           DabThread.this.isExecutingServiceFollowing = false;
         } else if (!DabThread.this.isExecutingServiceFollowing && ServiceFollowing.is_possible()) {
           Message obtainMessage2 = DabThread.this.dabHandler.obtainMessage();
-          obtainMessage2.what = 23;
+          obtainMessage2.what = MSGTYPE_START_SERVICE_FOLLOWING;
           obtainMessage2.obj = "";
           obtainMessage2.arg1 = 0;
           DabThread.this.dabHandler.sendMessage(obtainMessage2);
