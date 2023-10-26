@@ -38,6 +38,7 @@
 
                 <TextView
                     android:id="@+id/memory1Tv"
+                    android:textAppearance="@style/PresetText"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
@@ -81,6 +82,7 @@
 
                 <TextView
                     android:id="@+id/memory2Tv"
+                    android:textAppearance="@style/PresetText"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
@@ -125,6 +127,7 @@
 
                 <TextView
                     android:id="@+id/memory3Tv"
+                    android:textAppearance="@style/PresetText"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
@@ -169,6 +172,7 @@
 
                 <TextView
                     android:id="@+id/memory4Tv"
+                    android:textAppearance="@style/PresetText"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
@@ -213,6 +217,7 @@
 
                 <TextView
                     android:id="@+id/memory5Tv"
+                    android:textAppearance="@style/PresetText"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
@@ -257,6 +262,7 @@
 
                 <TextView
                     android:id="@+id/memory6Tv"
+                    android:textAppearance="@style/PresetText"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
