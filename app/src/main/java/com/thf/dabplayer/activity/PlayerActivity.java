@@ -118,8 +118,8 @@ public class PlayerActivity extends Activity
   private Toast toast_service_following;
 
   private SwitchStationsAdapter stationsAdapter;
-  private LinearLayoutManager linearLayoutManager;
-  private RecyclerView recyclerView;
+  //private LinearLayoutManager linearLayoutManager;
+  private ViewPager2 recyclerView;
   private SwitchStationsAdapter.Listener switchStationsAdapterListener =
       new SwitchStationsAdapter.Listener() {
         @Override
@@ -627,7 +627,8 @@ public class PlayerActivity extends Activity
 
   private void scrollToPositionRecycler(int idx) {
     // Toast.makeText(context, "scroll to pos " + idx, Toast.LENGTH_LONG).show();
-    this.linearLayoutManager.scrollToPosition(idx);
+    //this.linearLayoutManager.scrollToPosition(idx);
+        this.recyclerView.setCurrentItem(idx);
     if (this.stationsAdapter != null) {
       this.stationsAdapter.setMot(null, -1);
     }
@@ -1146,7 +1147,7 @@ public class PlayerActivity extends Activity
   }
 
   private void playFavourite(int memoryPos) {
-    
+
     this.dabHandler.removeMessages(DabThread.PLAY_FAVOURITE);
     Message obtainMessage = this.dabHandler.obtainMessage();
     obtainMessage.what = DabThread.PLAY_FAVOURITE;
@@ -1187,28 +1188,30 @@ public class PlayerActivity extends Activity
       this.textClock.setVisibility(View.GONE);
     }
 
-    recyclerView = this.findViewById(R.id.recycler);
-    recyclerView.setHasFixedSize(true);
-    recyclerView.setItemAnimator(new DefaultItemAnimator());
-    linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-    recyclerView.addOnScrollListener(
-        new RecyclerView.OnScrollListener() {
-          @Override
-          public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
-            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-              int position =
-                  ((LinearLayoutManager) recyclerView.getLayoutManager())
-                      .findFirstVisibleItemPosition();
-              Toast.makeText(context, position + " OnScrollListener", Toast.LENGTH_LONG).show();
-              onStationClicked(position);
-            }
-          }
-        });
+    recyclerView = this.findViewById(R.id.recycler2);
+    /*
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.addOnScrollListener(
+            new RecyclerView.OnScrollListener() {
+              @Override
+              public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                  int position =
+                      ((LinearLayoutManager) recyclerView.getLayoutManager())
+                          .findFirstVisibleItemPosition();
+                  Toast.makeText(context, position + " OnScrollListener", Toast.LENGTH_LONG).show();
+                  onStationClicked(position);
+                }
+              }
+            });
 
-    recyclerView.setLayoutManager(linearLayoutManager);
-    PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
-    pagerSnapHelper.attachToRecyclerView(recyclerView);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+        pagerSnapHelper.attachToRecyclerView(recyclerView);
+    */
 
     if ("RMX3301EEA".equals(Build.PRODUCT)) {
       stationsAdapter =
