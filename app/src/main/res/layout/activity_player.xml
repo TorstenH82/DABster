@@ -46,6 +46,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/dls_scroll"
         android:layout_marginTop="16dp"
+        android:visibility="gone"        
     />
 
     <androidx.viewpager2.widget.ViewPager2
