@@ -1,0 +1,35 @@
+{
+  "allFiles": [
+    {
+      "file": "/storage/emulated/0/AppProjects/DABster/app/src/main/res/layout/activity_player.xml",
+      "selection": {
+        "end": {
+          "column": 0,
+          "index": -1,
+          "line": 0
+        },
+        "start": {
+          "column": 0,
+          "index": -1,
+          "line": 0
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AppProjects/DABster/app/src/main/res/values/styles.xml",
+      "selection": {
+        "end": {
+          "column": 65,
+          "index": -1,
+          "line": 38
+        },
+        "start": {
+          "column": 65,
+          "index": -1,
+          "line": 38
+        }
+      }
+    }
+  ],
+  "selectedFile": "/storage/emulated/0/AppProjects/DABster/app/src/main/res/values/styles.xml"
+}
