@@ -48,6 +48,17 @@
         android:layout_marginTop="16dp"
     />
 
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/recycler2"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintStart_toEndOf="@id/bt_prev"
+        app:layout_constraintEnd_toStartOf="@id/bt_next"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/dls_scroll"
+        android:layout_marginTop="16dp"
+    />
+    
     <Button
         android:layout_gravity="center_vertical"
         android:id="@+id/bt_next"
