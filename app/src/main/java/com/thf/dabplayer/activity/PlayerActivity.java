@@ -38,10 +38,7 @@ import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -64,6 +61,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import android.app.Activity;
+import java.util.stream.Collectors;
+
 
 /* renamed from: com.ex.dabplayer.pad.activity.Player */
 /* loaded from: classes.dex */
@@ -89,16 +88,18 @@ public class PlayerActivity extends Activity
   public static final int PLAYERMSG_SIGNAL_QUALITY = 11;
   public static final int PLAYERMSG_STATIONINFO_INTENT = 100;
   public static final int PLAYERMSG_SET_STATIONMEMORY = 200;
-  public static final int PLAYERMSG_PLAY_STATION = 300;
+  // public static final int PLAYERMSG_PLAY_PRESET = 300;
 
   public static String[] arrPty;
   private List<DabSubChannelInfo> stationList;
+  private List<DabSubChannelInfo> presetList;
   // private List<ChannelInfo> channelInfoList;
   private AudioManager audioManager;
   private ProgressDialog progressDialog;
   private boolean f19G;
   public Context context;
   public boolean f26e;
+  private int isPlayingPreset = -1; // only set to true if user clicked on memory button
   // public boolean f27f;
   public Button favorBtn;
   public boolean f28g;
@@ -118,8 +119,8 @@ public class PlayerActivity extends Activity
   private Toast toast_service_following;
 
   private SwitchStationsAdapter stationsAdapter;
-  //private LinearLayoutManager linearLayoutManager;
-  private ViewPager2 recyclerView;
+  // private LinearLayoutManager linearLayoutManager;
+  private ViewPager2 viewPagerStations;
   private SwitchStationsAdapter.Listener switchStationsAdapterListener =
       new SwitchStationsAdapter.Listener() {
         @Override
@@ -144,7 +145,7 @@ public class PlayerActivity extends Activity
       };
 
   private ViewPagerAdapter viewPagerAdapter;
-  private LinearLayoutManager linearLayoutManagerPageViewer;
+  // private LinearLayoutManager linearLayoutManagerPageViewer;
   private ViewPager2 viewPager;
   private ViewPagerAdapter.Listener viewPagerAdapterListener =
       new ViewPagerAdapter.Listener() {
@@ -155,7 +156,7 @@ public class PlayerActivity extends Activity
             Toast.makeText(PlayerActivity.this.context, text, Toast.LENGTH_LONG).show();
             return;
           }
-          playFavourite(memoryPos);
+          playPreset(memoryPos);
         }
 
         @Override
@@ -371,17 +372,16 @@ public class PlayerActivity extends Activity
           case PlayerActivity.PLAYERMSG_PREV_STATION /* 104 */:
             player.onStationChange_prevWrapper();
             break;
-
-          case PlayerActivity.PLAYERMSG_PLAY_STATION:
-            // player.playIndex = message.arg1;
-            player.playStation(message.arg1);
-            // SharedPreferencesHelper.getInstance().setInteger("current_playing",
-            // this.player.playIndex);
-            // player.scrollToPositionRecycler(player.playIndex);
-            break;
-
+            /*
+            case PlayerActivity.PLAYERMSG_PLAY_PRESET:
+              player.isPlayingPreset = 1;
+              player.playStation(message.arg1);
+              break;
+            */
           case PLAYERMSG_SET_STATIONMEMORY:
-            viewPagerAdapter.setItems((List) message.obj);
+            player.isPlayingPreset = 1;
+            player.presetList = (List) message.obj;
+            viewPagerAdapter.setItems(player.presetList);
             break;
           default:
             Toast.makeText(player.context, "msg.what" + message.what, 0).show();
@@ -536,7 +536,7 @@ public class PlayerActivity extends Activity
     this.stationsAdapter =
         new SwitchStationsAdapter(
             this.context, switchStationsAdapterListener, this.stationList, false);
-    this.recyclerView.setAdapter(stationsAdapter);
+    this.viewPagerStations.setAdapter(stationsAdapter);
     scrollToPositionRecycler(this.playIndex);
   }
 
@@ -627,8 +627,8 @@ public class PlayerActivity extends Activity
 
   private void scrollToPositionRecycler(int idx) {
     // Toast.makeText(context, "scroll to pos " + idx, Toast.LENGTH_LONG).show();
-    //this.linearLayoutManager.scrollToPosition(idx);
-        this.recyclerView.setCurrentItem(idx);
+    // this.linearLayoutManager.scrollToPosition(idx);
+    this.viewPagerStations.setCurrentItem(idx);
     if (this.stationsAdapter != null) {
       this.stationsAdapter.setMot(null, -1);
     }
@@ -655,19 +655,47 @@ public class PlayerActivity extends Activity
       stationsAdapter =
           new SwitchStationsAdapter(
               this.context, switchStationsAdapterListener, this.stationList, false);
-      this.recyclerView.setAdapter(stationsAdapter);
+      this.viewPagerStations.setAdapter(stationsAdapter);
+    }
+  }
+
+  /* JADX INFO: Access modifiers changed from: private */
+  public void selectPreviousStation() {
+    /*
+    if (!this.progressDialog.isShowing() && this.stationListSize > 0) {
+      int i = ((this.playIndex + this.stationListSize) - 1) % this.stationListSize;
+      playStation(i);
+    }
+    */
+    if (!this.progressDialog.isShowing() && this.stationListSize > 0) {
+      if ((this.isPlayingPreset == -1 || this.isPlayingPreset == 1) && this.presetList.size() > 1) {
+        DabSubChannelInfo info = this.stationList.get(this.playIndex);
+        int presetIndex = this.presetList.indexOf(info);
+        if (presetIndex != -1) {
+          presetIndex = ((presetIndex + this.presetList.size()) - 1) % this.presetList.size();
+          playPreset(presetIndex);
+          return;
+        }
+      }
+      int i = ((this.playIndex + this.stationListSize) - 1) % this.stationListSize;
+      playStation(i);
     }
   }
 
   /* JADX INFO: Access modifiers changed from: private */
   public void selectNextStation() {
     if (!this.progressDialog.isShowing() && this.stationListSize > 0) {
+      if ((this.isPlayingPreset == -1 || this.isPlayingPreset == 1) && this.presetList.size() > 1) {
+        DabSubChannelInfo info = this.stationList.get(this.playIndex);
+        int presetIndex = this.presetList.indexOf(info);
+        if (presetIndex != -1) {
+          presetIndex = ((presetIndex + this.presetList.size()) + 1) % this.presetList.size();
+          playPreset(presetIndex);
+          return;
+        }
+      }
       int i = ((this.playIndex + this.stationListSize) + 1) % this.stationListSize;
-      // if (this.f27f) {
-      //  playPreset(i);
-      // } else {
       playStation(i);
-      // }
     }
   }
 
@@ -703,7 +731,7 @@ public class PlayerActivity extends Activity
   public void onStationChange_nextWrapper() {
 
     if (this.keyDownHandler != null) {
-      this.keyDownHandler.removeMessages(1);
+      this.keyDownHandler.removeMessages(DelayedRunnableHandler.MSG_DELAYED_RUN);
       Message msg = this.keyDownHandler.obtainMessage();
       msg.what = DelayedRunnableHandler.MSG_DELAYED_RUN; // 1
       msg.obj = new RunnableBWrapperNext();
@@ -712,18 +740,6 @@ public class PlayerActivity extends Activity
       return;
     }
     selectNextStation();
-  }
-
-  /* JADX INFO: Access modifiers changed from: private */
-  public void selectPreviousStation() {
-    if (!this.progressDialog.isShowing() && this.stationListSize > 0) {
-      int i = ((this.playIndex + this.stationListSize) - 1) % this.stationListSize;
-      // if (this.f27f) {
-      //  playPreset(i);
-      // } else {
-      playStation(i);
-      // }
-    }
   }
 
   /* JADX INFO: Access modifiers changed from: private */
@@ -1120,9 +1136,11 @@ public class PlayerActivity extends Activity
         C0162a.m9a("manually activation ignored");
         return;
       } else if (view.getId() == R.id.bt_prev) {
+        this.isPlayingPreset = 0;
         selectPreviousStation();
         return;
       } else if (view.getId() == R.id.bt_next) {
+        this.isPlayingPreset = 0;
         selectNextStation();
         return;
       } else {
@@ -1146,13 +1164,24 @@ public class PlayerActivity extends Activity
     // this comes back with PLAYERMSG_SET_STATIONMEMORY
   }
 
-  private void playFavourite(int memoryPos) {
+  private void playPreset(int memoryPos) {
 
-    this.dabHandler.removeMessages(DabThread.PLAY_FAVOURITE);
-    Message obtainMessage = this.dabHandler.obtainMessage();
-    obtainMessage.what = DabThread.PLAY_FAVOURITE;
-    obtainMessage.arg1 = memoryPos;
-    PlayerActivity.this.dabHandler.sendMessage(obtainMessage);
+    List<DabSubChannelInfo> presetStation =
+        this.presetList.stream()
+            .filter(preset -> preset.mFavorite == memoryPos)
+            .collect(Collectors.toList());
+
+    if (presetStation != null && presetStation.size() == 1) {
+      this.isPlayingPreset = 1;
+      int idx = this.stationList.indexOf(presetStation.get(0));
+      this.playStation(idx);
+    }
+
+    // this.dabHandler.removeMessages(DabThread.PLAY_FAVOURITE);
+    // Message obtainMessage = this.dabHandler.obtainMessage();
+    // obtainMessage.what = DabThread.PLAY_FAVOURITE;
+    // obtainMessage.arg1 = memoryPos;
+    // PlayerActivity.this.dabHandler.sendMessage(obtainMessage);
     // this comes back with PLAYERMSG_PLAY_STATION
   }
 
@@ -1188,11 +1217,46 @@ public class PlayerActivity extends Activity
       this.textClock.setVisibility(View.GONE);
     }
 
-    recyclerView = this.findViewById(R.id.recycler2);
+    viewPagerStations = this.findViewById(R.id.station_vp);
     /*
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+    recyclerView.setHasFixedSize(true);
+    recyclerView.setItemAnimator(new DefaultItemAnimator());
+    */
+    // linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,
+    // false);
+    viewPagerStations.registerOnPageChangeCallback(
+        new ViewPager2.OnPageChangeCallback() {
+          @Override
+          public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+          }
+
+          @Override
+          public void onPageSelected(int position) {
+            super.onPageSelected(position);
+
+            if (userScrollChange) {
+              PlayerActivity.this.isPlayingPreset = 0;
+              Toast.makeText(context, position + " OnScrollListener", Toast.LENGTH_LONG).show();
+              onStationClicked(position);
+            }
+          }
+
+          int previousState;
+          boolean userScrollChange;
+
+          @Override
+          public void onPageScrollStateChanged(int state) {
+            super.onPageScrollStateChanged(state);
+            if (previousState == ViewPager.SCROLL_STATE_DRAGGING
+                && state == ViewPager.SCROLL_STATE_SETTLING) userScrollChange = true;
+            else if (previousState == ViewPager.SCROLL_STATE_SETTLING
+                && state == ViewPager.SCROLL_STATE_IDLE) userScrollChange = false;
+
+            previousState = state;
+          }
+        });
+    /*
         recyclerView.addOnScrollListener(
             new RecyclerView.OnScrollListener() {
               @Override
@@ -1207,17 +1271,16 @@ public class PlayerActivity extends Activity
                 }
               }
             });
-
-        recyclerView.setLayoutManager(linearLayoutManager);
-        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
-        pagerSnapHelper.attachToRecyclerView(recyclerView);
     */
+    // recyclerView.setLayoutManager(linearLayoutManager);
+    // PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+    // pagerSnapHelper.attachToRecyclerView(recyclerView);
 
     if ("RMX3301EEA".equals(Build.PRODUCT)) {
       stationsAdapter =
           new SwitchStationsAdapter(
               this.context, switchStationsAdapterListener, new ArrayList<>(), false);
-      this.recyclerView.setAdapter(stationsAdapter);
+      this.viewPagerStations.setAdapter(stationsAdapter);
     }
 
     this.viewPager = this.findViewById(R.id.viewPager);
@@ -1445,8 +1508,8 @@ public class PlayerActivity extends Activity
         new SimpleDialog.SimpleDialogListener() {
           @Override
           public void onClick(boolean positive, int selection) {
-            // 0 full
-            // 1 keep favourites
+            // 0 keep favourites
+            // 1 full
             // 2 update
             if (positive) {
               startScan(selection);
@@ -1454,8 +1517,9 @@ public class PlayerActivity extends Activity
           }
         };
     SimpleDialog sd = new SimpleDialog(this, "Scan mode", true, simpleDialogListener);
-    sd.addRadio(context.getResources().getString(R.string.text_full_scan));
+
     sd.addRadio(context.getResources().getString(R.string.text_favo_scan));
+    sd.addRadio(context.getResources().getString(R.string.text_full_scan));
     // sd.addRadio(context.getResources().getString(R.string.text_incr_scan));
     sd.show();
 

@@ -376,6 +376,12 @@
                     android:layout_weight="20"
                     android:id="@+id/details_servicefollowing"
                     android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
+                
+                <Space
+                    android:layout_weight="20" />
+                <Space
+                    android:layout_weight="20" />
+                
             </TableRow>
         </TableLayout>
     </ScrollView>

@@ -203,10 +203,12 @@ public class Mp2Thread extends Thread {
                 }
                 if (!this.f125f) {
                   this.f125f = true;
+                  /*              
                   Intent intent = new Intent("com.microntek.app");
                   intent.putExtra("app", DabService.SENDER_DAB);
                   intent.putExtra("audio", "play");
                   this.f126g.sendBroadcast(intent);
+                  */              
                   notifyIntent(this.mSampleRateInHz, true);
                   break;
                 }

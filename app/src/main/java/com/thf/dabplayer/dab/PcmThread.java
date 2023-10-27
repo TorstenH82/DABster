@@ -144,10 +144,12 @@ public class PcmThread extends Thread {
           if (!this.f131e) {
             this.f131e = true;
             m24a(this.mSampleRateInHz, this.mChannels);
+            /*            
             Intent intent = new Intent("com.microntek.app");
             intent.putExtra("app", DabService.SENDER_DAB);
             intent.putExtra("audio", "play");
             this.context.sendBroadcast(intent);
+            */            
             notifyIntent(this.audioTrack.getSampleRate(), true);
           }
           switch (this.mAudioState) {

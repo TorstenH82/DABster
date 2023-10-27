@@ -48,7 +48,10 @@ public class SimpleDialog {
             // .setMessage(initMessage)
             .setCancelable(false)
             .setIcon(R.drawable.radio);
-
+        
+        
+        
+        
     if (showButtons) {
       builder.setPositiveButton(
           R.string.next,
@@ -94,6 +97,10 @@ public class SimpleDialog {
     this(activity, title, false, null);
   }
 
+  public SimpleDialog(Activity activity) {
+    this(activity, null, false, null);
+  }
+
   public void setMessage(String message) {
     this.textView.setVisibility(View.VISIBLE);
     this.textView.setText(message);
@@ -105,14 +112,14 @@ public class SimpleDialog {
     rdbtn.setId(View.generateViewId());
     rdbtn.setText(entry);
     radioIdx++;
-    final int radioIdxFin =radioIdx;
-        rdbtn.setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                SimpleDialog.this.selectedIdx = radioIdxFin;
-              }
-            });
+    final int radioIdxFin = radioIdx;
+    rdbtn.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            SimpleDialog.this.selectedIdx = radioIdxFin;
+          }
+        });
     this.radioGroup.addView(rdbtn);
     ((RadioButton) this.radioGroup.getChildAt(0)).setChecked(true);
   }

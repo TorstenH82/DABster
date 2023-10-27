@@ -30,27 +30,13 @@
         android:adjustViewBounds="true"
         style="?android:attr/buttonBarButtonStyle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/recycler"
-        app:layout_constraintBottom_toBottomOf="@id/recycler"
+        app:layout_constraintTop_toTopOf="@id/station_vp"
+        app:layout_constraintBottom_toBottomOf="@id/station_vp"
         android:layout_marginStart="16dp"
     />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_height="0dp"
-        android:layout_width="0dp"
-        android:orientation="vertical"
-        android:id="@+id/recycler"
-        android:layout_gravity="center_horizontal"
-        app:layout_constraintStart_toEndOf="@id/bt_prev"
-        app:layout_constraintEnd_toStartOf="@id/bt_next"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/dls_scroll"
-        android:layout_marginTop="16dp"
-        android:visibility="gone"        
-    />
-
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/recycler2"
+        android:id="@+id/station_vp"
         android:layout_height="0dp"
         android:layout_width="0dp"
         app:layout_constraintStart_toEndOf="@id/bt_prev"
@@ -67,8 +53,8 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/recycler"
-        app:layout_constraintBottom_toBottomOf="@id/recycler"
+        app:layout_constraintTop_toTopOf="@id/station_vp"
+        app:layout_constraintBottom_toBottomOf="@id/station_vp"
         android:layout_marginEnd="16dp"
         style="?android:attr/buttonBarButtonStyle"
     />

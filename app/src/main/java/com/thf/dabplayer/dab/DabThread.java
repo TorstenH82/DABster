@@ -49,7 +49,7 @@ public class DabThread extends Thread {
   public static final int SCANTYPE_FULL = 0;
   public static final int SCANTYPE_INCREMENTAL = 1;
   public static final int UPDATE_FAVOURITE = 30;
-  public static final int PLAY_FAVOURITE = 300;
+  // public static final int PLAY_FAVOURITE = 300;
 
   /* renamed from: H */
   // private String f74H;
@@ -345,9 +345,9 @@ public class DabThread extends Thread {
       this.dabDec.decoder_reset_ensemble_info(0);
     }
     if (scan_type == 0) {
-      this.dbHelper.deleteAllFromServiceTbl();
-    } else if (scan_type == 1) {
       this.dbHelper.deleteNonFavs();
+    } else if (scan_type == 1) {
+      this.dbHelper.deleteAllFromServiceTbl();
     }
     this.stationList.clear();
     // this.dbHelper.m72a(32);
@@ -1100,26 +1100,28 @@ public class DabThread extends Thread {
           obtainMessage.obj = DabThread.this.dbHelper.getFavorites();
           DabThread.this.playerHandler.sendMessage(obtainMessage);
           return;
-        case PLAY_FAVOURITE:
-          DabSubChannelInfo sciFavourite =
-              DabThread.this.dbHelper.getFavouriteService(message.arg1);
-          if (sciFavourite != null) {
-            int idx = DabThread.this.stationList.indexOf(sciFavourite);
-            if (idx != -1) {
-              if (!DabThread.this.isOnExit) {
-                ServiceFollowing.update_enabled_status(DabThread.this.getContext());
-                DabThread.this.playStation(idx);
+          /*
+          case PLAY_FAVOURITE:
+            DabSubChannelInfo sciFavourite =
+                DabThread.this.dbHelper.getFavouriteService(message.arg1);
+            if (sciFavourite != null) {
+              int idx = DabThread.this.stationList.indexOf(sciFavourite);
+              if (idx != -1) {
+                if (!DabThread.this.isOnExit) {
 
-                // inform player which index gets played
-                Message obtainMessage2 = DabThread.this.playerHandler.obtainMessage();
-                obtainMessage2.what = PlayerActivity.PLAYERMSG_PLAY_STATION;
-                obtainMessage2.arg1 = idx;
-                DabThread.this.playerHandler.sendMessage(obtainMessage2);
+                  // inform player which index gets played
+                  Message obtainMessage2 = DabThread.this.playerHandler.obtainMessage();
+                  obtainMessage2.what = PlayerActivity.PLAYERMSG_PLAY_PRESET;
+                  obtainMessage2.arg1 = idx;
+                  DabThread.this.playerHandler.sendMessage(obtainMessage2);
+
+                  ServiceFollowing.update_enabled_status(DabThread.this.getContext());
+                  DabThread.this.playStation(idx);
+                }
               }
             }
-          }
-          return;
-
+            return;
+            */
         default:
           return;
       }
@@ -1492,9 +1494,21 @@ public class DabThread extends Thread {
 
     @Override // java.lang.Thread, java.lang.Runnable
     public void run() {
+
       setPriority(1);
       int i = 0;
       while (!this.exit) {
+        poll_dls();
+        poll_signallevel();
+        poll_mot();
+
+        try {
+          sleep(1000);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+
+        /*
         poll_dls();
         if (i > 1) {
           poll_signallevel();
@@ -1510,6 +1524,8 @@ public class DabThread extends Thread {
           DabThread.this.f97x = false;
           i = 0;
         }
+                */
+
       }
     }
   }

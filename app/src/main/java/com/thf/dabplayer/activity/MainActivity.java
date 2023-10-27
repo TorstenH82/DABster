@@ -50,18 +50,17 @@ public class MainActivity extends Activity {
 
         @Override // com.thf.dabplayer.utils.UsbDeviceHandling.OnUsbDeviceHandlingResultListener
         public void onUsbConnectAttemptStarted(int attempt, int maxAttempts) {
-          String text = ""; // MainActivity.this.getResources().getString(R.string.Connecting);
+          String text = MainActivity.this.getResources().getString(R.string.Connecting);
           if (attempt > 1) {
             updateProgress(
-                TextUtils.concat(
-                        text,
-                        MainActivity.this
-                            .getResources()
-                            .getString(
-                                R.string.attemptXofY,
-                                Integer.valueOf(attempt),
-                                Integer.valueOf(maxAttempts)))
-                    .toString());
+                text
+                    + " "
+                    + MainActivity.this
+                        .getResources()
+                        .getString(
+                            R.string.attemptXofY,
+                            Integer.valueOf(attempt),
+                            Integer.valueOf(maxAttempts)));
           }
         }
 
@@ -70,15 +69,14 @@ public class MainActivity extends Activity {
           String text = MainActivity.this.getResources().getString(R.string.UsbPermission);
           if (attempt > 1) {
             text =
-                TextUtils.concat(
-                        text,
-                        MainActivity.this
-                            .getResources()
-                            .getString(
-                                R.string.attemptXofY,
-                                Integer.valueOf(attempt),
-                                Integer.valueOf(maxAttempts)))
-                    .toString();
+                text
+                    + " "
+                    + MainActivity.this
+                        .getResources()
+                        .getString(
+                            R.string.attemptXofY,
+                            Integer.valueOf(attempt),
+                            Integer.valueOf(maxAttempts));
           }
           updateProgress(text);
         }
@@ -114,10 +112,6 @@ public class MainActivity extends Activity {
 
     if ("RMX3301EEA".equals(Build.PRODUCT)) {
 
-      // new LogoDbAssets(context).execute();
-      
-      
-      
       Intent intentTest = new Intent();
       intentTest.setClass(this, PlayerActivity.class);
       // intentTest.putExtra("UsbDevice", usbDevice);
@@ -141,28 +135,16 @@ public class MainActivity extends Activity {
     C0162a.m9a("Started by: " + this.startedByIntent.toString());
     this.context = getApplicationContext();
 
-    this.progressDialog = new SimpleDialog(this, "Connecting");
+    this.progressDialog = new SimpleDialog(this); // , "Connecting");
+    this.progressDialog.setMessage(this.getResources().getString(R.string.Connecting));
     this.progressDialog.showProgress();
     this.progressDialog.show();
 
-    // this.progressDialog = ProgressDialog.show(this, "", "Connecting...", true, true);
-    // this.progressDialog.setIndeterminateDrawable(
-    //    getResources().getDrawable(R.anim.progress_dialog_anim));
-    // setContentView(R.layout.main);
     this.usbDeviceHandling =
         new UsbDeviceHandling(
             getApplicationContext(), DAB_USB_VID, DAB_USB_PID, this.usbDeviceResultListener);
     this.usbDeviceHandling.start();
 
-    // this.progressDialog.show();
-
-    //    Intent intent = new Intent("com.microntek.app");
-    //    intent.putExtra("app", DabService.SENDER_DAB);
-    //    intent.putExtra("state", "ENTER");
-    //    this.context.sendBroadcast(intent);
-    //    Intent intent2 = new Intent("com.microntek.bootcheck");
-    //    intent2.putExtra("class", DabService.SENDER_DAB);
-    //    this.context.sendBroadcast(intent2);
   }
 
   @Override // android.app.Activity

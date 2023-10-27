@@ -12,22 +12,22 @@ import java.util.List;
 /* renamed from: com.ex.dabplayer.pad.dab.d */
 /* loaded from: classes.dex */
 public class DatabaseHelper {
-  //public static final int STATIONLIST_FILTER_ALL = 0;
-  //public static final int STATIONLIST_FILTER_FAV = 2;
-  //public static final int STATIONLIST_FILTER_FAV_AND_PTY = 3;
-  //public static final int STATIONLIST_FILTER_PTY = 1;
-  //public static final int STATIONLIST_RANGE_ALL = 32;
-  //public static final int STATIONLIST_RANGE_FAV = -33;
+  // public static final int STATIONLIST_FILTER_ALL = 0;
+  // public static final int STATIONLIST_FILTER_FAV = 2;
+  // public static final int STATIONLIST_FILTER_FAV_AND_PTY = 3;
+  // public static final int STATIONLIST_FILTER_PTY = 1;
+  // public static final int STATIONLIST_RANGE_ALL = 32;
+  // public static final int STATIONLIST_RANGE_FAV = -33;
   private static int favCount = 0;
   private Context mContext;
- // private int mCurrentStation;
+  // private int mCurrentStation;
   private SQLiteDatabase mDatabase;
- //private int mFilter = 0;
- // private final String table_preset = "preset";
+  // private int mFilter = 0;
+  // private final String table_preset = "preset";
   private final String table_service = "service";
- // private final String pref_name = "playing";
-  //private final String pref_key_playing = "current_playing";
- // private final String pref_key_filter = "current_filter";
+  // private final String pref_name = "playing";
+  // private final String pref_key_playing = "current_playing";
+  // private final String pref_key_filter = "current_filter";
 
   public DatabaseHelper(Context context) {
     this.mContext = context;
@@ -86,7 +86,7 @@ public class DatabaseHelper {
           "CREATE TABLE service (_id INTEGER PRIMARY KEY AUTOINCREMENT, label TEXT, subid INTEGER, bitrate INTEGER, sid INTEGER, freq INTEGER, pty INTEGER, type INTEGER, abbreviated INTEGER, eid INTEGER, elabel TEXT, scid INTEGER, ps INTEGER, fav INTEGER)");
     }
   }
-  
+
   /* renamed from: a */
   public int insertNewStations(List list) {
     int new_stations = 0;
@@ -101,7 +101,7 @@ public class DatabaseHelper {
     }
     return new_stations;
   }
-  
+
   /* renamed from: c */
   public List getStationList() {
     return getServiceSubchannelInfo();
@@ -144,7 +144,7 @@ public class DatabaseHelper {
     String query = "SELECT * FROM service";
     // getClass();
     // StringBuilder query = new StringBuilder(append.append("service").toString());
-    
+
     query += " ORDER BY label COLLATE NOCASE ASC";
     C0162a.m9a(query.toString());
     Cursor rawQuery = this.mDatabase.rawQuery(query.toString(), null);
@@ -174,13 +174,13 @@ public class DatabaseHelper {
     updateFavCount();
     return arrayList;
   }
-  
+
   public int getStationCount() {
     String query = "SELECT * FROM service";
     Cursor rawQuery = this.mDatabase.rawQuery(query.toString(), null);
     return rawQuery.getCount();
   }
-    
+
   /* renamed from: e */
   public void deleteAllFromServiceTbl() {
     C0162a.m9a("delete all from SQL table service");
@@ -303,7 +303,7 @@ public class DatabaseHelper {
   public ArrayList<DabSubChannelInfo> getFavorites() {
     ArrayList<DabSubChannelInfo> results = new ArrayList<>(getFavCount());
     synchronized (this) {
-      String query = "SELECT * FROM service where fav>0";
+      String query = "SELECT * FROM service where fav>0 ORDER BY fav";
       Cursor rawQuery = this.mDatabase.rawQuery(query, null);
       while (rawQuery.moveToNext()) {
         DabSubChannelInfo subChannelInfo = new DabSubChannelInfo();
