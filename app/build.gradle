@@ -12,13 +12,30 @@ android {
     defaultConfig {
         applicationId "com.thf.dabplayer"
         minSdk 21
-        targetSdk 30
+        targetSdk 31
         versionCode 1
-        versionName "0.1.1preview"
+        versionName "0.1.2preview"
         
         vectorDrawables { 
             useSupportLibrary true
         }
+    }
+    
+   signingConfigs {
+        release {
+            // Specify the name of your keystore file
+            // The file must be located in your module directory
+            storeFile file("/data/data/com.itsaky.androidide/files/home/.android/debug.keystore")
+						
+            // The keystore password
+            storePassword "android"
+						
+            // The key alias, same as the one you specified with '-alias' argument while creating the keystore
+            keyAlias "androiddebugkey"
+						
+            // The key password
+            keyPassword "android"
+        }            
     }
 
     buildTypes {
@@ -27,6 +44,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

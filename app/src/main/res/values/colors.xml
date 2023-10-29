@@ -8,12 +8,14 @@
     <color name="signal_3">#ffea00</color>
     <color name="signal_4">#76ff03</color>
     <color name="signal_5">#00ff24</color>
+    <color name="colorBack">#3A3B3C</color>
+    <color name="colorStatusbar">#1c1c1c</color>
+   
     
-   <color name="colorPrimary">#F66F00</color>
+    <color name="colorPrimary">#F66F00</color>
     <color name="colorPrimaryDark">#F66F00</color>
     <color name="colorAccent">#F66F00</color>
     <color name="colorLightGray">#D3D3D3</color>
-
     <color name="status_bar_light">#FFea80fc</color>
     <color name="status_bar_dark">#FF263238</color>
 </resources>

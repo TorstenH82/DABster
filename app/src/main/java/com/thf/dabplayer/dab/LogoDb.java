@@ -12,7 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 
 import com.thf.dabplayer.service.DabService;
-import com.thf.dabplayer.utils.C0162a;
+import com.thf.dabplayer.utils.Logger;
 import com.thf.dabplayer.utils.Strings;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -74,12 +74,12 @@ public class LogoDb {
       if (db.rawQuery("SELECT * FROM sqlite_master WHERE type='table'", null).getCount() == 1) {
         db.execSQL(
             "CREATE TABLE logos (_id INTEGER PRIMARY KEY AUTOINCREMENT, station TEXT, path TEXT, sid INTEGER )");
-        C0162a.m9a("logos db created");
+        Logger.d("logos db created");
       }
       if (db.isOpen()) {
-        C0162a.m9a("logos db opened");
+        Logger.d("logos db opened");
       } else {
-        C0162a.m9a("logos db NOT open !!");
+        Logger.d("logos db NOT open !!");
       }
     }
   }
@@ -90,14 +90,14 @@ public class LogoDb {
         openOrCreateDb();
       }
       getDb().execSQL("DELETE FROM logos");
-      C0162a.m9a("logos db cleared");
+      Logger.d("logos db cleared");
     }
   }
 
   public void closeDb() {
     synchronized (this) {
       if (getDb().isOpen()) {
-        C0162a.m9a("logos db closed");
+        Logger.d("logos db closed");
         getDb().close();
         this.mDb = null;
       }
@@ -133,7 +133,7 @@ public class LogoDb {
               + "' AND sid="
               + stationLogo.mStationServiceId;
       int rowsUpdated = getDb().update("logos", contentValues, where, null);
-      C0162a.m9a(
+      Logger.d(
           "logo db updated "
               + rowsUpdated
               + " rows for "
@@ -142,10 +142,10 @@ public class LogoDb {
               + stationLogo.mStationServiceId);
       if (rowsUpdated == 0) {
         if (getDb().insert("logos", null, contentValues) == -1) {
-          C0162a.m9a("failed to insert logo to db");
+          Logger.d("failed to insert logo to db");
           result = false;
         } else {
-          C0162a.m9a("new logo inserted");
+          Logger.d("new logo inserted");
         }
       }
     }
@@ -203,7 +203,7 @@ public class LogoDb {
             logo = new BitmapDrawable(mContext.getResources(), bitmap);
           }
         } catch (IOException e) {
-          C0162a.m9a("error getting asset '" + "logos/" + path + "':" + e.toString());
+          Logger.d("error getting asset '" + "logos/" + path + "':" + e.toString());
         }
       }
     }
@@ -217,7 +217,7 @@ public class LogoDb {
       BitmapDrawable logoDrawable = new BitmapDrawable(ct.getResources(), logopath);
       return logoDrawable;
     }
-    C0162a.m9a("not exist: " + logopath);
+    Logger.d("not exist: " + logopath);
     return null;
   }
 
@@ -253,9 +253,9 @@ public class LogoDb {
       rawQuery = getDb().rawQuery(queryStr, null);
     }
     if (rawQuery.getCount() > 1) {
-      C0162a.m9a("ambiguous sid results for '" + realStationName + "':");
+      Logger.d("ambiguous sid results for '" + realStationName + "':");
       while (rawQuery.moveToNext()) {
-        C0162a.m9a(" " + rawQuery.getInt(rawQuery.getColumnIndex("sid")));
+        Logger.d(" " + rawQuery.getInt(rawQuery.getColumnIndex("sid")));
       }
       result = null;
     } else if (rawQuery.getCount() < 1) {
@@ -277,9 +277,9 @@ public class LogoDb {
       rawQuery = getDb().rawQuery(queryStr, null);
     }
     if (rawQuery.getCount() > 1) {
-      C0162a.m9a("ambiguous exact match results for '" + realStationName + "':");
+      Logger.d("ambiguous exact match results for '" + realStationName + "':");
       while (rawQuery.moveToNext()) {
-        C0162a.m9a(" " + rawQuery.getString(rawQuery.getColumnIndex("path")));
+        Logger.d(" " + rawQuery.getString(rawQuery.getColumnIndex("path")));
       }
       result = null;
     } else if (rawQuery.getCount() < 1) {
@@ -298,7 +298,7 @@ public class LogoDb {
         contentValues.put("_id", Integer.valueOf(uniqueRowId));
         String where = "_id=" + uniqueRowId;
         if (getDb().update("logos", contentValues, where, null) != 1) {
-          C0162a.m9a(" exact match: OUCH: !=1 modified rows for _id=" + uniqueRowId);
+          Logger.d(" exact match: OUCH: !=1 modified rows for _id=" + uniqueRowId);
         }
       }
     }
@@ -323,9 +323,9 @@ public class LogoDb {
         issue.setStationName(realStationName);
         issue.setType(LookupIssueType.AMBIGUOUS);
       }
-      C0162a.m9a("ambiguous substring search results for '" + realStationName + "':");
+      Logger.d("ambiguous substring search results for '" + realStationName + "':");
       while (rawQuery.moveToNext()) {
-        C0162a.m9a(" " + rawQuery.getString(rawQuery.getColumnIndex("path")));
+        Logger.d(" " + rawQuery.getString(rawQuery.getColumnIndex("path")));
         if (issue != null) {
           issue.addDetail(rawQuery.getString(rawQuery.getColumnIndex("path")));
         }
@@ -353,7 +353,7 @@ public class LogoDb {
           contentValues.put("_id", Integer.valueOf(uniqueRowId));
           String where = "_id=" + uniqueRowId;
           if (getDb().update("logos", contentValues, where, null) != 1) {
-            C0162a.m9a(" substring: OUCH: !=1 modified rows for _id=" + uniqueRowId);
+            Logger.d(" substring: OUCH: !=1 modified rows for _id=" + uniqueRowId);
           }
         }
       }
@@ -413,7 +413,7 @@ public class LogoDb {
       dirExists = logoUserDir.mkdirs();
     }
     if (!dirExists) {
-      C0162a.m9a("does not exist and cannot be created:" + LOGO_PATH_USER);
+      Logger.d("does not exist and cannot be created:" + LOGO_PATH_USER);
     } else {
       Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
       File imageFile = new File(logoUserDir, stationName + ".png");

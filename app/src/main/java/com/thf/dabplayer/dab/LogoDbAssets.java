@@ -3,7 +3,7 @@ package com.thf.dabplayer.dab;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.widget.Toast;
-import com.thf.dabplayer.utils.C0162a;
+import com.thf.dabplayer.utils.Logger;
 import java.io.IOException;
 
 public class LogoDbAssets implements Runnable {
@@ -41,12 +41,12 @@ public class LogoDbAssets implements Runnable {
           } else if (logos_path == null) {
             total += sync_path(a);
           } else {
-            C0162a.m5a("assetlogos: ignore ", a);
+            Logger.d("assetlogos: ignore " + a);
           }
         }
       }
     } else {
-      C0162a.m9a("assetlogos: none");
+      Logger.d("assetlogos: none");
     }
     return total;
   }
@@ -54,7 +54,7 @@ public class LogoDbAssets implements Runnable {
   @Override
   public void run() {
     int counter = sync_path(null);
-    C0162a.m9a(counter + " assetlogos added to database");
+    Logger.d(counter + " assetlogos added to database");
   }
 
   public void execute() {

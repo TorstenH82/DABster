@@ -25,7 +25,7 @@ public class Cluster {
     }
     for (Integer e : eids) {
       if (e.intValue() == eid) {
-        C0162a.m6a("cluster dup freq=", freq, " eid=", eid);
+        Logger.d("cluster dup freq=" + freq + " eid=" + eid);
         return;
       }
     }
@@ -169,7 +169,7 @@ public class Cluster {
         try {
           eid = Integer.parseInt(cl2.substring(slash + 1, end_eid).trim(), 16);
         } catch (NumberFormatException e) {
-          C0162a.m5a("cluster eid bad: ", cl2.substring(slash + 1, end_eid));
+          Logger.d("cluster eid bad: " + cl2.substring(slash + 1, end_eid));
           eid = -1;
         }
         if (eid >= 0) {
@@ -191,7 +191,7 @@ public class Cluster {
               add1freq(cluster, freq, eid);
               continue;
             } else {
-              C0162a.m5a("cluster freq bad: ", cl2.substring(where, slash));
+              Logger.d("cluster freq bad: " + cl2.substring(where, slash));
               continue;
             }
           } while (frequencies_s != null);
@@ -199,7 +199,7 @@ public class Cluster {
         where = end_eid + 1;
       }
       if (where < cl2.length()) {
-        C0162a.m5a("cluster ignore: ", cl2.substring(where));
+        Logger.d("cluster ignore: " + cl2.substring(where));
       }
       if (cluster.size() > 1) {
         this.clusters.add(cluster);

@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
 
+import android.view.MenuItem;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -87,5 +89,21 @@ public class SettingsActivity extends AppCompatActivity {
         .beginTransaction()
         .replace(R.id.frmSettings, settingsFragment)
         .commit();
+
+    // calling the action bar
+    ActionBar actionBar = getSupportActionBar();
+
+    // showing the back button in action bar
+    actionBar.setDisplayHomeAsUpEnabled(true);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        this.finish();
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
   }
 }

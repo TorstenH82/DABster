@@ -27,7 +27,7 @@ public class RepairEBU {
 
     private static Boolean cpuIsIntel() {
         String arch = System.getProperty("os.arch");
-        C0162a.m9a("EBURepair os.arch " + arch);
+        Logger.d("EBURepair os.arch " + arch);
         return Boolean.valueOf(System.getProperty("os.arch").toLowerCase().contains("x86"));
     }
 
@@ -134,7 +134,7 @@ public class RepairEBU {
     }
 
     private static void log(@NonNull String str) {
-        C0162a.m9a("EBURepair:" + str);
+        Logger.d("EBURepair:" + str);
     }
 
     private static double likely5(StringBuilder sb, int b5) {

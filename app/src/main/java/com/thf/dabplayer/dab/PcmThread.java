@@ -10,7 +10,7 @@ import android.os.Process;
 import com.thf.dabplayer.activity.PlayerActivity;
 import com.thf.dabplayer.service.DabService;
 import com.thf.dabplayer.utils.AudioTools;
-import com.thf.dabplayer.utils.C0162a;
+import com.thf.dabplayer.utils.Logger;
 import com.thf.dabplayer.utils.ClippingAreaDetection;
 import com.thf.dabplayer.utils.SharedPreferencesHelper;
 import java.lang.ref.WeakReference;
@@ -31,8 +31,8 @@ public class PcmThread extends Thread {
   /* renamed from: f */
   private Context context;
   private int mChannels;
-  private boolean mIsClippedSampleDetectionEnabled;
-  private boolean mIsClippedSampleNotificationEnabled;
+  private boolean isClippedSampleDetectionEnabled;
+  private boolean isClippedSampleNotificationEnabled;
   private SharedPrefListener mPrefListener;
   private int mSampleRateInHz;
 
@@ -51,10 +51,10 @@ public class PcmThread extends Thread {
     @Override // android.content.SharedPreferences.OnSharedPreferenceChangeListener
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
       if (key.equals("suppressNoise")) {
-        PcmThread.this.mIsClippedSampleDetectionEnabled =
+        PcmThread.this.isClippedSampleDetectionEnabled =
             SharedPreferencesHelper.getInstance().getBoolean("suppressNoise");
 
-        PcmThread.this.mIsClippedSampleNotificationEnabled =
+        PcmThread.this.isClippedSampleNotificationEnabled =
             SharedPreferencesHelper.getInstance().getBoolean("suppressNoise");
 
       } else if (key.equals("volume")) {
@@ -67,16 +67,16 @@ public class PcmThread extends Thread {
   }
 
   public PcmThread(Context context, RingBuffer ringBuffer, int i, int i2) {
-    this.mIsClippedSampleDetectionEnabled = false;
-    this.mIsClippedSampleNotificationEnabled = false;
+    this.isClippedSampleDetectionEnabled = false;
+    this.isClippedSampleNotificationEnabled = false;
     this.ringBuffer = ringBuffer;
     this.context = context;
     this.mSampleRateInHz = i;
     this.mChannels = i2;
 
-    this.mIsClippedSampleDetectionEnabled =
+    this.isClippedSampleDetectionEnabled =
         SharedPreferencesHelper.getInstance().getBoolean("suppressNoise");
-    this.mIsClippedSampleNotificationEnabled =
+    this.isClippedSampleNotificationEnabled =
         SharedPreferencesHelper.getInstance().getBoolean("suppressNoise");
     this.mPrefListener = new SharedPrefListener();
 
@@ -90,7 +90,7 @@ public class PcmThread extends Thread {
     if (sampleRateInHz > 0) {
       int channelConfig = channels == 1 ? 2 : 3;
       this.minBufferSize = AudioTrack.getMinBufferSize(sampleRateInHz, channelConfig, 2);
-      C0162a.m9a("pcm min buffer size: " + this.minBufferSize);
+      Logger.d("pcm min buffer size: " + this.minBufferSize);
       this.audioTrack = new AudioTrack(3, sampleRateInHz, channelConfig, 2, this.minBufferSize, 1);
 
       // float volume = pref_settings.getFloat(SettingsActivity.pref_key_audioLevel, 1.0f);
@@ -103,7 +103,7 @@ public class PcmThread extends Thread {
   /* renamed from: a */
   public void m25a() {
     this.f127a = true;
-    C0162a.m9a("pcm thread about to exit");
+    Logger.d("pcm thread about to exit");
   }
 
   private void notifyIntent(int samplerate, boolean isPlaying) {
@@ -121,10 +121,13 @@ public class PcmThread extends Thread {
     }
   }
 
+   int numRemainUnclippedSamples = 0; 
+    
+    
   @Override // java.lang.Thread, java.lang.Runnable
   public void run() {
     byte[] bArr = new byte[184320];
-    C0162a.m9a("pcm thread run");
+    Logger.d("pcm thread run");
     try {
       Process.setThreadPriority(-16);
       setName("pcm");
@@ -156,12 +159,12 @@ public class PcmThread extends Thread {
             case DabThread.AUDIOSTATE_PLAY /* 200 */:
             case DabThread.AUDIOSTATE_DUCK /* 202 */:
               if (this.audioTrack.getPlayState() == AudioTrack.PLAYSTATE_PAUSED) {
-                C0162a.m9a("paused -> playing");
+                Logger.d("paused -> playing");
                 this.audioTrack.play();
                 notifyIntent(this.mSampleRateInHz, true);
               }
               if (this.audioTrack.getPlayState() == AudioTrack.PLAYSTATE_PLAYING) {
-                if (this.mIsClippedSampleDetectionEnabled) {
+                if (this.isClippedSampleDetectionEnabled) {
                   if (!cad.areSamplesClipped(bArr, a)) {
                     this.audioTrack.write(bArr, 0, a);
                     break;
@@ -177,7 +180,7 @@ public class PcmThread extends Thread {
               break;
             case DabThread.AUDIOSTATE_PAUSE /* 201 */:
               if (this.audioTrack.getPlayState() == 3) {
-                C0162a.m9a("playing -> paused");
+                Logger.d("playing -> paused");
                 this.audioTrack.pause();
                 notifyIntent(0, false);
                 break;
@@ -192,14 +195,14 @@ public class PcmThread extends Thread {
       this.audioTrack.release();
     }
     notifyIntent(0, true);
-    C0162a.m9a("pcm thread exit");
+    Logger.d("pcm thread exit");
   }
 
   private void notifyClippedSamplesDetected() {
     WeakReference<Handler> playerHandlerWeak;
     Handler playerHandler;
-    C0162a.m9a("Clipping detected");
-    if (this.mIsClippedSampleNotificationEnabled
+    Logger.d("Clipping detected");
+    if (this.isClippedSampleNotificationEnabled
         && (playerHandlerWeak = PlayerActivity.getPlayerHandler()) != null
         && (playerHandler = playerHandlerWeak.get()) != null) {
       playerHandler.removeMessages(PlayerActivity.PLAYERMSG_AUDIO_DISTORTION);
@@ -218,15 +221,15 @@ public class PcmThread extends Thread {
         // float volumeDucked =
         //    pref_settings.getFloat(SettingsActivity.pref_key_audioLevelWhenDucked, 0.5f);
         AudioTools.setVolume(this.audioTrack, volume * volumeDucked);
-        C0162a.m9a("playing -> duck");
+        Logger.d("playing -> duck");
       } else if (this.mAudioState == 202 && audioState != 202) {
         // float volume2 = pref_settings.getFloat(SettingsActivity.pref_key_audioLevel, 1.0f);
         float volume2 = 1.0f;
         AudioTools.setVolume(this.audioTrack, volume2);
         if (audioState == 200) {
-          C0162a.m9a("duck -> playing");
+          Logger.d("duck -> playing");
         } else {
-          C0162a.m9a("duck -> pause");
+          Logger.d("duck -> pause");
         }
       }
     }

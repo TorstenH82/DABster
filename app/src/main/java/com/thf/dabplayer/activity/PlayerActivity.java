@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -51,7 +50,7 @@ import com.thf.dabplayer.dab.LogoDbHelper;
 import com.thf.dabplayer.dab.DabSubChannelInfo;
 import com.thf.dabplayer.service.DabServiceBinder;
 import com.thf.dabplayer.service.DabService;
-import com.thf.dabplayer.utils.C0162a;
+import com.thf.dabplayer.utils.Logger;
 import com.thf.dabplayer.utils.DirCleaner;
 import com.thf.dabplayer.utils.ServiceFollowing;
 import com.thf.dabplayer.utils.SharedPreferencesHelper;
@@ -63,13 +62,13 @@ import java.util.List;
 import android.app.Activity;
 import java.util.stream.Collectors;
 
-
 /* renamed from: com.ex.dabplayer.pad.activity.Player */
 /* loaded from: classes.dex */
 public class PlayerActivity extends Activity
     implements ServiceConnection,
         View.OnClickListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
+
   public static final int PLAYERMSG_ASSET_FOUND_LOGOS = 98;
   public static final int PLAYERMSG_AUDIO_DISTORTION = 102;
   public static final int PLAYERMSG_DISMISS_SERVICE_FOLLOWING = 24;
@@ -95,7 +94,7 @@ public class PlayerActivity extends Activity
   private List<DabSubChannelInfo> presetList;
   // private List<ChannelInfo> channelInfoList;
   private AudioManager audioManager;
-  private ProgressDialog progressDialog;
+  private SimpleDialog progressDialog;
   private boolean f19G;
   public Context context;
   public boolean f26e;
@@ -185,7 +184,7 @@ public class PlayerActivity extends Activity
 
   private final BroadcastReceiver f23N = new hBroadcastReceiver();
 
-  AudioManager.OnAudioFocusChangeListener f24c =
+  AudioManager.OnAudioFocusChangeListener audioFocusChangeListener =
       new AudioManager
           .OnAudioFocusChangeListener() { // from class: com.ex.dabplayer.pad.activity.Player.1
         @Override // android.media.AudioManager.OnAudioFocusChangeListener
@@ -195,36 +194,36 @@ public class PlayerActivity extends Activity
 
           switch (i) {
             case -3:
-              C0162a.m9a("AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK");
+              Logger.d("AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK");
               if (isAudiolossSupportEnabled) {
                 arg = DabThread.AUDIOSTATE_DUCK;
                 break;
               } else {
-                C0162a.m9a("no complete audioloss support enabled");
+                Logger.d("no complete audioloss support enabled");
                 break;
               }
             case -2:
-              C0162a.m9a("AUDIOFOCUS_LOSS_TRANSIENT");
+              Logger.d("AUDIOFOCUS_LOSS_TRANSIENT");
               if (isAudiolossSupportEnabled) {
                 arg = DabThread.AUDIOSTATE_PAUSE;
                 break;
               } else {
-                C0162a.m9a("no complete audioloss support enabled");
+                Logger.d("no complete audioloss support enabled");
                 break;
               }
             case -1:
-              C0162a.m9a("AUDIOFOCUS_LOSS");
+              Logger.d("AUDIOFOCUS_LOSS");
               PlayerActivity.this.finishTheApp();
               break;
             case 1:
-              C0162a.m9a("AUDIOFOCUS_GAIN");
+              Logger.d("AUDIOFOCUS_GAIN");
               arg = DabThread.AUDIOSTATE_PLAY;
               break;
             case 2:
-              C0162a.m9a("AUDIOFOCUS_GAIN_TRANSIENT");
+              Logger.d("AUDIOFOCUS_GAIN_TRANSIENT");
               break;
             case 3:
-              C0162a.m9a("AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK");
+              Logger.d("AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK");
               break;
           }
           if (arg != -1 && PlayerActivity.this.dabHandler != null) {
@@ -279,7 +278,12 @@ public class PlayerActivity extends Activity
         super.handleMessage(message);
         switch (message.what) {
           case PlayerActivity.PLAYERMSG_SCAN_PROGRESS_UPDATE: // 0:
-            player.progressDialog.setProgress(message.arg1);
+            // player.progressDialog.setProgress(message.arg1);
+
+            String title =
+                context.getResources().getString(R.string.scanning) + " " + message.arg1 + "%";
+            player.progressDialog.setTitle(title);
+
             player.progressDialog.setMessage(
                 Strings.scanning(
                     PlayerActivity.this.getApplicationContext(), message.arg1, message.arg2));
@@ -300,7 +304,7 @@ public class PlayerActivity extends Activity
             }
             break;
           case PLAYERMSG_MOT: // 10:
-            player.showMotImage((String) message.obj);
+            player.showMotImage((String) message.obj, message.arg1);
             break;
           case PLAYERMSG_SIGNAL_QUALITY: // 11
             // if (!player.f27f && !player.f26e && player.stationListSize == 0) {
@@ -334,7 +338,7 @@ public class PlayerActivity extends Activity
             break;
           case PlayerActivity.PLAYERMSG_ASSET_FOUND_LOGOS /* 98 */:
             if (player.stationList != null) {
-              C0162a.m9a("assetlogos refresh display");
+              Logger.d("assetlogos refresh display");
               player.updateStationList();
             }
             break;
@@ -417,15 +421,15 @@ public class PlayerActivity extends Activity
 
     @Override // android.content.BroadcastReceiver
     public void onReceive(Context context, Intent intent) {
-      C0162a.m9a("h: " + intent.toString());
-      C0162a.m9a("h: " + intent.getExtras().toString());
+      Logger.d("h: " + intent.toString());
+      Logger.d("h: " + intent.getExtras().toString());
       String action = intent.getAction();
 
       if (action.equals("android.hardware.usb.action.USB_DEVICE_DETACHED")) {
         UsbDevice device = (UsbDevice) intent.getParcelableExtra("device");
-        C0162a.m9a("USB device detached: " + device.getDeviceName());
+        Logger.d("USB device detached: " + device.getDeviceName());
         if (device.equals(PlayerActivity.this.usbDevice)) {
-          C0162a.m9a("USB device gone -> finish");
+          Logger.d("USB device gone -> finish");
           PlayerActivity.this.finishTheApp();
         }
       }
@@ -435,14 +439,14 @@ public class PlayerActivity extends Activity
   private class SearchDabHandler implements Runnable {
     public void run() {
       int i = 0;
-      C0162a.m9a("searching mDabHandler");
+      Logger.d("searching mDabHandler");
       while (PlayerActivity.this.dabHandler == null && i < 10) {
         i++;
         DabService dabService = PlayerActivity.this.getDabService();
         if (dabService != null) {
           PlayerActivity.this.dabHandler =
               PlayerActivity.this.getDabService().getDabHandlerFromDabThread();
-          C0162a.m9a("mDabHandler:" + PlayerActivity.this.dabHandler);
+          Logger.d("mDabHandler:" + PlayerActivity.this.dabHandler);
         }
         try {
           Thread.sleep(100L);
@@ -451,12 +455,12 @@ public class PlayerActivity extends Activity
         }
       }
       if (i >= 10 && PlayerActivity.this.dabHandler == null) {
-        C0162a.m9a("failed searching mDabHandler");
+        Logger.d("failed searching mDabHandler");
       } else {
         Message obtainMessage = PlayerActivity.this.dabHandler.obtainMessage();
         obtainMessage.what = DabThread.MSGTYPE_DAB_INIT; // 2;
         PlayerActivity.this.dabHandler.sendMessage(obtainMessage);
-        C0162a.m9a("searching mDabHandler done");
+        Logger.d("searching mDabHandler done");
       }
     }
   }
@@ -537,7 +541,7 @@ public class PlayerActivity extends Activity
         new SwitchStationsAdapter(
             this.context, switchStationsAdapterListener, this.stationList, false);
     this.viewPagerStations.setAdapter(stationsAdapter);
-    scrollToPositionRecycler(this.playIndex);
+    scrollToPositionViewPagerStations(this.playIndex);
   }
 
   /* JADX INFO: Access modifiers changed from: private */
@@ -590,10 +594,10 @@ public class PlayerActivity extends Activity
       }
 
       if (this.stationList == null) {
-        C0162a.m9a("station list is null");
+        Logger.d("station list is null");
       } else {
 
-        C0162a.m9a("a(I): station list: " + this.stationList.size());
+        Logger.d("a(I): station list: " + this.stationList.size());
         // maximizeLeftArea(false, true);
 
         if (i < this.stationList.size()) {
@@ -612,9 +616,9 @@ public class PlayerActivity extends Activity
           this.dabHandler.sendMessage(obtainMessage);
 
           this.playIndex = i;
-          C0162a.m9a("dab play index:" + this.playIndex);
+          Logger.d("dab play index:" + this.playIndex);
           // DeterminedScrollTo(this.mStationListView, this.playIndex);
-          scrollToPositionRecycler(this.playIndex);
+          scrollToPositionViewPagerStations(this.playIndex);
 
           SharedPreferencesHelper.getInstance().setInteger("current_playing", this.playIndex);
           // m78f();
@@ -625,10 +629,10 @@ public class PlayerActivity extends Activity
     }
   }
 
-  private void scrollToPositionRecycler(int idx) {
+  private void scrollToPositionViewPagerStations(int idx) {
     // Toast.makeText(context, "scroll to pos " + idx, Toast.LENGTH_LONG).show();
     // this.linearLayoutManager.scrollToPosition(idx);
-    this.viewPagerStations.setCurrentItem(idx);
+    this.viewPagerStations.setCurrentItem(idx, false);
     if (this.stationsAdapter != null) {
       this.stationsAdapter.setMot(null, -1);
     }
@@ -649,7 +653,7 @@ public class PlayerActivity extends Activity
 
     // maximizeLeftArea(false, true);
     this.stationListSize = this.stationList.size();
-    C0162a.m9a("a(list): station list : " + this.stationListSize);
+    Logger.d("a(list): station list : " + this.stationListSize);
     if (this.stationListSize != 0) {
 
       stationsAdapter =
@@ -673,7 +677,8 @@ public class PlayerActivity extends Activity
         int presetIndex = this.presetList.indexOf(info);
         if (presetIndex != -1) {
           presetIndex = ((presetIndex + this.presetList.size()) - 1) % this.presetList.size();
-          playPreset(presetIndex);
+          info = this.presetList.get(presetIndex);
+          playPreset(info.mFavorite);
           return;
         }
       }
@@ -690,7 +695,8 @@ public class PlayerActivity extends Activity
         int presetIndex = this.presetList.indexOf(info);
         if (presetIndex != -1) {
           presetIndex = ((presetIndex + this.presetList.size()) + 1) % this.presetList.size();
-          playPreset(presetIndex);
+          info = this.presetList.get(presetIndex);
+          playPreset(info.mFavorite);
           return;
         }
       }
@@ -701,8 +707,8 @@ public class PlayerActivity extends Activity
 
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: b */
-  public void showMotImage(String str) {
-    if (str.isEmpty()) {
+  public void showMotImage(String str, int playIndex) {
+    if (str.isEmpty() || playIndex != this.playIndex) {
       // this.motImage.setDefaultImage();
       this.stationsAdapter.setMot(null, -1);
       this.motImage = null;
@@ -716,14 +722,14 @@ public class PlayerActivity extends Activity
       Bitmap decodeFile = BitmapFactory.decodeFile(file.getAbsolutePath());
       if (decodeFile != null) {
         // this.motImage.setImage(new BitmapDrawable(getResources(), decodeFile), 2);
-        Toast.makeText(context, "set mot to pos " + this.playIndex, Toast.LENGTH_LONG).show();
+        // Toast.makeText(context, "set mot to pos " + this.playIndex, Toast.LENGTH_LONG).show();
         this.motImage = new BitmapDrawable(getResources(), decodeFile);
         this.stationsAdapter.setMot(this.motImage, playIndex);
         return;
       }
       return;
     }
-    C0162a.m9a("file '" + file.getAbsolutePath() + "' not found");
+    Logger.d("file '" + file.getAbsolutePath() + "' not found");
     // }
   }
 
@@ -746,7 +752,7 @@ public class PlayerActivity extends Activity
   public void onStationChange_prevWrapper() {
 
     if (this.keyDownHandler != null) {
-      this.keyDownHandler.removeMessages(1);
+      this.keyDownHandler.removeMessages(DelayedRunnableHandler.MSG_DELAYED_RUN);
       Message msg = this.keyDownHandler.obtainMessage();
       msg.what = DelayedRunnableHandler.MSG_DELAYED_RUN;
       msg.obj = new RunnableCWrapperPrev();
@@ -779,7 +785,7 @@ public class PlayerActivity extends Activity
     this.mStationListView.setItemChecked(index, true);
     */
     // Toast.makeText(context, "updateSelectedStatus is not implements", Toast.LENGTH_LONG).show();
-    scrollToPositionRecycler(index);
+    scrollToPositionViewPagerStations(index);
   }
 
   private void DeterminedScrollTo(AbsListView listView, int index) {
@@ -794,7 +800,7 @@ public class PlayerActivity extends Activity
       } else if (lastPos > 0 && index >= lastPos) {
         target = index + 1;
       }
-      C0162a.m9a(
+      Logger.d(
           "scroll to "
               + index
               + ": firstVis="
@@ -805,11 +811,11 @@ public class PlayerActivity extends Activity
               + target);
       if (index > firstPos) {
         // listView.smoothScrollToPosition(target);
-        scrollToPositionRecycler(target);
+        scrollToPositionViewPagerStations(target);
 
       } else {
         // listView.smoothScrollToPositionFromTop(target, 0);
-        scrollToPositionRecycler(target);
+        scrollToPositionViewPagerStations(target);
       }
     }
   }
@@ -866,7 +872,7 @@ public class PlayerActivity extends Activity
 
   /* JADX INFO: Access modifiers changed from: private */
   public void finishTheApp() {
-    C0162a.m9a("finishTheApp");
+    Logger.d("finishTheApp");
     m79e();
     if (this.dabHandler != null) {
       this.dabHandler.removeMessages(5);
@@ -880,7 +886,7 @@ public class PlayerActivity extends Activity
       isDestroyed = isDestroyed();
     }
     if (!isDestroyed) {
-      C0162a.m9a("finish()");
+      Logger.d("finish()");
       finishAffinity();
       // finish();
     }
@@ -1114,7 +1120,7 @@ public class PlayerActivity extends Activity
 
   @Override // android.view.View.OnClickListener
   public void onClick(View view) {
-    C0162a.m9a("onClick 0x" + Integer.toHexString(view.getId()));
+    Logger.d("onClick 0x" + Integer.toHexString(view.getId()));
 
     if (view.getId() == R.id.bt_settings) {
       onSettingsButtonClicked();
@@ -1129,11 +1135,11 @@ public class PlayerActivity extends Activity
         return;
       } else if (view.getId() == R.id.signal_level) {
         if (ServiceFollowing.is_possible()) {
-          C0162a.m9a("manually activated service following");
+          Logger.d("manually activated service following");
           onServiceFollowRequested();
           return;
         }
-        C0162a.m9a("manually activation ignored");
+        Logger.d("manually activation ignored");
         return;
       } else if (view.getId() == R.id.bt_prev) {
         this.isPlayingPreset = 0;
@@ -1189,7 +1195,7 @@ public class PlayerActivity extends Activity
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    C0162a.m9a("Player:onCreate");
+    Logger.d("Player:onCreate");
     setContentView(R.layout.activity_player);
     // this.playIndex = 0;
     this.context = getApplicationContext();
@@ -1292,7 +1298,9 @@ public class PlayerActivity extends Activity
     new TabLayoutMediator(this.tabLayout, this.viewPager, (tab, position) -> {}).attach();
 
     this.audioManager = (AudioManager) getSystemService("audio");
-    this.progressDialog = new ProgressDialog(this);
+    this.progressDialog = new SimpleDialog(this, context.getString(R.string.Connecting));
+    this.progressDialog.showProgress(true);
+    /*
     this.progressDialog.setProgressStyle(0);
     this.progressDialog.setTitle("");
     this.progressDialog.setMessage("");
@@ -1300,8 +1308,8 @@ public class PlayerActivity extends Activity
     this.progressDialog.setIndeterminate(false);
     this.progressDialog.setIndeterminateDrawable(
         getResources().getDrawable(R.anim.progress_dialog_anim));
-
-    this.audioManager.requestAudioFocus(this.f24c, 3, 1);
+    */
+    this.audioManager.requestAudioFocus(this.audioFocusChangeListener, 3, 1);
 
     this.mServiceIntent = new Intent(this, DabService.class);
     startService(this.mServiceIntent);
@@ -1323,7 +1331,7 @@ public class PlayerActivity extends Activity
 
     Intent startedByIntent = getIntent();
     if (startedByIntent != null) {
-      C0162a.m9a("Player startedByIntent=" + startedByIntent.toString());
+      Logger.d("Player startedByIntent=" + startedByIntent.toString());
       Intent mainWasStartedByIntent =
           (Intent) startedByIntent.getParcelableExtra("StartedByIntent");
       if (mainWasStartedByIntent != null) {
@@ -1354,7 +1362,7 @@ public class PlayerActivity extends Activity
 
   /*
   public void onDeleteButtonClicked(int posInList) {
-    C0162a.m9a("Player:onDeleteButtonClicked pos " + posInList);
+    Logger.d("Player:onDeleteButtonClicked pos " + posInList);
     if (posInList >= 0 && posInList < this.stationList.size()) {
       deleteStationAtPosition(posInList);
     }
@@ -1364,15 +1372,15 @@ public class PlayerActivity extends Activity
   @Override // android.app.ListActivity, android.app.Activity
   protected void onDestroy() {
     super.onDestroy();
-    C0162a.m9a("Player:onDestroy");
+    Logger.d("Player:onDestroy");
     notifyPlayerStopped();
     if (!this.mProperShutdown) {
-      C0162a.m9a("finishTheApp!");
+      Logger.d("finishTheApp!");
       finishTheApp();
     }
     unbindService(this);
     stopService(this.mServiceIntent);
-    this.audioManager.abandonAudioFocus(this.f24c);
+    this.audioManager.abandonAudioFocus(this.audioFocusChangeListener);
     this.context.unregisterReceiver(this.f23N);
     this.mLogoDb.closeDb();
     File f = new File(Strings.LOGO_PATH_TMP);
@@ -1380,9 +1388,9 @@ public class PlayerActivity extends Activity
     if (f.exists()) {
       new DirCleaner(f).clean();
       f.delete();
-      C0162a.m9a("deleted " + f.getAbsoluteFile());
+      Logger.d("deleted " + f.getAbsoluteFile());
     } else {
-      C0162a.m9a("not exist " + f.getAbsoluteFile());
+      Logger.d("not exist " + f.getAbsoluteFile());
     }
     sPlayerHandler = null;
     sMainActivityStartIntent = null;
@@ -1390,27 +1398,17 @@ public class PlayerActivity extends Activity
 
   @Override // android.app.Activity, android.view.KeyEvent.Callback
   public boolean onKeyDown(int i, KeyEvent keyEvent) {
-    boolean handled = false;
-    C0162a.m9a("onKeyDown " + i);
+    Logger.d("onKeyDown " + i);
     switch (i) {
-      case 87:
+      case KeyEvent.KEYCODE_MEDIA_NEXT: // 87:
         onStationChange_nextWrapper();
-        handled = true;
-        break;
-      case 88:
+        return true;
+      case KeyEvent.KEYCODE_MEDIA_PREVIOUS: // 88:
         onStationChange_prevWrapper();
-        handled = true;
-        break;
+        return true;
     }
-    /*
-    if (i == 4) {
-      this.f19G = true;
-    }
-    */
-    if (handled) {
-      return true;
-    }
-    return super.onKeyDown(i, keyEvent);
+
+    return false;
   }
 
   public void onMotLongClicked() {
@@ -1419,7 +1417,7 @@ public class PlayerActivity extends Activity
 
   @Override // android.app.Activity
   protected void onPause() {
-    C0162a.m9a("Player:onPause");
+    Logger.d("Player:onPause");
     super.onPause();
 
     /*
@@ -1457,13 +1455,13 @@ public class PlayerActivity extends Activity
 
   @Override // android.app.Activity
   protected void onRestart() {
-    C0162a.m9a("Player:onRestart");
+    Logger.d("Player:onRestart");
     super.onRestart();
   }
 
   @Override // android.app.Activity
   protected void onResume() {
-    C0162a.m9a("Player:onResume");
+    Logger.d("Player:onResume");
     super.onResume();
     SharedPreferencesHelper.getInstance()
         .getSharedPreferences()
@@ -1474,7 +1472,7 @@ public class PlayerActivity extends Activity
 
     if (this.playIndex == -1) {
       this.playIndex = SharedPreferencesHelper.getInstance().getInteger("current_playing", 0);
-      scrollToPositionRecycler(this.playIndex);
+      scrollToPositionViewPagerStations(this.playIndex);
     }
 
     if (this.dabService != null) {
@@ -1485,7 +1483,6 @@ public class PlayerActivity extends Activity
 
   @Override // android.content.SharedPreferences.OnSharedPreferenceChangeListener
   public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-
     switch (key) {
       case "presetPages":
         viewPagerAdapter.setNumPages(SharedPreferencesHelper.getInstance().getInteger(key));
@@ -1498,11 +1495,12 @@ public class PlayerActivity extends Activity
           this.textClock.setVisibility(View.GONE);
         }
         break;
+      
     }
   }
 
   public void onScanButtonClicked() {
-    C0162a.m9a("scan button clicked");
+    Logger.d("scan button clicked");
 
     SimpleDialog.SimpleDialogListener simpleDialogListener =
         new SimpleDialog.SimpleDialogListener() {
@@ -1529,7 +1527,7 @@ public class PlayerActivity extends Activity
   @Override // android.content.ServiceConnection
   public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
     this.dabService = ((DabServiceBinder) iBinder).getService();
-    C0162a.m9a("DAB service connected");
+    Logger.d("DAB service connected");
     this.dabService.setPlayerHandler(this.dabFHandler);
     this.dabService.setUsbDevice(this.usbManager, this.usbDevice);
     this.dabService.startDabThread();
@@ -1540,15 +1538,16 @@ public class PlayerActivity extends Activity
 
   @Override // android.content.ServiceConnection
   public void onServiceDisconnected(ComponentName componentName) {
-    C0162a.m9a("DAB service disconnected");
+    Logger.d("DAB service disconnected");
     this.dabService = null;
   }
 
   public void onServiceFollowRequested() {
     Message obtainMessage = this.dabHandler.obtainMessage();
     obtainMessage.what = DabThread.MSGTYPE_START_SERVICE_FOLLOWING; // 23
-    obtainMessage.obj = "";
-    obtainMessage.arg1 = 0;
+    // obtainMessage.obj = "";
+    // obtainMessage.arg1 = 0;
+    obtainMessage.arg1 = this.playIndex;
     this.dabHandler.sendMessage(obtainMessage);
   }
 
@@ -1557,7 +1556,7 @@ public class PlayerActivity extends Activity
   }
 
   public void onStationClicked(int posInList) {
-    C0162a.m9a("Player:onStationClicked pos " + posInList);
+    Logger.d("Player:onStationClicked pos " + posInList);
     playStation(posInList);
   }
 
@@ -1634,7 +1633,7 @@ public class PlayerActivity extends Activity
 
   public void toastAndFinish(String toastText) {
     if (toastText != null) {
-      C0162a.m9a("toastAndFinish: " + toastText);
+      Logger.d("toastAndFinish: " + toastText);
       Toast.makeText(this.context, toastText, 1).show();
     }
     finishTheApp();

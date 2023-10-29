@@ -50,7 +50,7 @@ public class ServiceFollowing {
   private static boolean write_cluster_file(@NonNull File file, @NonNull String[] lines) {
     try {
       if ((!file.exists() || file.delete()) && file.createNewFile()) {
-        C0162a.m5a("cluster file created: ", file.getName());
+        Logger.d("cluster file created: " + file.getName());
         BufferedWriter bw = new BufferedWriter(new FileWriter(file));
         for (String line : lines) {
           builtin_freq.add(line);
@@ -58,7 +58,7 @@ public class ServiceFollowing {
           bw.newLine();
         }
         bw.close();
-        C0162a.m8a("cluster lines written=", lines.length);
+        Logger.d("cluster lines written=" + lines.length);
         return true;
       }
       return false;
@@ -92,7 +92,7 @@ public class ServiceFollowing {
         try {
           BufferedReader br = new BufferedReader(new FileReader(file));
           int our_version = get_version(lines[0]);
-          C0162a.m5a("cluster read file: ", "cluster.conf");
+          Logger.d("cluster read file: " + "cluster.conf");
           use_network_following = false;
           String line = br.readLine();
           if (line != null
@@ -122,7 +122,7 @@ public class ServiceFollowing {
           e2.printStackTrace();
         }
         if (!write_cluster_file(file, lines)) {
-          C0162a.m9a("can't use cluster file");
+          Logger.d("can't use cluster file");
           for (String line2 : lines) {
             builtin_freq.add(line2);
           }
@@ -164,7 +164,7 @@ public class ServiceFollowing {
     } else if (builtin_freq != null) {
       freq = builtin_freq.frequency();
     }
-    C0162a.m8a("servicefollow frequency:", freq);
+    Logger.d("servicefollow frequency: " + freq);
     return freq;
   }
 
@@ -181,7 +181,7 @@ public class ServiceFollowing {
   }
 
   private boolean sid_is_ok(int sid) {
-    C0162a.m9a(String.format("servicefollow found sid: %04X", Integer.valueOf(sid)));
+    Logger.d(String.format("servicefollow found sid: %04X", Integer.valueOf(sid)));
     return true;
   }
 
@@ -196,12 +196,12 @@ public class ServiceFollowing {
             break;
           }
         }
-        C0162a.m9a(String.format("servicefollow did not find sid: %04X", Integer.valueOf(sid)));
+        Logger.d(String.format("servicefollow did not find sid: %04X", Integer.valueOf(sid)));
       } else {
         if (man_tune != null && sid == man_tune.mSID) {
           z = sid_is_ok(sid);
         }
-        C0162a.m9a(String.format("servicefollow did not find sid: %04X", Integer.valueOf(sid)));
+        Logger.d(String.format("servicefollow did not find sid: %04X", Integer.valueOf(sid)));
       }
     }
     return z;
@@ -233,11 +233,11 @@ public class ServiceFollowing {
         } else if (need_builtin_freq() != null
             && man_tune != null
             && builtin_freq.find_ensemble(man_tune.mFreq, man_tune.mEID)) {
-          C0162a.m9a("servicefollow possible");
+          Logger.d("servicefollow possible");
           z = true;
         } else if (man_tune == null || report_freq != man_tune.mFreq) {
           report_freq = man_tune.mFreq;
-          C0162a.m8a("servicefollow not possible for ", report_freq);
+          Logger.d("servicefollow not possible for " + report_freq);
         }
       }
     }

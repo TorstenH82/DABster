@@ -11,7 +11,7 @@ import com.thf.dabplayer.activity.PlayerActivity;
 
 import com.thf.dabplayer.service.DabService;
 import com.thf.dabplayer.utils.AudioTools;
-import com.thf.dabplayer.utils.C0162a;
+import com.thf.dabplayer.utils.Logger;
 import com.thf.dabplayer.utils.ClippingAreaDetection;
 import com.thf.dabplayer.utils.SharedPreferencesHelper;
 import java.lang.ref.WeakReference;
@@ -90,7 +90,7 @@ public class Mp2Thread extends Thread {
     if (sampleRateInHz > 0) {
       int channelConfig = channels == 1 ? 2 : 3;
       this.f123d = AudioTrack.getMinBufferSize(sampleRateInHz, channelConfig, 2);
-      C0162a.m9a("pcm min buffer size: " + this.f123d);
+      Logger.d("pcm min buffer size: " + this.f123d);
       this.f124e = new AudioTrack(3, sampleRateInHz, channelConfig, 2, this.f123d, 1);
 
       float volume = 1.0f; // pref_settings.getFloat(SettingsActivity.pref_key_audioLevel, 1.0f);
@@ -102,7 +102,7 @@ public class Mp2Thread extends Thread {
   /* renamed from: a */
   public void exit() {
     this.f120a = true;
-    C0162a.m9a("mp2 player about to exit");
+    Logger.d("mp2 player about to exit");
   }
 
   private void notifyIntent(int samplerate, boolean isPlaying) {
@@ -132,10 +132,10 @@ public class Mp2Thread extends Thread {
       e.printStackTrace();
     }
     if (this.f122c.decoder_init(1) < 0) {
-      C0162a.m9a("mp2 player init fail");
+      Logger.d("mp2 player init fail");
       return;
     }
-    C0162a.m9a("mp2 player run");
+    Logger.d("mp2 player run");
     ClippingAreaDetection cad = null;
     int i = 0;
     int i2 = 0;
@@ -152,7 +152,7 @@ public class Mp2Thread extends Thread {
               && (a = this.f121b.readBuffer(bArr, 1024)) == 1024) {
             int decoder_feed_data = this.f122c.decoder_feed_data(1, bArr, a);
             if (decoder_feed_data < 0) {
-              C0162a.m9a("feed data fail, " + decoder_feed_data + " bytes");
+              Logger.d("feed data fail, " + decoder_feed_data + " bytes");
             }
             z = false;
           }
@@ -165,7 +165,7 @@ public class Mp2Thread extends Thread {
         if (i2 == 0) {
           int decoder_get_samplerate = this.f122c.decoder_get_samplerate(1);
           int decoder_get_channels = this.f122c.decoder_get_channels(1);
-          C0162a.m9a("samplerate:" + decoder_get_samplerate + ", channels:" + decoder_get_channels);
+          Logger.d("samplerate:" + decoder_get_samplerate + ", channels:" + decoder_get_channels);
           if (decoder_get_samplerate > 0) {
             m26a(decoder_get_samplerate, decoder_get_channels);
             i2 = 1;
@@ -187,7 +187,7 @@ public class Mp2Thread extends Thread {
             case DabThread.AUDIOSTATE_PLAY /* 200 */:
             case DabThread.AUDIOSTATE_DUCK /* 202 */:
               if (this.f124e.getPlayState() == 2) {
-                C0162a.m9a("paused -> playing");
+                Logger.d("paused -> playing");
                 this.f124e.play();
                 notifyIntent(this.mSampleRateInHz, true);
               }
@@ -216,7 +216,7 @@ public class Mp2Thread extends Thread {
               break;
             case DabThread.AUDIOSTATE_PAUSE /* 201 */:
               if (this.f124e.getPlayState() == 3) {
-                C0162a.m9a("playing -> paused");
+                Logger.d("playing -> paused");
                 this.f124e.pause();
                 notifyIntent(0, false);
                 break;
@@ -233,13 +233,13 @@ public class Mp2Thread extends Thread {
     }
     notifyIntent(0, true);
     this.f122c.decoder_close(1);
-    C0162a.m9a("mp2 player exit");
+    Logger.d("mp2 player exit");
   }
 
   private void notifyClippedSamplesDetected() {
     WeakReference<Handler> playerHandlerWeak;
     Handler playerHandler;
-    C0162a.m9a("Clipping detected");
+    Logger.d("Clipping detected");
     if (this.mIsClippedSampleNotificationEnabled
         && (playerHandlerWeak = PlayerActivity.getPlayerHandler()) != null
         && (playerHandler = playerHandlerWeak.get()) != null) {
@@ -258,14 +258,14 @@ public class Mp2Thread extends Thread {
         float volumeDucked =
             0.5f; // pref_settings.getFloat(SettingsActivity.pref_key_audioLevelWhenDucked, 0.5f);
         AudioTools.setVolume(this.f124e, volume * volumeDucked);
-        C0162a.m9a("playing -> duck");
+        Logger.d("playing -> duck");
       } else if (this.mAudioState == 202 && audioState != 202) {
         float volume2 = 1.0f; // pref_settings.getFloat(SettingsActivity.pref_key_audioLevel, 1.0f);
         AudioTools.setVolume(this.f124e, volume2);
         if (audioState == 200) {
-          C0162a.m9a("duck -> playing");
+          Logger.d("duck -> playing");
         } else {
-          C0162a.m9a("duck -> pause");
+          Logger.d("duck -> pause");
         }
       }
     }

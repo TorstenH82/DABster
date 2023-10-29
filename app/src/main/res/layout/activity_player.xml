@@ -5,8 +5,8 @@
     android:id="@+id/reLay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/radio_bg"
->
+    android:background="@color/colorBack">
+    <!-- android:background="@drawable/radio_bg" -->
 
     <TextView
         android:textAppearance="@style/StationName"
@@ -45,7 +45,7 @@
         app:layout_constraintBottom_toTopOf="@id/dls_scroll"
         android:layout_marginTop="16dp"
     />
-    
+
     <Button
         android:layout_gravity="center_vertical"
         android:id="@+id/bt_next"

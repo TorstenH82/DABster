@@ -11,6 +11,7 @@ package com.thf.dabplayer.dab;
 
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.NdefRecord;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -19,10 +20,10 @@ import android.widget.Toast;
 import com.thf.dabplayer.activity.PlayerActivity;
 import com.thf.dabplayer.dab.Decode;
 import com.thf.dabplayer.service.DabService;
-import com.thf.dabplayer.utils.C0162a;
-import com.thf.dabplayer.utils.C0165c;
+import com.thf.dabplayer.utils.Logger;
 import com.thf.dabplayer.utils.RepairEBU;
 import com.thf.dabplayer.utils.ServiceFollowing;
+import com.thf.dabplayer.utils.SharedPreferencesHelper;
 import com.thf.dabplayer.utils.Strings;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -106,7 +107,7 @@ public class DabThread extends Thread {
   private DabSubChannelInfo dabSubChannelInfo = new DabSubChannelInfo();
 
   /* renamed from: I */
-  private boolean f75I = false;
+  private boolean ficRecording = false;
 
   /* renamed from: a */
   private List stationList = new ArrayList();
@@ -115,7 +116,7 @@ public class DabThread extends Thread {
   // private List<ChannelInfo> channelInfoList = new ArrayList();
 
   /* renamed from: m */
-  private SignalMotDlsMgr f88m = null;
+  private SignalMotDlsMgr mSignalMotDlsMgr = null;
 
   /* renamed from: n */
   private AacThread aacThread = null;
@@ -181,14 +182,14 @@ public class DabThread extends Thread {
     }
     this.freq = frequency;
     this.dabDec.decoder_reset_ensemble_info(0);
-    C0162a.m9a("tune frequency:" + frequency);
+    Logger.d("tune frequency:" + frequency);
     this.dabDec.dab_api_set_subid(65);
     int dab_api_tune = this.dabDec.dab_api_tune(frequency);
     if (dab_api_tune != 1) {
       this.tuneOk = false;
       return dab_api_tune;
     }
-    C0162a.m9a("tune ok");
+    Logger.d("tune ok");
     this.tuneOk = true;
     this.dabDec.dab_api_set_subid(64);
     return 1;
@@ -245,9 +246,9 @@ public class DabThread extends Thread {
         this.mp2Thread.exit();
         this.mp2Thread = null;
       }
-      if (this.f88m != null) {
-        this.f88m.exit();
-        this.f88m = null;
+      if (this.mSignalMotDlsMgr != null) {
+        this.mSignalMotDlsMgr.exit();
+        this.mSignalMotDlsMgr = null;
       }
       if (this.aacThread != null) {
         this.aacThread.exit();
@@ -272,33 +273,33 @@ public class DabThread extends Thread {
         subChannelInfo.mSubChannelId = (byte) qVar.subChannelId;
         subChannelInfo.mType = (byte) qVar.type;
         subChannelInfo.mLabel = qVar.label;
-        C0162a.m9a("current label:" + subChannelInfo.mLabel);
-        C0162a.m9a("current service type:" + ((int) subChannelInfo.mType));
+        Logger.d("current label:" + subChannelInfo.mLabel);
+        Logger.d("current service type:" + ((int) subChannelInfo.mType));
         this.dabDec.dab_api_set_subid(65);
         this.dabDec.dab_api_set_msc_size((short) (subChannelInfo.mBitrate * 3));
         this.dabDec.dab_api_tune(subChannelInfo.mFreq);
-        C0162a.m9a("current frequency[a]: " + subChannelInfo.mFreq);
+        Logger.d("current frequency[a]: " + subChannelInfo.mFreq);
         this.dabDec.dab_api_set_subid(subChannelInfo.mSubChannelId);
         ServiceFollowing.manTune(subChannelInfo);
         this.mscThread = new MscThread(subChannelInfo.mBitrate);
         this.mscThread.start();
         this.audioType = subChannelInfo.mType == 63 ? AUDIOTYPE_AAC : AUDIOTYPE_MP2;
         if (this.audioType == AUDIOTYPE_AAC) {
-          C0162a.m9a("play aac audio");
+          Logger.d("play aac audio");
           this.aacThread = new AacThread(this.context, this.inputRingBuffer);
           this.aacThread.start();
         } else if (this.audioType == AUDIOTYPE_MP2) {
-          C0162a.m9a("play mp2 audio");
+          Logger.d("play mp2 audio");
           this.mp2Thread = new Mp2Thread(this.context, this.inputRingBuffer);
           this.mp2Thread.start();
         } else {
-          C0162a.m9a("unknown audio type");
+          Logger.d("unknown audio type");
         }
-        C0162a.m9a("bitrate: " + subChannelInfo.mBitrate);
+        Logger.d("bitrate: " + subChannelInfo.mBitrate);
       }
-      if (this.f88m == null) {
-        this.f88m = new SignalMotDlsMgr();
-        this.f88m.start();
+      if (this.mSignalMotDlsMgr == null) {
+        this.mSignalMotDlsMgr = new SignalMotDlsMgr();
+        this.mSignalMotDlsMgr.start();
       }
     }
   */
@@ -313,8 +314,8 @@ public class DabThread extends Thread {
       if (file.exists()) {
         file.delete();
       }
-      C0162a.m9a("dab_get_image '" + str + "'");
-      C0162a.m9a(" -> " + file.getAbsolutePath());
+      Logger.d("dab_get_image '" + str + "'");
+      Logger.d(" -> " + file.getAbsolutePath());
       synchronized (this.dabDec) {
         dab_get_image =
             this.dabDec.dab_get_image(dabBinFile.getBytes(), str.getBytes(), imageFile.getBytes());
@@ -322,12 +323,12 @@ public class DabThread extends Thread {
       Message obtainMessage = this.playerHandler.obtainMessage();
       obtainMessage.what = 10;
       if (dab_get_image == 0) {
-        C0162a.m9a("get service logo");
+        Logger.d("get service logo");
         obtainMessage.obj = TextUtils.concat(str, ".png");
         this.playerHandler.sendMessage(obtainMessage);
         return;
       }
-      C0162a.m9a("no service logo '" + str + "' in dab.bin, dab_get_image=" + dab_get_image);
+      Logger.d("no service logo '" + str + "' in dab.bin, dab_get_image=" + dab_get_image);
     }
   }
   */
@@ -335,10 +336,10 @@ public class DabThread extends Thread {
   /* renamed from: b */
   public void scan(int scan_which_region, int scan_type) {
 
-    C0162a.m9a("add assets to logo database");
+    Logger.d("add assets to logo database");
     new LogoDbAssets(context).execute();
 
-    C0162a.m6a("scan location:", scan_which_region, ", type:", scan_type);
+    Logger.d("scan location: " + scan_which_region + ", type: " + scan_type);
     int priority = getPriority();
     setPriority(1);
     synchronized (this.dabDec) {
@@ -358,24 +359,25 @@ public class DabThread extends Thread {
     }
     if (this.ficThread == null) {
       this.ficThread = new DabThread.FicThread();
+      this.ficRecording = SharedPreferencesHelper.getInstance().getBoolean("ficRecording");
       this.ficThread.start();
     }
-    if (this.f88m != null) {
-      this.f88m.exit();
-      this.f88m = null;
+    if (this.mSignalMotDlsMgr != null) {
+      this.mSignalMotDlsMgr.exit();
+      this.mSignalMotDlsMgr = null;
     }
     this.dabDec.dab_api_set_subid(64);
     switch (scan_which_region) {
       case 0:
-        C0162a.m9a("scan euro");
+        Logger.d("scan euro");
         scanFrequencies(new ScanFrequencies().euro);
         break;
       case 1:
-        C0162a.m9a("scan china");
+        Logger.d("scan china");
         scanFrequencies(new ScanFrequencies().china);
         break;
       case 2:
-        C0162a.m9a("scan korea");
+        Logger.d("scan korea");
         scanFrequencies(new ScanFrequencies().korea);
         break;
       default:
@@ -384,7 +386,7 @@ public class DabThread extends Thread {
         System.arraycopy(cv.euro, 0, all, 0, cv.euro.length);
         System.arraycopy(cv.china, 0, all, cv.euro.length, cv.china.length);
         System.arraycopy(cv.korea, 0, all, cv.euro.length + cv.china.length, cv.korea.length);
-        C0162a.m9a("scan all");
+        Logger.d("scan all");
         scanFrequencies(all);
         break;
     }
@@ -408,31 +410,31 @@ public class DabThread extends Thread {
 
   /* JADX INFO: Access modifiers changed from: private */
   public void erase_fic_db() {
-    C0162a.m9a("erase fic.db");
+    Logger.d("erase fic.db");
     File file = new File(fic_db_filename());
     if (file.exists() && file.delete()) {
-      C0162a.m9a("erase fic.db happened");
+      Logger.d("erase fic.db happened");
     }
   }
 
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: c */
   public void dabInit() {
-    C0162a.m9a("dab init");
+    Logger.d("dab init");
     String filename = fic_db_filename();
     String usb_devicename = this.usbDeviceConnector.getUsbDeviceName();
     File file = new File(filename);
     try {
       if (file.exists() && !file.delete()) {
-        C0162a.m9a("delete failed: " + filename);
+        Logger.d("delete failed: " + filename);
       }
       if (!file.createNewFile()) {
-        C0162a.m9a("createNewFile failed: " + filename);
+        Logger.d("createNewFile failed: " + filename);
       }
     } catch (IOException e) {
       e.printStackTrace();
     }
-    C0162a.m9a("reset mode:1");
+    Logger.d("reset mode:1");
     this.dabDec.dab_api_init(
         this.usbDeviceConnector.getUsbConFileDescriptor(),
         usb_devicename.getBytes(),
@@ -440,13 +442,13 @@ public class DabThread extends Thread {
     this.dabDec.decoder_fic_init(filename.getBytes());
     this.dabDec.decoder_fic_reset(1);
     if (this.dabDec.dab_api_power_on(0) != 1) {
-      C0162a.m9a("power on fail");
+      Logger.d("power on fail");
       sendHardwareFailure("Failed to power on DAB hardware");
     } else if (this.dabDec.dab_api_echo(0) != 1) {
-      C0162a.m9a("echo fail");
+      Logger.d("echo fail");
       sendHardwareFailure("Failed echo test with DAB hardware");
     } else if (this.dabDec.dab_api_version(0) != 1) {
-      C0162a.m9a("get version fail");
+      Logger.d("get version fail");
       sendHardwareFailure("Failed to get version from DAB hardware");
     } else {
 
@@ -477,7 +479,7 @@ public class DabThread extends Thread {
   /* renamed from: d */
   public void deInit() {
     if (this.f94u == 1 && this.dabDec.dab_api_power_off(0) != 1) {
-      C0162a.m9a("power off fail");
+      Logger.d("power off fail");
     }
     this.dabDec.decoder_fic_deinit();
     this.dabDec.dab_api_close(0);
@@ -491,11 +493,11 @@ public class DabThread extends Thread {
     int dab_get_new_pgm_bitrate;
     List<DabSubChannelInfo> stationList = this.dbHelper.getStationList();
     int size = stationList.size() - 1;
-    C0162a.m9a("play audio:" + i + "/" + size);
+    Logger.d("play audio:" + i + "/" + size);
     if (i <= size) {
-      if (this.f88m != null) {
-        this.f88m.exit();
-        this.f88m = null;
+      if (this.mSignalMotDlsMgr != null) {
+        this.mSignalMotDlsMgr.exit();
+        this.mSignalMotDlsMgr = null;
       }
       if (this.mp2Thread != null) {
         this.mp2Thread.exit();
@@ -516,9 +518,9 @@ public class DabThread extends Thread {
       this.isExecutingServiceFollowing = false;
       synchronized (this.dabDec) {
         DabSubChannelInfo subChannelInfo = stationList.get(i);
-        C0162a.m9a("current label:" + subChannelInfo.mLabel);
-        C0162a.m9a("bitrate:" + subChannelInfo.mBitrate);
-        C0162a.m9a("subchid:" + ((int) subChannelInfo.mSubChannelId));
+        Logger.d("current label:" + subChannelInfo.mLabel);
+        Logger.d("bitrate:" + subChannelInfo.mBitrate);
+        Logger.d("subchid:" + ((int) subChannelInfo.mSubChannelId));
         // this.f74H = subChannelInfo.mLabel;
         // String temp = C0165c.m1a(subChannelInfo.mLabel.trim());
         // getStationLogoFromDabBin(temp);
@@ -542,7 +544,7 @@ public class DabThread extends Thread {
                 subChannelInfo.mSID,
                 (byte) subChannelInfo.mSCID,
                 subChannelInfo.mSubChannelId);
-        C0162a.m9a("pgm index: " + size2);
+        Logger.d("pgm index: " + size2);
         if (size2 >= 0 && tune(this.freq) == 1) {
           long currentTimeMillis = System.currentTimeMillis();
           byte[] bArr = new byte[384];
@@ -552,7 +554,7 @@ public class DabThread extends Thread {
                         this.dabDec.dab_get_new_pgm_bitrate(size2, this.freq, bArr))
                     > 0) {
               subChannelInfo.mBitrate = dab_get_new_pgm_bitrate;
-              C0162a.m9a("new bitrate: " + subChannelInfo.mBitrate);
+              Logger.d("new bitrate: " + subChannelInfo.mBitrate);
               break;
             } else if (System.currentTimeMillis() - currentTimeMillis >= 1500) {
               break;
@@ -569,22 +571,22 @@ public class DabThread extends Thread {
           this.dabDec.dab_api_tune(subChannelInfo.mFreq);
           this.dabDec.dab_api_set_msc_size((short) (subChannelInfo.mBitrate * 3));
         }
-        C0162a.m9a("current frequency[d]: " + subChannelInfo.mFreq);
+        Logger.d("current frequency[d]: " + subChannelInfo.mFreq);
         this.mscThread = new MscThread(subChannelInfo.mBitrate);
         this.mscThread.start();
         this.audioType = subChannelInfo.mType == 63 ? AUDIOTYPE_AAC : AUDIOTYPE_MP2;
         if (this.audioType == AUDIOTYPE_AAC) {
-          C0162a.m9a("play aac audio");
+          Logger.d("play aac audio");
           this.aacThread = new AacThread(this.context, this.inputRingBuffer);
           this.aacThread.start();
         } else if (this.audioType == AUDIOTYPE_MP2) {
-          C0162a.m9a("play mp2 audio");
+          Logger.d("play mp2 audio");
           this.mp2Thread = new Mp2Thread(this.context, this.inputRingBuffer);
           this.mp2Thread.start();
         } else {
-          C0162a.m9a("unknown audio type");
+          Logger.d("unknown audio type");
         }
-        C0162a.m8a("bitrate: ", subChannelInfo.mBitrate);
+        Logger.d("bitrate: " + subChannelInfo.mBitrate);
         if (ServiceFollowing.is_enabled()) {
           ServiceLink sf = new ServiceLink(this.dabDec);
           sf.read(subChannelInfo, this.arrFreqs, this.arrSids);
@@ -592,9 +594,9 @@ public class DabThread extends Thread {
           notifyNewStationPlaying(subChannelInfo, i, stationList.size());
         }
       }
-      if (this.f88m == null) {
-        this.f88m = new SignalMotDlsMgr();
-        this.f88m.start();
+      if (this.mSignalMotDlsMgr == null) {
+        this.mSignalMotDlsMgr = new SignalMotDlsMgr(i);
+        this.mSignalMotDlsMgr.start();
       }
     }
   }
@@ -615,7 +617,7 @@ public class DabThread extends Thread {
       if (tune(freqs[i]) == 1) {
         m45i();
       } else {
-        C0162a.m9a("scanning: tune failed");
+        Logger.d("scanning: tune failed");
         try {
           sleep(300L);
         } catch (InterruptedException e) {
@@ -662,13 +664,13 @@ public class DabThread extends Thread {
     }
   }
 
-  private void startServiceFollowing() {
+  private void startServiceFollowing(int stationIndex) {
     if (this.isExecutingServiceFollowing) {
-      C0162a.m9a("already service following");
+      Logger.d("already service following");
       return;
     }
     this.isExecutingServiceFollowing = true;
-    C0162a.m9a("activated service following");
+    Logger.d("activated service following");
     boolean was_success = false;
     byte[] bArr = new byte[384];
     int n_usage_stable = 0;
@@ -690,7 +692,7 @@ public class DabThread extends Thread {
       this.mscThread = null;
     }
     showSearchIcon();
-    C0162a.m9a("service linking");
+    Logger.d("service linking");
     synchronized (this.dabDec) {
       int i2 = this.freq;
       ServiceFollowing serviceFollowing = new ServiceFollowing(this.arrFreqs, this.arrSids);
@@ -700,7 +702,7 @@ public class DabThread extends Thread {
           break;
         }
         subChannelInfo.mFreq = try_freq;
-        C0162a.m9a("service follow freq:" + try_freq);
+        Logger.d("service follow freq:" + try_freq);
         this.dabDec.dab_api_set_subid(64);
         int i;
         if (serviceFollowing.change_frequency()) {
@@ -719,7 +721,7 @@ public class DabThread extends Thread {
             }
             a = tune(try_freq);
           }
-          C0162a.m9a("service follow tune " + try_freq + ":" + a);
+          Logger.d("service follow tune " + try_freq + ":" + a);
           if (a == 1) {
             Object obj = null;
             this.dabDec.decoder_fic_reset(1);
@@ -746,7 +748,7 @@ public class DabThread extends Thread {
                 }
                 if (n_usage_stable >= 10) {
                   int decoder_fic_get_service_count = this.dabDec.decoder_fic_get_service_count();
-                  C0162a.m8a("servicefollow stations:", decoder_fic_get_service_count);
+                  Logger.d("servicefollow stations: " + decoder_fic_get_service_count);
                   // a.a("servicefollow stations:", decoder_fic_get_service_count);
 
                   for (i = 0; i < decoder_fic_get_service_count; i++) {
@@ -764,7 +766,7 @@ public class DabThread extends Thread {
                 break;
               }
             } while (System.currentTimeMillis() - currentTimeMillis < 1500);
-            C0162a.m8a("servicefollow usage stable:", n_usage_stable);
+            Logger.d("servicefollow usage stable: " + n_usage_stable);
             this.dabDec.decoder_fic_reset(0);
             continue;
           } else {
@@ -785,9 +787,9 @@ public class DabThread extends Thread {
       } while (!was_success);
       if (was_success) {
         RepairEBU.fixLabels(subChannelInfo);
-        C0162a.m9a("servicefollow label:" + subChannelInfo.mLabel);
-        C0162a.m9a("bitrate:" + subChannelInfo.mBitrate);
-        C0162a.m9a("subchid:" + subChannelInfo.mSubChannelId);
+        Logger.d("servicefollow label:" + subChannelInfo.mLabel);
+        Logger.d("bitrate:" + subChannelInfo.mBitrate);
+        Logger.d("subchid:" + subChannelInfo.mSubChannelId);
         this.dabSubChannelInfo.mFreq = subChannelInfo.mFreq;
         this.dabSubChannelInfo.mAbbreviatedFlag = subChannelInfo.mAbbreviatedFlag;
         this.dabSubChannelInfo.mBitrate = subChannelInfo.mBitrate;
@@ -815,22 +817,22 @@ public class DabThread extends Thread {
         this.dabDec.dab_api_tune(this.dabSubChannelInfo.mFreq);
         this.dabDec.dab_api_set_msc_size((short) (this.dabSubChannelInfo.mBitrate * 3));
       }
-      C0162a.m8a("current frequency[j]: ", this.dabSubChannelInfo.mFreq);
+      Logger.d("current frequency[j]: " + this.dabSubChannelInfo.mFreq);
       this.mscThread = new MscThread(this.dabSubChannelInfo.mBitrate);
       this.mscThread.start();
       this.audioType = this.dabSubChannelInfo.mType == (byte) 63 ? AUDIOTYPE_AAC : AUDIOTYPE_MP2;
       if (this.audioType == AUDIOTYPE_AAC) {
-        C0162a.m9a("play aac audio");
+        Logger.d("play aac audio");
         this.aacThread = new AacThread(this.context, this.inputRingBuffer);
         this.aacThread.start();
       } else if (this.audioType == AUDIOTYPE_MP2) {
-        C0162a.m9a("play mp2 audio");
+        Logger.d("play mp2 audio");
         this.mp2Thread = new Mp2Thread(this.context, this.inputRingBuffer);
         this.mp2Thread.start();
       } else {
-        C0162a.m9a("unknown audio type");
+        Logger.d("unknown audio type");
       }
-      C0162a.m8a("bitrate: ", this.dabSubChannelInfo.mBitrate);
+      Logger.d("bitrate: " + this.dabSubChannelInfo.mBitrate);
       if (was_success) {
         new ServiceLink(this.dabDec).read(this.dabSubChannelInfo, this.arrFreqs, this.arrSids);
         ServiceFollowing.autoTune(this.dabSubChannelInfo, this.arrFreqs, this.arrSids);
@@ -838,9 +840,9 @@ public class DabThread extends Thread {
         ServiceFollowing.autoTune(this.dabSubChannelInfo);
       }
     }
-    if (this.f88m == null) {
-      this.f88m = new SignalMotDlsMgr();
-      this.f88m.start();
+    if (this.mSignalMotDlsMgr == null) {
+      this.mSignalMotDlsMgr = new SignalMotDlsMgr(stationIndex);
+      this.mSignalMotDlsMgr.start();
     }
     Message obtainMessage2 = this.playerHandler.obtainMessage();
     obtainMessage2.what = PlayerActivity.PLAYERMSG_HIDE_SERVICE_FOLLOWING;
@@ -849,10 +851,10 @@ public class DabThread extends Thread {
     this.playerHandler.sendMessage(obtainMessage2);
     if (was_success) {
       updateStationPlaying(this.dabSubChannelInfo);
-      C0162a.m9a("service following done");
+      Logger.d("service following done");
       return;
     }
-    C0162a.m9a("service following fail, wait 5 secs");
+    Logger.d("service following fail, wait 5 secs");
     try {
       sleep(5000);
     } catch (InterruptedException e3) {
@@ -868,11 +870,11 @@ public class DabThread extends Thread {
 
   /* renamed from: b */
   public void exit() {
-    C0162a.m9a("dab thread exit");
+    Logger.d("dab thread exit");
     this.isOnExit = true;
-    if (this.f88m != null) {
-      this.f88m.exit();
-      this.f88m = null;
+    if (this.mSignalMotDlsMgr != null) {
+      this.mSignalMotDlsMgr.exit();
+      this.mSignalMotDlsMgr = null;
     }
     if (this.mp2Thread != null) {
       this.mp2Thread.exit();
@@ -894,14 +896,18 @@ public class DabThread extends Thread {
 
   @Override // java.lang.Thread, java.lang.Runnable
   public void run() {
-    C0162a.m9a("dab thread run");
+    Logger.d("dab thread run");
+    this.ficRecording = SharedPreferencesHelper.getInstance().getBoolean("ficRecording");
+    if (this.ficRecording) {
+      Logger.d("FIC recording enabled");
+    }
     Looper.prepare();
     this.looper = Looper.myLooper();
     this.dabHandler = new DabThread.DabHandler();
     Looper.loop();
-    if (this.f88m != null) {
-      this.f88m.exit();
-      this.f88m = null;
+    if (this.mSignalMotDlsMgr != null) {
+      this.mSignalMotDlsMgr.exit();
+      this.mSignalMotDlsMgr = null;
     }
     if (this.ficThread != null) {
       this.ficThread.exit();
@@ -919,7 +925,7 @@ public class DabThread extends Thread {
   }
 
   public void refreshStationList() {
-    C0162a.m9a("refreshStationList");
+    Logger.d("refreshStationList");
     this.stationList = this.dbHelper.getStationList();
     Message obtainMessage = this.playerHandler.obtainMessage();
     obtainMessage.what = PlayerActivity.PLAYERMSG_NEW_STATION_LIST; // 18
@@ -1045,7 +1051,7 @@ public class DabThread extends Thread {
           DabThread.this.scan(message.arg1, message.arg2);
           return;
         case MSGTYPE_DAB_DEINIT: // 5
-          C0162a.m9a("deinit");
+          Logger.d("deinit");
           DabThread.this.isOnExit = true;
           DabThread.this.deInit();
           DabThread.this.playerHandler = null;
@@ -1061,10 +1067,10 @@ public class DabThread extends Thread {
           }
           return;
         case MSGTYPE_DAB_HANDLER_STOP:
-          C0162a.m9a("DAB handler stop");
-          if (DabThread.this.f88m != null) {
-            DabThread.this.f88m.exit();
-            DabThread.this.f88m = null;
+          Logger.d("DAB handler stop");
+          if (DabThread.this.mSignalMotDlsMgr != null) {
+            DabThread.this.mSignalMotDlsMgr.exit();
+            DabThread.this.mSignalMotDlsMgr = null;
           }
           if (DabThread.this.ficThread != null) {
             DabThread.this.ficThread.exit();
@@ -1089,7 +1095,7 @@ public class DabThread extends Thread {
           // DabThread.this.m48c(message.arg1);
           return;
         case MSGTYPE_START_SERVICE_FOLLOWING:
-          DabThread.this.startServiceFollowing();
+          DabThread.this.startServiceFollowing(message.arg1);
           return;
         case UPDATE_FAVOURITE:
           // update the favourite
@@ -1127,7 +1133,7 @@ public class DabThread extends Thread {
       }
       DabThread.this.looper.quit();
       DabThread.this.looper = null;
-      C0162a.m9a("looper quit");
+      Logger.d("looper quit");
     }
   }
 
@@ -1141,7 +1147,7 @@ public class DabThread extends Thread {
     public FicThread() {}
 
     /* renamed from: a */
-    private void m42a(byte[] bArr, int i) {
+    private void writeExtraDataToBuffer(byte[] bArr, int i) {
       if (DabThread.this.ficRingBuffer != null && DabThread.this.ficRecorder != null) {
         synchronized (DabThread.this.ficRingBuffer) {
           DabThread.this.ficRingBuffer.writeBuffer(bArr, i);
@@ -1150,9 +1156,9 @@ public class DabThread extends Thread {
     }
 
     /* renamed from: b */
-    private void m41b() {
+    private void startRecording() {
       if (DabThread.this.ficRecorder != null) {
-        DabThread.this.ficRecorder.m29a();
+        DabThread.this.ficRecorder.exit();
       }
       DabThread.this.ficRingBuffer = new RingBuffer(81920);
       DabThread.this.ficRecorder = new FicRecorder(DabThread.this.ficRingBuffer);
@@ -1160,9 +1166,9 @@ public class DabThread extends Thread {
     }
 
     /* renamed from: c */
-    private void m40c() {
+    private void stopRecording() {
       if (DabThread.this.ficRecorder != null) {
-        DabThread.this.ficRecorder.m29a();
+        DabThread.this.ficRecorder.exit();
         DabThread.this.ficRecorder = null;
       }
     }
@@ -1180,8 +1186,8 @@ public class DabThread extends Thread {
       int fic_bytes;
       byte[] bArr2 = new byte[384];
       this.exit = false;
-      if (DabThread.this.f75I) {
-        m41b();
+      if (DabThread.this.ficRecording) {
+        startRecording();
         i = 0;
         usage_was_nonzero = false;
         n_usage_stable = 0;
@@ -1201,13 +1207,13 @@ public class DabThread extends Thread {
             fic_bytes = DabThread.this.dabDec.dab_api_get_fic_data(bArr2);
           }
           if (fic_bytes > 0) {
-            if (DabThread.this.f75I) {
+            if (DabThread.this.ficRecording) {
               if (i != DabThread.this.freq) {
                 i = DabThread.this.freq;
                 String str = "FREQ" + DabThread.this.freq;
-                m42a(str.getBytes(), str.getBytes().length);
+                writeExtraDataToBuffer(str.getBytes(), str.getBytes().length);
               }
-              m42a(bArr2, fic_bytes);
+              writeExtraDataToBuffer(bArr2, fic_bytes);
             }
             DabThread.this.dabDec.decoder_fic_parse(bArr2, fic_bytes, DabThread.this.freq);
             boolean usage_is_nonzero = DabThread.this.dabDec.decoder_fic_get_usage() != 0;
@@ -1218,14 +1224,15 @@ public class DabThread extends Thread {
               n_usage_stable++;
             }
             if (n_usage_stable >= 100) {
-              C0162a.m9a("fic decode finish");
+              Logger.d("fic decode finish");
               int service_count = DabThread.this.dabDec.decoder_fic_get_service_count();
               if (service_count > 0) {
-                C0162a.m9a("found " + service_count + " service");
+                Logger.d("found " + service_count + " service");
                 List arrayList = new ArrayList();
                 for (int n = 0; n < service_count; n++) {
                   DabSubChannelInfo info = new DabSubChannelInfo(true);
                   DabThread.this.dabDec.decoder_fic_get_subch_info(info, (char) n);
+                  // here we could add extra data                  
                   arrayList.add(RepairEBU.fixLabels(info));
                 }
                 DabThread.this.total_known_services +=
@@ -1245,10 +1252,10 @@ public class DabThread extends Thread {
           }
         }
       }
-      if (DabThread.this.f75I) {
-        m40c();
+      if (DabThread.this.ficRecording) {
+        stopRecording();
       }
-      C0162a.m9a("fic thread exit");
+      Logger.d("fic thread exit");
     }
   }
 
@@ -1284,7 +1291,7 @@ public class DabThread extends Thread {
       int msc_data;
       byte[] bArr = null; // = new byte[4096];
       this.exit = false;
-      C0162a.m9a("msc thread start");
+      Logger.d("msc thread start");
       while (!this.exit) {
         try {
           sleep(1L);
@@ -1314,10 +1321,10 @@ public class DabThread extends Thread {
           }
           // }
         } else {
-          C0162a.m9a("no free buffer space");
+          Logger.d("no free buffer space");
         }
       }
-      C0162a.m9a("msc thread exit");
+      Logger.d("msc thread exit");
     }
   }
 
@@ -1334,8 +1341,9 @@ public class DabThread extends Thread {
     private String prevDlsString;
     private int prevSignal;
     private int times_little_signal;
+    private int playIndex;
 
-    private SignalMotDlsMgr() {
+    private SignalMotDlsMgr(int playIndex) {
       this.exit = false;
       this.times_little_signal = 0;
       this.get_dls_buff = new byte[102400];
@@ -1343,6 +1351,7 @@ public class DabThread extends Thread {
       this.get_mot_data_buff = new byte[102400];
       this.prevDlsString = new String("");
       this.prevSignal = -1;
+      this.playIndex = playIndex;
     }
 
     private void sendSignalQuality(int dab_api_get_signal) {
@@ -1436,7 +1445,7 @@ public class DabThread extends Thread {
         byte[] a = Decode.decodeToCharacter(obj2);
         String newDlsString = new String(a);
         if (!newDlsString.equals(this.prevDlsString)) {
-          C0162a.m9a("decoder_get_dls: " + newDlsString);
+          Logger.d("decoder_get_dls: " + newDlsString);
           this.prevDlsString = newDlsString;
           sendDls(newDlsString);
         }
@@ -1451,6 +1460,7 @@ public class DabThread extends Thread {
                 this.get_mot_data_buff, this.get_mot_type_buff);
       }
       if (decoder_get_mot_data > 0) {
+        Logger.d("received mot type " + this.get_mot_type_buff[0]);
         String fileName = this.get_mot_type_buff[0] == 0 ? "mot.png" : "mot.jpg";
         File file = new File(DabThread.this.context.getFilesDir(), fileName);
         if (file.exists()) {
@@ -1468,6 +1478,7 @@ public class DabThread extends Thread {
         }
         Message obtainMessage = DabThread.this.playerHandler.obtainMessage();
         obtainMessage.what = PlayerActivity.PLAYERMSG_MOT; // 10
+        obtainMessage.arg1 = this.playIndex;
         obtainMessage.obj = fileName;
         DabThread.this.playerHandler.sendMessage(obtainMessage);
         try {
@@ -1475,7 +1486,7 @@ public class DabThread extends Thread {
           Intent intent = new Intent(DabService.META_CHANGED);
           intent.putExtra(DabService.EXTRA_SENDER, DabService.SENDER_DAB);
           intent.putExtra(DabService.EXTRA_SLS, canonicalPath);
-          C0162a.m9a("decoder_get_mot_data: " + canonicalPath);
+          Logger.d("decoder_get_mot_data: " + canonicalPath);
           DabThread.this.getContext().sendBroadcast(intent);
         } catch (IOException io) {
           io.printStackTrace();

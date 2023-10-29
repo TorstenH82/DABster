@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.thf.dabplayer.service.DabService;
-import com.thf.dabplayer.utils.C0162a;
+import com.thf.dabplayer.utils.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +65,7 @@ public class DatabaseHelper {
           && subChannelInfo2.mSubChannelId == subChannelInfo.mSubChannelId
           && subChannelInfo2.mEID == subChannelInfo.mEID
           && subChannelInfo2.mSID == subChannelInfo.mSID) {
-        C0162a.m5a(subChannelInfo2.mLabel, " already exists");
+        Logger.d(subChannelInfo2.mLabel + " already exists");
         return true;
       }
     }
@@ -73,14 +73,14 @@ public class DatabaseHelper {
   }
 
   private void OpenDatabase() {
-    C0162a.m9a("open dab.db");
+    Logger.d("open dab.db");
     this.mDatabase =
         SQLiteDatabase.openOrCreateDatabase(
             String.valueOf(this.mContext.getFilesDir().getAbsolutePath()) + "/dab.db",
             (SQLiteDatabase.CursorFactory) null);
     if (this.mDatabase.rawQuery("select * from sqlite_master where type='table'", null).getCount()
         == 1) {
-      C0162a.m9a("create dab.db");
+      Logger.d("create dab.db");
       SQLiteDatabase sQLiteDatabase = this.mDatabase;
       this.mDatabase.execSQL(
           "CREATE TABLE service (_id INTEGER PRIMARY KEY AUTOINCREMENT, label TEXT, subid INTEGER, bitrate INTEGER, sid INTEGER, freq INTEGER, pty INTEGER, type INTEGER, abbreviated INTEGER, eid INTEGER, elabel TEXT, scid INTEGER, ps INTEGER, fav INTEGER)");
@@ -90,7 +90,7 @@ public class DatabaseHelper {
   /* renamed from: a */
   public int insertNewStations(List list) {
     int new_stations = 0;
-    List c = getServiceSubchannelInfo();
+    List c = getServicesSubchannelInfo();
     for (int i = 0; i < list.size(); i++) {
       DabSubChannelInfo subChannelInfo = (DabSubChannelInfo) list.get(i);
       if (!isInList(c, subChannelInfo)) {
@@ -104,7 +104,7 @@ public class DatabaseHelper {
 
   /* renamed from: c */
   public List getStationList() {
-    return getServiceSubchannelInfo();
+    return getServicesSubchannelInfo();
   }
 
   public DabSubChannelInfo getFavouriteService(int pos) {
@@ -135,7 +135,7 @@ public class DatabaseHelper {
   }
 
   /* renamed from: c */
-  public List getServiceSubchannelInfo() {
+  public List getServicesSubchannelInfo() {
     List<DabSubChannelInfo> arrayList = new ArrayList<>();
     List<DabSubChannelInfo> dummies = null;
     if (!this.mDatabase.isOpen()) {
@@ -146,7 +146,7 @@ public class DatabaseHelper {
     // StringBuilder query = new StringBuilder(append.append("service").toString());
 
     query += " ORDER BY label COLLATE NOCASE ASC";
-    C0162a.m9a(query.toString());
+    Logger.d(query.toString());
     Cursor rawQuery = this.mDatabase.rawQuery(query.toString(), null);
     while (rawQuery.moveToNext()) {
       DabSubChannelInfo subchannelinfo = new DabSubChannelInfo();
@@ -183,13 +183,13 @@ public class DatabaseHelper {
 
   /* renamed from: e */
   public void deleteAllFromServiceTbl() {
-    C0162a.m9a("delete all from SQL table service");
+    Logger.d("delete all from SQL table service");
     String query = "DELETE FROM service";
     this.mDatabase.execSQL(query);
   }
 
   public void deleteNonFavs() {
-    C0162a.m9a("delete non-favorites from SQL table service");
+    Logger.d("delete non-favorites from SQL table service");
     String query = "DELETE FROM service WHERE fav=0";
     this.mDatabase.execSQL(query);
   }
@@ -197,7 +197,7 @@ public class DatabaseHelper {
   /* renamed from: f */
   public void closeDb() {
     this.mDatabase.close();
-    C0162a.m9a("close db");
+    Logger.d("close db");
   }
 
   public void updateFav(DabSubChannelInfo subChannelInfo, int favoPos) {
@@ -227,7 +227,7 @@ public class DatabaseHelper {
           sQLiteDatabase.update("service", contentValues, where, null);
         }
 
-        C0162a.m9a("updateFav " + subChannelInfo.mLabel + " to pos " + favoPos);
+        Logger.d("updateFav " + subChannelInfo.mLabel + " to pos " + favoPos);
         ContentValues contentValues = new ContentValues();
         contentValues.put("label", subChannelInfo.mLabel);
         contentValues.put("subid", Byte.valueOf(subChannelInfo.mSubChannelId));
@@ -255,7 +255,7 @@ public class DatabaseHelper {
 
         int response = sQLiteDatabase.update("service", contentValues, where, null);
 
-        C0162a.m9a(
+        Logger.d(
             "updateFav " + subChannelInfo.mLabel + " to pos " + favoPos + " returned " + response);
         updateFavCount();
       }
@@ -279,7 +279,7 @@ public class DatabaseHelper {
   public void delete(DabSubChannelInfo subChannelInfo) {
     synchronized (this) {
       if (this.mDatabase.isOpen()) {
-        C0162a.m9a("remove " + subChannelInfo.mLabel);
+        Logger.d("remove " + subChannelInfo.mLabel);
         String where =
             "freq="
                 + subChannelInfo.mFreq
@@ -293,7 +293,7 @@ public class DatabaseHelper {
         getClass();
         int deleted = sQLiteDatabase.delete("service", where, null);
         if (deleted != 1) {
-          C0162a.m9a("delete OUCH: " + deleted + " rows");
+          Logger.d("delete OUCH: " + deleted + " rows");
         }
         updateFavCount();
       }

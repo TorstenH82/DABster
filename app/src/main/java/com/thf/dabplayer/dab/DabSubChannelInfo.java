@@ -20,6 +20,8 @@ public class DabSubChannelInfo {
   public int mSID;
   public byte mSubChannelId;
   public byte mType;
+  // ECC='E0' [ Germany ]
+  // public String mECC;
 
   public int compare(DabSubChannelInfo subChannelInfo, DabSubChannelInfo subChannelInfo2) {
     return subChannelInfo.mLabel.compareTo(subChannelInfo2.mLabel);

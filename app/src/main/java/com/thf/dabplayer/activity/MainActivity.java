@@ -1,5 +1,6 @@
 package com.thf.dabplayer.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -7,14 +8,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.hardware.usb.UsbDevice;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Toast;
+import androidx.core.app.ActivityCompat;
 import com.thf.dabplayer.R;
 import com.thf.dabplayer.dab.LogoDbAssets;
-import com.thf.dabplayer.utils.C0162a;
+import com.thf.dabplayer.utils.Logger;
 import com.thf.dabplayer.utils.SharedPreferencesHelper;
 import com.thf.dabplayer.utils.UsbDeviceHandling;
 /* renamed from: com.ex.dabplayer.pad.activity.MainActivity */
@@ -99,19 +102,57 @@ public class MainActivity extends Activity {
   /* JADX INFO: Access modifiers changed from: private */
   public void toastAndFinish(String toastText) {
     if (toastText != null) {
-      C0162a.m9a("Toast: " + toastText);
+      Logger.d("Toast: " + toastText);
       Toast.makeText(this.context, toastText, 1).show();
     }
     this.progressDialog.dismiss();
     finish();
   }
 
+  /*
+  final int PERMISSION_REQUEST_CODE = 112;
+  public void getNotificationPermission() {
+    try {
+      if (Build.VERSION.SDK_INT > 32) {
+        ActivityCompat.requestPermissions(
+            this, new String[] {Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
+      }
+    } catch (Exception e) {
+    }
+  }
+
+  @Override
+   public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+       super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+       switch (requestCode) {
+           case PERMISSION_REQUEST_CODE:
+               // If request is cancelled, the result arrays are empty.
+               if (grantResults.length > 0 &&
+                       grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                   // allow
+               }  else {
+                   //deny
+               }
+               return;
+       }
+
+   }
+   */
+
   @Override // android.app.Activity
   protected void onCreate(Bundle bundle) {
     super.onCreate(bundle);
 
-    if ("RMX3301EEA".equals(Build.PRODUCT)) {
+    /*
+    if (Build.VERSION.SDK_INT > 32) {
+      if (!shouldShowRequestPermissionRationale("112")) {
+        getNotificationPermission();
+      }
+    }
+    */
 
+    if ("RMX3301EEA".equals(Build.PRODUCT)) {
       Intent intentTest = new Intent();
       intentTest.setClass(this, PlayerActivity.class);
       // intentTest.putExtra("UsbDevice", usbDevice);
@@ -120,36 +161,46 @@ public class MainActivity extends Activity {
       startActivity(intentTest);
     }
 
-    C0162a.m9a("MainActivity:onCreate");
-    C0162a.m9a("board: " + Build.BOARD);
-    C0162a.m9a("device: " + Build.DEVICE);
-    C0162a.m9a("OS release: " + Build.VERSION.RELEASE);
-    C0162a.m9a("product: " + Build.PRODUCT);
+    Logger.d("MainActivity:onCreate");
+    Logger.d("board: " + Build.BOARD);
+    Logger.d("device: " + Build.DEVICE);
+    Logger.d("OS release: " + Build.VERSION.RELEASE);
+    Logger.d("product: " + Build.PRODUCT);
     try {
       PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-      C0162a.m9a("App version: " + pInfo.versionName);
+      Logger.d("App version: " + pInfo.versionName);
     } catch (Exception e) {
       e.printStackTrace();
     }
-    this.startedByIntent = getIntent();
-    C0162a.m9a("Started by: " + this.startedByIntent.toString());
-    this.context = getApplicationContext();
 
+    this.startedByIntent = getIntent();
+    Logger.d("Started by: " + this.startedByIntent.toString());
+    /*
+    if (this.startedByIntent != null && this.startedByIntent.getAction() != null) {
+      if ("android.hardware.usb.action.USB_DEVICE_ATTACHED"
+          .equals(this.startedByIntent.getAction())) {
+        if (!SharedPreferencesHelper.getInstance().getBoolean("startUsb")) {
+          finish();
+        }
+      }
+    }
+    */
+
+    this.context = getApplicationContext();
     this.progressDialog = new SimpleDialog(this); // , "Connecting");
     this.progressDialog.setMessage(this.getResources().getString(R.string.Connecting));
-    this.progressDialog.showProgress();
+    this.progressDialog.showProgress(true);
     this.progressDialog.show();
 
     this.usbDeviceHandling =
         new UsbDeviceHandling(
             getApplicationContext(), DAB_USB_VID, DAB_USB_PID, this.usbDeviceResultListener);
     this.usbDeviceHandling.start();
-
   }
 
   @Override // android.app.Activity
   protected void onDestroy() {
-    C0162a.m9a("MainActivity:onDestroy");
+    Logger.d("MainActivity:onDestroy");
     super.onDestroy();
     this.usbDeviceHandling.stop();
     this.progressDialog.dismiss();
@@ -157,14 +208,14 @@ public class MainActivity extends Activity {
 
   @Override // android.app.Activity
   protected void onPause() {
-    C0162a.m9a("MainActivity:onPause");
+    Logger.d("MainActivity:onPause");
     super.onPause();
     this.usbDeviceHandling.pause();
   }
 
   @Override // android.app.Activity
   protected void onResume() {
-    C0162a.m9a("MainActivity:onResume");
+    Logger.d("MainActivity:onResume");
     super.onResume();
     if (isPlayerRunning()) {
       bringPlayerActivityToFrontAndFinish();
@@ -176,14 +227,14 @@ public class MainActivity extends Activity {
   @Override // android.app.Activity
   protected void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
-    C0162a.m9a("MainActivity:onNewIntent " + intent.toString());
+    Logger.d("MainActivity:onNewIntent " + intent.toString());
     this.usbDeviceHandling.reset();
     this.usbDeviceHandling.resume();
   }
 
   private boolean isPlayerRunning() {
     boolean isPlayerRunning = PlayerActivity.getPlayerHandler() != null;
-    C0162a.m9a("isPlayerRunning: " + isPlayerRunning);
+    Logger.d("isPlayerRunning: " + isPlayerRunning);
     return isPlayerRunning;
   }
 
@@ -194,7 +245,7 @@ public class MainActivity extends Activity {
     try {
       startActivity(intent);
     } catch (ActivityNotFoundException e) {
-      C0162a.m9a(e.toString());
+      Logger.d(e.toString());
     }
     this.progressDialog.dismiss();
     finish();
@@ -205,7 +256,7 @@ public class MainActivity extends Activity {
     boolean startOnUsbAttached = SharedPreferencesHelper.getInstance().getBoolean("startUsb");
     if ("android.hardware.usb.action.USB_DEVICE_ATTACHED".equals(this.startedByIntent.getAction())
         && !startOnUsbAttached) {
-      C0162a.m9a("start on USB device attached NOT allowed by settings");
+      Logger.d("start on USB device attached NOT allowed by settings");
       toastAndFinish(null);
       return;
     }

@@ -1,6 +1,6 @@
 package com.thf.dabplayer.dab;
 
-import com.thf.dabplayer.utils.C0162a;
+import com.thf.dabplayer.utils.Logger;
 
 /* renamed from: com.ex.dabplayer.pad.dab.StationLogo */
 /* loaded from: classes.dex */
@@ -29,13 +29,13 @@ public class StationLogo {
         stationLogo.mStationServiceId = sid;
       }
 
-      C0162a.m9a(stationLogo.mLogoPathFilename);
-      C0162a.m9a(stationLogo.mStationNameNormalized);
-      C0162a.m9a(stationLogo.mStationServiceId + "");
+      Logger.d(stationLogo.mLogoPathFilename);
+      Logger.d(stationLogo.mStationNameNormalized);
+      Logger.d(stationLogo.mStationServiceId + "");
 
       return stationLogo;
     }
-    C0162a.m5a("ignore stationlogo ", name);
+    Logger.d("ignore stationlogo " + name);
     return null;
   }
 

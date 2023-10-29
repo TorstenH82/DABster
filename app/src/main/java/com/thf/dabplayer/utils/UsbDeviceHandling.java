@@ -83,12 +83,12 @@ public class UsbDeviceHandling {
 
         /* renamed from: i */
         static void m10i(String str) {
-            C0162a.m9a("UsbDeviceHandling: " + str);
+            Logger.d("UsbDeviceHandling: " + str);
         }
 
         /* renamed from: e */
         static void m11e(String str) {
-            C0162a.m9a("UsbDeviceHandling ERROR: " + str);
+            Logger.d("UsbDeviceHandling ERROR: " + str);
         }
     }
 
@@ -260,7 +260,7 @@ public class UsbDeviceHandling {
                 sendFsmEvent(EVENT_FINALLY_NO_USBDEVICE);
                 return;
             }
-            C0162a.m9a("USB connect attempt " + this.mNumConnectingRetries + "/" + EVENT_FINALLY_NO_USBPERMISSION);
+            Logger.d("USB connect attempt " + this.mNumConnectingRetries + "/" + EVENT_FINALLY_NO_USBPERMISSION);
             if (this.mListener != null) {
                 this.mListener.onUsbConnectAttemptStarted(this.mNumConnectingRetries, EVENT_FINALLY_NO_USBPERMISSION);
             }
@@ -268,10 +268,10 @@ public class UsbDeviceHandling {
                 try {
                     for (UsbDevice usbDevice : this.mUsbManager.getDeviceList().values()) {
                        
-                        C0162a.m9a("USB device " + usbDevice.getProductId() + "/" + usbDevice.getVendorId());
+                        Logger.d("USB device " + usbDevice.getProductId() + "/" + usbDevice.getVendorId());
                         if (usbDevice.getProductId() == this.mUsbPid && usbDevice.getVendorId() == this.mUsbVid) {
                             this.mFoundUsbDevice = usbDevice;
-                            C0162a.m9a("USB device found " + usbDevice.getDeviceName());
+                            Logger.d("USB device found " + usbDevice.getDeviceName());
                             break;
                         }
                     }
@@ -279,7 +279,7 @@ public class UsbDeviceHandling {
                     e.printStackTrace();
                 }
             } else {
-                C0162a.m9a("mUsbManager null");
+                Logger.d("mUsbManager null");
             }
             if (this.mFoundUsbDevice != null) {
                 sendFsmEvent(EVENT_FOUND_USBDEVICE);

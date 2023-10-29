@@ -5,7 +5,7 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbManager;
-import com.thf.dabplayer.utils.C0162a;
+import com.thf.dabplayer.utils.Logger;
 
 /* renamed from: com.ex.dabplayer.pad.dab.k */
 /* loaded from: classes.dex */
@@ -46,7 +46,7 @@ public class UsbDeviceConnector {
   public int getUsbConFileDescriptor() {
     this.usbDeviceConnection = this.usbManager.openDevice(this.usbDevice);
     int fileDescriptor = this.usbDeviceConnection.getFileDescriptor();
-    C0162a.m9a("interfaces: " + this.usbDevice.getInterfaceCount());
+    Logger.d("interfaces: " + this.usbDevice.getInterfaceCount());
     return fileDescriptor;
   }
 

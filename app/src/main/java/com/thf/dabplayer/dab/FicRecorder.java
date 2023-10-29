@@ -1,6 +1,6 @@
 package com.thf.dabplayer.dab;
 
-import com.thf.dabplayer.utils.C0162a;
+import com.thf.dabplayer.utils.Logger;
 import com.thf.dabplayer.utils.Strings;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,7 +12,7 @@ import java.io.IOException;
 public class FicRecorder extends Thread {
 
     /* renamed from: a */
-    private boolean f117a;
+    private boolean exit;
 
     /* renamed from: b */
     private String f118b = ".fic";
@@ -22,7 +22,7 @@ public class FicRecorder extends Thread {
 
     public FicRecorder(RingBuffer rVar) {
         this.f119c = rVar;
-        C0162a.m9a("start fic recorder");
+        Logger.d("start fic recorder");
     }
 
     /* renamed from: b */
@@ -40,7 +40,7 @@ public class FicRecorder extends Thread {
             } else {
                 try {
                     file2.createNewFile();
-                    C0162a.m9a("record: " + file2.getAbsolutePath());
+                    Logger.d("record: " + file2.getAbsolutePath());
                     return file2.getAbsolutePath();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -50,8 +50,8 @@ public class FicRecorder extends Thread {
     }
 
     /* renamed from: a */
-    public void m29a() {
-        this.f117a = true;
+    public void exit() {
+        this.exit = true;
     }
 
     @Override // java.lang.Thread, java.lang.Runnable
@@ -64,7 +64,7 @@ public class FicRecorder extends Thread {
             e.printStackTrace();
             fileOutputStream = null;
         }
-        while (!this.f117a) {
+        while (!this.exit) {
             try {
                 sleep(5L);
             } catch (InterruptedException e2) {

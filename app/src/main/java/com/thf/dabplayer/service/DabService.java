@@ -1,6 +1,5 @@
 package com.thf.dabplayer.service;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -25,18 +24,15 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.widget.Toast;
 import androidx.media.MediaBrowserServiceCompat.Result;
-import android.view.ViewGroup;
 import androidx.media.session.MediaButtonReceiver;
 // import com.thf.dabplayer.activity.AlarmReceiver;
 import com.thf.dabplayer.activity.MainActivity;
 import com.thf.dabplayer.activity.PlayerActivity;
 import com.thf.dabplayer.dab.DabThread;
 import com.thf.dabplayer.dab.UsbDeviceConnector;
-import com.thf.dabplayer.utils.C0162a;
-import com.thf.dabplayer.utils.Credits;
+import com.thf.dabplayer.utils.Logger;
 import com.thf.dabplayer.activity.SettingsActivity;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +113,7 @@ public class DabService extends MediaBrowserServiceCompat {
                     (KeyEvent)
                         mediaButtonEvent.getParcelableExtra("android.intent.extra.KEY_EVENT"))
                 != null) {
-          C0162a.m9a("MediaSessionCallback:onMediaButtonEvent: " + keyEv.toString());
+          Logger.d("MediaSessionCallback:onMediaButtonEvent: " + keyEv.toString());
           int keyCode = keyEv.getKeyCode();
           int keyAction = keyEv.getAction();
           if (keyAction == 0) {
@@ -131,7 +127,7 @@ public class DabService extends MediaBrowserServiceCompat {
                           PlayerActivity.PLAYERMSG_NEXT_STATION);
                   DabService.this.playerHandler.sendMessage(m);
                 } else {
-                  C0162a.m9a("no handler to handle NEXT");
+                  Logger.d("no handler to handle NEXT");
                 }
                 handled = true;
                 break;
@@ -144,7 +140,7 @@ public class DabService extends MediaBrowserServiceCompat {
                           PlayerActivity.PLAYERMSG_PREV_STATION);
                   DabService.this.playerHandler.sendMessage(m2);
                 } else {
-                  C0162a.m9a("no handler to handle PREV");
+                  Logger.d("no handler to handle PREV");
                 }
                 handled = true;
                 break;
@@ -157,31 +153,31 @@ public class DabService extends MediaBrowserServiceCompat {
 
     @Override // android.support.p000v4.media.session.MediaSessionCompat.Callback
     public void onPlay() {
-      C0162a.m9a("MediaSessionCallback:onPlay");
+      Logger.d("MediaSessionCallback:onPlay");
       super.onPlay();
     }
 
     @Override // android.support.p000v4.media.session.MediaSessionCompat.Callback
     public void onPause() {
-      C0162a.m9a("MediaSessionCallback:onPause");
+      Logger.d("MediaSessionCallback:onPause");
       super.onPause();
     }
 
     @Override // android.support.p000v4.media.session.MediaSessionCompat.Callback
     public void onStop() {
-      C0162a.m9a("MediaSessionCallback:onStop");
+      Logger.d("MediaSessionCallback:onStop");
       super.onStop();
     }
 
     @Override // android.support.p000v4.media.session.MediaSessionCompat.Callback
     public void onSetRating(RatingCompat rating) {
-      C0162a.m9a("MediaSessionCallback:onSetRating");
+      Logger.d("MediaSessionCallback:onSetRating");
       super.onSetRating(rating);
     }
 
     @Override // android.support.p000v4.media.session.MediaSessionCompat.Callback
     public void onSkipToNext() {
-      C0162a.m9a("MediaSessionCallback:onSkipToNext");
+      Logger.d("MediaSessionCallback:onSkipToNext");
       if (DabService.this.playerHandler != null) {
         DabService.this.playerHandler.removeMessages(PlayerActivity.PLAYERMSG_NEXT_STATION);
         Message m =
@@ -189,12 +185,12 @@ public class DabService extends MediaBrowserServiceCompat {
         DabService.this.playerHandler.sendMessage(m);
         return;
       }
-      C0162a.m9a("no handler to handle NEXT");
+      Logger.d("no handler to handle NEXT");
     }
 
     @Override // android.support.p000v4.media.session.MediaSessionCompat.Callback
     public void onSkipToPrevious() {
-      C0162a.m9a("MediaSessionCallback:onSkipToPrevious");
+      Logger.d("MediaSessionCallback:onSkipToPrevious");
       if (DabService.this.playerHandler != null) {
         DabService.this.playerHandler.removeMessages(PlayerActivity.PLAYERMSG_PREV_STATION);
         Message m =
@@ -202,23 +198,23 @@ public class DabService extends MediaBrowserServiceCompat {
         DabService.this.playerHandler.sendMessage(m);
         return;
       }
-      C0162a.m9a("no handler to handle NEXT");
+      Logger.d("no handler to handle NEXT");
     }
   }
 
   /* renamed from: a */
   public Handler getDabHandlerFromDabThread() {
     if (this.dabThread != null) {
-      C0162a.m9a("get dab handler");
+      Logger.d("get dab handler");
       return this.dabThread.getDabHandler();
     }
-    C0162a.m9a("get dab handler: c=null");
+    Logger.d("get dab handler: c=null");
     return null;
   }
 
   /* renamed from: a */
   public void setPlayerHandler(Handler playerHandler) {
-    C0162a.m9a("service set handler");
+    Logger.d("service set handler");
     this.playerHandler = playerHandler;
     if (this.dabThread != null) {
       this.dabThread.setPlayerHandler(playerHandler);
@@ -227,14 +223,14 @@ public class DabService extends MediaBrowserServiceCompat {
 
   /* renamed from: a */
   public void setUsbDevice(UsbManager usbManager, UsbDevice usbDevice) {
-    C0162a.m9a("service set usb device");
+    Logger.d("service set usb device");
     this.usbDevice = usbDevice;
     this.usbManager = usbManager;
   }
 
   /* renamed from: b */
   public void startDabThread() {
-    C0162a.m9a("start dab service");
+    Logger.d("start dab service");
     if (this.usbDevice != null) {
       this.dabThread =
           new DabThread(
@@ -244,24 +240,25 @@ public class DabService extends MediaBrowserServiceCompat {
       this.dabThread.start();
       return;
     }
-    C0162a.m9a("mUsbDevice is null");
+    Logger.d("mUsbDevice is null");
+        Toast.makeText(this, "USB device not set - stop service", Toast.LENGTH_LONG).show();
     gracefullyStop();
   }
 
   @Override // android.support.p000v4.media.MediaBrowserServiceCompat, android.app.Service
   public IBinder onBind(Intent intent) {
-    C0162a.m9a("service bind");
+    Logger.d("service bind");
     if (intent != null) {
-      C0162a.m9a(intent.toString());
+      Logger.d(intent.toString());
     }
     return this.dabServiceBinder;
   }
 
   @Override // android.app.Service
   public boolean onUnbind(Intent intent) {
-    C0162a.m9a("service unbind");
+    Logger.d("service unbind");
     if (intent != null) {
-      C0162a.m9a(intent.toString());
+      Logger.d(intent.toString());
       return false;
     }
     return false;
@@ -269,7 +266,8 @@ public class DabService extends MediaBrowserServiceCompat {
 
   @Override // android.app.Service
   public int onStartCommand(Intent intent, int flags, int startId) {
-    C0162a.m9a("onStartCommand");
+    Logger.d("onStartCommand");
+
     KeyEvent keyEvent = MediaButtonReceiver.handleIntent(this.mMediaSession, intent);
     if (keyEvent == null && this.mNotificationBuilder == null) {
       showNotification();
@@ -279,10 +277,10 @@ public class DabService extends MediaBrowserServiceCompat {
 
   @Override // android.support.p000v4.media.MediaBrowserServiceCompat, android.app.Service
   public void onCreate() {
-    C0162a.m9a("DabService:onCreate");
+    Logger.d("DabService:onCreate");
     super.onCreate();
     // this.alarm.setAlarm(this);
-    // C0162a.m9a("ALARM IN DABSERVICE LAUNCHED");
+    // Logger.d("ALARM IN DABSERVICE LAUNCHED");
     this.mMediaSession = new MediaSessionCompat(getApplicationContext(), "dab");
     this.mMediaSession.setFlags(3);
     this.mPlaybackStateBuilder =
@@ -292,15 +290,29 @@ public class DabService extends MediaBrowserServiceCompat {
     this.mMediaSession.setPlaybackState(this.mPlaybackStateBuilder.build());
     this.mMediaSession.setCallback(new MediaSessionCallback());
     setSessionToken(this.mMediaSession.getSessionToken());
-    PendingIntent mainIntent =
-        PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
+
+    PendingIntent mainIntent;
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      mainIntent =
+          PendingIntent.getActivity(
+              this,
+              0,
+              new Intent(this, MainActivity.class),
+              PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+    } else {
+      mainIntent =
+          PendingIntent.getActivity(
+              this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
     this.mMediaSession.setSessionActivity(mainIntent);
     this.mMediaSession.setActive(true);
   }
 
   @Override // android.app.Service
   public void onDestroy() {
-    C0162a.m9a("DabService:onDestroy");
+    Logger.d("DabService:onDestroy");
     super.onDestroy();
     this.mPlaybackStateBuilder =
         new PlaybackStateCompat.Builder(this.mPlaybackStateBuilder.build())
@@ -319,17 +331,17 @@ public class DabService extends MediaBrowserServiceCompat {
   public MediaBrowserServiceCompat.BrowserRoot onGetRoot(
       @NonNull String clientPackageName, int clientUid, @Nullable Bundle rootHints) {
     if (allowBrowsing(clientPackageName, clientUid)) {
-      C0162a.m9a("DabService:onGetRoot media_root_id");
+      Logger.d("DabService:onGetRoot media_root_id");
       return new MediaBrowserServiceCompat.BrowserRoot(MY_MEDIA_ROOT_ID, null);
     }
-    C0162a.m9a("DabService:onGetRoot empty_root_id");
+    Logger.d("DabService:onGetRoot empty_root_id");
     return new MediaBrowserServiceCompat.BrowserRoot(MY_EMPTY_MEDIA_ROOT_ID, null);
   }
 
   @Override
   public void onLoadChildren(String parentMediaId, Result<List<MediaItem>> result) {
 
-    C0162a.m9a("DabService:onLoadChildren " + parentMediaId);
+    Logger.d("DabService:onLoadChildren " + parentMediaId);
     if (TextUtils.equals(MY_EMPTY_MEDIA_ROOT_ID, parentMediaId)) {
       result.sendResult(null);
       return;
@@ -344,7 +356,7 @@ public class DabService extends MediaBrowserServiceCompat {
   public void onLoadChildren(
       String parentMediaId,
       MediaBrowserServiceCompat.Result<List<MediaBrowserCompat.MediaItem>> result) {
-    C0162a.m9a("DabService:onLoadChildren " + parentMediaId);
+    Logger.d("DabService:onLoadChildren " + parentMediaId);
     if (TextUtils.equals(MY_EMPTY_MEDIA_ROOT_ID, parentMediaId)) {
       result.sendResult(null);
       return;
@@ -356,12 +368,35 @@ public class DabService extends MediaBrowserServiceCompat {
     */
 
   private void showNotification() {
-    PendingIntent mainIntent =
-        PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
-    PendingIntent settingsIntent =
-        PendingIntent.getActivity(this, 0, new Intent(this, SettingsActivity.class), 0);
-    PendingIntent nextIntent = MediaButtonReceiver.buildMediaButtonPendingIntent(this, 32L);
-    PendingIntent prevIntent = MediaButtonReceiver.buildMediaButtonPendingIntent(this, 16L);
+
+    PendingIntent mainIntent;
+    PendingIntent settingsIntent;
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+      mainIntent =
+          PendingIntent.getActivity(
+              this,
+              0,
+              new Intent(this, MainActivity.class),
+              PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+      settingsIntent =
+          PendingIntent.getActivity(
+              this,
+              0,
+              new Intent(this, SettingsActivity.class),
+              PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+    } else {
+      mainIntent =
+          PendingIntent.getActivity(
+              this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+      mainIntent =
+          PendingIntent.getActivity(
+              this, 0, new Intent(this, SettingsActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    
+    // PendingIntent nextIntent = MediaButtonReceiver.buildMediaButtonPendingIntent(this, 32L);
+    // PendingIntent prevIntent = MediaButtonReceiver.buildMediaButtonPendingIntent(this, 16L);
     int iconID = getResourceId("ic_notification", "drawable", getPackageName());
     CharSequence settingsStr =
         getText(getResourceId("btn_text_Settings", "string", getPackageName()));
@@ -371,9 +406,12 @@ public class DabService extends MediaBrowserServiceCompat {
     this.mNotificationBuilder
         .setSmallIcon(iconID)
         .setContentTitle(getText(getResourceId("app_name", "string", getPackageName())))
-        .setContentText("")
+        .setContentText("Test")
         .setContentIntent(mainIntent)
+        .setOngoing(true)
         .setChannelId(id1);
+
+    /*
     if (Build.VERSION.SDK_INT < 20) {
       this.mNotificationBuilder.addAction(android.R.drawable.ic_media_previous, "", prevIntent);
       this.mNotificationBuilder.addAction(android.R.drawable.ic_media_next, "", nextIntent);
@@ -391,29 +429,22 @@ public class DabService extends MediaBrowserServiceCompat {
       //      android.R.drawable.ic_menu_preferences, settingsStr, settingsIntent)
       //   .build());
     }
+    */
     if (Build.VERSION.SDK_INT >= 21) {
       this.mNotificationBuilder.setCategory("service");
+
       this.mNotificationBuilder.setStyle(
           new Notification.MediaStyle()
               .setMediaSession((MediaSession.Token) getSessionToken().getToken())
               .setShowActionsInCompactView(0, 1));
     }
+    createChannel();
     Notification notification = this.mNotificationBuilder.build();
 
-    /*
-        LayoutInflater layoutInflater = (LayoutInflater) getSystemService("layout_inflater");
-        View settingsInfoView = null;
-        if (layoutInflater != null) {
-          settingsInfoView =
-              layoutInflater.inflate(
-                  getResourceId("settings_about", "layout", getPackageName()), (ViewGroup) null, false);
-        }
-    */
-    createChannel();
+    NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+   
     startForeground(NOTIFCATION_ID, notification);
 
-    // Credits credits = new Credits();
-    // credits.credits_show_notification(this, 21, notification, settingsInfoView);
   }
 
   private void createChannel() {
@@ -437,6 +468,7 @@ public class DabService extends MediaBrowserServiceCompat {
   private void clearNotification() {
     NotificationManager nm = (NotificationManager) getSystemService("notification");
     if (nm != null) {
+
       nm.cancel(NOTIFCATION_ID);
     }
     stopForeground(true);
@@ -474,7 +506,7 @@ public class DabService extends MediaBrowserServiceCompat {
   }
 
   private void gracefullyStop() {
-    C0162a.m9a("service stopself");
+    Logger.d("service stopself");
     clearNotification();
     stopSelf();
   }

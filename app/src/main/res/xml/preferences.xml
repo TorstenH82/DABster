@@ -35,6 +35,10 @@
             android:defaultValue="@string/pref_startUsb"
             android:key="startUsb"
             android:title="@string/StartUsb" />
+       <androidx.preference.SwitchPreference
+            android:defaultValue="@string/pref_ficRecording"
+            android:key="ficRecording"
+            android:title="@string/FicRecording" />
     </androidx.preference.PreferenceCategory> 
     <androidx.preference.PreferenceCategory android:title="Donate">
         <androidx.preference.Preference

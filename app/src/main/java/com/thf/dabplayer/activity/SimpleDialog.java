@@ -48,10 +48,7 @@ public class SimpleDialog {
             // .setMessage(initMessage)
             .setCancelable(false)
             .setIcon(R.drawable.radio);
-        
-        
-        
-        
+
     if (showButtons) {
       builder.setPositiveButton(
           R.string.next,
@@ -83,13 +80,13 @@ public class SimpleDialog {
     dialog = builder.create();
     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-    this.progressBar = alertView.findViewById(R.id.loader);
+    this.progressBar = alertView.findViewById(R.id.dialog_progress);
     this.progressBar.setVisibility(View.GONE);
 
-    this.textView = (TextView) alertView.findViewById(R.id.loading_msg);
+    this.textView = (TextView) alertView.findViewById(R.id.dialog_message);
     this.textView.setVisibility(View.GONE);
 
-    this.radioGroup = alertView.findViewById(R.id.radiogroup);
+    this.radioGroup = alertView.findViewById(R.id.dialog_radiogroup);
     this.radioGroup.setVisibility(View.GONE);
   }
 
@@ -99,6 +96,10 @@ public class SimpleDialog {
 
   public SimpleDialog(Activity activity) {
     this(activity, null, false, null);
+  }
+
+  public void setTitle(String title) {
+    this.dialog.setTitle(title);
   }
 
   public void setMessage(String message) {
@@ -130,9 +131,12 @@ public class SimpleDialog {
     this.selectedIdx = idx;
   }
 
-  public void showProgress() {
-    this.progressBar.setVisibility(View.VISIBLE);
-    this.progressBar.setProgress(50);
+  public void showProgress(boolean showProgress) {
+    if (showProgress) {
+      this.progressBar.setVisibility(View.VISIBLE);
+    } else {
+      this.progressBar.setVisibility(View.GONE);
+    }
   }
 
   private boolean isShowing = false;

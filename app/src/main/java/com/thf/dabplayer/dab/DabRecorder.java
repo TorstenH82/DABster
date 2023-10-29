@@ -1,6 +1,6 @@
 package com.thf.dabplayer.dab;
 
-import com.thf.dabplayer.utils.C0162a;
+import com.thf.dabplayer.utils.Logger;
 import com.thf.dabplayer.utils.Strings;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,7 +31,7 @@ public class DabRecorder extends Thread {
     } else {
       this.f65b = ".mp3";
     }
-    C0162a.m9a("start dab recorder");
+    Logger.d("start dab recorder");
   }
 
   /* renamed from: b */
@@ -61,7 +61,7 @@ public class DabRecorder extends Thread {
         }
       }
     }
-    C0162a.m9a("record: " + file.getAbsolutePath());
+    Logger.d("record: " + file.getAbsolutePath());
     return file.getAbsolutePath();
   }
 
