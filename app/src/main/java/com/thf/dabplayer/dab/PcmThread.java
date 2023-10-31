@@ -33,11 +33,13 @@ public class PcmThread extends Thread {
   private int mChannels;
   private boolean isClippedSampleDetectionEnabled;
   private boolean isClippedSampleNotificationEnabled;
+  private int unclippedSamplesRequired = 1;
+  private int remainingUnclippedSamples = 1;
   private SharedPrefListener mPrefListener;
   private int mSampleRateInHz;
 
   /* renamed from: a */
-  private boolean f127a = false;
+  private boolean exit = false;
 
   /* renamed from: e */
   private boolean f131e = false;
@@ -46,22 +48,26 @@ public class PcmThread extends Thread {
   /* renamed from: com.ex.dabplayer.pad.dab.p$SharedPrefListener */
   /* loaded from: classes.dex */
   private class SharedPrefListener implements SharedPreferences.OnSharedPreferenceChangeListener {
-    SharedPrefListener() {}
-
     @Override // android.content.SharedPreferences.OnSharedPreferenceChangeListener
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-      if (key.equals("suppressNoise")) {
-        PcmThread.this.isClippedSampleDetectionEnabled =
-            SharedPreferencesHelper.getInstance().getBoolean("suppressNoise");
+      switch (key) {
+        case "suppressNoise":
+          PcmThread.this.isClippedSampleDetectionEnabled =
+              SharedPreferencesHelper.getInstance().getBoolean(key);
 
-        PcmThread.this.isClippedSampleNotificationEnabled =
-            SharedPreferencesHelper.getInstance().getBoolean("suppressNoise");
-
-      } else if (key.equals("volume")) {
-        // float volume = sharedPreferences.getFloat(SettingsActivity.pref_key_audioLevel, 1.0f);
-        // if (PcmThread.this.audioTrack != null) {
-        //  AudioTools.setVolume(PcmThread.this.audioTrack, volume);
-        // }
+          PcmThread.this.isClippedSampleNotificationEnabled =
+              SharedPreferencesHelper.getInstance().getBoolean(key);
+          break;
+        case "volume":
+          // float volume =
+          // sharedPreferences.getFloat(SettingsActivity.pref_key_audioLevel, 1.0f);
+          // if (PcmThread.this.audioTrack != null) {
+          //  AudioTools.setVolume(PcmThread.this.audioTrack, volume);
+          break;
+        case "unclippedSamples":
+          PcmThread.this.unclippedSamplesRequired =
+              SharedPreferencesHelper.getInstance().getInteger(key);
+          break;
       }
     }
   }
@@ -78,6 +84,10 @@ public class PcmThread extends Thread {
         SharedPreferencesHelper.getInstance().getBoolean("suppressNoise");
     this.isClippedSampleNotificationEnabled =
         SharedPreferencesHelper.getInstance().getBoolean("suppressNoise");
+
+    this.unclippedSamplesRequired =
+        SharedPreferencesHelper.getInstance().getInteger("unclippedSamples");
+
     this.mPrefListener = new SharedPrefListener();
 
     SharedPreferencesHelper.getInstance()
@@ -101,8 +111,8 @@ public class PcmThread extends Thread {
   }
 
   /* renamed from: a */
-  public void m25a() {
-    this.f127a = true;
+  public void exit() {
+    this.exit = true;
     Logger.d("pcm thread about to exit");
   }
 
@@ -121,9 +131,6 @@ public class PcmThread extends Thread {
     }
   }
 
-   int numRemainUnclippedSamples = 0; 
-    
-    
   @Override // java.lang.Thread, java.lang.Runnable
   public void run() {
     byte[] bArr = new byte[184320];
@@ -135,24 +142,25 @@ public class PcmThread extends Thread {
       e.printStackTrace();
     }
     ClippingAreaDetection cad = new ClippingAreaDetection(this.mChannels);
-    while (!this.f127a) {
+    while (!this.exit) {
       try {
         Thread.sleep(1L);
       } catch (InterruptedException e2) {
         e2.printStackTrace();
       }
       synchronized (this.ringBuffer) {
-        if (this.ringBuffer.getRemainingCapacity() >= this.minBufferSize) {
+        if (this.ringBuffer.getNumSamplesAvailable() >= this.minBufferSize) {
+          // if (this.ringBuffer.getRemainingCapacity() >= this.minBufferSize) {
           int a = this.ringBuffer.readBuffer(bArr, this.minBufferSize);
           if (!this.f131e) {
             this.f131e = true;
             m24a(this.mSampleRateInHz, this.mChannels);
-            /*            
+            /*
             Intent intent = new Intent("com.microntek.app");
             intent.putExtra("app", DabService.SENDER_DAB);
             intent.putExtra("audio", "play");
             this.context.sendBroadcast(intent);
-            */            
+            */
             notifyIntent(this.audioTrack.getSampleRate(), true);
           }
           switch (this.mAudioState) {
@@ -166,10 +174,15 @@ public class PcmThread extends Thread {
               if (this.audioTrack.getPlayState() == AudioTrack.PLAYSTATE_PLAYING) {
                 if (this.isClippedSampleDetectionEnabled) {
                   if (!cad.areSamplesClipped(bArr, a)) {
-                    this.audioTrack.write(bArr, 0, a);
+                    remainingUnclippedSamples -= 1;
+                    if (remainingUnclippedSamples <= 0) {
+                      this.audioTrack.write(bArr, 0, a);
+                      remainingUnclippedSamples = 1;
+                    }
                     break;
                   } else {
                     notifyClippedSamplesDetected();
+                    remainingUnclippedSamples = unclippedSamplesRequired;
                     break;
                   }
                 } else {
@@ -215,7 +228,8 @@ public class PcmThread extends Thread {
 
     if (this.audioTrack != null) {
       if (this.mAudioState == 200 && audioState == 202) {
-        // float volume = pref_settings.getFloat(SettingsActivity.pref_key_audioLevel, 1.0f);
+        // float volume = pref_settings.getFloat(SettingsActivity.pref_key_audioLevel,
+        // 1.0f);
         float volume = 1.0f;
         float volumeDucked = 0.5f;
         // float volumeDucked =
@@ -223,7 +237,8 @@ public class PcmThread extends Thread {
         AudioTools.setVolume(this.audioTrack, volume * volumeDucked);
         Logger.d("playing -> duck");
       } else if (this.mAudioState == 202 && audioState != 202) {
-        // float volume2 = pref_settings.getFloat(SettingsActivity.pref_key_audioLevel, 1.0f);
+        // float volume2 = pref_settings.getFloat(SettingsActivity.pref_key_audioLevel,
+        // 1.0f);
         float volume2 = 1.0f;
         AudioTools.setVolume(this.audioTrack, volume2);
         if (audioState == 200) {

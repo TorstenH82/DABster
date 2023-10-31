@@ -176,11 +176,9 @@ public class LogoDb {
 
   public String getLogoFilenameForStation(String name, int sid) {
     String path = getLogoFilenameForStationAndIssue(name, sid, null);
-
     if (sid == -99) {
       path = "logos/" + path;
     }
-
     return path;
   }
 
@@ -433,5 +431,20 @@ public class LogoDb {
       }
     }
     return result;
+  }
+
+  public void deleteUserStationLogo(String stationName, int serviceId) {
+    synchronized (this) {
+      if (!getDb().isOpen()) {
+        openOrCreateDb();
+      }
+      String where =
+          "WHERE station='"
+              + StationLogo.getNormalizedStationName(stationName)
+              + "' AND sid="
+              + serviceId;
+
+      getDb().execSQL("DELETE FROM logos" + " " + where);
+    }
   }
 }

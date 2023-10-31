@@ -114,7 +114,7 @@ public class AacThread extends Thread {
     } // end while
 
     if (this.mPcmThread != null) {
-      this.mPcmThread.m25a();
+      this.mPcmThread.exit();
       try {
         this.mPcmThread.join();
       } catch (InterruptedException e) {

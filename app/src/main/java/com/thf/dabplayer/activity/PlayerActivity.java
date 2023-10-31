@@ -122,23 +122,46 @@ public class PlayerActivity extends Activity
   private ViewPager2 viewPagerStations;
   private SwitchStationsAdapter.Listener switchStationsAdapterListener =
       new SwitchStationsAdapter.Listener() {
+        private int lastLongClickPosition = -1;
+
         @Override
         public void onItemClick(int position) {
           onStationClicked(position);
         }
 
+        // long click on station item
         @Override
         public void onLongPress(int position) {
-          Toast.makeText(context, "long clicked at " + position, Toast.LENGTH_SHORT).show();
-          if (PlayerActivity.this.motImage != null) {
-            if (PlayerActivity.this.stationList != null
-                && PlayerActivity.this.stationList.size() > position) {
-              DabSubChannelInfo sci = PlayerActivity.this.stationList.get(position);
+          // check here if custom image set
+          if (PlayerActivity.this.stationList != null
+              && PlayerActivity.this.stationList.size() > position) {
+            DabSubChannelInfo sci = PlayerActivity.this.stationList.get(position);
+
+            if (PlayerActivity.this.motImage != null) {
               PlayerActivity.this.mLogoDb.storeUserStationLogo(
                   PlayerActivity.this.motImage, sci.mLabel, sci.mSID);
+              // refresh presets
+              // viewPagerAdapter.refreshWithoutNewData();
+            } else {
+              if (PlayerActivity.this.mLogoDb.getLogoFilenameForStation(sci.mLabel, sci.mSID)
+                  != null) {
+                if (position == this.lastLongClickPosition) {
+                  PlayerActivity.this.mLogoDb.deleteUserStationLogo(sci.mLabel, sci.mSID);
+                  PlayerActivity.this.stationsAdapter.setMot(null, -1);
+                } else {
+                  this.lastLongClickPosition = position;
+                  Toast.makeText(
+                          PlayerActivity.this.context,
+                          "Again to reset station logo",
+                          Toast.LENGTH_LONG)
+                      .show();
+                  return;
+                }
+              }
             }
             // refresh presets
             viewPagerAdapter.refreshWithoutNewData();
+            this.lastLongClickPosition = -1;
           }
         }
       };
@@ -185,8 +208,8 @@ public class PlayerActivity extends Activity
   private final BroadcastReceiver f23N = new hBroadcastReceiver();
 
   AudioManager.OnAudioFocusChangeListener audioFocusChangeListener =
-      new AudioManager
-          .OnAudioFocusChangeListener() { // from class: com.ex.dabplayer.pad.activity.Player.1
+      new AudioManager.OnAudioFocusChangeListener() { // from class:
+        // com.ex.dabplayer.pad.activity.Player.1
         @Override // android.media.AudioManager.OnAudioFocusChangeListener
         public void onAudioFocusChange(int i) {
           int arg = -1;
@@ -573,8 +596,8 @@ public class PlayerActivity extends Activity
             + channel;
     if (this.toast_service_following == null) {
       this.toast_service_following = Toast.makeText(getApplicationContext(), msg, 1);
-      this.toast_service_following.setGravity(
-          17, -(getResources().getDisplayMetrics().widthPixels / 4), 0);
+      // this.toast_service_following.setGravity(
+      //        17, -(getResources().getDisplayMetrics().widthPixels / 4), 0);
     } else {
       this.toast_service_following.setText(msg);
     }
@@ -629,6 +652,7 @@ public class PlayerActivity extends Activity
     }
   }
 
+  // switch to another station in stations view pager and null the mot image
   private void scrollToPositionViewPagerStations(int idx) {
     // Toast.makeText(context, "scroll to pos " + idx, Toast.LENGTH_LONG).show();
     // this.linearLayoutManager.scrollToPosition(idx);
@@ -722,7 +746,8 @@ public class PlayerActivity extends Activity
       Bitmap decodeFile = BitmapFactory.decodeFile(file.getAbsolutePath());
       if (decodeFile != null) {
         // this.motImage.setImage(new BitmapDrawable(getResources(), decodeFile), 2);
-        // Toast.makeText(context, "set mot to pos " + this.playIndex, Toast.LENGTH_LONG).show();
+        // Toast.makeText(context, "set mot to pos " + this.playIndex,
+        // Toast.LENGTH_LONG).show();
         this.motImage = new BitmapDrawable(getResources(), decodeFile);
         this.stationsAdapter.setMot(this.motImage, playIndex);
         return;
@@ -784,7 +809,8 @@ public class PlayerActivity extends Activity
     }
     this.mStationListView.setItemChecked(index, true);
     */
-    // Toast.makeText(context, "updateSelectedStatus is not implements", Toast.LENGTH_LONG).show();
+    // Toast.makeText(context, "updateSelectedStatus is not implements",
+    // Toast.LENGTH_LONG).show();
     scrollToPositionViewPagerStations(index);
   }
 
@@ -1243,7 +1269,8 @@ public class PlayerActivity extends Activity
 
             if (userScrollChange) {
               PlayerActivity.this.isPlayingPreset = 0;
-              Toast.makeText(context, position + " OnScrollListener", Toast.LENGTH_LONG).show();
+              // Toast.makeText(context, position + " OnScrollListener",
+              // Toast.LENGTH_LONG).show();
               onStationClicked(position);
             }
           }
@@ -1411,10 +1438,6 @@ public class PlayerActivity extends Activity
     return false;
   }
 
-  public void onMotLongClicked() {
-    Toast.makeText(context, "onMotLongClicked is not implements", Toast.LENGTH_LONG).show();
-  }
-
   @Override // android.app.Activity
   protected void onPause() {
     Logger.d("Player:onPause");
@@ -1495,7 +1518,6 @@ public class PlayerActivity extends Activity
           this.textClock.setVisibility(View.GONE);
         }
         break;
-      
     }
   }
 

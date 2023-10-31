@@ -118,7 +118,7 @@ public class DabService extends MediaBrowserServiceCompat {
           int keyAction = keyEv.getAction();
           if (keyAction == 0) {
             switch (keyCode) {
-              case 87:
+              case KeyEvent.KEYCODE_MEDIA_NEXT: //87
                 if (DabService.this.playerHandler != null) {
                   DabService.this.playerHandler.removeMessages(
                       PlayerActivity.PLAYERMSG_NEXT_STATION);
@@ -131,7 +131,7 @@ public class DabService extends MediaBrowserServiceCompat {
                 }
                 handled = true;
                 break;
-              case 88:
+              case KeyEvent.KEYCODE_MEDIA_PREVIOUS: // 88::
                 if (DabService.this.playerHandler != null) {
                   DabService.this.playerHandler.removeMessages(
                       PlayerActivity.PLAYERMSG_PREV_STATION);
@@ -241,7 +241,7 @@ public class DabService extends MediaBrowserServiceCompat {
       return;
     }
     Logger.d("mUsbDevice is null");
-        Toast.makeText(this, "USB device not set - stop service", Toast.LENGTH_LONG).show();
+    Toast.makeText(this, "USB device not set - stop service", Toast.LENGTH_LONG).show();
     gracefullyStop();
   }
 
@@ -389,62 +389,44 @@ public class DabService extends MediaBrowserServiceCompat {
       mainIntent =
           PendingIntent.getActivity(
               this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-      mainIntent =
+      settingsIntent =
           PendingIntent.getActivity(
               this, 0, new Intent(this, SettingsActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    
     // PendingIntent nextIntent = MediaButtonReceiver.buildMediaButtonPendingIntent(this, 32L);
     // PendingIntent prevIntent = MediaButtonReceiver.buildMediaButtonPendingIntent(this, 16L);
     int iconID = getResourceId("ic_notification", "drawable", getPackageName());
     CharSequence settingsStr =
         getText(getResourceId("btn_text_Settings", "string", getPackageName()));
+        
     if (this.mNotificationBuilder == null) {
       this.mNotificationBuilder = new Notification.Builder(this);
     }
     this.mNotificationBuilder
         .setSmallIcon(iconID)
         .setContentTitle(getText(getResourceId("app_name", "string", getPackageName())))
-        .setContentText("Test")
+        // .setContentText("Test")
         .setContentIntent(mainIntent)
         .setOngoing(true)
         .setChannelId(id1);
 
-    /*
-    if (Build.VERSION.SDK_INT < 20) {
-      this.mNotificationBuilder.addAction(android.R.drawable.ic_media_previous, "", prevIntent);
-      this.mNotificationBuilder.addAction(android.R.drawable.ic_media_next, "", nextIntent);
-      // this.mNotificationBuilder.addAction(
-      //    android.R.drawable.ic_menu_preferences, settingsStr, settingsIntent);
-    } else {
-      this.mNotificationBuilder.addAction(
-          new Notification.Action.Builder(android.R.drawable.ic_media_previous, "", prevIntent)
-              .build());
-      this.mNotificationBuilder.addAction(
-          new Notification.Action.Builder(android.R.drawable.ic_media_next, "", nextIntent)
-              .build());
-      // this.mNotificationBuilder.addAction(
-      // new Notification.Action.Builder(
-      //      android.R.drawable.ic_menu_preferences, settingsStr, settingsIntent)
-      //   .build());
-    }
-    */
+    
     if (Build.VERSION.SDK_INT >= 21) {
-      this.mNotificationBuilder.setCategory("service");
-
+      //this.mNotificationBuilder.setCategory("service");
       this.mNotificationBuilder.setStyle(
           new Notification.MediaStyle()
               .setMediaSession((MediaSession.Token) getSessionToken().getToken())
-              .setShowActionsInCompactView(0, 1));
+              //.setShowActionsInCompactView(0, 1)
+                );
+            
     }
     createChannel();
     Notification notification = this.mNotificationBuilder.build();
 
-    NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-   
-    startForeground(NOTIFCATION_ID, notification);
+    //NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+    startForeground(NOTIFCATION_ID, notification);
   }
 
   private void createChannel() {

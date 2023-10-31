@@ -101,4 +101,6 @@
     <string name="pref_startUsb">false</string>
     <string name="FicRecording"> Record FIC (Fast Information Channel) data during scan</string>
     <string name="pref_ficRecording">false</string>
+    <string name="UnclippedSamples">Clean samples required</string>
+    <string name="pref_unclippedSamples">1</string>
 </resources>

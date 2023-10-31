@@ -175,17 +175,7 @@ public class MainActivity extends Activity {
 
     this.startedByIntent = getIntent();
     Logger.d("Started by: " + this.startedByIntent.toString());
-    /*
-    if (this.startedByIntent != null && this.startedByIntent.getAction() != null) {
-      if ("android.hardware.usb.action.USB_DEVICE_ATTACHED"
-          .equals(this.startedByIntent.getAction())) {
-        if (!SharedPreferencesHelper.getInstance().getBoolean("startUsb")) {
-          finish();
-        }
-      }
-    }
-    */
-
+    
     this.context = getApplicationContext();
     this.progressDialog = new SimpleDialog(this); // , "Connecting");
     this.progressDialog.setMessage(this.getResources().getString(R.string.Connecting));
@@ -275,7 +265,6 @@ public class MainActivity extends Activity {
     if (this.startedByIntent == null || (action = this.startedByIntent.getAction()) == null) {
       return false;
     }
-    boolean ret = action.equals("android.hardware.usb.action.USB_DEVICE_ATTACHED");
-    return ret;
+    return action.equals("android.hardware.usb.action.USB_DEVICE_ATTACHED");
   }
 }

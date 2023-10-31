@@ -148,7 +148,6 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
     public void onClick(View view) {
       ViewPagerAdapter.selectedPageIdx = getAdapterPosition();
       int memoryNum = getMemoryNum(view.getId(), getAdapterPosition());
-      Toast.makeText(context, "clicked on memory position " + memoryNum, Toast.LENGTH_LONG).show();
       listener.onItemClick(memoryNum);
     }
 

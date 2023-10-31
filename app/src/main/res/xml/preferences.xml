@@ -15,7 +15,13 @@
             android:defaultValue="@string/pref_suppressNoise"
             android:key="suppressNoise"
             android:title="@string/SuppressNoise" />
-       
+      <androidx.preference.SeekBarPreference
+            android:defaultValue="@string/pref_unclippedSamples"
+            android:key="unclippedSamples"
+            android:max="100"
+            android:min="1"
+            android:summary="summary"
+            android:title="@string/UnclippedSamples" />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory android:title="Layout">
         <androidx.preference.SwitchPreference

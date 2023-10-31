@@ -95,7 +95,7 @@ public class DabThread extends Thread {
   private int[] arrSids = new int[16];
 
   /* renamed from: C */
-  private RingBuffer ficRingBuffer = null;
+  private RingBuffer ficRecorderRingBuffer = null;
 
   /* renamed from: D */
   private FicRecorder ficRecorder = null;
@@ -1148,9 +1148,9 @@ public class DabThread extends Thread {
 
     /* renamed from: a */
     private void writeExtraDataToBuffer(byte[] bArr, int i) {
-      if (DabThread.this.ficRingBuffer != null && DabThread.this.ficRecorder != null) {
-        synchronized (DabThread.this.ficRingBuffer) {
-          DabThread.this.ficRingBuffer.writeBuffer(bArr, i);
+      if (DabThread.this.ficRecorderRingBuffer != null && DabThread.this.ficRecorder != null) {
+        synchronized (DabThread.this.ficRecorderRingBuffer) {
+          DabThread.this.ficRecorderRingBuffer.writeBuffer(bArr, i);
         }
       }
     }
@@ -1160,8 +1160,8 @@ public class DabThread extends Thread {
       if (DabThread.this.ficRecorder != null) {
         DabThread.this.ficRecorder.exit();
       }
-      DabThread.this.ficRingBuffer = new RingBuffer(81920);
-      DabThread.this.ficRecorder = new FicRecorder(DabThread.this.ficRingBuffer);
+      DabThread.this.ficRecorderRingBuffer = new RingBuffer(81920);
+      DabThread.this.ficRecorder = new FicRecorder(DabThread.this.ficRecorderRingBuffer);
       DabThread.this.ficRecorder.start();
     }
 
@@ -1232,7 +1232,7 @@ public class DabThread extends Thread {
                 for (int n = 0; n < service_count; n++) {
                   DabSubChannelInfo info = new DabSubChannelInfo(true);
                   DabThread.this.dabDec.decoder_fic_get_subch_info(info, (char) n);
-                  // here we could add extra data                  
+                  // here we could add extra data
                   arrayList.add(RepairEBU.fixLabels(info));
                 }
                 DabThread.this.total_known_services +=
@@ -1452,7 +1452,7 @@ public class DabThread extends Thread {
       }
     }
 
-    private void poll_mot() {
+    private void poll_mot(int playIndex) {
       int decoder_get_mot_data;
       synchronized (DabThread.this.dabDec) {
         decoder_get_mot_data =
@@ -1478,7 +1478,7 @@ public class DabThread extends Thread {
         }
         Message obtainMessage = DabThread.this.playerHandler.obtainMessage();
         obtainMessage.what = PlayerActivity.PLAYERMSG_MOT; // 10
-        obtainMessage.arg1 = this.playIndex;
+        obtainMessage.arg1 = playIndex;
         obtainMessage.obj = fileName;
         DabThread.this.playerHandler.sendMessage(obtainMessage);
         try {
@@ -1506,12 +1506,12 @@ public class DabThread extends Thread {
     @Override // java.lang.Thread, java.lang.Runnable
     public void run() {
 
-      setPriority(1);
+      //setPriority(1);
       int i = 0;
       while (!this.exit) {
         poll_dls();
         poll_signallevel();
-        poll_mot();
+        poll_mot(this.playIndex);
 
         try {
           sleep(1000);

@@ -31,6 +31,10 @@ public class SettingsActivity extends AppCompatActivity {
           seekBarPreference = findPreference(key);
           seekBarPreference.setSummary(seekBarPreference.getValue() + "");
           break;
+        case "unclippedSamples":
+          seekBarPreference = findPreference(key);
+          seekBarPreference.setSummary(seekBarPreference.getValue() + "");
+          break;
       }
     }
 
@@ -55,6 +59,11 @@ public class SettingsActivity extends AppCompatActivity {
       presetPages.setMin(1);
       presetPages.setUpdatesContinuously(true);
       presetPages.setSummary(presetPages.getValue() + "");
+
+      SeekBarPreference unclippedSamples = findPreference("unclippedSamples");
+      unclippedSamples.setMin(1);
+      unclippedSamples.setUpdatesContinuously(true);
+      unclippedSamples.setSummary(unclippedSamples.getValue() + "");
 
       try {
         PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
