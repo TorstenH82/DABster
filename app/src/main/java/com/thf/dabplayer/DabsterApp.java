@@ -7,6 +7,7 @@ import com.thf.dabplayer.utils.SharedPreferencesHelper;
 public class DabsterApp extends Application {
 
   private static DabsterApp sInstance;
+  private boolean isPopupActivityRunning = false;
 
   public void setRunned() {}
 
@@ -25,5 +26,13 @@ public class DabsterApp extends Application {
   @Override // android.app.Application
   public void onTerminate() {
     super.onTerminate();
+  }
+
+  public void setPopupActivityRunning(boolean running) {
+    this.isPopupActivityRunning = running;
+  }
+
+  public boolean isPopupActivityRunning() {
+    return this.isPopupActivityRunning;
   }
 }

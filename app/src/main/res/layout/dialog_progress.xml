@@ -1,38 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:padding="13dp"
+    android:orientation="vertical"
     android:layout_centerHorizontal="true"
+    android:gravity="center_vertical"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ProgressBar
+            android:id="@+id/dialog_progress"
+            android:layout_marginEnd="5dp"
+            android:layout_gravity="center"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+        />
+        <ImageView
+            android:id="@+id/dialog_image"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:text=""
+            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/dialog_message"
+            android:layout_height="wrap_content"
+        />
+        <RadioGroup
+            android:id="@+id/dialog_radiogroup"
+            android:layout_marginStart="-6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+        />
 
-    <Space
-        android:layout_width="16dp"
-        android:layout_height="0dp"
-    />
 
-    <ProgressBar
-        android:id="@+id/dialog_progress"
-        android:layout_marginEnd="5dp"
-        android:layout_width="25dp"
-        android:layout_height="25dp" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
-        android:text=""
-        android:textAppearance="?android:textAppearanceMedium"
-        android:layout_gravity="center_vertical"
-        android:id="@+id/dialog_message"
-        android:layout_toEndOf="@+id/loader"
-        android:layout_height="wrap_content" />
-
-    <RadioGroup
-        android:id="@+id/dialog_radiogroup"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:orientation="vertical" />
+        android:textAppearance="?android:textAppearanceSmall"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="28dp"
+        android:autoLink="web"
+        android:visibility="gone"
+        android:id="@+id/dialog_link"
+    />
 
 </LinearLayout>

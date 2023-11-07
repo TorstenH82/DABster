@@ -52,7 +52,7 @@ public class AacThread extends Thread {
 
       int decoder_feed_data = -1;
       int isRead = this.mDabDecoder.decoder_is_feed_data(0);
-      Logger.d("thf: isRead is " + isRead);
+      // Logger.d("thf: isRead is " + isRead);
       if (isRead == 1) {
         synchronized (this.mInputAacRingBuffer) {
           if (this.mInputAacRingBuffer.getNumSamplesAvailable() >= 1024) {
@@ -76,15 +76,14 @@ public class AacThread extends Thread {
         }
       }
 
-      String strLen = array == null ? "null" : array.length + "";
-
-      Logger.d("length of array to decode: " + strLen);
+      //String strLen = array == null ? "null" : array.length + "";
+      //Logger.d("length of array to decode: " + strLen);
 
       int decoder_decode = 0;
       // if (array != null && array.length > 0) {
 
       decoder_decode = this.mDabDecoder.decoder_decode(0, array);
-      Logger.d("decoder return code is " + decoder_decode);
+      // Logger.d("decoder return code is " + decoder_decode);
       // }
 
       if (decoder_decode < 0) {

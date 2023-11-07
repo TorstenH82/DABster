@@ -16,10 +16,14 @@ import android.text.TextUtils;
 import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import com.thf.dabplayer.R;
+import com.thf.dabplayer.dab.DabSubChannelInfo;
 import com.thf.dabplayer.dab.LogoDbAssets;
 import com.thf.dabplayer.utils.Logger;
 import com.thf.dabplayer.utils.SharedPreferencesHelper;
 import com.thf.dabplayer.utils.UsbDeviceHandling;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 /* renamed from: com.ex.dabplayer.pad.activity.MainActivity */
 /* loaded from: classes.dex */
 public class MainActivity extends Activity {
@@ -153,12 +157,34 @@ public class MainActivity extends Activity {
     */
 
     if ("RMX3301EEA".equals(Build.PRODUCT)) {
+/*
       Intent intentTest = new Intent();
       intentTest.setClass(this, PlayerActivity.class);
       // intentTest.putExtra("UsbDevice", usbDevice);
       intentTest.putExtra("StartedByIntent", this.startedByIntent);
       intentTest.addFlags(536870912);
       startActivity(intentTest);
+*/
+      
+      List<DabSubChannelInfo> list = new ArrayList<>();
+      DabSubChannelInfo dummy = new DabSubChannelInfo();
+      dummy.mLabel = "This is a very long station name";
+      list.add(dummy);
+      dummy = new DabSubChannelInfo();
+      dummy.mLabel = "Absolut HOT";
+      list.add(dummy);
+      dummy = new DabSubChannelInfo();
+      dummy.mLabel = "Beats Radio";
+      list.add(dummy);
+
+      Intent intentTest = new Intent();
+      intentTest.setClass(this, PopupActivity.class);
+      // intentTest.putExtra("UsbDevice", usbDevice);
+
+      intentTest.putExtra("stationList", (Serializable) list);
+      intentTest.addFlags(536870912);
+      startActivity(intentTest);
+            
     }
 
     Logger.d("MainActivity:onCreate");
@@ -175,7 +201,7 @@ public class MainActivity extends Activity {
 
     this.startedByIntent = getIntent();
     Logger.d("Started by: " + this.startedByIntent.toString());
-    
+
     this.context = getApplicationContext();
     this.progressDialog = new SimpleDialog(this); // , "Connecting");
     this.progressDialog.setMessage(this.getResources().getString(R.string.Connecting));
@@ -254,7 +280,7 @@ public class MainActivity extends Activity {
     intent.setClass(this, PlayerActivity.class);
     intent.putExtra("UsbDevice", usbDevice);
     intent.putExtra("StartedByIntent", this.startedByIntent);
-    intent.addFlags(536870912);
+    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
     startActivity(intent);
     this.progressDialog.dismiss();
     finish();

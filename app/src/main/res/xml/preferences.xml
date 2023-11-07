@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
+
     <androidx.preference.PreferenceCategory android:title="General">
         <androidx.preference.SwitchPreference
             android:defaultValue="@string/pref_serviceFollowing"
@@ -15,7 +15,7 @@
             android:defaultValue="@string/pref_suppressNoise"
             android:key="suppressNoise"
             android:title="@string/SuppressNoise" />
-      <androidx.preference.SeekBarPreference
+        <androidx.preference.SeekBarPreference
             android:defaultValue="@string/pref_unclippedSamples"
             android:key="unclippedSamples"
             android:max="100"
@@ -24,10 +24,6 @@
             android:title="@string/UnclippedSamples" />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory android:title="Layout">
-        <androidx.preference.SwitchPreference
-            android:defaultValue="@string/pref_showClock"
-            android:key="showClock"
-            android:title="@string/ShowClock" />
         <androidx.preference.SeekBarPreference
             android:defaultValue="@string/pref_presetPages"
             android:key="presetPages"
@@ -35,28 +31,41 @@
             android:min="1"
             android:summary="summary"
             android:title="@string/PresetPages" />
-    </androidx.preference.PreferenceCategory> 
+        <androidx.preference.SwitchPreference
+            android:defaultValue="@string/pref_showClock"
+            android:key="showClock"
+            android:title="@string/ShowClock" />
+        <androidx.preference.SwitchPreference
+            android:defaultValue="@string/pref_menuTop"
+            android:key="menuTop"
+            android:title="@string/MenuTop" />
+    </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory android:title="Other">
         <androidx.preference.SwitchPreference
             android:defaultValue="@string/pref_startUsb"
             android:key="startUsb"
             android:title="@string/StartUsb" />
-       <androidx.preference.SwitchPreference
+        <androidx.preference.SwitchPreference
             android:defaultValue="@string/pref_ficRecording"
             android:key="ficRecording"
             android:title="@string/FicRecording" />
-    </androidx.preference.PreferenceCategory> 
-    <androidx.preference.PreferenceCategory android:title="Donate">
+        
+    </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory android:title="@string/Donate">
         <androidx.preference.Preference
             android:key="prefDonate"
             android:persistent="false"
             android:selectable="true"
-            android:summary="Do you like this app? Then support me with a donation via\nko-fi.com/appswitcher"
+            android:summary="@string/DonateSummary"
             android:icon="@drawable/kofi"
-            android:title="Donate">
+            android:title="@string/Donate">
             <intent
-                android:action="android.intent.action.VIEW"
-                android:data="https://ko-fi.com/appswitcher" />
+                android:targetClass="com.thf.dabplayer.activity.DonateActivity"
+                android:targetPackage="com.thf.dabplayer">
+                <extra
+                    android:name="source"
+                    android:value="settings" />
+            </intent>
         </androidx.preference.Preference>
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory android:title="About">

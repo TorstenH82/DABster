@@ -26,12 +26,10 @@ import com.thf.dabplayer.R;
 
 public class SwitchStationsAdapter
     extends RecyclerView.Adapter<SwitchStationsAdapter.MyViewHolder> {
-  private static final String TAG = "Dabster";
 
   private List<DabSubChannelInfo> stationList;
   private static int selectedPosition = 0;
   private Context context;
-  private boolean showAdditionalInfos = false;
   private int motImagePosition = -1;
   private BitmapDrawable motImage;
   private LogoDb logoDb = null;
@@ -44,14 +42,9 @@ public class SwitchStationsAdapter
 
   private final Listener listener;
 
-  public SwitchStationsAdapter(
-      Context context,
-      Listener listener,
-      List<DabSubChannelInfo> list,
-      boolean showAdditionalInfos) {
+  public SwitchStationsAdapter(Context context, Listener listener, List<DabSubChannelInfo> list) {
     this.listener = listener;
     this.context = context;
-    this.showAdditionalInfos = showAdditionalInfos;
     this.stationList = list;
     this.logoDb = LogoDbHelper.getInstance(context);
 
@@ -67,25 +60,17 @@ public class SwitchStationsAdapter
 
   class MyViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener {
 
-    TextView txtIndex, txtTitle, txtInfos;
+    TextView txtIndex, txtTitle;
     ImageView imgLogo, imgFavor, imgDelete;
 
     MyViewHolder(View v) {
       super(v);
 
-      // v.setOnClickListener(this);
       v.setOnTouchListener(this);
 
       txtIndex = v.findViewById(R.id.index);
       txtTitle = v.findViewById(R.id.title);
-      txtInfos = v.findViewById(R.id.infos);
       imgLogo = v.findViewById(R.id.logo);
-      // imgFavor = v.findViewById(R.id.favor);
-      // imgDelete = v.findViewById(R.id.bt_delete);
-
-      if (!showAdditionalInfos) {
-        txtInfos.setVisibility(View.GONE);
-      }
     }
 
     final GestureDetector gestureDetector =
@@ -115,12 +100,6 @@ public class SwitchStationsAdapter
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-      /*if (event.getAction() == MotionEvent.ACTION_DOWN) {
-        clearPosition();
-        v.setBackgroundColor(Color.TRANSPARENT);
-        listener.onTouch();
-      }
-            */
       selectedPosition = getAdapterPosition();
       return gestureDetector.onTouchEvent(event);
     }
@@ -140,7 +119,6 @@ public class SwitchStationsAdapter
     holder.txtIndex.setText(
         String.format("%0" + (getItemCount() + "").length() + "d", position + 1));
     holder.txtTitle.setText(sci.mLabel);
-    // holder.txtInfos.setText(station.ItemInfos);
 
     if (position != this.motImagePosition) {
       BitmapDrawable logoDrawable = logoDb.getLogo(sci.mLabel, sci.mSID);
@@ -167,6 +145,10 @@ public class SwitchStationsAdapter
       this.notifyItemChanged(oldPosition);
     }
     this.motImage = motImage;
+    if (position != -1) this.notifyItemChanged(position);
+  }
+
+  public void refreshWithoutNewData(int position) {
     this.notifyItemChanged(position);
   }
 }

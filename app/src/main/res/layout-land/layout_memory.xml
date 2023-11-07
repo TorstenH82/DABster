@@ -370,13 +370,15 @@
                 <TextView
                     android:textAppearance="@style/ChannelDetails"
                     android:layout_weight="20"
-                    android:text="@string/ServiceFollowing" />
+                    android:text="@string/ServiceFollowing"
+                    android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
                 <TextView
                     android:textAppearance="@style/ChannelDetails"
                     android:layout_weight="20"
                     android:id="@+id/details_servicefollowing"
                     android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
-                
+                <Space
+                    android:layout_weight="20" />
                 <Space
                     android:layout_weight="20" />
                 <Space

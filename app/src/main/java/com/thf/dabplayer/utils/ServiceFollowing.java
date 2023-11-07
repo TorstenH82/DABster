@@ -294,36 +294,37 @@ public class ServiceFollowing {
   }
 
   private static String network_string(int[] freqs, int[] sids) {
-    StringBuilder sb = new StringBuilder();
+    String sb = "";
     int tally = 0;
     if (freqs != null) {
       for (int i = 0; i < freqs.length; i++) {
         if (freqs[i] != 0) {
           int tally2 = tally + 1;
-          sb.append(tally == 0 ? '(' : ',');
+          sb += (tally == 0 ? "(" : ",");
           if ((freqs[i] & Integer.MIN_VALUE) != 0) {
-            sb.append('*');
+            sb += "*";
           }
-          sb.append(Strings.freq2channelname(freqs[i]));
+          String channelName = Strings.freq2channelname(freqs[i]);
+          sb += (channelName == null ? freqs[i] : channelName);
           tally = tally2;
         }
       }
       int i2 = 0;
       while (i2 < sids.length) {
         if (sids[i2] != 0) {
-          sb.append(i2 == 0 ? '/' : ',');
-          sb.append(String.format("%04X", Integer.valueOf(sids[i2])));
+          sb += (i2 == 0 ? "/" : ",");
+          sb += (String.format("%04X", Integer.valueOf(sids[i2])));
         }
         i2++;
       }
       if (tally > 0) {
-        sb.append(") ");
+        sb += ") ";
       }
     }
     if (man_tune != null && need_builtin_freq() != null) {
-      sb.append(builtin_freq.list_of_members(man_tune.mFreq, man_tune.mEID));
+      sb += builtin_freq.list_of_members(man_tune.mFreq, man_tune.mEID);
     }
-    return sb.toString();
+    return sb;
   }
 
   private static String info_status() {

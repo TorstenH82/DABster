@@ -3,9 +3,11 @@ package com.thf.dabplayer.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -14,10 +16,15 @@ import com.thf.dabplayer.R;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class SimpleDialog {
+  AlertDialog.Builder builder;
+
   private Activity activity;
   private ProgressBar progressBar;
   private TextView textView;
+  private TextView dialogLink;
+  private ImageView imageView;
 
   private AlertDialog dialog;
   private SimpleDialogListener listener;
@@ -32,70 +39,89 @@ public class SimpleDialog {
     public void onClick(boolean positive, int selection);
   }
 
-  public SimpleDialog(
-      Activity activity, String title, boolean showButtons, SimpleDialogListener listener) {
+    
+    
+    
+  public SimpleDialog(Activity activity, String title, SimpleDialogListener listener) {
     this.activity = activity;
     this.listener = listener;
 
-    // this.setCancelable(false);
-    // this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-    // this.setContentView(R.layout.dialog_progress);
-
-    AlertDialog.Builder builder =
-        new AlertDialog.Builder(activity)
+    this.builder =
+        new AlertDialog.Builder(activity,R.style.MaterialAlertDialog_rounded )
             // new ContextThemeWrapper(this.context, (int) R.style.AlertDialogCustom))
             .setTitle(title)
             // .setMessage(initMessage)
             .setCancelable(false)
             .setIcon(R.drawable.radio);
 
-    if (showButtons) {
-      builder.setPositiveButton(
-          R.string.next,
-          new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-              if (SimpleDialog.this.listener != null) {
-                SimpleDialog.this.listener.onClick(true, SimpleDialog.this.selectedIdx);
-              }
+    this.builder.setPositiveButton(
+        android.R.string.ok,
+        new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialogInterface, int i) {
+            if (SimpleDialog.this.listener != null) {
+              SimpleDialog.this.listener.onClick(true, SimpleDialog.this.selectedIdx);
             }
-          });
+          }
+        });
 
-      builder.setNegativeButton(
-          R.string.cancel,
-          new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-              if (SimpleDialog.this.listener != null) {
-                SimpleDialog.this.listener.onClick(false, -1);
-              }
+    this.builder.setNegativeButton(
+        android.R.string.cancel,
+        new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialogInterface, int i) {
+            if (SimpleDialog.this.listener != null) {
+              SimpleDialog.this.listener.onClick(false, -1);
             }
-          });
-    }
+          }
+        });
 
     LayoutInflater layoutInflater = LayoutInflater.from(activity);
     final View alertView = layoutInflater.inflate(R.layout.dialog_progress, null);
-    builder.setView(alertView);
+    this.builder.setView(alertView);
 
-    dialog = builder.create();
-    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+    this.dialog = builder.create();
+   this.dialog.getWindow().setBackgroundDrawableResource( R.drawable.dialog_rounded_background);
+   // this.dialog.getWindow().getDecorView().setBackgroundDrawable(activity.getDrawable(R.drawable.dialogbackground));
+    this.dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
     this.progressBar = alertView.findViewById(R.id.dialog_progress);
     this.progressBar.setVisibility(View.GONE);
+
+    this.imageView = alertView.findViewById(R.id.dialog_image);
+    this.imageView.setVisibility(View.GONE);
 
     this.textView = (TextView) alertView.findViewById(R.id.dialog_message);
     this.textView.setVisibility(View.GONE);
 
     this.radioGroup = alertView.findViewById(R.id.dialog_radiogroup);
     this.radioGroup.setVisibility(View.GONE);
+
+    this.dialog.create();
+
+    this.dialogLink = (TextView) alertView.findViewById(R.id.dialog_link);
+    this.dialogLink.setVisibility(View.GONE);
+
+    this.dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setVisibility(View.GONE);
+    this.dialog.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.GONE);
   }
 
   public SimpleDialog(Activity activity, String title) {
-    this(activity, title, false, null);
+    this(activity, title, null);
   }
 
   public SimpleDialog(Activity activity) {
-    this(activity, null, false, null);
+    this(activity, null, null);
+  }
+
+  public void setPositiveButton(String text) {
+    this.dialog.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
+    this.dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(text);
+  }
+
+  public void setNegativeButton(String text) {
+    this.dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setVisibility(View.VISIBLE);
+    this.dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setText(text);
   }
 
   public void setTitle(String title) {
@@ -105,6 +131,16 @@ public class SimpleDialog {
   public void setMessage(String message) {
     this.textView.setVisibility(View.VISIBLE);
     this.textView.setText(message);
+  }
+
+  public void setUrl(String url) {
+    this.dialogLink.setVisibility(View.VISIBLE);
+    this.dialogLink.setText(url);
+  }
+
+  public void setImage(Drawable drawable) {
+    this.imageView.setVisibility(View.VISIBLE);
+    this.imageView.setImageDrawable(drawable);
   }
 
   public void addRadio(String entry) {
@@ -126,7 +162,6 @@ public class SimpleDialog {
   }
 
   public void setChecked(int idx) {
-
     ((RadioButton) this.radioGroup.getChildAt(idx)).setChecked(true);
     this.selectedIdx = idx;
   }

@@ -21,7 +21,7 @@
     <string name="settings_text_additional_infos">Note: The app will restart if this setting is changed.</string>
     <string name="dialog_heading_confirmation">Confirmation</string>
     <string name="Delete">Delete</string>
-
+    <string name="PresetLongPressHint">Long press on preset button to store station</string>
     <string name="scanningz">scanning</string>
     <string name="Experimental" />
     <string name="settings_RecordButton">Enable audio recording</string>
@@ -44,7 +44,6 @@
     <string name="settings_LogoAsMot">Show station logo as slide show picture</string>
     <string name="settings_OnStartByUsbGotoBackground">Remain in background on automatic start</string>
     <string name="NoLogoFoundForXstations">No logo found for %1$d stations</string>
-    <string name="AmbiguousLogosForX">Ambiguous logos for \'%1$s\'</string>
     <string name="AudioCodec">Audio Codec</string>
     <string name="AudioCodecMP2">MP2</string>
     <string name="AudioCodecAAC">HE-AAC</string>
@@ -63,30 +62,27 @@
     <string name="Synchronisation">Synchronisation</string>
 
     <string name="Disabled">Disabled</string>
-    <string name="settings_dim">Image brightness</string>
-    <string name="settings_dim_text">Swipe down on the station logo or slide show picture to reduce its brightness. Swipe up to change back to its original brightness.\nAdjust the brightness to</string>
-    <string name="settings_text_dim_dlg">First set the screen brightness of the device to night mode,\nthen adjust the image brightness.</string>
-    <string name="settings_text_ServiceFollowing">Enabling Service Following will make the app follow radio services across different transmission frequencies. Touching the signal bar icon will manually initiate a service following attempt.</string>
-    <string name="settings_ServiceFollowing">Service Following</string>
-    <string name="settings_declip">Suppress audio distortions</string>
-    <string name="settings_text_declip">If enabled, then distorted audio samples are replaced with silence.\nAttention: This option increases CPU load.</string>
-    <string name="settings_header_audio">Audio</string>
+   
     <string name="audio_distortion_notification">DAB audio distortion suppressed</string>
-    <string name="settings_audioloss_support">Audio management support</string>
-    <string name="settings_text_audioloss_support">Allow other apps to take over audio focus transiently.\nFor example, during voice recognition or speed camera warnings.\nAdjust the volume reduction via the control.</string>
+    <string name="Delsettings_audioloss_support">Audio management support</string>
+    <string name="Delsettings_text_audioloss_support">Allow other apps to take over audio focus transiently.\nFor example, during voice recognition or speed camera warnings.\nAdjust the volume reduction via the control.</string>
     <string name="plus">+</string>
     <string name="minus">-</string>
     <string name="dls_example_string">Scrolling text \"Dynamic Label Segment DLS\"</string>
-    <string name="color_like">same color as %1$s</string>
+    <string name="Delcolor_like">same color as %1$s</string>
     <string name="density">unknown</string>
     <string name="settings_AudioLevel">Sound volume</string>
-    <string name="Hints">Hints</string>
+    <string name="scan_mode">Scan mode</string>
     <string name="next">Continue</string>
     <string name="cancel">Cancel</string>
-    <string name="colored">colorful</string>
-    <string name="settings_MotSlideshow">Show MOT slide show</string>
-    <string name="settings_SwapPrevNextFromSWC">Swap the reaction to NEXT and PREV commands</string>
-    <!-- <string name="app_Version">AndroidAutoShop-1.0</string> <string name="date">03.10.18</string> -->
+    <string name="Donate">Donate</string>
+    <string name="SupportMe">Support me</string>
+    <string name="ok">OK</string>
+    <string name="maybe_later">Maybe later</string>
+    <string name="never_show">Don\'t show again</string>
+    <string name="already_donated">Already donated</string>
+    <string name="Relcolored">colorful</string>
+    
     <string name="channel_name">Default</string>
     <string name="channel_description">Dabster channel</string>
     <string name="ServiceFollowing">Service Following</string>
@@ -95,6 +91,8 @@
     <string name="pref_suppressNoise">true</string>
     <string name="ShowClock">Show clock on bottom bar</string>
     <string name="pref_showClock">true</string>
+    <string name="MenuTop">Show menu bar on top</string>
+    <string name="pref_menuTop">false</string>
     <string name="PresetPages">Number of preset pages</string>
     <string name="pref_presetPages">2</string>
     <string name="StartUsb">Automatic start on USB device detection</string>
@@ -103,4 +101,10 @@
     <string name="pref_ficRecording">false</string>
     <string name="UnclippedSamples">Clean samples required</string>
     <string name="pref_unclippedSamples">1</string>
+    <string name="pref_showDonate">true</string>
+    <string name="DonateSummary">Do you like this app? Then support me with a donation via\nko-fi.com/appswitcher</string>
+    <string name="DonateText">Do you like this app? Then support me with a donation.</string>
+    <string name="DonateUrl">https://ko-fi.com/appswitcher</string>
+    <string name="pref_donateAfterStarts">20</string>
+    <string name="pref_startCounter">0</string>
 </resources>

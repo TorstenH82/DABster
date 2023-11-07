@@ -391,7 +391,8 @@
                 android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
                 <TextView
                     android:textAppearance="@style/ChannelDetails"
-                    android:text="@string/ServiceFollowing" />
+                    android:text="@string/ServiceFollowing" 
+                    android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
                 <TextView
                     android:textAppearance="@style/ChannelDetails"
                     android:id="@+id/details_servicefollowing"

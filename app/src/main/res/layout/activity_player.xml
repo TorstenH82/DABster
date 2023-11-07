@@ -8,17 +8,19 @@
     android:background="@color/colorBack">
     <!-- android:background="@drawable/radio_bg" -->
 
-    <TextView
-        android:textAppearance="@style/StationName"
-        android:id="@+id/service_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:id="@+id/topbar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:baselineAligned="true"
+        android:gravity="top"
+        android:layout_weight="1"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Station Name" />
+        app:layout_constraintTop_toTopOf="parent">
+        <include layout="@layout/bottombar" />
+    </LinearLayout>
 
     <Button
         android:layout_gravity="center_vertical"
@@ -41,7 +43,7 @@
         android:layout_width="0dp"
         app:layout_constraintStart_toEndOf="@id/bt_prev"
         app:layout_constraintEnd_toStartOf="@id/bt_next"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topbar"
         app:layout_constraintBottom_toTopOf="@id/dls_scroll"
         android:layout_marginTop="16dp"
     />

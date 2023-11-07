@@ -30,10 +30,13 @@ import androidx.media.session.MediaButtonReceiver;
 // import com.thf.dabplayer.activity.AlarmReceiver;
 import com.thf.dabplayer.activity.MainActivity;
 import com.thf.dabplayer.activity.PlayerActivity;
+import com.thf.dabplayer.activity.PopupActivity;
+import com.thf.dabplayer.dab.DabSubChannelInfo;
 import com.thf.dabplayer.dab.DabThread;
 import com.thf.dabplayer.dab.UsbDeviceConnector;
 import com.thf.dabplayer.utils.Logger;
 import com.thf.dabplayer.activity.SettingsActivity;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import androidx.media.MediaBrowserServiceCompat;
@@ -118,7 +121,7 @@ public class DabService extends MediaBrowserServiceCompat {
           int keyAction = keyEv.getAction();
           if (keyAction == 0) {
             switch (keyCode) {
-              case KeyEvent.KEYCODE_MEDIA_NEXT: //87
+              case KeyEvent.KEYCODE_MEDIA_NEXT: // 87
                 if (DabService.this.playerHandler != null) {
                   DabService.this.playerHandler.removeMessages(
                       PlayerActivity.PLAYERMSG_NEXT_STATION);
@@ -272,6 +275,9 @@ public class DabService extends MediaBrowserServiceCompat {
     if (keyEvent == null && this.mNotificationBuilder == null) {
       showNotification();
     }
+    String action = "";
+    if (intent != null) action = intent.getAction();
+
     return START_STICKY;
   }
 
@@ -399,7 +405,7 @@ public class DabService extends MediaBrowserServiceCompat {
     int iconID = getResourceId("ic_notification", "drawable", getPackageName());
     CharSequence settingsStr =
         getText(getResourceId("btn_text_Settings", "string", getPackageName()));
-        
+
     if (this.mNotificationBuilder == null) {
       this.mNotificationBuilder = new Notification.Builder(this);
     }
@@ -411,20 +417,19 @@ public class DabService extends MediaBrowserServiceCompat {
         .setOngoing(true)
         .setChannelId(id1);
 
-    
     if (Build.VERSION.SDK_INT >= 21) {
-      //this.mNotificationBuilder.setCategory("service");
+      // this.mNotificationBuilder.setCategory("service");
       this.mNotificationBuilder.setStyle(
           new Notification.MediaStyle()
               .setMediaSession((MediaSession.Token) getSessionToken().getToken())
-              //.setShowActionsInCompactView(0, 1)
-                );
-            
+          // .setShowActionsInCompactView(0, 1)
+          );
     }
     createChannel();
     Notification notification = this.mNotificationBuilder.build();
 
-    //NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    // NotificationManager nm = (NotificationManager)
+    // getSystemService(Context.NOTIFICATION_SERVICE);
 
     startForeground(NOTIFCATION_ID, notification);
   }

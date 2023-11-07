@@ -42,13 +42,13 @@ public class DabThread extends Thread {
   public static final int MSGTYPE_DAB_DEINIT = 5;
   public static final int MSGTYPE_DAB_HANDLER_STOP = 7;
   public static final int MSGTYPE_DAB_INIT = 2;
-  public static final int MSGTYPE_SELECT_PTY = 20;
+  //public static final int MSGTYPE_SELECT_PTY = 20;
   public static final int MSGTYPE_START_PLAY_STATION = 6;
   public static final int MSGTYPE_START_SERVICE_FOLLOWING = 23;
   public static final int MSGTYPE_START_STATION_SCAN = 3;
-  public static final int SCANTYPE_FAVOURITE = 2;
-  public static final int SCANTYPE_FULL = 0;
-  public static final int SCANTYPE_INCREMENTAL = 1;
+  //public static final int SCANTYPE_FAVOURITE = 2;
+  //public static final int SCANTYPE_FULL = 0;
+  //public static final int SCANTYPE_INCREMENTAL = 1;
   public static final int UPDATE_FAVOURITE = 30;
   // public static final int PLAY_FAVOURITE = 300;
 
@@ -595,7 +595,7 @@ public class DabThread extends Thread {
         }
       }
       if (this.mSignalMotDlsMgr == null) {
-        this.mSignalMotDlsMgr = new SignalMotDlsMgr(i);
+        this.mSignalMotDlsMgr = new SignalMotDlsMgr();
         this.mSignalMotDlsMgr.start();
       }
     }
@@ -841,7 +841,7 @@ public class DabThread extends Thread {
       }
     }
     if (this.mSignalMotDlsMgr == null) {
-      this.mSignalMotDlsMgr = new SignalMotDlsMgr(stationIndex);
+      this.mSignalMotDlsMgr = new SignalMotDlsMgr();
       this.mSignalMotDlsMgr.start();
     }
     Message obtainMessage2 = this.playerHandler.obtainMessage();
@@ -1341,9 +1341,9 @@ public class DabThread extends Thread {
     private String prevDlsString;
     private int prevSignal;
     private int times_little_signal;
-    private int playIndex;
+    
 
-    private SignalMotDlsMgr(int playIndex) {
+    private SignalMotDlsMgr() {
       this.exit = false;
       this.times_little_signal = 0;
       this.get_dls_buff = new byte[102400];
@@ -1351,7 +1351,7 @@ public class DabThread extends Thread {
       this.get_mot_data_buff = new byte[102400];
       this.prevDlsString = new String("");
       this.prevSignal = -1;
-      this.playIndex = playIndex;
+      
     }
 
     private void sendSignalQuality(int dab_api_get_signal) {
@@ -1452,7 +1452,7 @@ public class DabThread extends Thread {
       }
     }
 
-    private void poll_mot(int playIndex) {
+    private void poll_mot() {
       int decoder_get_mot_data;
       synchronized (DabThread.this.dabDec) {
         decoder_get_mot_data =
@@ -1478,7 +1478,6 @@ public class DabThread extends Thread {
         }
         Message obtainMessage = DabThread.this.playerHandler.obtainMessage();
         obtainMessage.what = PlayerActivity.PLAYERMSG_MOT; // 10
-        obtainMessage.arg1 = playIndex;
         obtainMessage.obj = fileName;
         DabThread.this.playerHandler.sendMessage(obtainMessage);
         try {
@@ -1511,7 +1510,7 @@ public class DabThread extends Thread {
       while (!this.exit) {
         poll_dls();
         poll_signallevel();
-        poll_mot(this.playIndex);
+        poll_mot();
 
         try {
           sleep(1000);

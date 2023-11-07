@@ -3,6 +3,9 @@ package com.thf.dabplayer.dab;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioAttributes;
+import android.media.AudioFormat;
+import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Handler;
 import android.os.Message;
@@ -96,12 +99,35 @@ public class PcmThread extends Thread {
   }
 
   /* renamed from: a */
-  private void m24a(int sampleRateInHz, int channels) {
+  private void prepareAudioTrack(int sampleRateInHz, int channels) {
     if (sampleRateInHz > 0) {
-      int channelConfig = channels == 1 ? 2 : 3;
-      this.minBufferSize = AudioTrack.getMinBufferSize(sampleRateInHz, channelConfig, 2);
+
       Logger.d("pcm min buffer size: " + this.minBufferSize);
-      this.audioTrack = new AudioTrack(3, sampleRateInHz, channelConfig, 2, this.minBufferSize, 1);
+
+      this.minBufferSize =
+          AudioTrack.getMinBufferSize(
+              sampleRateInHz,
+              channels == 1 ? AudioFormat.CHANNEL_OUT_MONO : AudioFormat.CHANNEL_OUT_STEREO,
+              AudioFormat.ENCODING_PCM_16BIT);
+
+      this.audioTrack =
+          new AudioTrack.Builder()
+              .setAudioAttributes(
+                  new AudioAttributes.Builder()
+                      .setUsage(AudioAttributes.USAGE_MEDIA)
+                      .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                      .build())
+              .setAudioFormat(
+                  new AudioFormat.Builder()
+                      .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
+                      .setSampleRate(sampleRateInHz)
+                      .setChannelMask(
+                          channels == 1
+                              ? AudioFormat.CHANNEL_OUT_MONO
+                              : AudioFormat.CHANNEL_OUT_STEREO)
+                      .build())
+              .setBufferSizeInBytes(minBufferSize)
+              .build();
 
       // float volume = pref_settings.getFloat(SettingsActivity.pref_key_audioLevel, 1.0f);
       float volume = 1.0f;
@@ -154,13 +180,7 @@ public class PcmThread extends Thread {
           int a = this.ringBuffer.readBuffer(bArr, this.minBufferSize);
           if (!this.f131e) {
             this.f131e = true;
-            m24a(this.mSampleRateInHz, this.mChannels);
-            /*
-            Intent intent = new Intent("com.microntek.app");
-            intent.putExtra("app", DabService.SENDER_DAB);
-            intent.putExtra("audio", "play");
-            this.context.sendBroadcast(intent);
-            */
+            prepareAudioTrack(this.mSampleRateInHz, this.mChannels);
             notifyIntent(this.audioTrack.getSampleRate(), true);
           }
           switch (this.mAudioState) {

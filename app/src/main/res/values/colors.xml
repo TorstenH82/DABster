@@ -9,6 +9,9 @@
     <color name="signal_4">#76ff03</color>
     <color name="signal_5">#00ff24</color>
     <color name="colorBack">#3A3B3C</color>
+    <color name="dialog_bg_color">#3A3B3C</color>
+    <!-- Divide the percentage number by 100 and multiply by 255 to get the decimal value. Convert the decimal to hexadecimal -->
+   <color name="dialog_bg_color_trans">#CC3A3B3C</color>
     <color name="colorStatusbar">#1c1c1c</color>
    
     

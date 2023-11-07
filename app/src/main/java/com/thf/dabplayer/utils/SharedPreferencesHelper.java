@@ -68,6 +68,10 @@ public class SharedPreferencesHelper {
     sharedPreferences.edit().putInt(key, valueInt).apply();
   }
 
+  public void setBoolean(String key, boolean valueBol) {
+    sharedPreferences.edit().putBoolean(key, valueBol).apply();
+  }
+
   private boolean getDefaultBool(String key) {
     key = "pref_" + key;
     int resId = context.getResources().getIdentifier(key, "string", context.getPackageName());

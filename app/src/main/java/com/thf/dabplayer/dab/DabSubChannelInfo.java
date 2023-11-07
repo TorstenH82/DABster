@@ -1,8 +1,10 @@
 package com.thf.dabplayer.dab;
 
+import java.io.Serializable;
+
 /* renamed from: com.ex.dabplayer.pad.dab.SubChannelInfo */
 /* loaded from: classes.dex */
-public class DabSubChannelInfo {
+public class DabSubChannelInfo implements Serializable {
   public static final int AUDIOCODEC_HEAAC = 63;
   public static final int AUDIOCODEC_MP2_BACKGROUND = 1;
   public static final int AUDIOCODEC_MP2_FOREGROUND = 0;
