@@ -30,17 +30,21 @@ public class PopupActivity extends Activity {
         @Override
         public void requestClose() {
           popupDialog.dismiss();
-          finish();
+          PopupActivity.this.finish();
         }
 
         @Override
         public void showPlayer() {
-          popupDialog.dismiss();
+
           Intent intent = new Intent();
           intent.setClass(context, PlayerActivity.class);
-          intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); //    (536870912);
+          intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+          // intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT |
+          // Intent.FLAG_ACTIVITY_SINGLE_TOP); //    (536870912);
           startActivity(intent);
-          finish();
+          // PopupActivity.this.finish();
+          popupDialog.dismiss();
+            PopupActivity.this.finish();
         }
       };
 

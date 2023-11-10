@@ -12,6 +12,7 @@
         android:name="android.permission.WAKE_LOCK" />
     <uses-feature
         android:name="android.hardware.usb.host" />
+    <uses-permission android:name="android.permission.USB_PERMISSION" />
     <!-- So kann die App Inhalte deines freigegebenen Speichers lesen. -->
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -38,6 +39,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MainActivity"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.Transparent"
             android:exported="true">
             <intent-filter>
@@ -56,7 +58,7 @@
         </activity>
         <service
             android:name="com.thf.dabplayer.service.DabService"
-            android:exported="false"
+            android:exported="true"
         >
             <intent-filter>
                 <action
@@ -67,6 +69,7 @@
         </service>
         <activity
             android:name="com.thf.dabplayer.activity.PlayerActivity"
+            android:launchMode="singleTask"
         />
 
         <activity
@@ -79,16 +82,7 @@
             android:name="com.thf.dabplayer.activity.PopupActivity"
             android:theme="@style/Theme.Transparent"
             android:exported="false" />
-        <receiver
-            android:name="android.support.v4.media.session.MediaButtonReceiver"
-            android:exported="true"
-        >
-            <intent-filter>
-                <action
-                    android:name="android.intent.action.MEDIA_BUTTON" />
-            </intent-filter>
-        </receiver>
-
+        <!-- <receiver android:name="android.support.v4.media.session.MediaButtonReceiver" android:exported="true" > <intent-filter> <action android:name="android.intent.action.MEDIA_BUTTON" /> </intent-filter> </receiver> -->
 
     </application>
 </manifest>

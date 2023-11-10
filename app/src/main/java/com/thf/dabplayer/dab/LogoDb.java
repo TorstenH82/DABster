@@ -253,7 +253,7 @@ public class LogoDb {
     if (rawQuery.getCount() > 1) {
       Logger.d("ambiguous sid results for '" + realStationName + "':");
       while (rawQuery.moveToNext()) {
-        Logger.d(" " + rawQuery.getInt(rawQuery.getColumnIndex("sid")));
+        //Logger.d(" " + rawQuery.getInt(rawQuery.getColumnIndex("sid")));
       }
       result = null;
     } else if (rawQuery.getCount() < 1) {

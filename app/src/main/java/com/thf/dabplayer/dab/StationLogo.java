@@ -29,9 +29,9 @@ public class StationLogo {
         stationLogo.mStationServiceId = sid;
       }
 
-      Logger.d(stationLogo.mLogoPathFilename);
-      Logger.d(stationLogo.mStationNameNormalized);
-      Logger.d(stationLogo.mStationServiceId + "");
+      //Logger.d(stationLogo.mLogoPathFilename);
+      //Logger.d(stationLogo.mStationNameNormalized);
+      //Logger.d(stationLogo.mStationServiceId + "");
 
       return stationLogo;
     }

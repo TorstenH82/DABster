@@ -110,8 +110,9 @@ public class PlayerActivity extends Activity
   private int playIndex = -1;
   private Button btnPrev;
   private Button btnNext;
-  private Button layScan;
-  private Button layExit;
+  private Button btnScan;
+  private Button btnExit;
+  private Button btnSettings;
 
   // private float mDefaultLeftAreaLayoutWeight;
   Intent mServiceIntent;
@@ -200,7 +201,6 @@ public class PlayerActivity extends Activity
         }
       };
   private TabLayout tabLayout;
-
   public Handler dabHandler;
   private DabService dabService;
 
@@ -272,17 +272,17 @@ public class PlayerActivity extends Activity
   private DelayedRunnableHandler keyDownHandler = new DelayedRunnableHandler();
   private Toast mAudioDistortionToast = null;
   private Toast mChannelToast = null;
-  private float mDlsSizeFromStyle = 0.0f;
-  private boolean mIsLeftAreaMaximized = false;
+  // private float mDlsSizeFromStyle = 0.0f;
+  // private boolean mIsLeftAreaMaximized = false;
   private LogoDb mLogoDb = null;
   private MediaMetadataCompat mMetaData = new MediaMetadataCompat.Builder().build();
   private boolean mProperShutdown = false;
   private boolean mSendBroadcastIntent = true;
   private boolean mShowAdditionalInfos = true;
   // private StationDetails mStationDetails = new StationDetails();
-  private float mStationNameSizeFromStyle = 0.0f;
+  // private float mStationNameSizeFromStyle = 0.0f;
   // private TouchListener mTouchListener = null;
-  private ViewFlipper mViewFlipper = null;
+  // private ViewFlipper mViewFlipper = null;
   private DelayedRunnableHandler maximizeLeftAreaHandler = new DelayedRunnableHandler();
   private BitmapDrawable motImage;
 
@@ -421,6 +421,7 @@ public class PlayerActivity extends Activity
 
   /* renamed from: com.ex.dabplayer.pad.activity.Player$FlipViewAnimatorListener */
   /* loaded from: classes.dex */
+  /*
   public class FlipViewAnimatorListener extends AnimatorListenerAdapter {
     final int mFlipToViewIdx;
     final ObjectAnimator mInvisToVis;
@@ -437,7 +438,7 @@ public class PlayerActivity extends Activity
       PlayerActivity.this.mViewFlipper.setDisplayedChild(this.mFlipToViewIdx);
     }
   }
-
+    */
   /* renamed from: com.ex.dabplayer.pad.activity.Player$hBroadcastReceiver */
   /* loaded from: classes.dex */
   public class UsbDetachedBroadcastReceiver extends BroadcastReceiver {
@@ -539,24 +540,25 @@ public class PlayerActivity extends Activity
 
   /* renamed from: com.ex.dabplayer.pad.activity.Player$VTOLayoutListener */
   /* loaded from: classes.dex */
+  /*
+    public class VTOLayoutListener implements ViewTreeObserver.OnGlobalLayoutListener {
+      private final LinearLayout mLeftBackgroundBox;
+      private final WeakReference<PlayerActivity> mPlayer;
 
-  public class VTOLayoutListener implements ViewTreeObserver.OnGlobalLayoutListener {
-    private final LinearLayout mLeftBackgroundBox;
-    private final WeakReference<PlayerActivity> mPlayer;
+      public VTOLayoutListener(PlayerActivity player, LinearLayout leftBackgroundBox) {
+        this.mPlayer = new WeakReference<>(player);
+        this.mLeftBackgroundBox = leftBackgroundBox;
+      }
 
-    public VTOLayoutListener(PlayerActivity player, LinearLayout leftBackgroundBox) {
-      this.mPlayer = new WeakReference<>(player);
-      this.mLeftBackgroundBox = leftBackgroundBox;
-    }
-
-    @Override // android.view.ViewTreeObserver.OnGlobalLayoutListener
-    public void onGlobalLayout() {
-      PlayerActivity player = this.mPlayer.get();
-      if (player != null) {
-        this.mLeftBackgroundBox.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+      @Override // android.view.ViewTreeObserver.OnGlobalLayoutListener
+      public void onGlobalLayout() {
+        PlayerActivity player = this.mPlayer.get();
+        if (player != null) {
+          this.mLeftBackgroundBox.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+        }
       }
     }
-  }
+  */
 
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: a */
@@ -643,7 +645,7 @@ public class PlayerActivity extends Activity
 
           SharedPreferencesHelper.getInstance().setInteger("current_playing", this.playIndex);
           // m78f();
-          displayPrevCurrNextStation(this.playIndex);
+          showStationPopup(this.playIndex);
           notifyStationChangesTo(subChannelInfo, this.playIndex, this.stationList.size());
         }
       }
@@ -850,9 +852,9 @@ public class PlayerActivity extends Activity
       list.add(sciNext);
 
       if (mApplication.isPopupActivityRunning()) {
-        Intent intent = new Intent("popup-message");
-        intent.putExtra("stationList", (Serializable) list);
-        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+        Intent intentBrdc = new Intent("popup-message");
+        intentBrdc.putExtra("stationList", (Serializable) list);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intentBrdc);
       } else {
         Intent intentSrv = new Intent(context, PopupActivity.class);
         intentSrv.setAction("ACTION_POPUP");
@@ -863,34 +865,9 @@ public class PlayerActivity extends Activity
     }
   }
 
-  public void displayPrevCurrNextStation(int currIndex) {
-    showStationPopup(currIndex);
-    /*
-    DabSubChannelInfo currChannnel;
-    if (currIndex >= 0 && currIndex < this.stationList.size()) {
-      int prevIndex = currIndex > 0 ? currIndex - 1 : this.stationList.size() - 1;
-      DabSubChannelInfo prevChannel = this.stationList.get(prevIndex);
-      if (prevChannel != null) {
-        int nextIndex = currIndex < this.stationList.size() + (-2) ? currIndex + 1 : 0;
-        DabSubChannelInfo nextChannel = this.stationList.get(nextIndex);
-        if (nextChannel != null
-            && (currChannnel = this.stationList.get(currIndex)) != null
-            && !this.isInForeground) {
-          String text = currChannnel.mLabel;
-          if (this.mChannelToast != null) {
-            this.mChannelToast.cancel();
-          }
-          this.mChannelToast = Toast.makeText(this.context, text, 1);
-          this.mChannelToast.show();
-        }
-      }
-    }
-    */
-  }
-
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: e */
-  public void m79e() {
+  public void stopDabHandler() {
     this.f26e = false;
     if (this.dabHandler != null) {
       this.dabHandler.removeMessages(7);
@@ -903,7 +880,7 @@ public class PlayerActivity extends Activity
   /* JADX INFO: Access modifiers changed from: private */
   public void finishTheApp() {
     Logger.d("finishTheApp");
-    m79e();
+    stopDabHandler();
     if (this.dabHandler != null) {
       this.dabHandler.removeMessages(5);
       Message obtainMessage = this.dabHandler.obtainMessage();
@@ -930,7 +907,6 @@ public class PlayerActivity extends Activity
       if (usbDevice.getVendorId() == 5824 && usbDevice.getProductId() == 1500) {
         if (this.usbManager.hasPermission(usbDevice)) {
           this.usbDevice = usbDevice;
-          return;
         }
         return;
       }
@@ -1222,12 +1198,12 @@ public class PlayerActivity extends Activity
       ((LinearLayout) findViewById(R.id.topbar)).setVisibility(View.GONE);
     }
     topBottomBar.setVisibility(View.VISIBLE);
-    this.layScan = (Button) topBottomBar.findViewById(R.id.layScan);
-    this.layScan.setOnClickListener(this);
-    this.layExit = (Button) topBottomBar.findViewById(R.id.layExit);
-    this.layExit.setOnClickListener(this);
-    Button btnSettings2 = (Button) topBottomBar.findViewById(R.id.bt_settings);
-    btnSettings2.setOnClickListener(this);
+    this.btnScan = (Button) topBottomBar.findViewById(R.id.layScan);
+    this.btnScan.setOnClickListener(this);
+    this.btnExit = (Button) topBottomBar.findViewById(R.id.layExit);
+    this.btnExit.setOnClickListener(this);
+    this.btnSettings = (Button) topBottomBar.findViewById(R.id.bt_settings);
+    btnSettings.setOnClickListener(this);
     this.imgSignalLevel = (ImageView) topBottomBar.findViewById(R.id.signal_level);
     this.imgSignalLevel.setOnClickListener(this);
     this.textClock = (TextClock) topBottomBar.findViewById(R.id.textClock);
@@ -1255,9 +1231,10 @@ public class PlayerActivity extends Activity
 
     this.txtDls = (TextView) findViewById(R.id.dls_scroll);
     this.txtDls.setText("");
+    this.txtDls.setSelected(true);
 
-    viewPagerStations = this.findViewById(R.id.station_vp);
-    viewPagerStations.registerOnPageChangeCallback(
+    this.viewPagerStations = this.findViewById(R.id.station_vp);
+    this.viewPagerStations.registerOnPageChangeCallback(
         new ViewPager2.OnPageChangeCallback() {
           @Override
           public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -1270,8 +1247,6 @@ public class PlayerActivity extends Activity
 
             if (userScrollChange) {
               PlayerActivity.this.isPlayingPreset = 0;
-              // Toast.makeText(context, position + " OnScrollListener",
-              // Toast.LENGTH_LONG).show();
               onStationClicked(position);
             }
           }
@@ -1291,12 +1266,6 @@ public class PlayerActivity extends Activity
           }
         });
 
-    if ("RMX3301EEA".equals(Build.PRODUCT)) {
-      stationsAdapter =
-          new SwitchStationsAdapter(this.context, switchStationsAdapterListener, new ArrayList<>());
-      this.viewPagerStations.setAdapter(stationsAdapter);
-    }
-
     this.viewPagerPresets = this.findViewById(R.id.viewPager);
     int numberPresetPages = SharedPreferencesHelper.getInstance().getInteger("presetPages");
     this.viewPagerAdapter =
@@ -1308,15 +1277,7 @@ public class PlayerActivity extends Activity
     this.audioManager = (AudioManager) getSystemService("audio");
     this.progressDialog = new SimpleDialog(this, context.getString(R.string.Connecting));
     this.progressDialog.showProgress(true);
-    /*
-    this.progressDialog.setProgressStyle(0);
-    this.progressDialog.setTitle("");
-    this.progressDialog.setMessage("");
-    this.progressDialog.setCancelable(false);
-    this.progressDialog.setIndeterminate(false);
-    this.progressDialog.setIndeterminateDrawable(
-        getResources().getDrawable(R.anim.progress_dialog_anim));
-    */
+
     this.audioManager.requestAudioFocus(this.audioFocusChangeListener, 3, 1);
 
     this.mServiceIntent = new Intent(this, DabService.class);
@@ -1411,7 +1372,7 @@ public class PlayerActivity extends Activity
     // stop on back key?
     /*
     if (this.f19G) {
-      m79e();
+      stopDabHandler();
       if (this.dabHandler != null) {
         this.dabHandler.removeMessages(DabThread.MSGTYPE_DAB_DEINIT);
         Message obtainMessage = this.dabHandler.obtainMessage();
@@ -1433,6 +1394,7 @@ public class PlayerActivity extends Activity
   protected void onResume() {
     Logger.d("Player:onResume");
     super.onResume();
+
     SharedPreferencesHelper.getInstance()
         .getSharedPreferences()
         .registerOnSharedPreferenceChangeListener(this);

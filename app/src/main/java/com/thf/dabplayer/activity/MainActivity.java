@@ -156,16 +156,16 @@ public class MainActivity extends Activity {
     }
     */
 
-    if ("RMX3301EEA".equals(Build.PRODUCT)) {
-/*
+    if ("RMX3301EEAx".equals(Build.PRODUCT)) {
+
       Intent intentTest = new Intent();
       intentTest.setClass(this, PlayerActivity.class);
       // intentTest.putExtra("UsbDevice", usbDevice);
       intentTest.putExtra("StartedByIntent", this.startedByIntent);
       intentTest.addFlags(536870912);
       startActivity(intentTest);
-*/
-      
+
+      /*
       List<DabSubChannelInfo> list = new ArrayList<>();
       DabSubChannelInfo dummy = new DabSubChannelInfo();
       dummy.mLabel = "This is a very long station name";
@@ -184,7 +184,7 @@ public class MainActivity extends Activity {
       intentTest.putExtra("stationList", (Serializable) list);
       intentTest.addFlags(536870912);
       startActivity(intentTest);
-            
+ */           
     }
 
     Logger.d("MainActivity:onCreate");
@@ -257,7 +257,7 @@ public class MainActivity extends Activity {
   private void bringPlayerActivityToFrontAndFinish() {
     Intent intent = new Intent();
     intent.setClass(this, PlayerActivity.class);
-    intent.setFlags(131072);
+    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
     try {
       startActivity(intent);
     } catch (ActivityNotFoundException e) {

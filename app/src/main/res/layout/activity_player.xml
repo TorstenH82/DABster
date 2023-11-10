@@ -63,7 +63,7 @@
 
 
     <TextView
-        android:textAppearance="@style/DLS"
+        android:textAppearance="@style/DlsScroll"
         android:ellipsize="marquee"
         android:gravity="center_horizontal"
         android:id="@+id/dls_scroll"
@@ -73,6 +73,8 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:text="DLS"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:marqueeRepeatLimit="marquee_forever"
         app:layout_constraintBottom_toTopOf="@id/viewPager"
         android:layout_marginBottom="40dp"

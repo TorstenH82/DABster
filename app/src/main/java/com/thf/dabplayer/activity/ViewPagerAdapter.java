@@ -307,8 +307,8 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
 
   public void refreshWithoutNewData() {
     this.notifyDataSetChanged();
-    Toast.makeText(context, "ViewPagerAdapter refreshed without new data", Toast.LENGTH_LONG)
-        .show();
+    //Toast.makeText(context, "ViewPagerAdapter refreshed without new data", Toast.LENGTH_LONG)
+    //    .show();
   }
 
   public void setDetails(Intent intent) {

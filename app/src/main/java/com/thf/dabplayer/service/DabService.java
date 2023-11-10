@@ -232,6 +232,7 @@ public class DabService extends MediaBrowserServiceCompat {
   }
 
   /* renamed from: b */
+    
   public void startDabThread() {
     Logger.d("start dab service");
     if (this.usbDevice != null) {
@@ -275,9 +276,6 @@ public class DabService extends MediaBrowserServiceCompat {
     if (keyEvent == null && this.mNotificationBuilder == null) {
       showNotification();
     }
-    String action = "";
-    if (intent != null) action = intent.getAction();
-
     return START_STICKY;
   }
 

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <usb-device orderInCategory="5824" title="1500"/>
+    <usb-device
+        product-id="1500"
+        vendor-id="5824" />
 </resources>

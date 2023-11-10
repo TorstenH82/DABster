@@ -42,13 +42,13 @@ public class DabThread extends Thread {
   public static final int MSGTYPE_DAB_DEINIT = 5;
   public static final int MSGTYPE_DAB_HANDLER_STOP = 7;
   public static final int MSGTYPE_DAB_INIT = 2;
-  //public static final int MSGTYPE_SELECT_PTY = 20;
+  // public static final int MSGTYPE_SELECT_PTY = 20;
   public static final int MSGTYPE_START_PLAY_STATION = 6;
   public static final int MSGTYPE_START_SERVICE_FOLLOWING = 23;
   public static final int MSGTYPE_START_STATION_SCAN = 3;
-  //public static final int SCANTYPE_FAVOURITE = 2;
-  //public static final int SCANTYPE_FULL = 0;
-  //public static final int SCANTYPE_INCREMENTAL = 1;
+  // public static final int SCANTYPE_FAVOURITE = 2;
+  // public static final int SCANTYPE_FULL = 0;
+  // public static final int SCANTYPE_INCREMENTAL = 1;
   public static final int UPDATE_FAVOURITE = 30;
   // public static final int PLAY_FAVOURITE = 300;
 
@@ -451,7 +451,6 @@ public class DabThread extends Thread {
       Logger.d("get version fail");
       sendHardwareFailure("Failed to get version from DAB hardware");
     } else {
-
       // send stationlist to player
       this.stationList = this.dbHelper.getStationList();
       Message obtainMessage = this.playerHandler.obtainMessage();
@@ -672,7 +671,7 @@ public class DabThread extends Thread {
     this.isExecutingServiceFollowing = true;
     Logger.d("activated service following");
     boolean was_success = false;
-    byte[] bArr = new byte[384];
+    byte[] fic_data = new byte[384];
     int n_usage_stable = 0;
     DabSubChannelInfo subChannelInfo = new DabSubChannelInfo();
     if (this.mp2Thread != null) {
@@ -696,7 +695,7 @@ public class DabThread extends Thread {
     synchronized (this.dabDec) {
       int i2 = this.freq;
       ServiceFollowing serviceFollowing = new ServiceFollowing(this.arrFreqs, this.arrSids);
-      do {
+      while (!was_success) {
         int try_freq = serviceFollowing.next_frequency();
         if (try_freq <= 0) {
           break;
@@ -723,68 +722,71 @@ public class DabThread extends Thread {
           }
           Logger.d("service follow tune " + try_freq + ":" + a);
           if (a == 1) {
-            Object obj = null;
+            Integer decoder_fic_get_usage = null;
             this.dabDec.decoder_fic_reset(1);
-            // this.j.a(32);
-            // this.dbHelper.m72a(32);
 
             long currentTimeMillis = System.currentTimeMillis();
-            Object obj2 = null;
+            boolean stationsFound = false;
+            n_usage_stable = 0;
             do {
+
               try {
                 sleep(10);
               } catch (InterruptedException e2) {
                 e2.printStackTrace();
               }
-              int dab_api_get_fic_data = this.dabDec.dab_api_get_fic_data(bArr);
+              int dab_api_get_fic_data = this.dabDec.dab_api_get_fic_data(fic_data);
               if (dab_api_get_fic_data > 0) {
-                this.dabDec.decoder_fic_parse(bArr, dab_api_get_fic_data, try_freq);
-                Object obj3 = this.dabDec.decoder_fic_get_usage() != 0 ? 1 : null;
-                if (obj3 != obj) {
-                  obj = obj3;
+                this.dabDec.decoder_fic_parse(fic_data, dab_api_get_fic_data, try_freq);
+                Integer new_decoder_fic_get_usage =
+                    this.dabDec.decoder_fic_get_usage() != 0 ? 1 : null;
+                if (new_decoder_fic_get_usage != decoder_fic_get_usage) {
+                  decoder_fic_get_usage = new_decoder_fic_get_usage;
                   n_usage_stable = 0;
                 } else {
                   n_usage_stable++;
                 }
+
                 if (n_usage_stable >= 10) {
                   int decoder_fic_get_service_count = this.dabDec.decoder_fic_get_service_count();
                   Logger.d("servicefollow stations: " + decoder_fic_get_service_count);
-                  // a.a("servicefollow stations:", decoder_fic_get_service_count);
 
                   for (i = 0; i < decoder_fic_get_service_count; i++) {
                     this.dabDec.decoder_fic_get_subch_info(subChannelInfo, (char) i);
-                    obj2 = 1;
+                    stationsFound = true;
                     if (serviceFollowing.find_sid(subChannelInfo.mSID)) {
                       was_success = true;
                       break;
                     }
                   }
-                  n_usage_stable = 0;
                 }
               }
-              if (obj2 != null) {
+              if (stationsFound) {
                 break;
               }
             } while (System.currentTimeMillis() - currentTimeMillis < 1500);
+
             Logger.d("servicefollow usage stable: " + n_usage_stable);
             this.dabDec.decoder_fic_reset(0);
             continue;
           } else {
+            // tune failed
             continue;
           }
         } else {
-          int decoder_fic_get_service_count2 = this.dabDec.decoder_fic_get_service_count();
-          for (i = 0; i < decoder_fic_get_service_count2; i++) {
+          int decoder_fic_get_service_count = this.dabDec.decoder_fic_get_service_count();
+          for (i = 0; i < decoder_fic_get_service_count; i++) {
             this.dabDec.decoder_fic_get_subch_info(subChannelInfo, (char) i);
             if (serviceFollowing.find_sid(subChannelInfo.mSID)) {
               was_success = true;
-              continue;
-              // break;
+              // continue;
+              break;
             }
           }
-          continue;
+          // continue;
         }
-      } while (!was_success);
+      }
+
       if (was_success) {
         RepairEBU.fixLabels(subChannelInfo);
         Logger.d("servicefollow label:" + subChannelInfo.mLabel);
@@ -1183,8 +1185,8 @@ public class DabThread extends Thread {
       int i;
       boolean usage_was_nonzero;
       int n_usage_stable;
-      int fic_bytes;
-      byte[] bArr2 = new byte[384];
+      int fic_bytes_len;
+      byte[] fic_data = new byte[384];
       this.exit = false;
       if (DabThread.this.ficRecording) {
         startRecording();
@@ -1204,18 +1206,18 @@ public class DabThread extends Thread {
         }
         if (DabThread.this.tuneOk) {
           synchronized (DabThread.this.dabDec) {
-            fic_bytes = DabThread.this.dabDec.dab_api_get_fic_data(bArr2);
+            fic_bytes_len = DabThread.this.dabDec.dab_api_get_fic_data(fic_data);
           }
-          if (fic_bytes > 0) {
+          if (fic_bytes_len > 0) {
             if (DabThread.this.ficRecording) {
               if (i != DabThread.this.freq) {
                 i = DabThread.this.freq;
                 String str = "FREQ" + DabThread.this.freq;
                 writeExtraDataToBuffer(str.getBytes(), str.getBytes().length);
               }
-              writeExtraDataToBuffer(bArr2, fic_bytes);
+              writeExtraDataToBuffer(fic_data, fic_bytes_len);
             }
-            DabThread.this.dabDec.decoder_fic_parse(bArr2, fic_bytes, DabThread.this.freq);
+            DabThread.this.dabDec.decoder_fic_parse(fic_data, fic_bytes_len, DabThread.this.freq);
             boolean usage_is_nonzero = DabThread.this.dabDec.decoder_fic_get_usage() != 0;
             if (usage_is_nonzero != usage_was_nonzero) {
               usage_was_nonzero = usage_is_nonzero;
@@ -1341,7 +1343,6 @@ public class DabThread extends Thread {
     private String prevDlsString;
     private int prevSignal;
     private int times_little_signal;
-    
 
     private SignalMotDlsMgr() {
       this.exit = false;
@@ -1351,7 +1352,6 @@ public class DabThread extends Thread {
       this.get_mot_data_buff = new byte[102400];
       this.prevDlsString = new String("");
       this.prevSignal = -1;
-      
     }
 
     private void sendSignalQuality(int dab_api_get_signal) {
@@ -1505,7 +1505,7 @@ public class DabThread extends Thread {
     @Override // java.lang.Thread, java.lang.Runnable
     public void run() {
 
-      //setPriority(1);
+      // setPriority(1);
       int i = 0;
       while (!this.exit) {
         poll_dls();

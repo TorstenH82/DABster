@@ -2,25 +2,16 @@ package com.thf.dabplayer.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import com.thf.dabplayer.R;
 import com.thf.dabplayer.dab.DabSubChannelInfo;
-import java.util.ArrayList;
 import java.util.List;
 import android.os.Handler;
 import android.os.Looper;
@@ -37,7 +28,7 @@ public class PopupDialog {
   private PopupStationsAdapter adapter;
   private PopupStationsListener listener;
 
-  private Bomb bomb;
+  private  Bomb bomb;
 
   public interface PopupStationsListener {
     public void requestClose();
@@ -83,6 +74,7 @@ public class PopupDialog {
             lp.width = getWidth() / 3;
             return true;
           }
+
           // after the layout has finished drawing on the screen
           @Override
           public void onLayoutCompleted(RecyclerView.State state) {
@@ -100,6 +92,9 @@ public class PopupDialog {
         new RecyclerView.SimpleOnItemTouchListener() {
           @Override
           public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent me) {
+            if (bomb != null) {
+              bomb.disarm();
+            }
             listener.showPlayer();
             return true;
           }
@@ -114,19 +109,22 @@ public class PopupDialog {
   }
 
   public void setItemsAndShow(List<DabSubChannelInfo> stationList) {
-    if (this.bomb == null) {
+    if (bomb == null) {
       bomb = new Bomb(3000);
       // layoutComplete = false;
     } else {
       bomb.disarm();
     }
-layoutComplete = false; //?
+    layoutComplete = false; // ?
     this.adapter.setStations(stationList);
     if (!this.isShowing) show();
     bomb.start();
   }
 
   public void dismiss() {
+    if (this.bomb != null) {
+      bomb.disarm();
+    }
     dialog.dismiss();
     this.isShowing = false;
   }
@@ -156,7 +154,6 @@ layoutComplete = false; //?
       // do something long
       Runnable runnable =
           new Runnable() {
-
             @Override
             public void run() {
               while (!layoutComplete) {
