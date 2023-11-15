@@ -26,9 +26,8 @@
     <uses-permission
         android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <application
         android:name="com.thf.dabplayer.DabsterApp"
         android:allowBackup="true"
@@ -48,6 +47,7 @@
                 <category
                     android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <intent-filter>
                 <action
                     android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
@@ -55,6 +55,7 @@
             <meta-data
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/usb_device_filter" />
+
         </activity>
         <service
             android:name="com.thf.dabplayer.service.DabService"
@@ -69,7 +70,7 @@
         </service>
         <activity
             android:name="com.thf.dabplayer.activity.PlayerActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleInstance"
         />
 
         <activity
@@ -81,8 +82,10 @@
         <activity
             android:name="com.thf.dabplayer.activity.PopupActivity"
             android:theme="@style/Theme.Transparent"
+            android:noHistory="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
             android:exported="false" />
         <!-- <receiver android:name="android.support.v4.media.session.MediaButtonReceiver" android:exported="true" > <intent-filter> <action android:name="android.intent.action.MEDIA_BUTTON" /> </intent-filter> </receiver> -->
-
     </application>
 </manifest>

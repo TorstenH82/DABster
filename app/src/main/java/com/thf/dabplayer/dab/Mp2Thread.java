@@ -121,13 +121,14 @@ public class Mp2Thread extends Thread {
     Handler handler;
     WeakReference<Handler> playerHandler = PlayerActivity.getPlayerHandler();
     if (playerHandler != null && (handler = playerHandler.get()) != null) {
-      Intent intent = new Intent(DabService.META_CHANGED);
-      intent.putExtra(DabService.EXTRA_SENDER, DabService.SENDER_DAB);
-      intent.putExtra(DabService.EXTRA_AUDIOSAMPLERATE, samplerate);
-      intent.putExtra("playing", isPlaying);
+
+      StationInfo stationInfo = StationInfo.getInstance();
+      stationInfo.setSamplerate(samplerate);
+      stationInfo.setPlaying(true);
+
       Message intentMessage = handler.obtainMessage();
-      intentMessage.what = 100;
-      intentMessage.obj = intent;
+      intentMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO;
+      intentMessage.obj = stationInfo;
       handler.sendMessage(intentMessage);
     }
   }

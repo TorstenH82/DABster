@@ -1,20 +1,13 @@
-/*todo:
-- test other fifo buffer
-
-- replace
-preferences.getBoolean(SettingsActivity.pref_key_service_link_switch, true);
-with
-SharedPreferencesHelper.getInstance().getBoolean("serviceFollowing");
-*/
-
 package com.thf.dabplayer.dab;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.GpsStatus;
 import android.nfc.NdefRecord;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.Annotation;
 import android.text.TextUtils;
 import android.widget.Toast;
 import com.thf.dabplayer.activity.PlayerActivity;
@@ -36,6 +29,8 @@ import java.util.List;
 /* renamed from: com.ex.dabplayer.pad.dab.f */
 /* loaded from: classes.dex */
 public class DabThread extends Thread {
+    public static final int SIGNALQUALITY_NONE = 8000;
+    
   public static final int AUDIOSTATE_DUCK = 202;
   public static final int AUDIOSTATE_PAUSE = 201;
   public static final int AUDIOSTATE_PLAY = 200;
@@ -66,6 +61,7 @@ public class DabThread extends Thread {
 
   /* renamed from: g */
   // private RingBuffer ringBuffer;
+  private boolean isPlaying = false;
 
   /* renamed from: i */
   private UsbDeviceConnector usbDeviceConnector;
@@ -125,7 +121,7 @@ public class DabThread extends Thread {
   private Mp2Thread mp2Thread = null;
 
   /* renamed from: p */
-  private DabRecorder dabRecorder = null;
+  // private DabRecorder dabRecorder = null;
 
   public static final int AUDIOTYPE_AAC = 0;
   public static final int AUDIOTYPE_MP2 = 1;
@@ -139,7 +135,7 @@ public class DabThread extends Thread {
   private boolean tuneOk = false;
 
   /* renamed from: x */
-  private boolean f97x = false;
+  // private boolean f97x = false;
 
   /* renamed from: z */
   private boolean f99z = false;
@@ -195,143 +191,7 @@ public class DabThread extends Thread {
     return 1;
   }
 
-  /* JADX INFO: Access modifiers changed from: private */
-  /* renamed from: a */
-  public void m54a(DabSubChannelInfo subChannelInfo) {
-    Toast.makeText(context, "m54a is not implemented", Toast.LENGTH_LONG).show();
-    /*
-    for (ChannelInfo qVar : this.channelInfoList) {
-      if (qVar.freq == subChannelInfo.mFreq
-          && qVar.subChannelId == subChannelInfo.mSubChannelId
-          && qVar.label.equals(qVar.label)) {
-        this.dbHelper.m70a(qVar);
-        this.channelInfoList = this.dbHelper.getPresetChannelInfo();
-        Message obtainMessage = this.playerHandler.obtainMessage();
-        obtainMessage.what = 15;
-        obtainMessage.obj = subChannelInfo;
-        this.playerHandler.sendMessage(obtainMessage);
-        Message obtainMessage2 = this.playerHandler.obtainMessage();
-        obtainMessage2.what = 13;
-        obtainMessage2.arg1 = this.channelInfoList.size();
-        obtainMessage2.obj = this.channelInfoList;
-        this.playerHandler.sendMessage(obtainMessage2);
-        return;
-      }
-    }
-    ChannelInfo qVar2 = new ChannelInfo();
-    qVar2.label = subChannelInfo.mLabel;
-    qVar2.freq = subChannelInfo.mFreq;
-    qVar2.subChannelId = subChannelInfo.mSubChannelId;
-    qVar2.bitrate = subChannelInfo.mBitrate;
-    qVar2.type = subChannelInfo.mType;
-    this.dbHelper.insertPreset(qVar2);
-    Message obtainMessage3 = this.playerHandler.obtainMessage();
-    obtainMessage3.what = 17;
-    obtainMessage3.obj = subChannelInfo;
-    this.playerHandler.sendMessage(obtainMessage3);
-    this.channelInfoList = this.dbHelper.getPresetChannelInfo();
-    Message obtainMessage4 = this.playerHandler.obtainMessage();
-    obtainMessage4.what = 13;
-    obtainMessage4.arg1 = this.channelInfoList.size();
-    obtainMessage4.obj = this.channelInfoList;
-    this.playerHandler.sendMessage(obtainMessage4);
-        */
-  }
 
-  /* JADX INFO: Access modifiers changed from: private */
-  /* renamed from: a */
-  /*
-    public void m53a(ChannelInfo qVar) {
-      if (this.mp2Thread != null) {
-        this.mp2Thread.exit();
-        this.mp2Thread = null;
-      }
-      if (this.mSignalMotDlsMgr != null) {
-        this.mSignalMotDlsMgr.exit();
-        this.mSignalMotDlsMgr = null;
-      }
-      if (this.aacThread != null) {
-        this.aacThread.exit();
-        this.aacThread = null;
-      }
-      if (this.ficThread != null) {
-        this.ficThread.exit();
-        this.ficThread = null;
-      }
-      if (this.mscThread != null) {
-        this.mscThread.m39a();
-      }
-      try {
-        sleep(500L);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-      synchronized (this.dabDec) {
-        DabSubChannelInfo subChannelInfo = new DabSubChannelInfo();
-        subChannelInfo.mBitrate = qVar.bitrate;
-        subChannelInfo.mFreq = qVar.freq;
-        subChannelInfo.mSubChannelId = (byte) qVar.subChannelId;
-        subChannelInfo.mType = (byte) qVar.type;
-        subChannelInfo.mLabel = qVar.label;
-        Logger.d("current label:" + subChannelInfo.mLabel);
-        Logger.d("current service type:" + ((int) subChannelInfo.mType));
-        this.dabDec.dab_api_set_subid(65);
-        this.dabDec.dab_api_set_msc_size((short) (subChannelInfo.mBitrate * 3));
-        this.dabDec.dab_api_tune(subChannelInfo.mFreq);
-        Logger.d("current frequency[a]: " + subChannelInfo.mFreq);
-        this.dabDec.dab_api_set_subid(subChannelInfo.mSubChannelId);
-        ServiceFollowing.manTune(subChannelInfo);
-        this.mscThread = new MscThread(subChannelInfo.mBitrate);
-        this.mscThread.start();
-        this.audioType = subChannelInfo.mType == 63 ? AUDIOTYPE_AAC : AUDIOTYPE_MP2;
-        if (this.audioType == AUDIOTYPE_AAC) {
-          Logger.d("play aac audio");
-          this.aacThread = new AacThread(this.context, this.inputRingBuffer);
-          this.aacThread.start();
-        } else if (this.audioType == AUDIOTYPE_MP2) {
-          Logger.d("play mp2 audio");
-          this.mp2Thread = new Mp2Thread(this.context, this.inputRingBuffer);
-          this.mp2Thread.start();
-        } else {
-          Logger.d("unknown audio type");
-        }
-        Logger.d("bitrate: " + subChannelInfo.mBitrate);
-      }
-      if (this.mSignalMotDlsMgr == null) {
-        this.mSignalMotDlsMgr = new SignalMotDlsMgr();
-        this.mSignalMotDlsMgr.start();
-      }
-    }
-  */
-  /* renamed from: a */
-  /*
-  private void getStationLogoFromDabBin(String str) {
-    int dab_get_image;
-    String dabBinFile = this.context.getFilesDir().getAbsolutePath() + "/dab.bin";
-    String imageFile = this.context.getFilesDir().getAbsolutePath() + ("/" + str + ".png");
-    if (new File(dabBinFile).exists()) {
-      File file = new File(imageFile);
-      if (file.exists()) {
-        file.delete();
-      }
-      Logger.d("dab_get_image '" + str + "'");
-      Logger.d(" -> " + file.getAbsolutePath());
-      synchronized (this.dabDec) {
-        dab_get_image =
-            this.dabDec.dab_get_image(dabBinFile.getBytes(), str.getBytes(), imageFile.getBytes());
-      }
-      Message obtainMessage = this.playerHandler.obtainMessage();
-      obtainMessage.what = 10;
-      if (dab_get_image == 0) {
-        Logger.d("get service logo");
-        obtainMessage.obj = TextUtils.concat(str, ".png");
-        this.playerHandler.sendMessage(obtainMessage);
-        return;
-      }
-      Logger.d("no service logo '" + str + "' in dab.bin, dab_get_image=" + dab_get_image);
-    }
-  }
-  */
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: b */
   public void scan(int scan_which_region, int scan_type) {
@@ -417,40 +277,50 @@ public class DabThread extends Thread {
     }
   }
 
+  private boolean isInitialized = false;
+
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: c */
   public void dabInit() {
-    Logger.d("dab init");
-    String filename = fic_db_filename();
-    String usb_devicename = this.usbDeviceConnector.getUsbDeviceName();
-    File file = new File(filename);
-    try {
-      if (file.exists() && !file.delete()) {
-        Logger.d("delete failed: " + filename);
-      }
-      if (!file.createNewFile()) {
-        Logger.d("createNewFile failed: " + filename);
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    Logger.d("reset mode:1");
-    this.dabDec.dab_api_init(
-        this.usbDeviceConnector.getUsbConFileDescriptor(),
-        usb_devicename.getBytes(),
-        usb_devicename.getBytes().length);
-    this.dabDec.decoder_fic_init(filename.getBytes());
-    this.dabDec.decoder_fic_reset(1);
-    if (this.dabDec.dab_api_power_on(0) != 1) {
-      Logger.d("power on fail");
-      sendHardwareFailure("Failed to power on DAB hardware");
-    } else if (this.dabDec.dab_api_echo(0) != 1) {
-      Logger.d("echo fail");
-      sendHardwareFailure("Failed echo test with DAB hardware");
-    } else if (this.dabDec.dab_api_version(0) != 1) {
-      Logger.d("get version fail");
-      sendHardwareFailure("Failed to get version from DAB hardware");
+    if (isInitialized) {
+      Logger.d("dab already initialized");
     } else {
+      Logger.d("dab init");
+      String filename = fic_db_filename();
+      String usb_devicename = this.usbDeviceConnector.getUsbDeviceName();
+      File file = new File(filename);
+      try {
+        if (file.exists() && !file.delete()) {
+          Logger.d("delete failed: " + filename);
+        }
+        if (!file.createNewFile()) {
+          Logger.d("createNewFile failed: " + filename);
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      Logger.d("reset mode:1");
+      this.dabDec.dab_api_init(
+          this.usbDeviceConnector.getUsbConFileDescriptor(),
+          usb_devicename.getBytes(),
+          usb_devicename.getBytes().length);
+      this.dabDec.decoder_fic_init(filename.getBytes());
+      this.dabDec.decoder_fic_reset(1);
+      if (this.dabDec.dab_api_power_on(0) != 1) {
+        Logger.d("power on fail");
+        sendHardwareFailure("Failed to power on DAB hardware");
+      } else if (this.dabDec.dab_api_echo(0) != 1) {
+        Logger.d("echo fail");
+        sendHardwareFailure("Failed echo test with DAB hardware");
+      } else if (this.dabDec.dab_api_version(0) != 1) {
+        Logger.d("get version fail");
+        sendHardwareFailure("Failed to get version from DAB hardware");
+      } else {
+        isInitialized = true;
+      }
+    }
+
+    if (isInitialized) {
       // send stationlist to player
       this.stationList = this.dbHelper.getStationList();
       Message obtainMessage = this.playerHandler.obtainMessage();
@@ -461,6 +331,7 @@ public class DabThread extends Thread {
 
       Message obtainMessage3 = this.playerHandler.obtainMessage();
       obtainMessage3.what = PlayerActivity.PLAYERMSG_DAB_THREAD_INITIALIZED;
+      obtainMessage3.arg1 = isPlaying ? 1 : 0;
       this.playerHandler.sendMessage(obtainMessage3);
 
       // select favourites and send to player
@@ -480,6 +351,20 @@ public class DabThread extends Thread {
     if (this.f94u == 1 && this.dabDec.dab_api_power_off(0) != 1) {
       Logger.d("power off fail");
     }
+
+    if (DabThread.this.mSignalMotDlsMgr != null) {
+      DabThread.this.mSignalMotDlsMgr.exit();
+      DabThread.this.mSignalMotDlsMgr = null;
+    }
+    if (DabThread.this.ficThread != null) {
+      DabThread.this.ficThread.exit();
+      DabThread.this.ficThread = null;
+    }
+    if (DabThread.this.mscThread != null) {
+      DabThread.this.mscThread.exit();
+      DabThread.this.mscThread = null;
+    }
+
     this.dabDec.decoder_fic_deinit();
     this.dabDec.dab_api_close(0);
     this.dbHelper.closeDb();
@@ -535,7 +420,7 @@ public class DabThread extends Thread {
         this.dabSubChannelInfo.mSID = subChannelInfo.mSID;
         this.dabSubChannelInfo.mSubChannelId = subChannelInfo.mSubChannelId;
         this.dabSubChannelInfo.mType = subChannelInfo.mType;
-        this.f97x = true;
+        // this.f97x = true;
         this.freq = subChannelInfo.mFreq;
         int size2 =
             this.dabDec.dab_get_pgm_index(
@@ -578,10 +463,12 @@ public class DabThread extends Thread {
           Logger.d("play aac audio");
           this.aacThread = new AacThread(this.context, this.inputRingBuffer);
           this.aacThread.start();
+          this.isPlaying = true;
         } else if (this.audioType == AUDIOTYPE_MP2) {
           Logger.d("play mp2 audio");
           this.mp2Thread = new Mp2Thread(this.context, this.inputRingBuffer);
           this.mp2Thread.start();
+          this.isPlaying = true;
         } else {
           Logger.d("unknown audio type");
         }
@@ -590,9 +477,10 @@ public class DabThread extends Thread {
           ServiceLink sf = new ServiceLink(this.dabDec);
           sf.read(subChannelInfo, this.arrFreqs, this.arrSids);
           ServiceFollowing.manTune(subChannelInfo, this.arrFreqs, this.arrSids);
-          notifyNewStationPlaying(subChannelInfo, i, stationList.size());
         }
+        notifyNewStationPlaying(subChannelInfo, i, stationList.size());
       }
+
       if (this.mSignalMotDlsMgr == null) {
         this.mSignalMotDlsMgr = new SignalMotDlsMgr();
         this.mSignalMotDlsMgr.start();
@@ -808,7 +696,7 @@ public class DabThread extends Thread {
         this.freq = i2;
         this.dabSubChannelInfo.mFreq = this.freq;
       }
-      this.f97x = true;
+      // this.f97x = true;
       this.dabDec.dab_api_set_subid(65);
       if (this.f94u == 1) {
         this.dabDec.dab_api_set_msc_size((short) (this.dabSubChannelInfo.mBitrate * 3));
@@ -894,6 +782,11 @@ public class DabThread extends Thread {
       this.mscThread.exit();
       this.mscThread = null;
     }
+
+    StationInfo stationInfo = StationInfo.getInstance();
+    stationInfo.setStationIdxAndReset(-1);
+    stationInfo.setPlaying(false);
+    stationInfo.sentMetadataBroadcast(context);
   }
 
   @Override // java.lang.Thread, java.lang.Runnable
@@ -938,86 +831,91 @@ public class DabThread extends Thread {
 
   private void notifyNewStationPlaying(
       DabSubChannelInfo info, int currentPlayingPos, int numStations) {
-    Intent intent = new Intent(DabService.META_CHANGED);
-    intent.putExtra(DabService.EXTRA_SENDER, DabService.SENDER_DAB);
-    intent.putExtra(DabService.EXTRA_ID, currentPlayingPos + 1);
-    intent.putExtra(DabService.EXTRA_NUMSTATIONS, numStations);
-    intent.putExtra(DabService.EXTRA_ARTIST, info.mLabel);
-    intent.putExtra(DabService.EXTRA_TRACK, "");
-    intent.putExtra(DabService.EXTRA_STATION, info.mLabel);
-    intent.putExtra(DabService.EXTRA_SERVICEID, info.mSID);
-    intent.putExtra(DabService.EXTRA_FREQUENCY_KHZ, info.mFreq);
-    intent.putExtra(DabService.EXTRA_PTY, Strings.PTYname(this.context, info.mPty));
-    intent.putExtra(DabService.EXTRA_BITRATE, info.mBitrate);
-    intent.putExtra(DabService.EXTRA_ENSEMBLE_NAME, info.mEnsembleLabel);
-    intent.putExtra(DabService.EXTRA_ENSEMBLE_ID, info.mEID);
-    intent.putExtra(DabService.EXTRA_AFFECTS_ANDROID_METADATA, true);
+
+    StationInfo stationInfo = StationInfo.getInstance();
+
+    stationInfo.setStationIdxAndReset(currentPlayingPos);
+    stationInfo.setNumStations(numStations);
+    stationInfo.setArtist(info.mLabel);
+    stationInfo.setTrack("");
+    stationInfo.setStation(info.mLabel);
+    stationInfo.setServiceId(info.mSID);
+    stationInfo.setFrequencyKhz(info.mFreq);
+    stationInfo.setPty(Strings.PTYname(this.context, info.mPty));
+    stationInfo.setBitrate(info.mBitrate);
+    stationInfo.setEnsembleName(info.mEnsembleLabel);
+    stationInfo.setEnsembleId(info.mEID);
+    stationInfo.setPlaying(true);
+    stationInfo.setAffectMetadata(true);
+    switch (info.mType) {
+      case 2:
+        stationInfo.setAudiocodec(StationInfo.AUDIOFORMAT_MP2);
+        break;
+      case DabSubChannelInfo.AUDIOCODEC_HEAAC /* 63 */:
+        stationInfo.setAudiocodec(StationInfo.AUDIOFORMAT_AAC);
+        break;
+    }
+
     Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO_INTENT;
-    obtainMessage.obj = intent;
+    obtainMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO;
+    obtainMessage.obj = stationInfo;
     this.playerHandler.sendMessage(obtainMessage);
+    stationInfo.sentMetadataBroadcast(context);
   }
 
   private void updateStationPlaying(DabSubChannelInfo info) {
-    Intent intent = new Intent(DabService.META_CHANGED);
-    intent.putExtra(DabService.EXTRA_SENDER, DabService.SENDER_DAB);
-    intent.putExtra(DabService.EXTRA_STATION, info.mLabel);
-    intent.putExtra(DabService.EXTRA_SERVICEID, info.mSID);
-    intent.putExtra(DabService.EXTRA_FREQUENCY_KHZ, info.mFreq);
-    intent.putExtra(DabService.EXTRA_PTY, Strings.PTYname(this.context, info.mPty));
-    intent.putExtra(DabService.EXTRA_BITRATE, info.mBitrate);
-    intent.putExtra(DabService.EXTRA_ENSEMBLE_NAME, info.mEnsembleLabel);
-    intent.putExtra(DabService.EXTRA_ENSEMBLE_ID, info.mEID);
-    intent.putExtra(DabService.EXTRA_AFFECTS_ANDROID_METADATA, true);
+    StationInfo stationInfo = StationInfo.getInstance();
+
+    stationInfo.setArtist(info.mLabel);
+    stationInfo.setTrack("");
+    stationInfo.setStation(info.mLabel);
+    stationInfo.setServiceId(info.mSID);
+    stationInfo.setFrequencyKhz(info.mFreq);
+    stationInfo.setPty(Strings.PTYname(this.context, info.mPty));
+    stationInfo.setBitrate(info.mBitrate);
+    stationInfo.setEnsembleName(info.mEnsembleLabel);
+    stationInfo.setEnsembleId(info.mEID);
+    stationInfo.setAffectMetadata(true);
+
     Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO_INTENT;
-    obtainMessage.obj = intent;
+    obtainMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO;
+    obtainMessage.obj = stationInfo;
     this.playerHandler.sendMessage(obtainMessage);
+
+    stationInfo.sentMetadataBroadcast(context);
   }
 
   private void notifyScanning(int numStations) {
-    Intent intent = new Intent(DabService.META_CHANGED);
-    intent.putExtra(DabService.EXTRA_SENDER, "");
-    intent.putExtra(DabService.EXTRA_ID, 0);
-    intent.putExtra(DabService.EXTRA_NUMSTATIONS, numStations);
-    intent.putExtra(DabService.EXTRA_ARTIST, "");
-    intent.putExtra(DabService.EXTRA_TRACK, "");
-    intent.putExtra(DabService.EXTRA_STATION, "");
-    intent.putExtra(DabService.EXTRA_SERVICEID, 0);
-    intent.putExtra(DabService.EXTRA_PTY, "");
-    intent.putExtra(DabService.EXTRA_BITRATE, 0);
-    intent.putExtra(DabService.EXTRA_ENSEMBLE_NAME, "");
-    intent.putExtra(DabService.EXTRA_ENSEMBLE_ID, 0);
-    intent.putExtra(DabService.EXTRA_SIGNALQUALITY, -1);
-    intent.putExtra(DabService.EXTRA_SERVICEFOLLOWING, "");
-    intent.putExtra(DabService.EXTRA_SERVICELOG, "");
-    intent.putExtra(DabService.EXTRA_AUDIOFORMAT, "");
+    StationInfo stationInfo = StationInfo.getInstance();
+
+    stationInfo.setStationIdxAndReset(-1);
+
     Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO_INTENT;
-    obtainMessage.obj = intent;
+    obtainMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO;
+    obtainMessage.obj = stationInfo;
     this.playerHandler.sendMessage(obtainMessage);
+
+    stationInfo.sentMetadataBroadcast(context);
   }
 
   private void notifyScanning(int frequency, int numStations) {
-    Intent intent = new Intent(DabService.META_CHANGED);
-    intent.putExtra(DabService.EXTRA_SENDER, "");
-    intent.putExtra(DabService.EXTRA_NUMSTATIONS, numStations);
-    intent.putExtra(DabService.EXTRA_FREQUENCY_KHZ, frequency);
+
+    StationInfo stationInfo = StationInfo.getInstance();
+
+    stationInfo.setStationIdxAndReset(-1);
+    stationInfo.setNumStations(numStations);
+    stationInfo.setFrequencyKhz(frequency);
+
     Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO_INTENT;
-    obtainMessage.obj = intent;
+    obtainMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO;
+    obtainMessage.obj = stationInfo;
     this.playerHandler.sendMessage(obtainMessage);
+
+    stationInfo.sentMetadataBroadcast(context);
   }
 
   private void notifyScanningDone(int numStations) {
-    Intent intent = new Intent(DabService.META_CHANGED);
-    intent.putExtra(DabService.EXTRA_SENDER, "");
-    intent.putExtra(DabService.EXTRA_NUMSTATIONS, numStations);
-    intent.putExtra(DabService.EXTRA_FREQUENCY_KHZ, 0);
-    Message obtainMessage = this.playerHandler.obtainMessage();
-    obtainMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO_INTENT;
-    obtainMessage.obj = intent;
-    this.playerHandler.sendMessage(obtainMessage);
+    notifyScanning(0, numStations);
   }
 
   private void showSearchIcon() {
@@ -1082,20 +980,15 @@ public class DabThread extends Thread {
             DabThread.this.mscThread.exit();
             DabThread.this.mscThread = null;
           }
+          /*
           if (DabThread.this.dabRecorder != null && DabThread.this.dabRecorder.isAlive()) {
             DabThread.this.dabRecorder.m59a();
             return;
           }
+          */
           return;
         case 8:
           break;
-        case 16:
-          Toast.makeText(context, "case 16!", Toast.LENGTH_SHORT).show();
-          DabThread.this.m54a((DabSubChannelInfo) message.obj);
-          return;
-        case 20:
-          // DabThread.this.m48c(message.arg1);
-          return;
         case MSGTYPE_START_SERVICE_FOLLOWING:
           DabThread.this.startServiceFollowing(message.arg1);
           return;
@@ -1108,28 +1001,7 @@ public class DabThread extends Thread {
           obtainMessage.obj = DabThread.this.dbHelper.getFavorites();
           DabThread.this.playerHandler.sendMessage(obtainMessage);
           return;
-          /*
-          case PLAY_FAVOURITE:
-            DabSubChannelInfo sciFavourite =
-                DabThread.this.dbHelper.getFavouriteService(message.arg1);
-            if (sciFavourite != null) {
-              int idx = DabThread.this.stationList.indexOf(sciFavourite);
-              if (idx != -1) {
-                if (!DabThread.this.isOnExit) {
 
-                  // inform player which index gets played
-                  Message obtainMessage2 = DabThread.this.playerHandler.obtainMessage();
-                  obtainMessage2.what = PlayerActivity.PLAYERMSG_PLAY_PRESET;
-                  obtainMessage2.arg1 = idx;
-                  DabThread.this.playerHandler.sendMessage(obtainMessage2);
-
-                  ServiceFollowing.update_enabled_status(DabThread.this.getContext());
-                  DabThread.this.playStation(idx);
-                }
-              }
-            }
-            return;
-            */
         default:
           return;
       }
@@ -1217,6 +1089,11 @@ public class DabThread extends Thread {
               }
               writeExtraDataToBuffer(fic_data, fic_bytes_len);
             }
+
+            // our decoder
+            FicDecoder ficDecoder = new FicDecoder();
+            ficDecoder.process(fic_data, fic_bytes_len);
+
             DabThread.this.dabDec.decoder_fic_parse(fic_data, fic_bytes_len, DabThread.this.freq);
             boolean usage_is_nonzero = DabThread.this.dabDec.decoder_fic_get_usage() != 0;
             if (usage_is_nonzero != usage_was_nonzero) {
@@ -1359,17 +1236,6 @@ public class DabThread extends Thread {
       if (this.prevSignal != dab_api_get_signal) {
         this.prevSignal = dab_api_get_signal;
 
-        Handler playerHandler = DabThread.this.getPlayerHandler();
-        if (playerHandler != null && 1 == 2) {
-          Intent intent = new Intent(DabService.META_CHANGED);
-          intent.putExtra(DabService.EXTRA_SENDER, DabService.SENDER_DAB);
-          intent.putExtra(DabService.EXTRA_SIGNALQUALITY, dab_api_get_signal);
-          Message intentMessage = playerHandler.obtainMessage();
-          intentMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO_INTENT;
-          intentMessage.obj = intent;
-          playerHandler.sendMessage(intentMessage);
-        }
-
         if (dab_api_get_signal > 900) {
           dab_api_get_signal2 = 0;
         } else {
@@ -1398,16 +1264,16 @@ public class DabThread extends Thread {
         obtainMessage.obj = dls;
         DabThread.this.playerHandler.sendMessage(obtainMessage);
       }
+
+      StationInfo stationInfo = StationInfo.getInstance();
+      stationInfo.setDls(dls);
+      stationInfo.sentMetadataBroadcast(context);
+
       WeakReference<Handler> playerHandler = PlayerActivity.getPlayerHandler();
       if (playerHandler != null && (handler = playerHandler.get()) != null) {
-        Intent intent = new Intent(DabService.META_CHANGED);
-        intent.putExtra(DabService.EXTRA_SENDER, DabService.SENDER_DAB);
-        intent.putExtra(DabService.EXTRA_TRACK, dls);
-        intent.putExtra(DabService.EXTRA_DLS, dls);
-        intent.putExtra(DabService.EXTRA_AFFECTS_ANDROID_METADATA, true);
         Message intentMessage = handler.obtainMessage();
-        intentMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO_INTENT;
-        intentMessage.obj = intent;
+        intentMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO;
+        intentMessage.obj = stationInfo;
         handler.sendMessage(intentMessage);
       }
     }
@@ -1480,13 +1346,18 @@ public class DabThread extends Thread {
         obtainMessage.what = PlayerActivity.PLAYERMSG_MOT; // 10
         obtainMessage.obj = fileName;
         DabThread.this.playerHandler.sendMessage(obtainMessage);
+
         try {
           String canonicalPath = file.getCanonicalPath();
-          Intent intent = new Intent(DabService.META_CHANGED);
-          intent.putExtra(DabService.EXTRA_SENDER, DabService.SENDER_DAB);
-          intent.putExtra(DabService.EXTRA_SLS, canonicalPath);
-          Logger.d("decoder_get_mot_data: " + canonicalPath);
-          DabThread.this.getContext().sendBroadcast(intent);
+          StationInfo stationInfo = StationInfo.getInstance();
+          stationInfo.setSls(canonicalPath);
+
+          Message obtainMessage2 = DabThread.this.playerHandler.obtainMessage();
+          obtainMessage2.what = PlayerActivity.PLAYERMSG_STATIONINFO;
+          obtainMessage2.obj = stationInfo;
+          DabThread.this.playerHandler.sendMessage(obtainMessage2);
+
+          stationInfo.sentMetadataBroadcast(context);
         } catch (IOException io) {
           io.printStackTrace();
         } catch (SecurityException s) {
@@ -1498,7 +1369,7 @@ public class DabThread extends Thread {
     /* renamed from: a */
     public void exit() {
       this.exit = true;
-      sendSignalQuality(DabService.SIGNALQUALITY_NONE);
+      sendSignalQuality(SIGNALQUALITY_NONE);
       sendDls("");
     }
 

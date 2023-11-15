@@ -1,50 +1,20 @@
 {
   "allFiles": [
     {
-      "file": "/storage/emulated/0/AppProjects/DABster/app/src/main/java/com/thf/dabplayer/service/DabService.java",
-      "selection": {
-        "end": {
-          "column": 32,
-          "index": 9498,
-          "line": 235
-        },
-        "start": {
-          "column": 32,
-          "index": 9498,
-          "line": 235
-        }
-      }
-    },
-    {
       "file": "/storage/emulated/0/AppProjects/DABster/app/src/main/java/com/thf/dabplayer/dab/DabThread.java",
       "selection": {
         "end": {
-          "column": 7,
-          "index": 47056,
-          "line": 1286
+          "column": 56,
+          "index": 13232,
+          "line": 416
         },
         "start": {
-          "column": 7,
-          "index": 47056,
-          "line": 1286
-        }
-      }
-    },
-    {
-      "file": "/storage/emulated/0/AppProjects/DABster/app/src/main/java/com/thf/dabplayer/activity/PlayerActivity.java",
-      "selection": {
-        "end": {
-          "column": 34,
-          "index": 55549,
-          "line": 1489
-        },
-        "start": {
-          "column": 20,
-          "index": 55535,
-          "line": 1489
+          "column": 56,
+          "index": 13232,
+          "line": 416
         }
       }
     }
   ],
-  "selectedFile": "/storage/emulated/0/AppProjects/DABster/app/src/main/java/com/thf/dabplayer/service/DabService.java"
+  "selectedFile": "/storage/emulated/0/AppProjects/DABster/app/src/main/java/com/thf/dabplayer/dab/DabThread.java"
 }

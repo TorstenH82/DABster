@@ -44,7 +44,8 @@ public class Cluster {
   }
 
   public synchronized String list_of_members(int i, int i2) {
-    String members = null;;
+    String members = null;
+    ;
     for (SparseArray sparseArray : this.clusters) {
       int indexOfKey = sparseArray.indexOfKey(i);
       if (indexOfKey >= 0 && contains_eid((List) sparseArray.valueAt(indexOfKey), i2)) {
@@ -60,8 +61,10 @@ public class Cluster {
           }
           if (members != null) {
             members += ",";
+            members += Strings.freq2channelname(sparseArray.keyAt(idx));
+          } else {
+            members = Strings.freq2channelname(sparseArray.keyAt(idx));
           }
-          members+=Strings.freq2channelname(sparseArray.keyAt(idx));
         }
         if (members != null) {
           break;

@@ -2,11 +2,13 @@ package com.thf.dabplayer.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,7 +30,7 @@ public class PopupDialog {
   private PopupStationsAdapter adapter;
   private PopupStationsListener listener;
 
-  private  Bomb bomb;
+  private Bomb bomb;
 
   public interface PopupStationsListener {
     public void requestClose();
@@ -39,15 +41,17 @@ public class PopupDialog {
   public PopupDialog(Activity activity, PopupStationsListener listener) {
     this.activity = activity;
     this.listener = listener;
-
     this.builder =
         new AlertDialog.Builder(activity, R.style.MaterialAlertDialog_rounded)
-            // new ContextThemeWrapper(this.context, (int) R.style.AlertDialogCustom))
-            // .setTitle(title)
-            // .setMessage(initMessage)
+            .setOnCancelListener(
+                new AlertDialog.OnCancelListener() {
+                  @Override
+                  public void onCancel(DialogInterface arg0) {
+                      PopupDialog.this.listener.requestClose();
+                  }
+                })
             .setCancelable(true);
-    // .setIcon(R.drawable.radio);
-
+    
     LayoutInflater layoutInflater = LayoutInflater.from(activity);
     final View alertView = layoutInflater.inflate(R.layout.dialog_popup, null);
     this.builder.setView(alertView);

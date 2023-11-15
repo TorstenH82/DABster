@@ -25,6 +25,7 @@ public class DatabaseHelper {
   // private int mFilter = 0;
   // private final String table_preset = "preset";
   private final String table_service = "service";
+
   // private final String pref_name = "playing";
   // private final String pref_key_playing = "current_playing";
   // private final String pref_key_filter = "current_filter";
@@ -40,10 +41,10 @@ public class DatabaseHelper {
     ContentValues contentValues = new ContentValues();
     contentValues.put("label", subChannelInfo.mLabel.trim());
     contentValues.put("subid", Byte.valueOf(subChannelInfo.mSubChannelId));
-    contentValues.put(DabService.EXTRA_BITRATE, Integer.valueOf(subChannelInfo.mBitrate));
+    contentValues.put("bitrate", Integer.valueOf(subChannelInfo.mBitrate));
     contentValues.put("sid", Integer.valueOf(subChannelInfo.mSID));
     contentValues.put("freq", Integer.valueOf(subChannelInfo.mFreq));
-    contentValues.put(DabService.EXTRA_PTY, Byte.valueOf(subChannelInfo.mPty));
+    contentValues.put("pty", Byte.valueOf(subChannelInfo.mPty));
     contentValues.put("type", Byte.valueOf(subChannelInfo.mType));
     contentValues.put("abbreviated", Byte.valueOf(subChannelInfo.mAbbreviatedFlag));
     contentValues.put("eid", Integer.valueOf(subChannelInfo.mEID));
@@ -116,10 +117,10 @@ public class DatabaseHelper {
         subchannelinfo.mLabel = rawQuery.getString(rawQuery.getColumnIndex("label"));
         subchannelinfo.mSubChannelId = (byte) rawQuery.getInt(rawQuery.getColumnIndex("subid"));
         subchannelinfo.mBitrate =
-            rawQuery.getInt(rawQuery.getColumnIndex(DabService.EXTRA_BITRATE));
+            rawQuery.getInt(rawQuery.getColumnIndex("bitrate"));
         subchannelinfo.mSID = rawQuery.getInt(rawQuery.getColumnIndex("sid"));
         subchannelinfo.mFreq = rawQuery.getInt(rawQuery.getColumnIndex("freq"));
-        subchannelinfo.mPty = (byte) rawQuery.getInt(rawQuery.getColumnIndex(DabService.EXTRA_PTY));
+        subchannelinfo.mPty = (byte) rawQuery.getInt(rawQuery.getColumnIndex("pty"));
         subchannelinfo.mType = (byte) rawQuery.getInt(rawQuery.getColumnIndex("type"));
         subchannelinfo.mAbbreviatedFlag =
             (byte) rawQuery.getInt(rawQuery.getColumnIndex("abbreviated"));
@@ -152,10 +153,10 @@ public class DatabaseHelper {
       DabSubChannelInfo subchannelinfo = new DabSubChannelInfo();
       subchannelinfo.mLabel = rawQuery.getString(rawQuery.getColumnIndex("label"));
       subchannelinfo.mSubChannelId = (byte) rawQuery.getInt(rawQuery.getColumnIndex("subid"));
-      subchannelinfo.mBitrate = rawQuery.getInt(rawQuery.getColumnIndex(DabService.EXTRA_BITRATE));
+      subchannelinfo.mBitrate = rawQuery.getInt(rawQuery.getColumnIndex("bitrate"));
       subchannelinfo.mSID = rawQuery.getInt(rawQuery.getColumnIndex("sid"));
       subchannelinfo.mFreq = rawQuery.getInt(rawQuery.getColumnIndex("freq"));
-      subchannelinfo.mPty = (byte) rawQuery.getInt(rawQuery.getColumnIndex(DabService.EXTRA_PTY));
+      subchannelinfo.mPty = (byte) rawQuery.getInt(rawQuery.getColumnIndex("pty"));
       subchannelinfo.mType = (byte) rawQuery.getInt(rawQuery.getColumnIndex("type"));
       subchannelinfo.mAbbreviatedFlag =
           (byte) rawQuery.getInt(rawQuery.getColumnIndex("abbreviated"));
@@ -310,10 +311,10 @@ public class DatabaseHelper {
         subChannelInfo.mLabel = rawQuery.getString(rawQuery.getColumnIndex("label"));
         subChannelInfo.mSubChannelId = (byte) rawQuery.getInt(rawQuery.getColumnIndex("subid"));
         subChannelInfo.mBitrate =
-            rawQuery.getInt(rawQuery.getColumnIndex(DabService.EXTRA_BITRATE));
+            rawQuery.getInt(rawQuery.getColumnIndex("bitrate"));
         subChannelInfo.mSID = rawQuery.getInt(rawQuery.getColumnIndex("sid"));
         subChannelInfo.mFreq = rawQuery.getInt(rawQuery.getColumnIndex("freq"));
-        subChannelInfo.mPty = (byte) rawQuery.getInt(rawQuery.getColumnIndex(DabService.EXTRA_PTY));
+        subChannelInfo.mPty = (byte) rawQuery.getInt(rawQuery.getColumnIndex("pty"));
         subChannelInfo.mType = (byte) rawQuery.getInt(rawQuery.getColumnIndex("type"));
         subChannelInfo.mAbbreviatedFlag =
             (byte) rawQuery.getInt(rawQuery.getColumnIndex("abbreviated"));

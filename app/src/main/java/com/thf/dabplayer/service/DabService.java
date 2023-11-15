@@ -33,6 +33,7 @@ import com.thf.dabplayer.activity.PlayerActivity;
 import com.thf.dabplayer.activity.PopupActivity;
 import com.thf.dabplayer.dab.DabSubChannelInfo;
 import com.thf.dabplayer.dab.DabThread;
+import com.thf.dabplayer.dab.StationInfo;
 import com.thf.dabplayer.dab.UsbDeviceConnector;
 import com.thf.dabplayer.utils.Logger;
 import com.thf.dabplayer.activity.SettingsActivity;
@@ -45,37 +46,8 @@ import com.thf.dabplayer.R;
 /* renamed from: com.ex.dabplayer.pad.service.DabService */
 /* loaded from: classes.dex */
 public class DabService extends MediaBrowserServiceCompat {
-  public static final String AUDIOFORMAT_AAC = "AAC";
-  public static final String AUDIOFORMAT_MP2 = "MP2";
-  public static final String EXTRA_AFFECTS_ANDROID_METADATA = "affectsAndroidMetaData";
-  public static final String EXTRA_ARTIST = "artist";
-  public static final String EXTRA_AUDIOFORMAT = "audio_format";
-  public static final String EXTRA_AUDIOSAMPLERATE = "samplerate";
-  public static final String EXTRA_BITRATE = "bitrate";
-  public static final String EXTRA_DLS = "dls";
-  public static final String EXTRA_ENSEMBLE_ID = "ensemble_id";
-  public static final String EXTRA_ENSEMBLE_NAME = "ensemble_name";
-  public static final String EXTRA_FREQUENCY_KHZ = "frequency_khz";
-  public static final String EXTRA_ID = "id";
-  public static final String EXTRA_NUMSTATIONS = "num_stations";
-  public static final String EXTRA_PLAYING = "playing";
-  public static final String EXTRA_PTY = "pty";
-  public static final String EXTRA_SENDER = "sender";
-  public static final String EXTRA_SERVICEFOLLOWING = "service_following";
-  public static final String EXTRA_SERVICEID = "serviceid";
-  public static final String EXTRA_SERVICELOG = "service_log";
-  public static final String EXTRA_SIGNALQUALITY = "signal";
-  public static final String EXTRA_SLS = "sls";
-  public static final String EXTRA_SLSBITMAP = "slsBitmap";
-  public static final String EXTRA_STATION = "station";
-  public static final String EXTRA_TRACK = "track";
-  public static final String META_CHANGED = "com.android.music.metachanged";
   private static final String MY_EMPTY_MEDIA_ROOT_ID = "empty_root_id";
   private static final String MY_MEDIA_ROOT_ID = "media_root_id";
-  private static final int ONGOING_NOTIFICATION = 21;
-  public static final String SENDER_DAB = "com.thf.dabplayer";
-  public static final int SIGNALQUALITY_NONE = 8000;
-
   private static final int NOTIFCATION_ID = 1447;
   public static String id1 = "dabster_channel_01";
 
@@ -96,6 +68,7 @@ public class DabService extends MediaBrowserServiceCompat {
   private Notification.Builder mNotificationBuilder = null;
   private MediaSessionCompat mMediaSession = null;
   private PlaybackStateCompat.Builder mPlaybackStateBuilder = null;
+
   // private final AlarmReceiver alarm = new AlarmReceiver();
 
   /* renamed from: com.ex.dabplayer.pad.service.DabService$MediaSessionCallback */
@@ -232,8 +205,13 @@ public class DabService extends MediaBrowserServiceCompat {
   }
 
   /* renamed from: b */
-    
+
   public void startDabThread() {
+    if (this.dabThread != null && this.dabThread.isAlive()) {
+      Logger.d("DabThread already running");
+      return;
+    }
+
     Logger.d("start dab service");
     if (this.usbDevice != null) {
       this.dabThread =
@@ -268,9 +246,19 @@ public class DabService extends MediaBrowserServiceCompat {
     return false;
   }
 
+  public static final String ACTION_STOP_SERVICE = "STOP_SERVICE";
+
   @Override // android.app.Service
   public int onStartCommand(Intent intent, int flags, int startId) {
     Logger.d("onStartCommand");
+
+    String action = "";
+    if (intent != null) action = intent.getAction();
+    if (ACTION_STOP_SERVICE.equals(action)) {
+      Logger.d("called to stop");
+      gracefullyStop();
+      return START_NOT_STICKY;
+    }
 
     KeyEvent keyEvent = MediaButtonReceiver.handleIntent(this.mMediaSession, intent);
     if (keyEvent == null && this.mNotificationBuilder == null) {
@@ -290,7 +278,7 @@ public class DabService extends MediaBrowserServiceCompat {
     this.mPlaybackStateBuilder =
         new PlaybackStateCompat.Builder()
             .setActions(512L)
-            .setState(3, 0L, 1.0f, SystemClock.elapsedRealtime());
+            .setState(PlaybackStateCompat.STATE_PLAYING, 0L, 1.0f, SystemClock.elapsedRealtime());
     this.mMediaSession.setPlaybackState(this.mPlaybackStateBuilder.build());
     this.mMediaSession.setCallback(new MediaSessionCallback());
     setSessionToken(this.mMediaSession.getSessionToken());
@@ -460,16 +448,12 @@ public class DabService extends MediaBrowserServiceCompat {
     this.mNotificationBuilder = null;
   }
 
-  public void updateNotification(@NonNull Intent intent) {
+  public void updateNotification(StationInfo stationInfo) {
     if (this.mNotificationBuilder != null) {
-      String stationName = intent.getStringExtra(EXTRA_STATION);
-      if (stationName != null) {
-        this.mNotificationBuilder.setContentText(stationName);
-      }
-      Bitmap logoOrSlsBitmap = (Bitmap) intent.getParcelableExtra(EXTRA_SLSBITMAP);
-      if (logoOrSlsBitmap != null) {
-        this.mNotificationBuilder.setLargeIcon(logoOrSlsBitmap);
-      }
+
+      this.mNotificationBuilder.setContentText(stationInfo.getStation());
+      this.mNotificationBuilder.setLargeIcon(stationInfo.getLogo(getApplicationContext()).getBitmap());
+
       NotificationManager nm = (NotificationManager) getSystemService("notification");
       if (nm != null) {
         try {
@@ -491,6 +475,14 @@ public class DabService extends MediaBrowserServiceCompat {
   }
 
   private void gracefullyStop() {
+    if (dabThread != null) {
+      dabThread.deInit();
+    }
+    if (dabThread != null && dabThread.isAlive()) {
+      Logger.d("stop DabThread");
+      dabThread.exit();
+      dabThread = null;
+    }
     Logger.d("service stopself");
     clearNotification();
     stopSelf();

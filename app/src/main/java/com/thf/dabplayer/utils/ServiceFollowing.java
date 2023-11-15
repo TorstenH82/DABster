@@ -2,7 +2,6 @@ package com.thf.dabplayer.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -11,6 +10,7 @@ import androidx.core.view.ViewCompat;
 import com.thf.dabplayer.R;
 import com.thf.dabplayer.activity.PlayerActivity;
 import com.thf.dabplayer.dab.DabSubChannelInfo;
+import com.thf.dabplayer.dab.StationInfo;
 import com.thf.dabplayer.service.DabService;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -309,6 +309,7 @@ public class ServiceFollowing {
           tally = tally2;
         }
       }
+
       int i2 = 0;
       while (i2 < sids.length) {
         if (sids[i2] != 0) {
@@ -329,7 +330,7 @@ public class ServiceFollowing {
 
   private static String info_status() {
     if (is_enabled) {
-      return network_info;
+      return network_info; // ???
     }
     return text_disabled == null ? "-" : text_disabled;
   }
@@ -348,16 +349,16 @@ public class ServiceFollowing {
   }
 
   private static void update_info() {
+    StationInfo.getInstance().setServiceFollowing(info_status());
+    StationInfo.getInstance().setServiceLog(info_log());
+
     Handler handler;
     WeakReference<Handler> playerHandler = PlayerActivity.getPlayerHandler();
     if (playerHandler != null && (handler = playerHandler.get()) != null) {
-      Intent intent = new Intent(DabService.META_CHANGED);
-      intent.putExtra(DabService.EXTRA_SENDER, DabService.SENDER_DAB);
-      intent.putExtra(DabService.EXTRA_SERVICEFOLLOWING, info_status());
-      intent.putExtra(DabService.EXTRA_SERVICELOG, info_log());
       Message intentMessage = handler.obtainMessage();
-      intentMessage.what = 100;
-      intentMessage.obj = intent;
+      intentMessage.what = PlayerActivity.PLAYERMSG_STATIONINFO; // 100
+      intentMessage.obj = StationInfo.getInstance();
+            handler.removeMessages(PlayerActivity.PLAYERMSG_STATIONINFO);
       handler.sendMessage(intentMessage);
     }
   }

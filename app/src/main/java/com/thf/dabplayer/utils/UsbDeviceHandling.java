@@ -237,7 +237,7 @@ public class UsbDeviceHandling {
     private void scheduleTimer(final int timerID, long timeout) {
       postDelayed(
           new Runnable() { // from class:
-                           // com.ex.dabplayer.pad.utils.UsbDeviceHandling.UsbFsmHandler.1
+            // com.ex.dabplayer.pad.utils.UsbDeviceHandling.UsbFsmHandler.1
             @Override // java.lang.Runnable
             public void run() {
               UsbFsmHandler.this.sendFsmEvent(timerID);
@@ -420,7 +420,11 @@ public class UsbDeviceHandling {
         }
         PendingIntent usbPermissionIntent =
             PendingIntent.getBroadcast(
-                this.mContext, 0, new Intent(UsbDeviceHandling.ACTION_USB_PERMISSION), 0);
+                this.mContext,
+                0,
+                new Intent(UsbDeviceHandling.ACTION_USB_PERMISSION),
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
         this.mUsbManager.requestPermission(this.mFoundUsbDevice, usbPermissionIntent);
         LogMe.m10i("requested USB permission " + this.mFoundUsbDevice.getDeviceName());
         scheduleTimer(1001, TIMER_PERMISSION_RETRY_MS);

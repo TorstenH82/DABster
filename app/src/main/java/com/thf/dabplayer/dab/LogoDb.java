@@ -26,7 +26,7 @@ public class LogoDb {
   private Context mContext;
   private final String dbName = "logos";
   private final String colName_id = "_id";
-  private final String colNameStation = DabService.EXTRA_STATION;
+  private final String colNameStation = "station";
   private final String colNamePath = "path";
   private final String colNameSid = "sid";
   private SQLiteDatabase mDb = null;
@@ -110,7 +110,7 @@ public class LogoDb {
         openOrCreateDb();
       }
       ContentValues contentValues = new ContentValues();
-      contentValues.put(DabService.EXTRA_STATION, stationLogo.mStationNameNormalized);
+      contentValues.put("station", stationLogo.mStationNameNormalized);
       contentValues.put("path", stationLogo.mLogoPathFilename);
       contentValues.put("sid", Integer.valueOf(stationLogo.mStationServiceId));
       getDb().insert("logos", null, contentValues);
@@ -124,7 +124,7 @@ public class LogoDb {
         openOrCreateDb();
       }
       ContentValues contentValues = new ContentValues();
-      contentValues.put(DabService.EXTRA_STATION, stationLogo.mStationNameNormalized);
+      contentValues.put("station", stationLogo.mStationNameNormalized);
       contentValues.put("path", stationLogo.mLogoPathFilename);
       contentValues.put("sid", Integer.valueOf(stationLogo.mStationServiceId));
       String where =
@@ -163,7 +163,7 @@ public class LogoDb {
       while (rawQuery.moveToNext()) {
         StationLogo stationLogo = new StationLogo();
         stationLogo.mStationNameNormalized =
-            rawQuery.getString(rawQuery.getColumnIndex(DabService.EXTRA_STATION));
+            rawQuery.getString(rawQuery.getColumnIndex("station"));
         String name = rawQuery.getString(rawQuery.getColumnIndex("path"));
         stationLogo.mLogoPathFilename = name;
         stationLogo.mStationServiceId = rawQuery.getInt(rawQuery.getColumnIndex("sid"));
@@ -253,7 +253,7 @@ public class LogoDb {
     if (rawQuery.getCount() > 1) {
       Logger.d("ambiguous sid results for '" + realStationName + "':");
       while (rawQuery.moveToNext()) {
-        //Logger.d(" " + rawQuery.getInt(rawQuery.getColumnIndex("sid")));
+        // Logger.d(" " + rawQuery.getInt(rawQuery.getColumnIndex("sid")));
       }
       result = null;
     } else if (rawQuery.getCount() < 1) {
@@ -288,9 +288,7 @@ public class LogoDb {
       if (sid == 0) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("sid", Integer.valueOf(serviceId));
-        contentValues.put(
-            DabService.EXTRA_STATION,
-            rawQuery.getString(rawQuery.getColumnIndex(DabService.EXTRA_STATION)));
+        contentValues.put("station", rawQuery.getString(rawQuery.getColumnIndex("station")));
         contentValues.put("path", result);
         int uniqueRowId = rawQuery.getInt(rawQuery.getColumnIndex("_id"));
         contentValues.put("_id", Integer.valueOf(uniqueRowId));
@@ -343,9 +341,7 @@ public class LogoDb {
         if (sid == 0) {
           ContentValues contentValues = new ContentValues();
           contentValues.put("sid", Integer.valueOf(serviceId));
-          contentValues.put(
-              DabService.EXTRA_STATION,
-              rawQuery.getString(rawQuery.getColumnIndex(DabService.EXTRA_STATION)));
+          contentValues.put("station", rawQuery.getString(rawQuery.getColumnIndex("station")));
           contentValues.put("path", result);
           int uniqueRowId = rawQuery.getInt(rawQuery.getColumnIndex("_id"));
           contentValues.put("_id", Integer.valueOf(uniqueRowId));

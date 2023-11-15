@@ -1,29 +1,21 @@
 package com.thf.dabplayer.activity;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.hardware.usb.UsbDevice;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.provider.Settings;
 import android.widget.Toast;
-import androidx.core.app.ActivityCompat;
 import com.thf.dabplayer.R;
-import com.thf.dabplayer.dab.DabSubChannelInfo;
-import com.thf.dabplayer.dab.LogoDbAssets;
 import com.thf.dabplayer.utils.Logger;
 import com.thf.dabplayer.utils.SharedPreferencesHelper;
 import com.thf.dabplayer.utils.UsbDeviceHandling;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
 /* renamed from: com.ex.dabplayer.pad.activity.MainActivity */
 /* loaded from: classes.dex */
 public class MainActivity extends Activity {
@@ -33,6 +25,7 @@ public class MainActivity extends Activity {
 
   /* renamed from: e */
   private SimpleDialog progressDialog;
+  private UsbDevice usbDevice;
 
   private Intent startedByIntent;
   private UsbDeviceHandling usbDeviceHandling = null;
@@ -156,37 +149,6 @@ public class MainActivity extends Activity {
     }
     */
 
-    if ("RMX3301EEAx".equals(Build.PRODUCT)) {
-
-      Intent intentTest = new Intent();
-      intentTest.setClass(this, PlayerActivity.class);
-      // intentTest.putExtra("UsbDevice", usbDevice);
-      intentTest.putExtra("StartedByIntent", this.startedByIntent);
-      intentTest.addFlags(536870912);
-      startActivity(intentTest);
-
-      /*
-      List<DabSubChannelInfo> list = new ArrayList<>();
-      DabSubChannelInfo dummy = new DabSubChannelInfo();
-      dummy.mLabel = "This is a very long station name";
-      list.add(dummy);
-      dummy = new DabSubChannelInfo();
-      dummy.mLabel = "Absolut HOT";
-      list.add(dummy);
-      dummy = new DabSubChannelInfo();
-      dummy.mLabel = "Beats Radio";
-      list.add(dummy);
-
-      Intent intentTest = new Intent();
-      intentTest.setClass(this, PopupActivity.class);
-      // intentTest.putExtra("UsbDevice", usbDevice);
-
-      intentTest.putExtra("stationList", (Serializable) list);
-      intentTest.addFlags(536870912);
-      startActivity(intentTest);
- */           
-    }
-
     Logger.d("MainActivity:onCreate");
     Logger.d("board: " + Build.BOARD);
     Logger.d("device: " + Build.DEVICE);
@@ -269,6 +231,10 @@ public class MainActivity extends Activity {
 
   public void startPlayerWithUsbDevice(UsbDevice usbDevice) {
 
+    if (usbDevice != null) {
+      this.usbDevice = usbDevice;
+    }
+
     boolean startOnUsbAttached = SharedPreferencesHelper.getInstance().getBoolean("startUsb");
     if ("android.hardware.usb.action.USB_DEVICE_ATTACHED".equals(this.startedByIntent.getAction())
         && !startOnUsbAttached) {
@@ -276,9 +242,18 @@ public class MainActivity extends Activity {
       toastAndFinish(null);
       return;
     }
+
+    if (!Settings.canDrawOverlays(this) && !permissionOverlayRequested) {
+      Intent intent =
+          new Intent(
+              Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+      startActivityForResult(intent, PERMISSION_OVERLAY);
+      return;
+    }
+
     Intent intent = new Intent();
     intent.setClass(this, PlayerActivity.class);
-    intent.putExtra("UsbDevice", usbDevice);
+    intent.putExtra("UsbDevice", this.usbDevice);
     intent.putExtra("StartedByIntent", this.startedByIntent);
     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
     startActivity(intent);
@@ -286,6 +261,51 @@ public class MainActivity extends Activity {
     finish();
   }
 
+  private static final int PERMISSION_OVERLAY = 1;
+  private boolean permissionOverlayRequested = false;
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+
+    if (requestCode == PERMISSION_OVERLAY) {
+      /*
+      if (resultCode == Activity.RESULT_OK) {
+        String result = data.getStringExtra("result");
+      }
+      if (resultCode == Activity.RESULT_CANCELED) {
+        // Write your code if there's no result
+      }
+      */
+      if (!Settings.canDrawOverlays(this)) {
+        SimpleDialog sd =
+            new SimpleDialog(
+                MainActivity.this,
+                context.getString(R.string.Permission),
+                new SimpleDialog.SimpleDialogListener() {
+
+                  @Override
+                  public void onClick(boolean positive, int selection) {
+                    if (positive) {
+                      MainActivity.this.permissionOverlayRequested = false;
+                    } else {
+                      MainActivity.this.permissionOverlayRequested = true;
+                    }
+                    MainActivity.this.startPlayerWithUsbDevice(null);
+                  }
+                });
+
+        sd.setMessage(context.getString(R.string.PermissionOverlayHint));
+        sd.setPositiveButton(context.getString(R.string.ok));
+        sd.setNegativeButton(context.getString(R.string.ignore));
+        sd.show();
+      } else {
+         MainActivity.this.startPlayerWithUsbDevice(null);
+      }
+    }
+  }
+
+  /*
   public boolean startedByUsbAttachedIntent() {
     String action;
     if (this.startedByIntent == null || (action = this.startedByIntent.getAction()) == null) {
@@ -293,4 +313,5 @@ public class MainActivity extends Activity {
     }
     return action.equals("android.hardware.usb.action.USB_DEVICE_ATTACHED");
   }
+    */
 }

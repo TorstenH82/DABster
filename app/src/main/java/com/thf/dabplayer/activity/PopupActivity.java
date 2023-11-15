@@ -38,13 +38,13 @@ public class PopupActivity extends Activity {
 
           Intent intent = new Intent();
           intent.setClass(context, PlayerActivity.class);
-          intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-          // intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT |
-          // Intent.FLAG_ACTIVITY_SINGLE_TOP); //    (536870912);
+          //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+          intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT |
+          Intent.FLAG_ACTIVITY_SINGLE_TOP); //    (536870912);
           startActivity(intent);
           // PopupActivity.this.finish();
           popupDialog.dismiss();
-            PopupActivity.this.finish();
+          PopupActivity.this.finish();
         }
       };
 
@@ -82,6 +82,12 @@ public class PopupActivity extends Activity {
     mApplication.setPopupActivityRunning(false);
   }
 
+   @Override
+    protected void onDestroy() {
+        if (popupDialog != null) popupDialog.dismiss();
+        super.onDestroy();
+    }
+    
   private BroadcastReceiver messageReceiver =
       new BroadcastReceiver() {
         @Override

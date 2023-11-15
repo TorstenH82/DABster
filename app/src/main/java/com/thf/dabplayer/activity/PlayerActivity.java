@@ -1,8 +1,5 @@
 package com.thf.dabplayer.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -14,7 +11,6 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
@@ -27,17 +23,13 @@ import android.os.Message;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.view.KeyEvent;
-import android.view.TouchDelegate;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
@@ -51,6 +43,7 @@ import com.thf.dabplayer.dab.DabThread;
 import com.thf.dabplayer.dab.LogoDb;
 import com.thf.dabplayer.dab.LogoDbHelper;
 import com.thf.dabplayer.dab.DabSubChannelInfo;
+import com.thf.dabplayer.dab.StationInfo;
 import com.thf.dabplayer.service.DabServiceBinder;
 import com.thf.dabplayer.service.DabService;
 import com.thf.dabplayer.utils.Logger;
@@ -89,11 +82,11 @@ public class PlayerActivity extends Activity
   public static final int PLAYERMSG_SHOW_SERVICE_FOLLOWING = 23;
   public static final int PLAYERMSG_HIDE_SERVICE_FOLLOWING = 24;
   public static final int PLAYERMSG_SIGNAL_QUALITY = 11;
-  public static final int PLAYERMSG_STATIONINFO_INTENT = 100;
+  public static final int PLAYERMSG_STATIONINFO = 100;
   public static final int PLAYERMSG_SET_STATIONMEMORY = 200;
   // public static final int PLAYERMSG_PLAY_PRESET = 300;
 
-  public static String[] arrPty;
+  // public static String[] arrPty;
   private List<DabSubChannelInfo> stationList;
   private List<DabSubChannelInfo> presetList;
   // private List<ChannelInfo> channelInfoList;
@@ -204,7 +197,7 @@ public class PlayerActivity extends Activity
   public Handler dabHandler;
   private DabService dabService;
 
-  private static WeakReference<Intent> sMainActivityStartIntent = null;
+  // private static WeakReference<Intent> sMainActivityStartIntent = null;
   private static WeakReference<Handler> sPlayerHandler = null;
 
   public boolean isInitialized = false;
@@ -267,22 +260,16 @@ public class PlayerActivity extends Activity
 
   /* renamed from: i */
   public int stationListSize = 0;
-  private boolean isFavoriteListActive = false;
+  // private boolean isFavoriteListActive = false;
   private boolean isInForeground = false;
   private DelayedRunnableHandler keyDownHandler = new DelayedRunnableHandler();
   private Toast mAudioDistortionToast = null;
   private Toast mChannelToast = null;
-  // private float mDlsSizeFromStyle = 0.0f;
-  // private boolean mIsLeftAreaMaximized = false;
   private LogoDb mLogoDb = null;
   private MediaMetadataCompat mMetaData = new MediaMetadataCompat.Builder().build();
   private boolean mProperShutdown = false;
   private boolean mSendBroadcastIntent = true;
   private boolean mShowAdditionalInfos = true;
-  // private StationDetails mStationDetails = new StationDetails();
-  // private float mStationNameSizeFromStyle = 0.0f;
-  // private TouchListener mTouchListener = null;
-  // private ViewFlipper mViewFlipper = null;
   private DelayedRunnableHandler maximizeLeftAreaHandler = new DelayedRunnableHandler();
   private BitmapDrawable motImage;
 
@@ -337,17 +324,9 @@ public class PlayerActivity extends Activity
             player.showMotImage((String) message.obj);
             break;
           case PLAYERMSG_SIGNAL_QUALITY: // 11
-            // if (!player.f27f && !player.f26e && player.stationListSize == 0) {
-            //  message.arg1 = 0;
-            // }
             player.setSignalLevel(message.arg1);
             break;
-          case 13:
-            // Player.access$802(player, (List) message.obj);
-            // player.channelInfoList = (List) message.obj;
-            // Player.access$900(player);
-            // player.m78f();
-            break;
+
           case PLAYERMSG_NEW_STATION_LIST: // 18
             Toast.makeText(
                     context, "Attention: reveived PLAYERMSG_NEW_STATION_LIST", Toast.LENGTH_LONG)
@@ -357,7 +336,10 @@ public class PlayerActivity extends Activity
           case PLAYERMSG_DAB_THREAD_INITIALIZED:
             player.isInitialized = true;
             if (player.stationListSize > 0) {
-              player.playStation(player.playIndex);
+              if (message.arg1 == 0) {
+                Logger.d("play station after PLAYERMSG_DAB_THREAD_INITIALIZED");
+                player.playStation(player.playIndex);
+              }
             }
             break;
           case 23:
@@ -384,16 +366,12 @@ public class PlayerActivity extends Activity
             }
 
             break;
-          case PlayerActivity.PLAYERMSG_STATIONINFO_INTENT: // 100
-            Intent intent = (Intent) message.obj;
-            boolean affectsAndroidMetaData =
-                intent.hasExtra(DabService.EXTRA_AFFECTS_ANDROID_METADATA);
-            if (affectsAndroidMetaData) {
-              affectsAndroidMetaData =
-                  intent.getBooleanExtra(DabService.EXTRA_AFFECTS_ANDROID_METADATA, false);
-            }
-            player.notifyStationInfo(intent, affectsAndroidMetaData);
+          case PlayerActivity.PLAYERMSG_STATIONINFO: // 100
+            
+            StationInfo stationInfo = (StationInfo) message.obj;
+            player.notifyStationInfo(stationInfo);
             break;
+
           case PlayerActivity.PLAYERMSG_HW_FAILURE /* 101 */:
             player.toastAndFinish((String) message.obj);
             break;
@@ -419,26 +397,6 @@ public class PlayerActivity extends Activity
     }
   }
 
-  /* renamed from: com.ex.dabplayer.pad.activity.Player$FlipViewAnimatorListener */
-  /* loaded from: classes.dex */
-  /*
-  public class FlipViewAnimatorListener extends AnimatorListenerAdapter {
-    final int mFlipToViewIdx;
-    final ObjectAnimator mInvisToVis;
-
-    public FlipViewAnimatorListener(ObjectAnimator invisToVis, int flipToViewIdx) {
-      this.mInvisToVis = invisToVis;
-      this.mFlipToViewIdx = flipToViewIdx;
-    }
-
-    @Override // android.animation.AnimatorListenerAdapter,
-    // android.animation.Animator.AnimatorListener
-    public void onAnimationEnd(Animator anim) {
-      this.mInvisToVis.start();
-      PlayerActivity.this.mViewFlipper.setDisplayedChild(this.mFlipToViewIdx);
-    }
-  }
-    */
   /* renamed from: com.ex.dabplayer.pad.activity.Player$hBroadcastReceiver */
   /* loaded from: classes.dex */
   public class UsbDetachedBroadcastReceiver extends BroadcastReceiver {
@@ -514,30 +472,31 @@ public class PlayerActivity extends Activity
 
   /* renamed from: com.ex.dabplayer.pad.activity.Player$TouchDelegateRunnable */
   /* loaded from: classes.dex */
-  public class TouchDelegateRunnable implements Runnable {
-    final View mDelegateView;
-    final View mParentView;
+  /*
+    public class TouchDelegateRunnable implements Runnable {
+      final View mDelegateView;
+      final View mParentView;
 
-    TouchDelegateRunnable(View delegateView, View parentView) {
-      this.mDelegateView = delegateView;
-      this.mParentView = parentView;
-    }
+      TouchDelegateRunnable(View delegateView, View parentView) {
+        this.mDelegateView = delegateView;
+        this.mParentView = parentView;
+      }
 
-    @Override // java.lang.Runnable
-    public void run() {
-      Rect delegateArea = new Rect();
-      this.mDelegateView.getHitRect(delegateArea);
-      delegateArea.top = 0;
-      delegateArea.left = 0;
-      delegateArea.right = this.mParentView.getWidth();
-      delegateArea.bottom = this.mParentView.getHeight();
-      TouchDelegate touchDelegate = new TouchDelegate(delegateArea, this.mDelegateView);
-      if (View.class.isInstance(this.mParentView)) {
-        this.mParentView.setTouchDelegate(touchDelegate);
+      @Override // java.lang.Runnable
+      public void run() {
+        Rect delegateArea = new Rect();
+        this.mDelegateView.getHitRect(delegateArea);
+        delegateArea.top = 0;
+        delegateArea.left = 0;
+        delegateArea.right = this.mParentView.getWidth();
+        delegateArea.bottom = this.mParentView.getHeight();
+        TouchDelegate touchDelegate = new TouchDelegate(delegateArea, this.mDelegateView);
+        if (View.class.isInstance(this.mParentView)) {
+          this.mParentView.setTouchDelegate(touchDelegate);
+        }
       }
     }
-  }
-
+  */
   /* renamed from: com.ex.dabplayer.pad.activity.Player$VTOLayoutListener */
   /* loaded from: classes.dex */
   /*
@@ -646,7 +605,7 @@ public class PlayerActivity extends Activity
           SharedPreferencesHelper.getInstance().setInteger("current_playing", this.playIndex);
           // m78f();
           showStationPopup(this.playIndex);
-          notifyStationChangesTo(subChannelInfo, this.playIndex, this.stationList.size());
+          // notifyStationChangesTo(subChannelInfo, this.playIndex, this.stationList.size());
         }
       }
     }
@@ -800,19 +759,20 @@ public class PlayerActivity extends Activity
     }
   }
 
-  private void QuickScrollTo(AbsListView listView, int index) {
-    if (listView != null && index >= 0) {
-      listView.setSelection(index);
+  /*
+    private void QuickScrollTo(AbsListView listView, int index) {
+      if (listView != null && index >= 0) {
+        listView.setSelection(index);
+      }
     }
-  }
 
-  private int FirstPosition(AbsListView listView) {
-    if (listView == null) {
-      return -1;
+    private int FirstPosition(AbsListView listView) {
+      if (listView == null) {
+        return -1;
+      }
+      return listView.getFirstVisiblePosition();
     }
-    return listView.getFirstVisiblePosition();
-  }
-
+  */
   public void showStationPopup(int currIndex) {
 
     if (this.isInForeground) return;
@@ -856,6 +816,7 @@ public class PlayerActivity extends Activity
         intentBrdc.putExtra("stationList", (Serializable) list);
         LocalBroadcastManager.getInstance(context).sendBroadcast(intentBrdc);
       } else {
+        Logger.d("show rich station switch popup");
         Intent intentSrv = new Intent(context, PopupActivity.class);
         intentSrv.setAction("ACTION_POPUP");
         intentSrv.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -880,7 +841,15 @@ public class PlayerActivity extends Activity
   /* JADX INFO: Access modifiers changed from: private */
   public void finishTheApp() {
     Logger.d("finishTheApp");
+
+    Intent intentSrv = new Intent(getBaseContext(), DabService.class);
+    intentSrv.setAction(DabService.ACTION_STOP_SERVICE);
+    startForegroundService(intentSrv);
+
+    // ???
+
     stopDabHandler();
+    /*    ???
     if (this.dabHandler != null) {
       this.dabHandler.removeMessages(5);
       Message obtainMessage = this.dabHandler.obtainMessage();
@@ -888,6 +857,7 @@ public class PlayerActivity extends Activity
       obtainMessage.arg1 = 0;
       this.dabHandler.sendMessage(obtainMessage);
     }
+    */
     boolean isDestroyed = false;
     if (Build.VERSION.SDK_INT >= 17) {
       isDestroyed = isDestroyed();
@@ -925,9 +895,11 @@ public class PlayerActivity extends Activity
     return 150L;
   }
 
+  /*
   public static WeakReference<Intent> getMainActivityStartIntentWeakRef() {
     return sMainActivityStartIntent;
   }
+  */
 
   public BitmapDrawable getMotLogoOrIcon() {
     if (this.motImage != null) {
@@ -937,7 +909,7 @@ public class PlayerActivity extends Activity
         String label = this.stationList.get(this.playIndex).mLabel;
         // LogoDb logoDb = LogoDbHelper.getInstance(this.context);
         int sid = this.stationList.get(this.playIndex).mSID;
-        String logoFilename = mLogoDb.getLogoFilenameForStation(label, sid);
+        // String logoFilename = mLogoDb.getLogoFilenameForStation(label, sid);
         BitmapDrawable logoDrawable = mLogoDb.getLogo(label, sid);
         if (logoDrawable != null) {
           return logoDrawable;
@@ -951,10 +923,6 @@ public class PlayerActivity extends Activity
     return sPlayerHandler;
   }
 
-  public boolean isFavoriteListActive() {
-    return this.isFavoriteListActive;
-  }
-
   public void notifyAudioDistortion() {
     if (this.mAudioDistortionToast != null) {
       this.mAudioDistortionToast.cancel();
@@ -964,156 +932,32 @@ public class PlayerActivity extends Activity
     this.mAudioDistortionToast.show();
   }
 
-  private void notifyStationChangesTo(DabSubChannelInfo info, int newPos, int numStations) {
-    Intent intent = new Intent(DabService.META_CHANGED);
-    intent.putExtra(DabService.EXTRA_SENDER, DabService.SENDER_DAB);
-    intent.putExtra(DabService.EXTRA_ID, newPos + 1);
-    intent.putExtra(DabService.EXTRA_NUMSTATIONS, numStations);
-    intent.putExtra(DabService.EXTRA_ARTIST, info.mLabel);
-    intent.putExtra(DabService.EXTRA_TRACK, "");
-    intent.putExtra(DabService.EXTRA_STATION, info.mLabel);
-    intent.putExtra(DabService.EXTRA_DLS, "");
-    intent.putExtra("playing", true);
-    intent.putExtra(DabService.EXTRA_SERVICEID, info.mSID);
-    intent.putExtra(DabService.EXTRA_FREQUENCY_KHZ, info.mFreq);
-    intent.putExtra(DabService.EXTRA_PTY, PTYname(info.mPty));
-    intent.putExtra(DabService.EXTRA_BITRATE, info.mBitrate);
-    intent.putExtra(DabService.EXTRA_ENSEMBLE_NAME, info.mEnsembleLabel);
-    intent.putExtra(DabService.EXTRA_ENSEMBLE_ID, info.mEID);
-    intent.putExtra(DabService.EXTRA_SIGNALQUALITY, -1);
-    intent.putExtra(DabService.EXTRA_SLS, "");
-    switch (info.mType) {
-      case 0:
-      case 1:
-      case 2:
-        intent.putExtra(DabService.EXTRA_AUDIOFORMAT, DabService.AUDIOFORMAT_MP2);
-        break;
-      case DabSubChannelInfo.AUDIOCODEC_HEAAC /* 63 */:
-        intent.putExtra(DabService.EXTRA_AUDIOFORMAT, DabService.AUDIOFORMAT_AAC);
-        break;
-    }
-    intent.putExtra(DabService.EXTRA_AUDIOSAMPLERATE, 0);
-    notifyStationInfo(intent, true);
-  }
+  public void notifyStationInfo(StationInfo stationInfo) {
+    viewPagerAdapter.setDetails(stationInfo);
 
-  private void notifyPlayerStopped() {
-    Intent intent = new Intent(DabService.META_CHANGED);
-    intent.putExtra(DabService.EXTRA_SENDER, DabService.SENDER_DAB);
-    intent.putExtra(DabService.EXTRA_ID, 0);
-    intent.putExtra(DabService.EXTRA_NUMSTATIONS, 0);
-    intent.putExtra(DabService.EXTRA_ARTIST, "");
-    intent.putExtra(DabService.EXTRA_TRACK, "");
-    intent.putExtra(DabService.EXTRA_STATION, "");
-    intent.putExtra(DabService.EXTRA_DLS, "");
-    intent.putExtra("playing", false);
-    intent.putExtra(DabService.EXTRA_SERVICEID, 0);
-    intent.putExtra(DabService.EXTRA_FREQUENCY_KHZ, 0);
-    intent.putExtra(DabService.EXTRA_PTY, "");
-    intent.putExtra(DabService.EXTRA_BITRATE, 0);
-    intent.putExtra(DabService.EXTRA_ENSEMBLE_NAME, "");
-    intent.putExtra(DabService.EXTRA_ENSEMBLE_ID, 0);
-    intent.putExtra(DabService.EXTRA_SIGNALQUALITY, -1);
-    intent.putExtra(DabService.EXTRA_SLS, "");
-    intent.putExtra(DabService.EXTRA_AUDIOFORMAT, "");
-    intent.putExtra(DabService.EXTRA_AUDIOSAMPLERATE, 0);
-    notifyStationInfo(intent, true);
-  }
+    MediaSessionCompat mediaSession = mediaSession = dabService.getMediaSession();
 
-  /* JADX INFO: Access modifiers changed from: private */
+    if (mediaSession != null) {
+      Logger.d("set mediaSession metadata and set artist to " + stationInfo.getStation());
 
-  public void notifyStationInfo(Intent intent, boolean affectsAndroidMetaData) {
-    String sender;
-    DabService dabService;
-    MediaSessionCompat mediaSession;
-    Bitmap motImage = getMotLogoOrIcon().getBitmap();
-    intent.putExtra(DabService.EXTRA_SLSBITMAP, motImage);
-    // here we update the station details
-    // this.mStationDetails.updateAllDetailsViewFromIntent(intent);
-
-    viewPagerAdapter.setDetails(intent);
-
-    if (this.mSendBroadcastIntent
-        && affectsAndroidMetaData
-        && (dabService = getDabService()) != null
-        && (mediaSession = dabService.getMediaSession()) != null) {
       MediaMetadataCompat.Builder metaDataBuilder = new MediaMetadataCompat.Builder(this.mMetaData);
-      if (intent.hasExtra(DabService.EXTRA_ENSEMBLE_NAME)) {
-        metaDataBuilder.putString(
-            MediaMetadataCompat.METADATA_KEY_ALBUM,
-            intent.getStringExtra(DabService.EXTRA_ENSEMBLE_NAME));
-      }
-      if (intent.hasExtra(DabService.EXTRA_STATION)) {
-        metaDataBuilder.putString(
-            MediaMetadataCompat.METADATA_KEY_ARTIST,
-            intent.getStringExtra(DabService.EXTRA_STATION));
-      }
-      if (intent.hasExtra(DabService.EXTRA_DLS)) {
-        metaDataBuilder.putString(
-            MediaMetadataCompat.METADATA_KEY_TITLE, intent.getStringExtra(DabService.EXTRA_DLS));
-      }
-      if (intent.hasExtra(DabService.EXTRA_ID)) {
-        metaDataBuilder.putLong(
-            MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER,
-            intent.getIntExtra(DabService.EXTRA_ID, 0));
-      }
-      if (intent.hasExtra(DabService.EXTRA_NUMSTATIONS)) {
-        metaDataBuilder.putLong(
-            MediaMetadataCompat.METADATA_KEY_NUM_TRACKS,
-            intent.getIntExtra(DabService.EXTRA_NUMSTATIONS, 0));
-      }
-      if (intent.hasExtra(DabService.EXTRA_PTY)) {
-        metaDataBuilder.putString(
-            MediaMetadataCompat.METADATA_KEY_GENRE, intent.getStringExtra(DabService.EXTRA_PTY));
-      }
-      metaDataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, motImage);
+      metaDataBuilder.putString(
+          MediaMetadataCompat.METADATA_KEY_ALBUM, stationInfo.getEnsembleName());
+      metaDataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, stationInfo.getStation());
+      metaDataBuilder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, stationInfo.getDls());
+      metaDataBuilder.putLong(
+          MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, stationInfo.getStationNum());
+      metaDataBuilder.putLong(
+          MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, stationInfo.getNumStations());
+      metaDataBuilder.putString(MediaMetadataCompat.METADATA_KEY_GENRE, stationInfo.getPty());
+      metaDataBuilder.putBitmap(
+          MediaMetadataCompat.METADATA_KEY_ALBUM_ART, stationInfo.getLogo(context).getBitmap());
       this.mMetaData = metaDataBuilder.build();
       mediaSession.setMetadata(this.mMetaData);
-    }
-    if (this.mSendBroadcastIntent
-        && intent.hasExtra(DabService.EXTRA_SENDER)
-        && (sender = intent.getStringExtra(DabService.EXTRA_SENDER)) != null
-        && sender.equals(DabService.SENDER_DAB)) {
-      if (!intent.hasExtra("playing")) {
-        // Toast.makeText(context, "no playing info", Toast.LENGTH_LONG).show();
-        // intent.putExtra("playing", this.mStationDetails.isPlaying());
-      }
-      if (intent.hasExtra(DabService.EXTRA_AFFECTS_ANDROID_METADATA)) {
-        intent.removeExtra(DabService.EXTRA_AFFECTS_ANDROID_METADATA);
-      }
-      if (intent.hasExtra(DabService.EXTRA_SERVICEFOLLOWING)) {
-        intent.removeExtra(DabService.EXTRA_SERVICEFOLLOWING);
-      }
-      if (intent.hasExtra(DabService.EXTRA_SERVICELOG)) {
-        intent.removeExtra(DabService.EXTRA_SERVICELOG);
-      }
-      sendBroadcast(intent);
-    }
-    if (this.dabService != null && affectsAndroidMetaData) {
-      this.dabService.updateNotification(intent);
+      this.dabService.updateNotification(stationInfo);
     }
   }
 
-  /*
-    @Override // android.app.Activity
-    protected void onActivityResult(int i, int i2, Intent intent) {
-      super.onActivityResult(i, i2, intent);
-      String stringExtra = intent.getStringExtra("title");
-      if (stringExtra != null) {
-        if (!stringExtra.equals("pty dialog")) {
-          this.stationListSize = this.stationList.size();
-          if (i > 0) {
-            playStation(i2);
-          }
-        } else if (i2 >= 0 && arrPty != null && this.dabHandler != null) {
-          String stringExtra2 = arrPty[i2];
-          Message obtainMessage = this.dabHandler.obtainMessage();
-          obtainMessage.what = DabThread.MSGTYPE_SELECT_PTY; //  20;
-          obtainMessage.arg1 = Strings.PTYnumber(stringExtra2);
-          this.dabHandler.sendMessage(obtainMessage);
-        }
-      }
-    }
-  */
   @Override // android.view.View.OnClickListener
   public void onClick(View view) {
     Logger.d("onClick 0x" + Integer.toHexString(view.getId()));
@@ -1122,9 +966,9 @@ public class PlayerActivity extends Activity
       onSettingsButtonClicked();
     } else if (view.getId() == R.id.layExit) {
       finishTheApp();
-    } else if (!this.isInitialized && !"RMX3301EEA".equals(Build.PRODUCT)) {
-      String text = getResources().getString(R.string.waitfewseconds);
-      Toast.makeText(this.context, text, Toast.LENGTH_LONG).show();
+    } else if (!this.isInitialized) {
+      String waitfewseconds = getResources().getString(R.string.waitfewseconds);
+      Toast.makeText(this.context, waitfewseconds, Toast.LENGTH_LONG).show();
     } else if (this.stationListSize != 0 || view.getId() == R.id.layScan) {
       if (view.getId() == R.id.layScan) {
         onScanButtonClicked();
@@ -1149,8 +993,8 @@ public class PlayerActivity extends Activity
         return;
       }
     } else {
-      String text3 = getResources().getString(R.string.scanfirst);
-      Toast.makeText(this.context, text3, 0).show();
+      String scanfirst = getResources().getString(R.string.scanfirst);
+      Toast.makeText(this.context, scanfirst, Toast.LENGTH_SHORT).show();
     }
   }
 
@@ -1169,7 +1013,6 @@ public class PlayerActivity extends Activity
   }
 
   private void playPreset(int memoryPos) {
-
     if (this.presetList != null) {
       List<DabSubChannelInfo> presetStation =
           this.presetList.stream()
@@ -1289,15 +1132,17 @@ public class PlayerActivity extends Activity
     this.context.registerReceiver(this.usbDetachedBroadcastReceiver, intentFilter);
 
     this.mLogoDb = LogoDbHelper.getInstance(this);
+
     onCreateAdditions(savedInstanceState);
   }
 
   @SuppressLint({"ClickableViewAccessibility"})
   private void onCreateAdditions(Bundle savedInstanceState) {
-    LinearLayout.LayoutParams params;
+    // LinearLayout.LayoutParams params;
     // homeKeyReceiver = new HomeKeyReceiver(this);
     sPlayerHandler = new WeakReference<>(this.dabFHandler);
 
+    /*
     Intent startedByIntent = getIntent();
     if (startedByIntent != null) {
       Logger.d("Player startedByIntent=" + startedByIntent.toString());
@@ -1308,7 +1153,7 @@ public class PlayerActivity extends Activity
         String action = mainWasStartedByIntent.getAction();
       }
     }
-
+    */
     showDonateDialog();
   }
 
@@ -1316,13 +1161,16 @@ public class PlayerActivity extends Activity
   protected void onDestroy() {
     super.onDestroy();
     Logger.d("Player:onDestroy");
-    notifyPlayerStopped();
+    // notifyPlayerStopped();
+    /*
     if (!this.mProperShutdown) {
       Logger.d("finishTheApp!");
-      finishTheApp();
+      // finishTheApp();
     }
+    */
     unbindService(this);
-    stopService(this.mServiceIntent);
+    // ???
+    // stopService(this.mServiceIntent);
     this.audioManager.abandonAudioFocus(this.audioFocusChangeListener);
     this.context.unregisterReceiver(this.usbDetachedBroadcastReceiver);
     this.mLogoDb.closeDb();
@@ -1336,7 +1184,7 @@ public class PlayerActivity extends Activity
       Logger.d("not exist " + f.getAbsoluteFile());
     }
     sPlayerHandler = null;
-    sMainActivityStartIntent = null;
+    // sMainActivityStartIntent = null;
   }
 
   @Override // android.app.Activity, android.view.KeyEvent.Callback
@@ -1356,7 +1204,7 @@ public class PlayerActivity extends Activity
 
   @Override // android.app.Activity
   protected void onPause() {
-    Logger.d("Player:onPause");
+    Logger.d("PlayerActivity:onPause");
     super.onPause();
 
     /*
@@ -1369,30 +1217,18 @@ public class PlayerActivity extends Activity
       this.progressDialog.dismiss();
     }
 
-    // stop on back key?
-    /*
-    if (this.f19G) {
-      stopDabHandler();
-      if (this.dabHandler != null) {
-        this.dabHandler.removeMessages(DabThread.MSGTYPE_DAB_DEINIT);
-        Message obtainMessage = this.dabHandler.obtainMessage();
-        obtainMessage.what = DabThread.MSGTYPE_DAB_DEINIT; // 5
-        this.dabHandler.sendMessage(obtainMessage);
-      }
-    }
-    */
     this.mProperShutdown = isFinishing();
   }
 
   @Override // android.app.Activity
   protected void onRestart() {
-    Logger.d("Player:onRestart");
+    Logger.d("PlayerActivity:onRestart");
     super.onRestart();
   }
 
   @Override // android.app.Activity
   protected void onResume() {
-    Logger.d("Player:onResume");
+    Logger.d("PlayerActivity:onResume");
     super.onResume();
 
     SharedPreferencesHelper.getInstance()
@@ -1513,7 +1349,7 @@ public class PlayerActivity extends Activity
   }
 
   public void onStationClicked(int posInList) {
-    Logger.d("Player:onStationClicked pos " + posInList);
+    Logger.d("PlayerActivity:onStationClicked pos " + posInList);
     playStation(posInList);
   }
 
@@ -1554,7 +1390,7 @@ public class PlayerActivity extends Activity
 
     this.txtDls.setText("");
     // this.motImage.setDefaultImage();
-    arrPty = null;
+    // arrPty = null;
     // this.f42v.setAdapter((SpinnerAdapter) null);
     Message obtainMessage = this.dabHandler.obtainMessage();
     obtainMessage.what = DabThread.MSGTYPE_START_STATION_SCAN; // 3

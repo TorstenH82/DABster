@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.thf.dabplayer.dab.DabSubChannelInfo;
 import com.thf.dabplayer.dab.LogoDb;
 import com.thf.dabplayer.dab.LogoDbHelper;
+import com.thf.dabplayer.dab.StationInfo;
 import com.thf.dabplayer.service.DabService;
 import com.thf.dabplayer.utils.Strings;
 import java.util.ArrayList;
@@ -307,91 +308,60 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.MyVi
 
   public void refreshWithoutNewData() {
     this.notifyDataSetChanged();
-    //Toast.makeText(context, "ViewPagerAdapter refreshed without new data", Toast.LENGTH_LONG)
+    // Toast.makeText(context, "ViewPagerAdapter refreshed without new data", Toast.LENGTH_LONG)
     //    .show();
   }
 
-  public void setDetails(Intent intent) {
+  public void setDetails(StationInfo stationInfo) {
     // update details
-    if (intent == null) {
+    if (stationInfo == null) {
       return;
     }
-    // this.serviceName = "";
-    if (intent.hasExtra(DabService.EXTRA_STATION)) {
-      int totalStations = 0;
-      if (intent.hasExtra(DabService.EXTRA_NUMSTATIONS)) {
-        totalStations = intent.getIntExtra(DabService.EXTRA_NUMSTATIONS, 0);
-      }
-      if (totalStations != 0) {
-        this.serviceName =
-            intent.getStringExtra(DabService.EXTRA_STATION) + " (" + totalStations + ")";
+
+    int totalStations = stationInfo.getNumStations();
+
+    if (totalStations != 0) {
+      this.serviceName = stationInfo.getStation() + " (" + totalStations + ")";
+    } else {
+      this.serviceName = stationInfo.getStation();
+    }
+
+    this.servicefollowing = stationInfo.getServiceFollowing();
+
+    int sid = stationInfo.getServiceId();
+    this.serviceId = Integer.toHexString(sid);
+
+    int freq = stationInfo.getFrequencyKhz();
+    if (freq != 0) {
+      float fFreq = freq / 1000.0f;
+      this.frequency =
+          Strings.freq2channelname(freq) + String.format(" - %,.3f MHz", Float.valueOf(fFreq));
+    }
+
+    this.audiocodec = stationInfo.getAudiocodec();
+
+    this.pty = stationInfo.getPty();
+
+    String name = stationInfo.getEnsembleName();
+    int id = stationInfo.getEnsembleId();
+
+    if (id != 0) {
+      this.ensemble = String.format("%s (%04X)", name, Integer.valueOf(id));
+    } else {
+      this.ensemble = name;
+    }
+
+    int bitrate = stationInfo.getBitrate();
+    if (bitrate != 0) {
+      this.bitrate = String.format("%d kbits/s", Integer.valueOf(bitrate));
+    }
+
+    int samplerate = stationInfo.getSamplerate();
+    if (samplerate > 0) {
+      if (samplerate % 1000 == 0) {
+        this.audiobitrate = String.format("%d kHz", Integer.valueOf(samplerate / 1000));
       } else {
-        this.serviceName = intent.getStringExtra(DabService.EXTRA_STATION);
-      }
-    }
-
-    // this.servicefollowing = "";
-    if (intent.hasExtra(DabService.EXTRA_SERVICEFOLLOWING)) {
-      this.servicefollowing = intent.getStringExtra(DabService.EXTRA_SERVICEFOLLOWING);
-    }
-
-    // this.serviceId = "";
-    if (intent.hasExtra(DabService.EXTRA_SERVICEID)) {
-      int sid = intent.getIntExtra(DabService.EXTRA_SERVICEID, 0);
-      this.serviceId = Integer.toHexString(sid);
-    }
-
-    // this.frequency = "";
-    if (intent.hasExtra(DabService.EXTRA_FREQUENCY_KHZ)) {
-      int freq = intent.getIntExtra(DabService.EXTRA_FREQUENCY_KHZ, 0);
-      if (freq != 0) {
-        float fFreq = freq / 1000.0f;
-        this.frequency =
-            Strings.freq2channelname(freq) + String.format(" - %,.3f MHz", Float.valueOf(fFreq));
-      }
-    }
-
-    // this.audiocodec = "";
-    if (intent.hasExtra(DabService.EXTRA_AUDIOFORMAT)) {
-      this.audiocodec = intent.getStringExtra(DabService.EXTRA_AUDIOFORMAT);
-    }
-
-    // this.pty = "";
-    if (intent.hasExtra(DabService.EXTRA_PTY)) {
-      this.pty = intent.getStringExtra(DabService.EXTRA_PTY);
-    }
-
-    // this.ensemble = "";
-    if (intent.hasExtra(DabService.EXTRA_ENSEMBLE_NAME)) {
-      String name = intent.getStringExtra(DabService.EXTRA_ENSEMBLE_NAME);
-      int id = 0;
-      if (intent.hasExtra(DabService.EXTRA_ENSEMBLE_ID)) {
-        id = intent.getIntExtra(DabService.EXTRA_ENSEMBLE_ID, 0);
-      }
-      if (id != 0) {
-        this.ensemble = String.format("%s (%04X)", name, Integer.valueOf(id));
-      } else {
-        this.ensemble = name;
-      }
-    }
-
-    // this.bitrate = "";
-    if (intent.hasExtra(DabService.EXTRA_BITRATE)) {
-      int bitrate = intent.getIntExtra(DabService.EXTRA_BITRATE, 0);
-      if (bitrate != 0) {
-        this.bitrate = String.format("%d kbits/s", Integer.valueOf(bitrate));
-      }
-    }
-
-    // this.audiobitrate = "";
-    if (intent.hasExtra(DabService.EXTRA_AUDIOSAMPLERATE)) {
-      int samplerate = intent.getIntExtra(DabService.EXTRA_AUDIOSAMPLERATE, 0);
-      if (samplerate > 0) {
-        if (samplerate % 1000 == 0) {
-          this.audiobitrate = String.format("%d kHz", Integer.valueOf(samplerate / 1000));
-        } else {
-          this.audiobitrate = String.format("%,.1f kHz", Float.valueOf(samplerate / 1000.0f));
-        }
+        this.audiobitrate = String.format("%,.1f kHz", Float.valueOf(samplerate / 1000.0f));
       }
     }
 

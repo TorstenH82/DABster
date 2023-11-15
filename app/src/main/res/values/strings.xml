@@ -10,11 +10,11 @@
     <string name="scan_service">Scan Service</string>
     <string name="scanning">Scanning…</string>
     <string name="btn_text_Settings">Settings</string>
-    <string name="settings_header_general">General</string>
+    <string name="delsettings_header_general">General</string>
     <string name="settings_start_on_usb">Automatic start on USB device detection</string>
-    <string name="settings_text_startOnUsbAttached_Off">When disabled then this app does not automatically start when DAB USB device is attached.</string>
-    <string name="settings_text_startOnUsbAttached_On">When enabled then this app automatically starts when DAB USB device is attached. Note: This may result in starting the app every time when the device is started.</string>
-    <string name="settings_BackgroundBoxes">Show borders around slideshow picture and station list</string>
+    <string name="ddlsettings_text_startOnUsbAttached_Off">When disabled then this app does not automatically start when DAB USB device is attached.</string>
+    <string name="drlsettings_text_startOnUsbAttached_On">When enabled then this app automatically starts when DAB USB device is attached. Note: This may result in starting the app every time when the device is started.</string>
+    <string name="delsettings_BackgroundBoxes">Show borders around slideshow picture and station list</string>
     <string name="StationName">Station</string>
     <string name="settings_header_layout">Layout</string>
     <string name="settings_additional_infos">Show additional infos in station list</string>
@@ -23,8 +23,8 @@
     <string name="Delete">Delete</string>
     <string name="PresetLongPressHint">Long press on preset button to store station</string>
     <string name="scanningz">scanning</string>
-    <string name="Experimental" />
-    <string name="settings_RecordButton">Enable audio recording</string>
+    <string name="delExperimental" />
+    <string name="drlsettings_RecordButton">Enable audio recording</string>
     <string name="settings_header_about">Info</string>
     <string name="ServiceID">Service-ID</string>
     <string name="Frequency">Frequency</string>
@@ -50,7 +50,8 @@
     <string name="AudioSampleRate">Sample Rate</string>
     <string name="settings_SendBroadcastIntent">Broadcast information as Android Intent to other apps</string>
     <string name="FileExplorerAppNotInstalled">No file explorer app installed</string>
-    <string name="Notice">Notice</string>
+    <string name="Permission">Permission</string>
+    <string name="PermissionOverlayHint">Please allow DABster to be shown on top of other apps</string>
     <string name="stationlogovolkswagen_condition">The following downloads station logos, which are made available publicly by Volkswagen. The logos are only provided for use in Volkswagen Radio systems. No other use is permitted.\n\nAgree with these conditions and continue?</string>
     <string name="Connecting">Connecting…</string>
     <string name="UsbPermission">USB permission…</string>
@@ -78,6 +79,7 @@
     <string name="Donate">Donate</string>
     <string name="SupportMe">Support me</string>
     <string name="ok">OK</string>
+    <string name="ignore">Ignore</string>
     <string name="maybe_later">Maybe later</string>
     <string name="never_show">Don\'t show again</string>
     <string name="already_donated">Already donated</string>
