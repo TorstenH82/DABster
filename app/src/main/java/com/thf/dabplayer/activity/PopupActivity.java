@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.WindowManager;
 import android.widget.Toast;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.thf.dabplayer.DabsterApp;
@@ -35,12 +36,12 @@ public class PopupActivity extends Activity {
 
         @Override
         public void showPlayer() {
-
           Intent intent = new Intent();
           intent.setClass(context, PlayerActivity.class);
-          //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-          intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT |
-          Intent.FLAG_ACTIVITY_SINGLE_TOP); //    (536870912);
+          // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+          intent.addFlags(
+              Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                  | Intent.FLAG_ACTIVITY_SINGLE_TOP); //    (536870912);
           startActivity(intent);
           // PopupActivity.this.finish();
           popupDialog.dismiss();
@@ -50,6 +51,12 @@ public class PopupActivity extends Activity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+
+    getWindow()
+        .addFlags(
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+
     super.onCreate(savedInstanceState);
 
     mApplication = (DabsterApp) getApplicationContext();
@@ -82,12 +89,12 @@ public class PopupActivity extends Activity {
     mApplication.setPopupActivityRunning(false);
   }
 
-   @Override
-    protected void onDestroy() {
-        if (popupDialog != null) popupDialog.dismiss();
-        super.onDestroy();
-    }
-    
+  @Override
+  protected void onDestroy() {
+    if (popupDialog != null) popupDialog.dismiss();
+    super.onDestroy();
+  }
+
   private BroadcastReceiver messageReceiver =
       new BroadcastReceiver() {
         @Override

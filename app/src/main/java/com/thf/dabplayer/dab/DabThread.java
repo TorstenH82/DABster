@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.Annotation;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 import com.thf.dabplayer.activity.PlayerActivity;
 import com.thf.dabplayer.dab.Decode;
@@ -29,8 +30,8 @@ import java.util.List;
 /* renamed from: com.ex.dabplayer.pad.dab.f */
 /* loaded from: classes.dex */
 public class DabThread extends Thread {
-    public static final int SIGNALQUALITY_NONE = 8000;
-    
+  public static final int SIGNALQUALITY_NONE = 8000;
+
   public static final int AUDIOSTATE_DUCK = 202;
   public static final int AUDIOSTATE_PAUSE = 201;
   public static final int AUDIOSTATE_PLAY = 200;
@@ -47,8 +48,7 @@ public class DabThread extends Thread {
   public static final int UPDATE_FAVOURITE = 30;
   // public static final int PLAY_FAVOURITE = 300;
 
-  /* renamed from: H */
-  // private String f74H;
+  private int playIndex = -1;
 
   /* renamed from: c */
   private Context context;
@@ -190,7 +190,6 @@ public class DabThread extends Thread {
     this.dabDec.dab_api_set_subid(64);
     return 1;
   }
-
 
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: b */
@@ -420,7 +419,7 @@ public class DabThread extends Thread {
         this.dabSubChannelInfo.mSID = subChannelInfo.mSID;
         this.dabSubChannelInfo.mSubChannelId = subChannelInfo.mSubChannelId;
         this.dabSubChannelInfo.mType = subChannelInfo.mType;
-        // this.f97x = true;
+        this.playIndex = i;
         this.freq = subChannelInfo.mFreq;
         int size2 =
             this.dabDec.dab_get_pgm_index(
@@ -524,12 +523,12 @@ public class DabThread extends Thread {
 
     // select favourites and send to player
     List<DabSubChannelInfo> memoryList = this.dbHelper.getFavorites();
-    if (memoryList.size() > 0) {
+    //if (memoryList.size() > 0) {
       Message obtainMessage4 = this.playerHandler.obtainMessage();
       obtainMessage4.what = PlayerActivity.PLAYERMSG_SET_STATIONMEMORY;
       obtainMessage4.obj = memoryList;
       this.playerHandler.sendMessage(obtainMessage4);
-    }
+    //}
   }
 
   /* renamed from: i */
@@ -814,10 +813,12 @@ public class DabThread extends Thread {
     }
   }
 
+  /*
   public void deleteStationAndUpdateList(DabSubChannelInfo subChannelInfo) {
     this.dbHelper.delete(subChannelInfo);
     refreshStationList();
   }
+  */
 
   public void refreshStationList() {
     Logger.d("refreshStationList");
@@ -1091,8 +1092,8 @@ public class DabThread extends Thread {
             }
 
             // our decoder
-            FicDecoder ficDecoder = new FicDecoder();
-            ficDecoder.process(fic_data, fic_bytes_len);
+            // FicDecoder ficDecoder = new FicDecoder();
+            // ficDecoder.process(fic_data, fic_bytes_len);
 
             DabThread.this.dabDec.decoder_fic_parse(fic_data, fic_bytes_len, DabThread.this.freq);
             boolean usage_is_nonzero = DabThread.this.dabDec.decoder_fic_get_usage() != 0;
@@ -1210,6 +1211,10 @@ public class DabThread extends Thread {
   /* JADX INFO: Access modifiers changed from: package-private */
   /* renamed from: com.ex.dabplayer.pad.dab.f$j */
   /* loaded from: classes.dex */
+
+  private int lastMotSentForIndex = -1;
+  private int previousCrc = -1;
+
   public class SignalMotDlsMgr extends Thread {
 
     /* renamed from: b */
@@ -1220,6 +1225,7 @@ public class DabThread extends Thread {
     private String prevDlsString;
     private int prevSignal;
     private int times_little_signal;
+    private long loop = 0;
 
     private SignalMotDlsMgr() {
       this.exit = false;
@@ -1326,7 +1332,16 @@ public class DabThread extends Thread {
                 this.get_mot_data_buff, this.get_mot_type_buff);
       }
       if (decoder_get_mot_data > 0) {
-        Logger.d("received mot type " + this.get_mot_type_buff[0]);
+
+        if (DabThread.this.playIndex != DabThread.this.lastMotSentForIndex
+            && DabThread.this.lastMotSentForIndex != -1
+            && this.loop < 20) { // station was switched
+          Logger.d("skip mot on early loop " + this.loop);
+          return; // and we dont send the same mot image again
+        }
+        DabThread.this.lastMotSentForIndex = DabThread.this.playIndex;
+
+        Logger.d("received mot type with loop " + loop + ": " + this.get_mot_type_buff[0]);
         String fileName = this.get_mot_type_buff[0] == 0 ? "mot.png" : "mot.jpg";
         File file = new File(DabThread.this.context.getFilesDir(), fileName);
         if (file.exists()) {
@@ -1342,6 +1357,7 @@ public class DabThread extends Thread {
         } catch (IOException e2) {
           e2.printStackTrace();
         }
+
         Message obtainMessage = DabThread.this.playerHandler.obtainMessage();
         obtainMessage.what = PlayerActivity.PLAYERMSG_MOT; // 10
         obtainMessage.obj = fileName;
@@ -1379,12 +1395,13 @@ public class DabThread extends Thread {
       // setPriority(1);
       int i = 0;
       while (!this.exit) {
+        loop++;
         poll_dls();
         poll_signallevel();
         poll_mot();
 
         try {
-          sleep(1000);
+          sleep(1000L);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -39,7 +40,6 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.thf.dabplayer.DabsterApp;
 import com.thf.dabplayer.R;
 import com.thf.dabplayer.dab.DabThread;
-// import com.thf.dabplayer.dab.ChannelInfo;
 import com.thf.dabplayer.dab.LogoDb;
 import com.thf.dabplayer.dab.LogoDbHelper;
 import com.thf.dabplayer.dab.DabSubChannelInfo;
@@ -51,6 +51,7 @@ import com.thf.dabplayer.utils.DirCleaner;
 import com.thf.dabplayer.utils.ServiceFollowing;
 import com.thf.dabplayer.utils.SharedPreferencesHelper;
 import com.thf.dabplayer.utils.Strings;
+import com.thf.dabplayer.utils.SunriseSunset;
 import java.io.File;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
@@ -197,7 +198,6 @@ public class PlayerActivity extends Activity
   public Handler dabHandler;
   private DabService dabService;
 
-  // private static WeakReference<Intent> sMainActivityStartIntent = null;
   private static WeakReference<Handler> sPlayerHandler = null;
 
   public boolean isInitialized = false;
@@ -276,6 +276,10 @@ public class PlayerActivity extends Activity
   /* renamed from: y */
   private UsbManager usbManager = null;
 
+  private SunriseSunset sunriseSunset;
+  private float brightness = 1f;
+  private boolean isDimming = false;
+
   /* renamed from: z */
   private UsbDevice usbDevice = null;
 
@@ -328,15 +332,13 @@ public class PlayerActivity extends Activity
             break;
 
           case PLAYERMSG_NEW_STATION_LIST: // 18
-            Toast.makeText(
-                    context, "Attention: reveived PLAYERMSG_NEW_STATION_LIST", Toast.LENGTH_LONG)
-                .show();
+            // gets triggered after scan
             player.fillStationViewPager((List) message.obj);
             break;
           case PLAYERMSG_DAB_THREAD_INITIALIZED:
             player.isInitialized = true;
             if (player.stationListSize > 0) {
-              if (message.arg1 == 0) {
+              if (message.arg1 == 0) { // if not already playing (= 0), play...
                 Logger.d("play station after PLAYERMSG_DAB_THREAD_INITIALIZED");
                 player.playStation(player.playIndex);
               }
@@ -367,7 +369,6 @@ public class PlayerActivity extends Activity
 
             break;
           case PlayerActivity.PLAYERMSG_STATIONINFO: // 100
-            
             StationInfo stationInfo = (StationInfo) message.obj;
             player.notifyStationInfo(stationInfo);
             break;
@@ -470,62 +471,15 @@ public class PlayerActivity extends Activity
     }
   }
 
-  /* renamed from: com.ex.dabplayer.pad.activity.Player$TouchDelegateRunnable */
-  /* loaded from: classes.dex */
-  /*
-    public class TouchDelegateRunnable implements Runnable {
-      final View mDelegateView;
-      final View mParentView;
-
-      TouchDelegateRunnable(View delegateView, View parentView) {
-        this.mDelegateView = delegateView;
-        this.mParentView = parentView;
-      }
-
-      @Override // java.lang.Runnable
-      public void run() {
-        Rect delegateArea = new Rect();
-        this.mDelegateView.getHitRect(delegateArea);
-        delegateArea.top = 0;
-        delegateArea.left = 0;
-        delegateArea.right = this.mParentView.getWidth();
-        delegateArea.bottom = this.mParentView.getHeight();
-        TouchDelegate touchDelegate = new TouchDelegate(delegateArea, this.mDelegateView);
-        if (View.class.isInstance(this.mParentView)) {
-          this.mParentView.setTouchDelegate(touchDelegate);
-        }
-      }
-    }
-  */
-  /* renamed from: com.ex.dabplayer.pad.activity.Player$VTOLayoutListener */
-  /* loaded from: classes.dex */
-  /*
-    public class VTOLayoutListener implements ViewTreeObserver.OnGlobalLayoutListener {
-      private final LinearLayout mLeftBackgroundBox;
-      private final WeakReference<PlayerActivity> mPlayer;
-
-      public VTOLayoutListener(PlayerActivity player, LinearLayout leftBackgroundBox) {
-        this.mPlayer = new WeakReference<>(player);
-        this.mLeftBackgroundBox = leftBackgroundBox;
-      }
-
-      @Override // android.view.ViewTreeObserver.OnGlobalLayoutListener
-      public void onGlobalLayout() {
-        PlayerActivity player = this.mPlayer.get();
-        if (player != null) {
-          this.mLeftBackgroundBox.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-        }
-      }
-    }
-  */
-
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: a */
   public void updateStationList() {
-    this.stationsAdapter =
-        new SwitchStationsAdapter(this.context, switchStationsAdapterListener, this.stationList);
-    this.viewPagerStations.setAdapter(stationsAdapter);
+    stationsAdapter.setList(this.stationList);
+    // this.stationsAdapter =
+    //    new SwitchStationsAdapter(this.context, switchStationsAdapterListener, this.stationList);
+    // this.viewPagerStations.setAdapter(stationsAdapter);
     scrollToPositionViewPagerStations(this.playIndex);
+    startStopSunriseSunset();
   }
 
   /* JADX INFO: Access modifiers changed from: private */
@@ -613,8 +567,6 @@ public class PlayerActivity extends Activity
 
   // switch to another station in stations view pager and null the mot image
   private void scrollToPositionViewPagerStations(int idx) {
-    // Toast.makeText(context, "scroll to pos " + idx, Toast.LENGTH_LONG).show();
-    // this.linearLayoutManager.scrollToPosition(idx);
     this.viewPagerStations.setCurrentItem(idx, false);
     if (this.stationsAdapter != null) {
       this.stationsAdapter.setMot(null, -1);
@@ -638,10 +590,11 @@ public class PlayerActivity extends Activity
     this.stationListSize = this.stationList.size();
     Logger.d("a(list): station list : " + this.stationListSize);
     if (this.stationListSize != 0) {
-
-      stationsAdapter =
-          new SwitchStationsAdapter(this.context, switchStationsAdapterListener, this.stationList);
-      this.viewPagerStations.setAdapter(stationsAdapter);
+      stationsAdapter.setList(this.stationList);
+      // stationsAdapter =
+      //     new SwitchStationsAdapter(this.context, switchStationsAdapterListener,
+      // this.stationList);
+      // this.viewPagerStations.setAdapter(stationsAdapter);
     }
   }
 
@@ -759,20 +712,6 @@ public class PlayerActivity extends Activity
     }
   }
 
-  /*
-    private void QuickScrollTo(AbsListView listView, int index) {
-      if (listView != null && index >= 0) {
-        listView.setSelection(index);
-      }
-    }
-
-    private int FirstPosition(AbsListView listView) {
-      if (listView == null) {
-        return -1;
-      }
-      return listView.getFirstVisiblePosition();
-    }
-  */
   public void showStationPopup(int currIndex) {
 
     if (this.isInForeground) return;
@@ -894,12 +833,6 @@ public class PlayerActivity extends Activity
   public final long getKeyDownDebounceTimeMs() {
     return 150L;
   }
-
-  /*
-  public static WeakReference<Intent> getMainActivityStartIntentWeakRef() {
-    return sMainActivityStartIntent;
-  }
-  */
 
   public BitmapDrawable getMotLogoOrIcon() {
     if (this.motImage != null) {
@@ -1109,6 +1042,9 @@ public class PlayerActivity extends Activity
           }
         });
 
+    this.stationsAdapter = new SwitchStationsAdapter(this.context, switchStationsAdapterListener);
+    this.viewPagerStations.setAdapter(stationsAdapter);
+
     this.viewPagerPresets = this.findViewById(R.id.viewPager);
     int numberPresetPages = SharedPreferencesHelper.getInstance().getInteger("presetPages");
     this.viewPagerAdapter =
@@ -1124,6 +1060,7 @@ public class PlayerActivity extends Activity
     this.audioManager.requestAudioFocus(this.audioFocusChangeListener, 3, 1);
 
     this.mServiceIntent = new Intent(this, DabService.class);
+
     startService(this.mServiceIntent);
     bindService(this.mServiceIntent, this, 1);
 
@@ -1134,26 +1071,82 @@ public class PlayerActivity extends Activity
     this.mLogoDb = LogoDbHelper.getInstance(this);
 
     onCreateAdditions(savedInstanceState);
+
+    startStopSunriseSunset();
+  }
+
+  @Override
+  public void onRequestPermissionsResult(
+      int requestCode, String permissions[], int[] grantResults) {
+    switch (requestCode) {
+      case 4711:
+        if (grantResults.length > 0) {
+          boolean granted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+          if (granted) {
+            startStopSunriseSunset();
+          } else {
+
+            SimpleDialog sdMissing =
+                new SimpleDialog(PlayerActivity.this, context.getString(R.string.Permission));
+            sdMissing.setMessage(context.getString(R.string.PermissionLocationHint));
+            sdMissing.setPositiveButton(context.getString(R.string.ok));
+            sdMissing.show();
+          }
+        }
+        break;
+    }
+  }
+
+  private void startStopSunriseSunset() {
+    this.brightness =
+        (float) SharedPreferencesHelper.getInstance().getInteger("dimSlideshowBrightness") / 100;
+    if (SharedPreferencesHelper.getInstance().getBoolean("dimSlideshow")) {
+      if (this.sunriseSunset == null) {
+        this.sunriseSunset =
+            new SunriseSunset(
+                this.context,
+                new SunriseSunset.SunriseSunsetCallbacks() {
+
+                  @Override
+                  public void onSunrise() {
+                    int pos = PlayerActivity.this.viewPagerStations.getCurrentItem();
+                    PlayerActivity.this.stationsAdapter.dimLogo(1f, pos);
+                    PlayerActivity.this.isDimming = false;
+                  }
+
+                  @Override
+                  public void onSunset() {
+                    int pos = PlayerActivity.this.viewPagerStations.getCurrentItem();
+                    Logger.d("current item: " + pos);
+                    PlayerActivity.this.stationsAdapter.dimLogo(
+                        PlayerActivity.this.brightness, pos);
+                    PlayerActivity.this.isDimming = true;
+                  }
+
+                  @Override
+                  public void onMissingPermission(String permission) {
+                    if (PlayerActivity.this.isInForeground) {
+                      String[] permissions = {permission};
+                      PlayerActivity.this.requestPermissions(permissions, 4711);
+                    }
+                  }
+                });
+      }
+      this.sunriseSunset.enableAuto();
+    } else if (this.sunriseSunset != null) {
+      this.sunriseSunset.disableAuto();
+      this.sunriseSunset = null;
+      if (this.isDimming) {
+        int pos = this.viewPagerStations.getCurrentItem();
+        this.stationsAdapter.dimLogo(1f, pos);
+        this.isDimming = false;
+      }
+    }
   }
 
   @SuppressLint({"ClickableViewAccessibility"})
   private void onCreateAdditions(Bundle savedInstanceState) {
-    // LinearLayout.LayoutParams params;
-    // homeKeyReceiver = new HomeKeyReceiver(this);
     sPlayerHandler = new WeakReference<>(this.dabFHandler);
-
-    /*
-    Intent startedByIntent = getIntent();
-    if (startedByIntent != null) {
-      Logger.d("Player startedByIntent=" + startedByIntent.toString());
-      Intent mainWasStartedByIntent =
-          (Intent) startedByIntent.getParcelableExtra("StartedByIntent");
-      if (mainWasStartedByIntent != null) {
-        sMainActivityStartIntent = new WeakReference<>(mainWasStartedByIntent);
-        String action = mainWasStartedByIntent.getAction();
-      }
-    }
-    */
     showDonateDialog();
   }
 
@@ -1161,13 +1154,12 @@ public class PlayerActivity extends Activity
   protected void onDestroy() {
     super.onDestroy();
     Logger.d("Player:onDestroy");
-    // notifyPlayerStopped();
-    /*
-    if (!this.mProperShutdown) {
-      Logger.d("finishTheApp!");
-      // finishTheApp();
+
+    if (this.sunriseSunset != null) {
+      this.sunriseSunset.disableAuto();
+      this.sunriseSunset = null;
     }
-    */
+
     unbindService(this);
     // ???
     // stopService(this.mServiceIntent);
@@ -1175,7 +1167,6 @@ public class PlayerActivity extends Activity
     this.context.unregisterReceiver(this.usbDetachedBroadcastReceiver);
     this.mLogoDb.closeDb();
     File f = new File(Strings.LOGO_PATH_TMP);
-
     if (f.exists()) {
       new DirCleaner(f).clean();
       f.delete();
@@ -1184,7 +1175,6 @@ public class PlayerActivity extends Activity
       Logger.d("not exist " + f.getAbsoluteFile());
     }
     sPlayerHandler = null;
-    // sMainActivityStartIntent = null;
   }
 
   @Override // android.app.Activity, android.view.KeyEvent.Callback
@@ -1265,6 +1255,16 @@ public class PlayerActivity extends Activity
         break;
       case "menuTop":
         prepareMenuBar(SharedPreferencesHelper.getInstance().getBoolean(key));
+        break;
+      case "dimSlideshow":
+        startStopSunriseSunset();
+        break;
+      case "dimSlideshowBrightness":
+        this.brightness = (float) SharedPreferencesHelper.getInstance().getInteger(key) / 100;
+        if (this.isDimming) {
+          int pos = this.viewPagerStations.getCurrentItem();
+          PlayerActivity.this.stationsAdapter.dimLogo(this.brightness, pos);
+        }
         break;
     }
   }
@@ -1389,9 +1389,6 @@ public class PlayerActivity extends Activity
     }
 
     this.txtDls.setText("");
-    // this.motImage.setDefaultImage();
-    // arrPty = null;
-    // this.f42v.setAdapter((SpinnerAdapter) null);
     Message obtainMessage = this.dabHandler.obtainMessage();
     obtainMessage.what = DabThread.MSGTYPE_START_STATION_SCAN; // 3
     obtainMessage.arg1 = 0;

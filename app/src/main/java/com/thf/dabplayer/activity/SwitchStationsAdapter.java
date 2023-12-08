@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.thf.dabplayer.dab.DabSubChannelInfo;
 import com.thf.dabplayer.dab.LogoDb;
 import com.thf.dabplayer.dab.LogoDbHelper;
+import java.util.ArrayList;
 import java.util.List;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class SwitchStationsAdapter
   private int motImagePosition = -1;
   private BitmapDrawable motImage;
   private LogoDb logoDb = null;
+  private float brightness = 1f;
 
   public interface Listener {
     void onItemClick(int position);
@@ -42,20 +44,18 @@ public class SwitchStationsAdapter
 
   private final Listener listener;
 
+  public SwitchStationsAdapter(Context context, Listener listener) {
+    this.listener = listener;
+    this.context = context;
+    this.stationList = new ArrayList<>();
+    this.logoDb = LogoDbHelper.getInstance(context);
+  }
+
   public SwitchStationsAdapter(Context context, Listener listener, List<DabSubChannelInfo> list) {
     this.listener = listener;
     this.context = context;
     this.stationList = list;
     this.logoDb = LogoDbHelper.getInstance(context);
-
-    if ("RMX3301EEA".equals(Build.PRODUCT)) {
-      DabSubChannelInfo dummy = new DabSubChannelInfo();
-      dummy.mLabel = "This is a very long station name";
-      list.add(dummy);
-      dummy = new DabSubChannelInfo();
-      dummy.mLabel = "Radio 456";
-      list.add(dummy);
-    }
   }
 
   class MyViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener {
@@ -130,12 +130,21 @@ public class SwitchStationsAdapter
     } else {
       holder.imgLogo.setImageDrawable(this.motImage);
     }
+
+    holder.imgLogo.setAlpha(this.brightness);
   }
 
   @Override
   public int getItemCount() {
     if (stationList == null) return 0;
     return stationList.size();
+  }
+
+  public void setList(List<DabSubChannelInfo> list) {
+    if (list != null) {
+      this.stationList = list;
+      this.notifyDataSetChanged();
+    }
   }
 
   public void setMot(BitmapDrawable motImage, int position) {
@@ -150,5 +159,10 @@ public class SwitchStationsAdapter
 
   public void refreshWithoutNewData(int position) {
     this.notifyItemChanged(position);
+  }
+
+  public void dimLogo(float brightness, int position) {
+    this.brightness = brightness;
+    if (position != -1) this.notifyItemChanged(position);
   }
 }

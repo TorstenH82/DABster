@@ -52,6 +52,7 @@
     <string name="FileExplorerAppNotInstalled">No file explorer app installed</string>
     <string name="Permission">Permission</string>
     <string name="PermissionOverlayHint">Please allow DABster to be shown on top of other apps</string>
+    <string name="PermissionLocationHint">Please allow DABster to access location for auto dimming of station logos</string>
     <string name="stationlogovolkswagen_condition">The following downloads station logos, which are made available publicly by Volkswagen. The logos are only provided for use in Volkswagen Radio systems. No other use is permitted.\n\nAgree with these conditions and continue?</string>
     <string name="Connecting">Connecting…</string>
     <string name="UsbPermission">USB permission…</string>
@@ -63,7 +64,7 @@
     <string name="Synchronisation">Synchronisation</string>
 
     <string name="Disabled">Disabled</string>
-   
+
     <string name="audio_distortion_notification">DAB audio distortion suppressed</string>
     <string name="Delsettings_audioloss_support">Audio management support</string>
     <string name="Delsettings_text_audioloss_support">Allow other apps to take over audio focus transiently.\nFor example, during voice recognition or speed camera warnings.\nAdjust the volume reduction via the control.</string>
@@ -84,14 +85,14 @@
     <string name="never_show">Don\'t show again</string>
     <string name="already_donated">Already donated</string>
     <string name="Relcolored">colorful</string>
-    
+
     <string name="channel_name">Default</string>
     <string name="channel_description">Dabster channel</string>
     <string name="ServiceFollowing">Service Following</string>
     <string name="pref_serviceFollowing">true</string>
     <string name="SuppressNoise">Suppress noise</string>
     <string name="pref_suppressNoise">true</string>
-    <string name="ShowClock">Show clock on bottom bar</string>
+    <string name="ShowClock">Show clock on menu bar</string>
     <string name="pref_showClock">true</string>
     <string name="MenuTop">Show menu bar on top</string>
     <string name="pref_menuTop">false</string>
@@ -101,12 +102,14 @@
     <string name="pref_startUsb">false</string>
     <string name="FicRecording"> Record FIC (Fast Information Channel) data during scan</string>
     <string name="pref_ficRecording">false</string>
-    <string name="UnclippedSamples">Clean samples required</string>
-    <string name="pref_unclippedSamples">1</string>
     <string name="pref_showDonate">true</string>
     <string name="DonateSummary">Do you like this app? Then support me with a donation via\nko-fi.com/appswitcher</string>
     <string name="DonateText">Do you like this app? Then support me with a donation.</string>
     <string name="DonateUrl">https://ko-fi.com/appswitcher</string>
     <string name="pref_donateAfterStarts">20</string>
     <string name="pref_startCounter">0</string>
+    <string name="DimSlideshow">Auto slideshow dimming</string>
+    <string name="pref_dimSlideshow">true</string>
+   <string name="pref_dimSlideshowBrightness">50</string>
+    <string name="SlideshowBrightness">Slideshow brightness at dimming</string>
 </resources>

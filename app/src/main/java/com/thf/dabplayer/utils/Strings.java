@@ -82,8 +82,7 @@ public class Strings {
       channel2freq = new HashMap(entries);
       for (int i = 0; i < entries; i++) {
         channel2freq.put(
-            dabFreqToChannelMap.valueAt(i),
-            Integer.valueOf(dabFreqToChannelMap.keyAt(i)));
+            dabFreqToChannelMap.valueAt(i), Integer.valueOf(dabFreqToChannelMap.keyAt(i)));
       }
     }
     Integer freq = channel2freq.get(channel);
@@ -143,6 +142,27 @@ public class Strings {
           append(239200, "13F");
         }
       };
+
+  public static int calculate_crc(byte[] data, int len) {
+    int dataIndex = 0;
+    short c;
+    short[] crc = {0};
+
+    crc[0] = (short) 0xffff;
+    for (int j = 1; j <= len; j++, dataIndex++) {
+      c = (short) ((Short.toUnsignedInt(crc[0]) >> 8 ^ Byte.toUnsignedInt(data[dataIndex])) << 8);
+      for (int i = 0; i < 8; i++) {
+        if ((Short.toUnsignedInt(c) & 0x8000) != 0) {
+          c = (short) (Short.toUnsignedInt(c) << 1 ^ 0x1021);
+        } else {
+          c = (short) (Short.toUnsignedInt(c) << 1);
+        }
+      }
+      crc[0] = (short) (Short.toUnsignedInt(c) ^ Short.toUnsignedInt(crc[0]) << 8);
+    }
+    int crcInt = crc[0]; // & 0xffff;
+    return ~crcInt;
+  }
 
   private static final String LOGO_PATH =
       (Strings.DAB_path() + File.separator + "logos" + File.separator);

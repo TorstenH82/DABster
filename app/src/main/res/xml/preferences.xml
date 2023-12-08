@@ -15,13 +15,7 @@
             android:defaultValue="@string/pref_suppressNoise"
             android:key="suppressNoise"
             android:title="@string/SuppressNoise" />
-        <androidx.preference.SeekBarPreference
-            android:defaultValue="@string/pref_unclippedSamples"
-            android:key="unclippedSamples"
-            android:max="100"
-            android:min="1"
-            android:summary="summary"
-            android:title="@string/UnclippedSamples" />
+        
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory android:title="Layout">
         <androidx.preference.SeekBarPreference
@@ -39,6 +33,18 @@
             android:defaultValue="@string/pref_menuTop"
             android:key="menuTop"
             android:title="@string/MenuTop" />
+        <androidx.preference.SwitchPreference
+            android:defaultValue="@string/pref_dimSlideshow"
+            android:key="dimSlideshow"
+            android:title="@string/DimSlideshow" />
+         <androidx.preference.SeekBarPreference
+            android:defaultValue="@string/pref_dimSlideshowBrightness"
+            android:key="dimSlideshowBrightness"
+            android:max="90"
+            android:min="10"
+            android:summary="xs"
+            android:icon="@drawable/lightbulb"
+            android:title="@string/SlideshowBrightness" />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory android:title="Other">
         <androidx.preference.SwitchPreference

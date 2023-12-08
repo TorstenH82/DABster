@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
 
+import androidx.preference.SwitchPreference;
 import android.view.MenuItem;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,8 @@ public class SettingsActivity extends AppCompatActivity {
     @Override // android.content.SharedPreferences.OnSharedPreferenceChangeListener
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
       SeekBarPreference seekBarPreference;
+      SwitchPreference switchPreference;
+      int progress = 0;
       switch (key) {
         case "presetPages":
           seekBarPreference = findPreference(key);
@@ -34,6 +37,14 @@ public class SettingsActivity extends AppCompatActivity {
         case "unclippedSamples":
           seekBarPreference = findPreference(key);
           seekBarPreference.setSummary(seekBarPreference.getValue() + "");
+          break;
+        case "dimSlideshowBrightness":
+          seekBarPreference = findPreference(key);
+          seekBarPreference.setSummary(seekBarPreference.getValue() + "%");
+          progress = (Math.round(seekBarPreference.getValue() / 10)) * 10;
+          seekBarPreference.setValue(progress);
+          // 0 - 255
+          seekBarPreference.getIcon().setAlpha((int)((float)seekBarPreference.getValue() / 100 * 255));
           break;
       }
     }
@@ -60,10 +71,11 @@ public class SettingsActivity extends AppCompatActivity {
       presetPages.setUpdatesContinuously(true);
       presetPages.setSummary(presetPages.getValue() + "");
 
-      SeekBarPreference unclippedSamples = findPreference("unclippedSamples");
-      unclippedSamples.setMin(1);
-      unclippedSamples.setUpdatesContinuously(true);
-      unclippedSamples.setSummary(unclippedSamples.getValue() + "");
+      SeekBarPreference slideshowBrightness = findPreference("dimSlideshowBrightness");
+      slideshowBrightness.setMin(10);
+      slideshowBrightness.setUpdatesContinuously(true);
+      slideshowBrightness.setSummary(slideshowBrightness.getValue() + "%");
+      slideshowBrightness.getIcon().setAlpha((int)((float)slideshowBrightness.getValue() / 100 * 255));
 
       try {
         PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);

@@ -57,7 +57,7 @@ public class AacThread extends Thread {
         synchronized (this.mInputAacRingBuffer) {
           if (this.mInputAacRingBuffer.getNumSamplesAvailable() >= 1024) {
             int len = this.mInputAacRingBuffer.readBuffer(array, 1024);
-            Logger.d("length read from buffer " + len);
+            
             if (len == 1024) {
               decoder_feed_data = this.mDabDecoder.decoder_feed_data(0, array, len);
               Logger.d("decoder feed data is " + decoder_feed_data);
@@ -66,11 +66,11 @@ public class AacThread extends Thread {
                 continue;
               }
             } else {
-              Logger.d("nothing to feed, only " + len);
+              //Logger.d("nothing to feed, only " + len);
               continue;
             }
           } else {
-            Logger.d("not enough data in buffer");
+            //Logger.d("not enough data in buffer");
             continue;
           }
         }

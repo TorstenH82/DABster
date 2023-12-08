@@ -250,6 +250,10 @@ public class MainActivity extends Activity {
       startActivityForResult(intent, PERMISSION_OVERLAY);
       return;
     }
+        
+        
+        
+        
 
     Intent intent = new Intent();
     intent.setClass(this, PlayerActivity.class);

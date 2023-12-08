@@ -36,8 +36,8 @@ public class PcmThread extends Thread {
   private int mChannels;
   private boolean isClippedSampleDetectionEnabled;
   private boolean isClippedSampleNotificationEnabled;
-  private int unclippedSamplesRequired = 1;
-  private int remainingUnclippedSamples = 1;
+  
+
   private SharedPrefListener mPrefListener;
   private int mSampleRateInHz;
 
@@ -67,10 +67,6 @@ public class PcmThread extends Thread {
           // if (PcmThread.this.audioTrack != null) {
           //  AudioTools.setVolume(PcmThread.this.audioTrack, volume);
           break;
-        case "unclippedSamples":
-          PcmThread.this.unclippedSamplesRequired =
-              SharedPreferencesHelper.getInstance().getInteger(key);
-          break;
       }
     }
   }
@@ -87,9 +83,6 @@ public class PcmThread extends Thread {
         SharedPreferencesHelper.getInstance().getBoolean("suppressNoise");
     this.isClippedSampleNotificationEnabled =
         SharedPreferencesHelper.getInstance().getBoolean("suppressNoise");
-
-    this.unclippedSamplesRequired =
-        SharedPreferencesHelper.getInstance().getInteger("unclippedSamples");
 
     this.mPrefListener = new SharedPrefListener();
 
@@ -175,8 +168,13 @@ public class PcmThread extends Thread {
         e2.printStackTrace();
       }
       synchronized (this.ringBuffer) {
+        Logger.d(
+            "PCM: data available: "
+                + this.ringBuffer.getNumSamplesAvailable()
+                + ". Data required: "
+                + this.minBufferSize);
         if (this.ringBuffer.getNumSamplesAvailable() >= this.minBufferSize) {
-          // if (this.ringBuffer.getRemainingCapacity() >= this.minBufferSize) {
+
           int a = this.ringBuffer.readBuffer(bArr, this.minBufferSize);
           if (!this.f131e) {
             this.f131e = true;
@@ -194,20 +192,12 @@ public class PcmThread extends Thread {
               if (this.audioTrack.getPlayState() == AudioTrack.PLAYSTATE_PLAYING) {
                 if (this.isClippedSampleDetectionEnabled) {
                   if (!cad.areSamplesClipped(bArr, a)) {
-                    remainingUnclippedSamples -= 1;
-                    if (remainingUnclippedSamples <= 0) {
-                      this.audioTrack.write(bArr, 0, a);
-                      remainingUnclippedSamples = 1;
-                    }
-                    break;
+                    this.audioTrack.write(bArr, 0, a);
                   } else {
                     notifyClippedSamplesDetected();
-                    remainingUnclippedSamples = unclippedSamplesRequired;
-                    break;
                   }
                 } else {
                   this.audioTrack.write(bArr, 0, a);
-                  break;
                 }
               }
               break;
@@ -216,10 +206,11 @@ public class PcmThread extends Thread {
                 Logger.d("playing -> paused");
                 this.audioTrack.pause();
                 notifyIntent(0, false);
-                break;
               }
               break;
           }
+        } else {
+          Logger.d("PCM: not enought data. " + this.minBufferSize + " required.");
         }
       }
     }
