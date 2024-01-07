@@ -108,33 +108,6 @@ public class DatabaseHelper {
     return getServicesSubchannelInfo();
   }
 
-  public DabSubChannelInfo getFavouriteService(int pos) {
-    if (this.mDatabase.isOpen()) {
-      String query = "SELECT * FROM service where fav=" + pos;
-      Cursor rawQuery = this.mDatabase.rawQuery(query.toString(), null);
-      while (rawQuery.moveToNext()) {
-        DabSubChannelInfo subchannelinfo = new DabSubChannelInfo();
-        subchannelinfo.mLabel = rawQuery.getString(rawQuery.getColumnIndex("label"));
-        subchannelinfo.mSubChannelId = (byte) rawQuery.getInt(rawQuery.getColumnIndex("subid"));
-        subchannelinfo.mBitrate =
-            rawQuery.getInt(rawQuery.getColumnIndex("bitrate"));
-        subchannelinfo.mSID = rawQuery.getInt(rawQuery.getColumnIndex("sid"));
-        subchannelinfo.mFreq = rawQuery.getInt(rawQuery.getColumnIndex("freq"));
-        subchannelinfo.mPty = (byte) rawQuery.getInt(rawQuery.getColumnIndex("pty"));
-        subchannelinfo.mType = (byte) rawQuery.getInt(rawQuery.getColumnIndex("type"));
-        subchannelinfo.mAbbreviatedFlag =
-            (byte) rawQuery.getInt(rawQuery.getColumnIndex("abbreviated"));
-        subchannelinfo.mEID = rawQuery.getInt(rawQuery.getColumnIndex("eid"));
-        subchannelinfo.mEnsembleLabel = rawQuery.getString(rawQuery.getColumnIndex("elabel"));
-        subchannelinfo.mSCID = rawQuery.getInt(rawQuery.getColumnIndex("scid"));
-        subchannelinfo.mPS = rawQuery.getInt(rawQuery.getColumnIndex("ps"));
-        subchannelinfo.mFavorite = rawQuery.getInt(rawQuery.getColumnIndex("fav"));
-        return subchannelinfo;
-      }
-    }
-    return null;
-  }
-
   /* renamed from: c */
   public List getServicesSubchannelInfo() {
     List<DabSubChannelInfo> arrayList = new ArrayList<>();

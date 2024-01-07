@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,7 +24,9 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -67,12 +70,12 @@ public class PlayerActivity extends Activity
         View.OnClickListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
-  public static final int PLAYERMSG_ASSET_FOUND_LOGOS = 98;
   public static final int PLAYERMSG_AUDIO_DISTORTION = 102;
   public static final int PLAYERMSG_DISMISS_SERVICE_FOLLOWING = 24;
   public static final int PLAYERMSG_DLS = 9;
   public static final int PLAYERMSG_HW_FAILURE = 101;
   public static final int PLAYERMSG_MOT = 10;
+  public static final int PLAYERMSG_MOT_SUPPRESS = 1010;
   public static final int PLAYERMSG_NEW_LIST_OF_STATIONS = 1;
   public static final int PLAYERMSG_NEW_STATION_LIST = 18;
   public static final int PLAYERMSG_DAB_THREAD_INITIALIZED = 19;
@@ -216,7 +219,7 @@ public class PlayerActivity extends Activity
           boolean isAudiolossSupportEnabled = true;
 
           switch (i) {
-            case -3:
+            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
               Logger.d("AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK");
               if (isAudiolossSupportEnabled) {
                 arg = DabThread.AUDIOSTATE_DUCK;
@@ -225,7 +228,7 @@ public class PlayerActivity extends Activity
                 Logger.d("no complete audioloss support enabled");
                 break;
               }
-            case -2:
+            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
               Logger.d("AUDIOFOCUS_LOSS_TRANSIENT");
               if (isAudiolossSupportEnabled) {
                 arg = DabThread.AUDIOSTATE_PAUSE;
@@ -234,24 +237,25 @@ public class PlayerActivity extends Activity
                 Logger.d("no complete audioloss support enabled");
                 break;
               }
-            case -1:
+            case AudioManager.AUDIOFOCUS_LOSS:
               Logger.d("AUDIOFOCUS_LOSS");
               PlayerActivity.this.finishTheApp();
               break;
-            case 1:
+            case AudioManager.AUDIOFOCUS_GAIN:
               Logger.d("AUDIOFOCUS_GAIN");
               arg = DabThread.AUDIOSTATE_PLAY;
               break;
-            case 2:
+            case AudioManager.AUDIOFOCUS_GAIN_TRANSIENT:
               Logger.d("AUDIOFOCUS_GAIN_TRANSIENT");
               break;
-            case 3:
+            case AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK:
               Logger.d("AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK");
               break;
           }
           if (arg != -1 && PlayerActivity.this.dabHandler != null) {
-            PlayerActivity.this.dabHandler.removeMessages(34);
-            Message msg = PlayerActivity.this.dabHandler.obtainMessage(34);
+            PlayerActivity.this.dabHandler.removeMessages(DabThread.MSGTYPE_AUDIO_FOCUS);
+            Message msg =
+                PlayerActivity.this.dabHandler.obtainMessage(DabThread.MSGTYPE_AUDIO_FOCUS);
             msg.arg1 = arg;
             PlayerActivity.this.dabHandler.sendMessage(msg);
           }
@@ -327,14 +331,22 @@ public class PlayerActivity extends Activity
           case PLAYERMSG_MOT: // 10:
             player.showMotImage((String) message.obj);
             break;
+          case PLAYERMSG_MOT_SUPPRESS:
+            Toast.makeText(
+                    player.context,
+                    "Please report to dev! Suppress mot due to error: " + message.arg1,
+                    1)
+                .show();
+            break;
           case PLAYERMSG_SIGNAL_QUALITY: // 11
             player.setSignalLevel(message.arg1);
             break;
-
-          case PLAYERMSG_NEW_STATION_LIST: // 18
-            // gets triggered after scan
-            player.fillStationViewPager((List) message.obj);
-            break;
+            /*
+            case PLAYERMSG_NEW_STATION_LIST: // 18
+              // gets triggered after scan
+              player.fillStationViewPager((List) message.obj);
+              break;
+             */
           case PLAYERMSG_DAB_THREAD_INITIALIZED:
             player.isInitialized = true;
             if (player.stationListSize > 0) {
@@ -344,18 +356,13 @@ public class PlayerActivity extends Activity
               }
             }
             break;
-          case 23:
+          case PLAYERMSG_SHOW_SERVICE_FOLLOWING:
             player.showServiceFollowing(true, (String) message.obj, message.arg1);
             break;
           case PLAYERMSG_HIDE_SERVICE_FOLLOWING: // 24
             player.showServiceFollowing(false, (String) message.obj, message.arg1);
             break;
-          case PlayerActivity.PLAYERMSG_ASSET_FOUND_LOGOS /* 98 */:
-            if (player.stationList != null) {
-              Logger.d("assetlogos refresh display");
-              player.updateStationList();
-            }
-            break;
+
           case PlayerActivity.PLAYERMSG_SCAN_FINISHED /* 99 */:
             int i = message.arg1;
             if (player.progressDialog.isShowing()) {
@@ -471,15 +478,78 @@ public class PlayerActivity extends Activity
     }
   }
 
+  private void selectPreviousByFirstLetter() {
+    if (!this.progressDialog.isShowing() && this.stationListSize > 0) {
+
+      int indexToPlay = this.idxFirstLetter.get(this.idxFirstLetter.size() - 1);
+
+      for (int idx : this.idxFirstLetter) {
+        if (idx < this.playIndex) {
+          indexToPlay = idx;
+        } else {
+          break;
+        }
+      }
+      playStation(indexToPlay);
+    }
+  }
+
+  private void selectNextByFirstLetter() {
+    if (!this.progressDialog.isShowing() && this.stationListSize > 0) {
+
+      int indexToPlay = this.idxFirstLetter.get(0);
+
+      for (int idx : this.idxFirstLetter) {
+        if (idx > this.playIndex) {
+          indexToPlay = idx;
+          break;
+        }
+      }
+      playStation(indexToPlay);
+    }
+  }
+
   /* JADX INFO: Access modifiers changed from: private */
   /* renamed from: a */
+  private List<Integer> idxFirstLetter = new ArrayList<>();
+
   public void updateStationList() {
+    String firstLetter = "";
+    if (this.idxFirstLetter != null) {
+      this.idxFirstLetter.clear();
+    } else {
+      this.idxFirstLetter = new ArrayList<>();
+    }
+    for (DabSubChannelInfo sci : this.stationList) {
+      if (!sci.mLabel.substring(0, 1).equalsIgnoreCase(firstLetter)) {
+        idxFirstLetter.add(this.stationList.indexOf(sci));
+        firstLetter = sci.mLabel.substring(0, 1);
+        Logger.d("adding " + firstLetter + this.stationList.indexOf(sci));
+      }
+    }
+
     stationsAdapter.setList(this.stationList);
-    // this.stationsAdapter =
-    //    new SwitchStationsAdapter(this.context, switchStationsAdapterListener, this.stationList);
-    // this.viewPagerStations.setAdapter(stationsAdapter);
     scrollToPositionViewPagerStations(this.playIndex);
     startStopSunriseSunset();
+  }
+
+  /* JADX INFO: Access modifiers changed from: private */
+  /* renamed from: a */
+  public void fillStationViewPager(List list) {
+    if (this.stationList == null) {
+      this.stationList = new ArrayList<>();
+    } else {
+      this.stationList.clear();
+    }
+    if (list != null) {
+      this.stationList.addAll(list);
+    }
+
+    this.stationListSize = this.stationList.size();
+    Logger.d("a(list): station list : " + this.stationListSize);
+    if (this.stationListSize != 0) {
+      stationsAdapter.setList(this.stationList);
+    }
   }
 
   /* JADX INFO: Access modifiers changed from: private */
@@ -572,30 +642,6 @@ public class PlayerActivity extends Activity
       this.stationsAdapter.setMot(null, -1);
     }
     this.motImage = null;
-  }
-
-  /* JADX INFO: Access modifiers changed from: private */
-  /* renamed from: a */
-  public void fillStationViewPager(List list) {
-    if (this.stationList == null) {
-      this.stationList = new ArrayList<>();
-    } else {
-      this.stationList.clear();
-    }
-    if (list != null) {
-      this.stationList.addAll(list);
-    }
-
-    // maximizeLeftArea(false, true);
-    this.stationListSize = this.stationList.size();
-    Logger.d("a(list): station list : " + this.stationListSize);
-    if (this.stationListSize != 0) {
-      stationsAdapter.setList(this.stationList);
-      // stationsAdapter =
-      //     new SwitchStationsAdapter(this.context, switchStationsAdapterListener,
-      // this.stationList);
-      // this.viewPagerStations.setAdapter(stationsAdapter);
-    }
   }
 
   /* JADX INFO: Access modifiers changed from: private */
@@ -988,11 +1034,53 @@ public class PlayerActivity extends Activity
     }
   }
 
+  private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+    private View view;
+
+    MyGestureListener(View view) {
+      this.view = view;
+    }
+
+    public void onLongPress(MotionEvent event) {
+      if (!PlayerActivity.this.isInitialized) {
+        String waitfewseconds = getResources().getString(R.string.waitfewseconds);
+        Toast.makeText(PlayerActivity.this.context, waitfewseconds, Toast.LENGTH_LONG).show();
+      } else if (this.view.getId() == R.id.bt_prev) {
+        PlayerActivity.this.isPlayingPreset = 0;
+        PlayerActivity.this.selectPreviousByFirstLetter();
+      } else if (this.view.getId() == R.id.bt_next) {
+        PlayerActivity.this.isPlayingPreset = 0;
+        PlayerActivity.this.selectNextByFirstLetter();
+      }
+      super.onLongPress(event);
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent event) {
+      // triggers after onDown only for single tap
+      // PlayerActivity.this.isPlayingPreset = 0;
+      PlayerActivity.this.onClick(this.view);
+      return true;
+    }
+
+    @Override
+    public boolean onDown(MotionEvent event) {
+      // triggers first for both single tap and long press
+      return true;
+    }
+  }
+
   @Override // android.app.Activity
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     Logger.d("Player:onCreate");
+
+    if (savedInstanceState != null) {
+      this.playIndex = savedInstanceState.getInt("playIndex");
+      this.strDls = savedInstanceState.getString("dls");
+    }
+
     setContentView(R.layout.activity_player);
 
     this.context = getApplicationContext();
@@ -1001,12 +1089,32 @@ public class PlayerActivity extends Activity
     prepareMenuBar(SharedPreferencesHelper.getInstance().getBoolean("menuTop"));
 
     this.btnNext = (Button) findViewById(R.id.bt_next);
-    this.btnNext.setOnClickListener(this);
+    // this.btnNext.setOnClickListener(this);
+    GestureDetector gestureNext =
+        new GestureDetector(context, new MyGestureListener(findViewById(R.id.bt_next)));
+    this.btnNext.setOnTouchListener(
+        new View.OnTouchListener() {
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+
+            return gestureNext.onTouchEvent(event);
+          }
+        });
     this.btnPrev = (Button) findViewById(R.id.bt_prev);
-    this.btnPrev.setOnClickListener(this);
+    // this.btnPrev.setOnClickListener(this);
+    GestureDetector gesturePrev =
+        new GestureDetector(context, new MyGestureListener(findViewById(R.id.bt_prev)));
+    this.btnPrev.setOnTouchListener(
+        new View.OnTouchListener() {
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+
+            return gesturePrev.onTouchEvent(event);
+          }
+        });
 
     this.txtDls = (TextView) findViewById(R.id.dls_scroll);
-    this.txtDls.setText("");
+    this.txtDls.setText(this.strDls);
     this.txtDls.setSelected(true);
 
     this.viewPagerStations = this.findViewById(R.id.station_vp);
@@ -1236,6 +1344,7 @@ public class PlayerActivity extends Activity
     if (this.dabService != null) {
       this.dabService.setPlayerHandler(this.dabFHandler);
     }
+
     setUsbDeviceFromDeviceList();
   }
 
@@ -1296,9 +1405,21 @@ public class PlayerActivity extends Activity
 
   public void showDonateDialog() {
 
-    if (!SharedPreferencesHelper.getInstance().getBoolean("showDonate")) {
-      return;
+    try {
+      String donatedFor = SharedPreferencesHelper.getInstance().getString("donatedFor");
+      PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+      String thisVersion = pInfo.versionName;
+
+      if (thisVersion.equals(donatedFor)) {
+        return;
+      } else if (!"none".equals(donatedFor)) {
+        // reset
+        SharedPreferencesHelper.getInstance().setInteger("startCounter", 0);
+        SharedPreferencesHelper.getInstance().setString("donatedFor", "none");
+      }
+    } catch (PackageManager.NameNotFoundException ex) {
     }
+
     int startCounter = SharedPreferencesHelper.getInstance().getInteger("startCounter") + 1;
     SharedPreferencesHelper.getInstance().setInteger("startCounter", startCounter);
     int donateAfterStarts = SharedPreferencesHelper.getInstance().getInteger("donateAfterStarts");
@@ -1405,5 +1526,12 @@ public class PlayerActivity extends Activity
       Toast.makeText(this.context, toastText, 1).show();
     }
     finishTheApp();
+  }
+
+  @Override
+  protected void onSaveInstanceState(Bundle bundle) {
+    super.onSaveInstanceState(bundle);
+    bundle.putString("dls", this.strDls);
+    bundle.putInt("playIndex", this.playIndex);
   }
 }

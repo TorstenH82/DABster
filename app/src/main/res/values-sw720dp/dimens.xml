@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="ChannelDetailsLayoutMargin">16dp</dimen>
+    <dimen name="bottombar_button_height">60dp</dimen>
+    <dimen name="bottombar_button_width">108dp</dimen>
+    <dimen name="player_next_prev_height">90dp</dimen>
+    <dimen name="player_next_prev_width">90dp</dimen>
+    
+    <dimen name="memory_preset_height_port">70dp</dimen>
+    <dimen name="memory_preset_icon_width">52dp</dimen>
+    <dimen name="memory_preset_text_margin">10dp</dimen>
+    <dimen name="memory_preset_height_land">60dp</dimen>
+</resources>

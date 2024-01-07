@@ -2,6 +2,8 @@ package com.thf.dabplayer.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.app.Activity;
 import com.thf.dabplayer.utils.SharedPreferencesHelper;
@@ -34,7 +36,12 @@ public class DonateActivity extends Activity {
           @Override
           public void onClick(boolean positive, int selection) {
             if (!positive) {
-              SharedPreferencesHelper.getInstance().setBoolean("showDonate", false);
+              try {
+                PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+                String thisVersion = pInfo.versionName;
+                SharedPreferencesHelper.getInstance().setString("donatedFor", thisVersion);
+              } catch (PackageManager.NameNotFoundException ex) {
+              }
             }
             finish();
           }

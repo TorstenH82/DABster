@@ -1,19 +1,13 @@
 package com.thf.dabplayer.dab;
 
 import android.content.Context;
-import android.content.Intent;
-import android.location.GpsStatus;
-import android.nfc.NdefRecord;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
+import android.graphics.ImageDecoder.DecodeException;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.text.Annotation;
-import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
 import com.thf.dabplayer.activity.PlayerActivity;
-import com.thf.dabplayer.dab.Decode;
-import com.thf.dabplayer.service.DabService;
 import com.thf.dabplayer.utils.Logger;
 import com.thf.dabplayer.utils.RepairEBU;
 import com.thf.dabplayer.utils.ServiceFollowing;
@@ -38,7 +32,7 @@ public class DabThread extends Thread {
   public static final int MSGTYPE_DAB_DEINIT = 5;
   public static final int MSGTYPE_DAB_HANDLER_STOP = 7;
   public static final int MSGTYPE_DAB_INIT = 2;
-  // public static final int MSGTYPE_SELECT_PTY = 20;
+  public static final int MSGTYPE_AUDIO_FOCUS = 34;
   public static final int MSGTYPE_START_PLAY_STATION = 6;
   public static final int MSGTYPE_START_SERVICE_FOLLOWING = 23;
   public static final int MSGTYPE_START_STATION_SCAN = 3;
@@ -515,7 +509,7 @@ public class DabThread extends Thread {
       }
     }
     notifyScanningDone(this.total_known_services);
-    refreshStationList();
+    // refreshStationList(); test
     Message obtainMessage2 = this.playerHandler.obtainMessage();
     obtainMessage2.what = PlayerActivity.PLAYERMSG_SCAN_FINISHED; // 99;
     obtainMessage2.arg1 = this.scan_service_count;
@@ -523,12 +517,12 @@ public class DabThread extends Thread {
 
     // select favourites and send to player
     List<DabSubChannelInfo> memoryList = this.dbHelper.getFavorites();
-    //if (memoryList.size() > 0) {
-      Message obtainMessage4 = this.playerHandler.obtainMessage();
-      obtainMessage4.what = PlayerActivity.PLAYERMSG_SET_STATIONMEMORY;
-      obtainMessage4.obj = memoryList;
-      this.playerHandler.sendMessage(obtainMessage4);
-    //}
+    // if (memoryList.size() > 0) {
+    Message obtainMessage4 = this.playerHandler.obtainMessage();
+    obtainMessage4.what = PlayerActivity.PLAYERMSG_SET_STATIONMEMORY;
+    obtainMessage4.obj = memoryList;
+    this.playerHandler.sendMessage(obtainMessage4);
+    // }
   }
 
   /* renamed from: i */
@@ -820,6 +814,7 @@ public class DabThread extends Thread {
   }
   */
 
+  /*
   public void refreshStationList() {
     Logger.d("refreshStationList");
     this.stationList = this.dbHelper.getStationList();
@@ -829,6 +824,7 @@ public class DabThread extends Thread {
     obtainMessage.obj = this.stationList;
     this.playerHandler.sendMessage(obtainMessage);
   }
+    */
 
   private void notifyNewStationPlaying(
       DabSubChannelInfo info, int currentPlayingPos, int numStations) {
@@ -966,6 +962,9 @@ public class DabThread extends Thread {
             DabThread.this.playStation(message.arg1);
             return;
           }
+          return;
+        case MSGTYPE_AUDIO_FOCUS:
+          setAudioState(message.arg1);
           return;
         case MSGTYPE_DAB_HANDLER_STOP:
           Logger.d("DAB handler stop");
@@ -1336,17 +1335,18 @@ public class DabThread extends Thread {
         if (DabThread.this.playIndex != DabThread.this.lastMotSentForIndex
             && DabThread.this.lastMotSentForIndex != -1
             && this.loop < 20) { // station was switched
-          Logger.d("skip mot on early loop " + this.loop);
+          Logger.d("DabThread: skip mot on early loop " + this.loop);
           return; // and we dont send the same mot image again
         }
-        DabThread.this.lastMotSentForIndex = DabThread.this.playIndex;
 
-        Logger.d("received mot type with loop " + loop + ": " + this.get_mot_type_buff[0]);
+        Logger.d(
+            "DabThread: received mot type with loop " + loop + ": " + this.get_mot_type_buff[0]);
         String fileName = this.get_mot_type_buff[0] == 0 ? "mot.png" : "mot.jpg";
         File file = new File(DabThread.this.context.getFilesDir(), fileName);
         if (file.exists()) {
           file.delete();
         }
+
         try {
           FileOutputStream fileOutputStream = new FileOutputStream(file);
           fileOutputStream.write(this.get_mot_data_buff, 0, decoder_get_mot_data);
@@ -1358,10 +1358,58 @@ public class DabThread extends Thread {
           e2.printStackTrace();
         }
 
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P && file.exists()) {
+          // only for Pie (9) and newer versions
+          ImageDecoder.Source imageSrc = ImageDecoder.createSource(file);
+          ImageDecoder.OnHeaderDecodedListener listener =
+              new ImageDecoder.OnHeaderDecodedListener() {
+
+                @Override
+                public void onHeaderDecoded(
+                    ImageDecoder decoder, ImageDecoder.ImageInfo info, ImageDecoder.Source source) {
+                  // decoder.setMutableRequired(true);
+                  decoder.setOnPartialImageListener(
+                      new ImageDecoder.OnPartialImageListener() {
+                        @Override
+                        public boolean onPartialImage(DecodeException ex) {
+                          switch (ex.getError()) {
+                            case ImageDecoder.DecodeException.SOURCE_EXCEPTION:
+                              Logger.d("DabThread: mod decoding failed with source exception");
+                              break;
+                            case ImageDecoder.DecodeException.SOURCE_INCOMPLETE:
+                              Logger.d(
+                                  "DabThread: mod decoding failed with source incomplete exception");
+                              break;
+                            case ImageDecoder.DecodeException.SOURCE_MALFORMED_DATA:
+                              Logger.d(
+                                  "DabThread: mod decoding failed with malformed data exception");
+                              break;
+                          }
+
+                          Message obtainMessage = DabThread.this.playerHandler.obtainMessage();
+                          obtainMessage.what = PlayerActivity.PLAYERMSG_MOT_SUPPRESS;
+                          obtainMessage.arg1 = ex.getError();
+                          DabThread.this.playerHandler.sendMessage(obtainMessage);
+
+                          return false;
+                        }
+                      });
+                }
+              };
+
+          try {
+            Bitmap bitmap = ImageDecoder.decodeBitmap(imageSrc, listener);
+          } catch (IOException ex) {
+            return;
+          }
+        }
+
         Message obtainMessage = DabThread.this.playerHandler.obtainMessage();
         obtainMessage.what = PlayerActivity.PLAYERMSG_MOT; // 10
         obtainMessage.obj = fileName;
         DabThread.this.playerHandler.sendMessage(obtainMessage);
+
+        DabThread.this.lastMotSentForIndex = DabThread.this.playIndex;
 
         try {
           String canonicalPath = file.getCanonicalPath();

@@ -12,8 +12,8 @@ android {
         applicationId "com.thf.dabplayer"
         minSdk 21
         targetSdk 31
-        versionCode 1
-        versionName "0.1.16preview"
+        versionCode 122
+        versionName "0.1.22preview"
         
         vectorDrawables { 
             useSupportLibrary true

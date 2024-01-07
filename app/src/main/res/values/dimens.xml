@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="tab_host_default_height">48dp</dimen>
-    <dimen name="StationListLogo">64dp</dimen>
     <dimen name="ChannelDetailsLayoutMargin">8dp</dimen>
+    <dimen name="bottombar_button_height">40dp</dimen>
+    <dimen name="bottombar_button_width">72dp</dimen>
+    <dimen name="player_next_prev_height">60dp</dimen>
+    <dimen name="player_next_prev_width">60dp</dimen>
+    <dimen name="memory_preset_height_port">46dp</dimen>
+    <dimen name="memory_preset_icon_width">40dp</dimen>
+    <dimen name="memory_preset_text_margin">10dp</dimen>
+    <dimen name="memory_preset_height_land">40dp</dimen>
 </resources>

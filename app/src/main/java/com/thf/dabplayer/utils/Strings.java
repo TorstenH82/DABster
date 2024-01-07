@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 // import android.support.p000v4.view.ViewCompat;
 import android.util.SparseArray;
 import androidx.core.view.ViewCompat;
+import com.thf.dabplayer.DabsterApp;
 import com.thf.dabplayer.R;
 
 import java.io.File;
@@ -93,7 +94,8 @@ public class Strings {
   }
 
   public static String DAB_path() {
-    return Environment.getExternalStorageDirectory() + File.separator + "DABster";
+    // return Environment.getExternalStorageDirectory() + File.separator + "DABster";
+    return DabsterApp.getInstance().getApplicationContext().getFilesDir().getAbsolutePath();
   }
 
   public static final SparseArray<String> dabFreqToChannelMap =

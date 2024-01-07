@@ -102,7 +102,6 @@
     <string name="pref_startUsb">false</string>
     <string name="FicRecording"> Record FIC (Fast Information Channel) data during scan</string>
     <string name="pref_ficRecording">false</string>
-    <string name="pref_showDonate">true</string>
     <string name="DonateSummary">Do you like this app? Then support me with a donation via\nko-fi.com/appswitcher</string>
     <string name="DonateText">Do you like this app? Then support me with a donation.</string>
     <string name="DonateUrl">https://ko-fi.com/appswitcher</string>

@@ -36,7 +36,6 @@ public class PcmThread extends Thread {
   private int mChannels;
   private boolean isClippedSampleDetectionEnabled;
   private boolean isClippedSampleNotificationEnabled;
-  
 
   private SharedPrefListener mPrefListener;
   private int mSampleRateInHz;
@@ -161,6 +160,7 @@ public class PcmThread extends Thread {
       e.printStackTrace();
     }
     ClippingAreaDetection cad = new ClippingAreaDetection(this.mChannels);
+    long noDataCnt = 0L;
     while (!this.exit) {
       try {
         Thread.sleep(1L);
@@ -174,7 +174,7 @@ public class PcmThread extends Thread {
                 + ". Data required: "
                 + this.minBufferSize);
         if (this.ringBuffer.getNumSamplesAvailable() >= this.minBufferSize) {
-
+          noDataCnt = 0L;
           int a = this.ringBuffer.readBuffer(bArr, this.minBufferSize);
           if (!this.f131e) {
             this.f131e = true;
@@ -210,7 +210,9 @@ public class PcmThread extends Thread {
               break;
           }
         } else {
-          Logger.d("PCM: not enought data. " + this.minBufferSize + " required.");
+          noDataCnt++;
+          Logger.d(
+              "PCM: not enought data (" + noDataCnt + "). " + this.minBufferSize + " required.");
         }
       }
     }

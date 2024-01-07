@@ -1,32 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style
-        name="customSpinner"
-        parent="@android:style/Widget.Holo.Spinner">
-        <item name="android:textColor">#ff787878</item>
-    </style>
-    <style
-        name="customSpinnerDropDownStyle"
-        parent="@android:style/Widget.ListView.DropDown">
-        <item name="android:divider">#ffff0000</item>
-        <item name="android:dividerHeight">5dp</item>
-    </style>
-    <style
-        name="spinnerDropDownItemStyle"
-        parent="@android:style/TextAppearance.Widget.TextView.SpinnerItem">
-    </style>
-
-    <style
-        name="HorizontalDividerMargin"
-        parent="">
-        <item name="android:background">?android:attr/listDivider</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">3dp</item>
-        <item name="android:layout_marginTop">16dp</item>
-        <item name="android:layout_marginBottom">16dp</item>
-        <item name="android:minHeight">1px</item>
-    </style>
-    <style
         name="StationName"
         parent="@android:style/TextAppearance.DeviceDefault.Large">
     </style>
@@ -44,39 +18,29 @@
         <item name="android:textColor">#ff787878</item>
     </style>
     <style
-        name="SettingsHeadline"
-        parent="@android:style/TextAppearance.DeviceDefault.Medium">
-        <item name="android:textColor">@color/primary_text</item>
-    </style>
-    <style
-        name="SettingsText"
-        parent="@android:style/TextAppearance.DeviceDefault.Medium">
-    </style>
-    <style
         name="ChannelDetails"
         parent="@android:style/TextAppearance.DeviceDefault.Medium">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
     <style
+        name="Clock"
+        parent="@android:style/TextAppearance.DeviceDefault.Medium">
+        <!-- <item name="android:textSize">14sp</item> -->
+    </style>
+    <style
         name="PresetText"
         parent="@android:style/TextAppearance.DeviceDefault.Medium">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        
     </style>
     <style
-        name="OrientationMainlyHorizontal"
-        parent="">
-        <item name="android:orientation">horizontal</item>
-    </style>
-    <style
-        name="DelTransparent"
-        parent="">
-        <item name="android:colorForeground">#fff</item>
-        <item name="android:windowBackground">@drawable/transparent</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+        name="PresetTextDim"
+        parent="@android:style/TextAppearance.DeviceDefault.Medium">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ff787878</item>
     </style>
     <!-- Base application theme. -->
     <style
@@ -90,17 +54,6 @@
     <style
         name="AppTheme"
         parent="Base.AppTheme" />
-    <style
-        name="Translucent"
-        parent="@android:style/Theme.Translucent">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
-        <item name="android:backgroundDimEnabled">true</item>
-    </style>
     <style
         name="Theme.Transparent"
         parent="Base.AppTheme">

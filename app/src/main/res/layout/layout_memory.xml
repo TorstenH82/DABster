@@ -18,7 +18,7 @@
             <LinearLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/memory1"
-                android:layout_height="46dp"
+                android:layout_height="@dimen/memory_preset_height_port"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
@@ -29,11 +29,11 @@
 
                 <ImageView
                     android:id="@+id/memory1Img"
-                    android:layout_width="30dp"
+                    android:layout_width="@dimen/memory_preset_icon_width"
                     android:layout_height="fill_parent"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="0dp"
-                    android:layout_marginStart="9dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp" />
 
                 <TextView
@@ -43,12 +43,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/memory_preset_text_margin"
                     android:layout_marginTop="0dp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text=""
-                    android:textColor="#FFFFFF"
                     android:visibility="visible" />
             </LinearLayout>
         </TableRow>
@@ -62,7 +61,7 @@
             <LinearLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/memory2"
-                android:layout_height="46dp"
+                android:layout_height="@dimen/memory_preset_height_port"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
@@ -73,11 +72,11 @@
 
                 <ImageView
                     android:id="@+id/memory2Img"
-                    android:layout_width="30dp"
+                    android:layout_width="@dimen/memory_preset_icon_width"
                     android:layout_height="fill_parent"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="0dp"
-                    android:layout_marginStart="9dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp" />
 
                 <TextView
@@ -87,12 +86,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/memory_preset_text_margin"
                     android:layout_marginTop="0dp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text=""
-                    android:textColor="#FFFFFF"
                     android:visibility="visible" />
             </LinearLayout>
         </TableRow>
@@ -107,7 +105,7 @@
             <LinearLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/memory3"
-                android:layout_height="46dp"
+                android:layout_height="@dimen/memory_preset_height_port"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
@@ -118,11 +116,11 @@
 
                 <ImageView
                     android:id="@+id/memory3Img"
-                    android:layout_width="30dp"
+                    android:layout_width="@dimen/memory_preset_icon_width"
                     android:layout_height="fill_parent"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="0dp"
-                    android:layout_marginStart="9dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp" />
 
                 <TextView
@@ -132,12 +130,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/memory_preset_text_margin"
                     android:layout_marginTop="0dp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text=""
-                    android:textColor="#FFFFFF"
                     android:visibility="visible" />
             </LinearLayout>
         </TableRow>
@@ -152,7 +149,7 @@
             <LinearLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/memory4"
-                android:layout_height="46dp"
+                android:layout_height="@dimen/memory_preset_height_port"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
@@ -163,11 +160,11 @@
 
                 <ImageView
                     android:id="@+id/memory4Img"
-                    android:layout_width="30dp"
+                    android:layout_width="@dimen/memory_preset_icon_width"
                     android:layout_height="fill_parent"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="0dp"
-                    android:layout_marginStart="9dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp" />
 
                 <TextView
@@ -177,12 +174,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/memory_preset_text_margin"
                     android:layout_marginTop="0dp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text=""
-                    android:textColor="#FFFFFF"
                     android:visibility="visible" />
             </LinearLayout>
         </TableRow>
@@ -197,7 +193,7 @@
             <LinearLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/memory5"
-                android:layout_height="46dp"
+                android:layout_height="@dimen/memory_preset_height_port"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
@@ -208,11 +204,11 @@
 
                 <ImageView
                     android:id="@+id/memory5Img"
-                    android:layout_width="30dp"
+                    android:layout_width="@dimen/memory_preset_icon_width"
                     android:layout_height="fill_parent"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="0dp"
-                    android:layout_marginStart="9dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp" />
 
                 <TextView
@@ -222,12 +218,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/memory_preset_text_margin"
                     android:layout_marginTop="0dp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text=""
-                    android:textColor="#FFFFFF"
                     android:visibility="visible" />
             </LinearLayout>
         </TableRow>
@@ -242,7 +237,7 @@
             <LinearLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/memory6"
-                android:layout_height="46dp"
+                android:layout_height="@dimen/memory_preset_height_port"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
@@ -253,11 +248,11 @@
 
                 <ImageView
                     android:id="@+id/memory6Img"
-                    android:layout_width="30dp"
+                    android:layout_width="@dimen/memory_preset_icon_width"
                     android:layout_height="fill_parent"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="0dp"
-                    android:layout_marginStart="9dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp" />
 
                 <TextView
@@ -267,12 +262,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/memory_preset_text_margin"
                     android:layout_marginTop="0dp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text=""
-                    android:textColor="#FFFFFF"
                     android:visibility="visible" />
             </LinearLayout>
         </TableRow>
@@ -385,13 +379,13 @@
                     android:id="@+id/details_audiobitrate"
                     android:layout_marginStart="@dimen/ChannelDetailsLayoutMargin" />
             </TableRow>
-             
+
             <TableRow
                 android:gravity="center_vertical"
                 android:layout_marginBottom="@dimen/ChannelDetailsLayoutMargin">
                 <TextView
                     android:textAppearance="@style/ChannelDetails"
-                    android:text="@string/ServiceFollowing" 
+                    android:text="@string/ServiceFollowing"
                     android:layout_marginEnd="@dimen/ChannelDetailsLayoutMargin" />
                 <TextView
                     android:textAppearance="@style/ChannelDetails"

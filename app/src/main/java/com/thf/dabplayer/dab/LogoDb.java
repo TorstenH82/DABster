@@ -162,8 +162,7 @@ public class LogoDb {
       Cursor rawQuery = getDb().rawQuery("SELECT * FROM logos", null);
       while (rawQuery.moveToNext()) {
         StationLogo stationLogo = new StationLogo();
-        stationLogo.mStationNameNormalized =
-            rawQuery.getString(rawQuery.getColumnIndex("station"));
+        stationLogo.mStationNameNormalized = rawQuery.getString(rawQuery.getColumnIndex("station"));
         String name = rawQuery.getString(rawQuery.getColumnIndex("path"));
         stationLogo.mLogoPathFilename = name;
         stationLogo.mStationServiceId = rawQuery.getInt(rawQuery.getColumnIndex("sid"));
@@ -390,9 +389,9 @@ public class LogoDb {
     }
   }
 
-  private static final String LOGO_PATH =
-      Strings.DAB_path() + File.separator + "logos" + File.separator;
-  public static final String LOGO_PATH_USER = LOGO_PATH + "user" + File.separator;
+  // private static final String LOGO_PATH =
+  //     Strings.DAB_path() + File.separator + "logos" + File.separator;
+  // public static final String LOGO_PATH_USER = LOGO_PATH + "user" + File.separator;
 
   /* added to store mot as station logo */
   public boolean storeUserStationLogo(Drawable drawable, String stationName, int serviceId) {
@@ -401,13 +400,13 @@ public class LogoDb {
     if (drawable == null || stationName == null) {
       return false;
     }
-    File logoUserDir = new File(LOGO_PATH_USER);
+    File logoUserDir = new File(Strings.LOGO_PATH_USER);
     boolean dirExists = logoUserDir.exists();
     if (!dirExists) {
       dirExists = logoUserDir.mkdirs();
     }
     if (!dirExists) {
-      Logger.d("does not exist and cannot be created:" + LOGO_PATH_USER);
+      Logger.d("does not exist and cannot be created:" + Strings.LOGO_PATH_USER);
     } else {
       Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
       File imageFile = new File(logoUserDir, stationName + ".png");

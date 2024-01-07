@@ -45,6 +45,10 @@ public class SharedPreferencesHelper {
   public String getString(String key) {
     return this.sharedPreferences.getString(key, getDefaultString(key));
   }
+    
+    public void setString(String key, String valueString) {
+    sharedPreferences.edit().putString(key, valueString).apply();
+  }
 
   private int getDefaultInt(String key) {
     key = "pref_" + key;
